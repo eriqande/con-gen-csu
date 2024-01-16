@@ -130,7 +130,7 @@ a little more self-guided prep to do for the next class.
 
 RStudio Projects, RMarkdown, git/GitHub, and connecting to Alpine.
 
-#### Prep: (Alwasys do "prep" before class. All prep materials are subject to quizzes)
+#### Prep: (Always do "prep" before class. All prep materials are subject to quizzes)
 
 RStudio and git preps:
 
@@ -160,7 +160,60 @@ Connecting to Alpine (or another cluster) preps:
   client (for connecting to Alpine, etc.)
   
 
-### In class:
+#### In class: (Tentative schedule of how class time will go down)
+
+- Introductions of the course and students
+- Brief overview of tentative syllabus
+- Example data (pre-introduction)
+
+
+- Check git/GitHub connectivity, etc
+- Create 2 RStudio projects, commit them and push them
+- Create a con-gen-csu-githubname project and repo and push that up
+
+
+- RMarkdown. Make sure everyone is compiling the
+  template.
+- Introduce the assignment.
+
+
+- Make sure everyone can log on to Alpine (or their respective Unix cluster)
+
+#### Assignment
+
+**This is Due by Monday, January 22nd at 6 PM.**
+
+1. Clone the repository [https://github.com/eriqande/bioinf-rmarkdown-introduction](https://github.com/eriqande/bioinf-rmarkdown-introduction), open the RStudio project and make sure you can knit the `about-me-example.Rmd` file, at least to HTML.
+2. Try knitting that to PDF or DOCX format as well.
+3. Copy the `about-me.Rmd` template file from the repo to a directory called `001-about-me` in your own
+  con-gen-csu-githubname project, and edit it to provide information about yourself, and 
+  to practive using RMarkdown.
+4. When you are done editing it and you have knitted it:
+  - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
+  - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
+
+
+
+
+### Tuesday, January 23, 2024
+
+Basic Unix Stuff.
+
+#### Prep
+
+- Read from the eca-bioinf-handbook from the beginning of [Chapter 4](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#essential-unixlinux-terminal-knowledge)
+up to and including [Handling, Manipulating, and Viewing files and streams](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#handling-manipulating-and-viewing-files-and-streams)
+
+#### In class
+
+- Solidifying Unix concepts
+
+#### Assignment
+
+
+
+
+
 
 
 
