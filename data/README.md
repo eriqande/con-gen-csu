@@ -18,10 +18,26 @@ The genomic coordinates of those regions are:
 NC_037122.1:5000000-9000000 NC_037123.1:10000000-14000000 NC_037124.1:8000000-16000000 NC_037125.1:20000000-24000000
 ```
 
+I additionally added sequence that mapped to about 45 small unmapped scaffolds (because
+for most non-model organisms, you reference genome will still have a lot of
+unmapped scaffolds!).  Look in the code below (definition of `SCAFFS` to see
+what they are).
+
+## Contents
+
+  - `fastqs` holds the sequencing data (gzipped fastq files)
+  - `genome` has a single file, `genome.fasta` that is the "reference genome" that
+    has only the regions above as well the scaffolds.
+  - `config` is a directory that holds configuration information for running these
+    data through Eric's [mega-non-model-wgs-snakeflow](https://github.com/eriqande/mega-non-model-wgs-snakeflow)
+    Snakemake workflow.
+  - `meta.tsv` is a small TAB-separated file with some information about the samples
+    themselves (i.e. spring or fall run, etc.)
+    
 
 ## Steps taken to make the data
 
-Here is a quick synopsis of what I did to make these data sets, as a shell script.
+Here is a quick synopsis of what I did to make these data sets---as a shell script.
 It is a bit wacky trying to make singleton pairs and add PCR duplicates back in there
 (because the BAM files I have had the dupes removed).  A lot of the tools throw
 errors if things aren't all just right (like the same sequence identifier in
