@@ -2,11 +2,11 @@
 title: "About Me"
 author: "Eric C. Anderson"
 output:
-  word_document:
+  html_document:
     toc: yes
   pdf_document:
     toc: yes
-  html_document:
+  word_document:
     toc: yes
 bibliography: references.bib
 ---

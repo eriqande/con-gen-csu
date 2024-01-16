@@ -165,18 +165,18 @@ Connecting to Alpine (or another cluster) preps:
 - Introductions of the course and students
 - Brief overview of tentative syllabus
 - Example data (pre-introduction)
-
-
+  
+  
 - Check git/GitHub connectivity, etc
 - Create 2 RStudio projects, commit them and push them
 - Create a con-gen-csu-githubname project and repo and push that up
-
-
+  
+  
 - RMarkdown. Make sure everyone is compiling the
   template.
 - Introduce the assignment.
-
-
+  
+  
 - Make sure everyone can log on to Alpine (or their respective Unix cluster)
 
 #### Assignment
@@ -189,8 +189,8 @@ Connecting to Alpine (or another cluster) preps:
   con-gen-csu-githubname project, and edit it to provide information about yourself, and 
   to practive using RMarkdown.
 4. When you are done editing it and you have knitted it:
-  - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
-  - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
+    - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
+    - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
 
 
 
