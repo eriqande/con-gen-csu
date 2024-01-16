@@ -1,0 +1,17 @@
+sample	unit	library	flowcell	platform	lane	sample_id	barcode	fq1	fq2	kb1	kb2
+DPCh_plate1_B10_S22	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_B10_S22	DPCh_plate1_B10_S22	fastqs/DPCh_plate1_B10_S22_R1.fq.gz	fastqs/DPCh_plate1_B10_S22_R2.fq.gz	10822.571	12438.261
+DPCh_plate1_B11_S23	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_B11_S23	DPCh_plate1_B11_S23	fastqs/DPCh_plate1_B11_S23_R1.fq.gz	fastqs/DPCh_plate1_B11_S23_R2.fq.gz	10838.002	12026.601
+DPCh_plate1_B12_S24	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_B12_S24	DPCh_plate1_B12_S24	fastqs/DPCh_plate1_B12_S24_R1.fq.gz	fastqs/DPCh_plate1_B12_S24_R2.fq.gz	11437.975	12892.735
+DPCh_plate1_C10_S34	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_C10_S34	DPCh_plate1_C10_S34	fastqs/DPCh_plate1_C10_S34_R1.fq.gz	fastqs/DPCh_plate1_C10_S34_R2.fq.gz	14139.54	15767.478
+DPCh_plate1_C11_S35	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_C11_S35	DPCh_plate1_C11_S35	fastqs/DPCh_plate1_C11_S35_R1.fq.gz	fastqs/DPCh_plate1_C11_S35_R2.fq.gz	9705.477	11108.45
+DPCh_plate1_C12_S36	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_C12_S36	DPCh_plate1_C12_S36	fastqs/DPCh_plate1_C12_S36_R1.fq.gz	fastqs/DPCh_plate1_C12_S36_R2.fq.gz	10467.881	12064.275
+DPCh_plate1_D09_S45	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_D09_S45	DPCh_plate1_D09_S45	fastqs/DPCh_plate1_D09_S45_R1.fq.gz	fastqs/DPCh_plate1_D09_S45_R2.fq.gz	12167.214	13628.883
+DPCh_plate1_D11_S47	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_D11_S47	DPCh_plate1_D11_S47	fastqs/DPCh_plate1_D11_S47_R1.fq.gz	fastqs/DPCh_plate1_D11_S47_R2.fq.gz	12337.821	13929.613
+DPCh_plate1_F10_S70	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_F10_S70	DPCh_plate1_F10_S70	fastqs/DPCh_plate1_F10_S70_R1.fq.gz	fastqs/DPCh_plate1_F10_S70_R2.fq.gz	10805.055	11871.849
+DPCh_plate1_F11_S71	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_F11_S71	DPCh_plate1_F11_S71	fastqs/DPCh_plate1_F11_S71_R1.fq.gz	fastqs/DPCh_plate1_F11_S71_R2.fq.gz	12583.866	14308.931
+DPCh_plate1_F12_S72	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_F12_S72	DPCh_plate1_F12_S72	fastqs/DPCh_plate1_F12_S72_R1.fq.gz	fastqs/DPCh_plate1_F12_S72_R2.fq.gz	14848.51	16313.417
+DPCh_plate1_G09_S81	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_G09_S81	DPCh_plate1_G09_S81	fastqs/DPCh_plate1_G09_S81_R1.fq.gz	fastqs/DPCh_plate1_G09_S81_R2.fq.gz	20816.204	22987.841
+DPCh_plate1_G10_S82	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_G10_S82	DPCh_plate1_G10_S82	fastqs/DPCh_plate1_G10_S82_R1.fq.gz	fastqs/DPCh_plate1_G10_S82_R2.fq.gz	24775.084	27340.307
+DPCh_plate1_G12_S84	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_G12_S84	DPCh_plate1_G12_S84	fastqs/DPCh_plate1_G12_S84_R1.fq.gz	fastqs/DPCh_plate1_G12_S84_R2.fq.gz	18082.229	20757.831
+DPCh_plate1_H09_S93	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_H09_S93	DPCh_plate1_H09_S93	fastqs/DPCh_plate1_H09_S93_R1.fq.gz	fastqs/DPCh_plate1_H09_S93_R2.fq.gz	9702.925	10835.209
+DPCh_plate1_H10_S94	1	plate1	HTYYCBBXX	ILLUMINA	1	DPCh_plate1_H10_S94	DPCh_plate1_H10_S94	fastqs/DPCh_plate1_H10_S94_R1.fq.gz	fastqs/DPCh_plate1_H10_S94_R2.fq.gz	11179.913	12277.416

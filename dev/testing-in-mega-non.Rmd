@@ -1,0 +1,66 @@
+---
+title: "Testing Data Set in Mega-non-model"
+output: html_notebook
+---
+
+I am on SEDNA, and I just want to test to make sure I didn't screw up anything
+when I made these fastqs.
+
+## Making the units file
+
+```{r}
+library(tidyverse)
+
+units <- read_table("data/file-listing.txt", col_names = FALSE) %>%
+  mutate(fq = X9, kb = X5 / 1000) %>%
+  select(fq, kb) %>%
+  extract(
+    fq,
+    into = c("sample", "read"),
+    regex = "fastqs/(DPCh.*)_R([12])\\.fq.gz",
+    convert = TRUE,
+    remove = FALSE
+  ) %>%
+  pivot_wider(
+    names_from = read,
+    values_from = c(fq, kb),
+    names_sep = ""
+  ) %>%
+  mutate(
+    flowcell = "HTYYCBBXX",
+    unit = 1,
+    library = "plate1",
+    platform = "ILLUMINA",
+    lane = 1,
+    sample_id = sample,
+    barcode = sample
+  ) %>%
+  select(sample, unit, library, flowcell, platform, lane, sample_id, barcode, fq1, fq2, kb1, kb2)
+
+write_tsv(units, file = "units.tsv")
+
+
+```
+
+Now, we also have to make the scaffolds file.
+
+```{r}
+x <- read_tsv("../data/genome/genome.fasta.fai", col_names = FALSE)
+
+scaff_groups <- x %>%
+  filter(str_detect(X1, "NW")) %>%
+  rename(
+    chrom = X1,
+    len = X2
+  ) %>%
+  mutate(
+    cumul = cumsum(len),
+  ) %>%
+  mutate(
+    id = "scaff_group_001",
+    .before = chrom
+  ) %>%
+  select(id, chrom, len, cumul)
+
+write_tsv(scaff_groups, file = "scaffold_groups.tsv")
+```
