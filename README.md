@@ -110,7 +110,7 @@ Week  |	Lecture  Component	| Lab Component
 
 
 
-## Individual Projects {-#indproj}
+## Individual Projects
 
 The purpose of the individual projects is to allow the students to use
 many of the skills learned, and to gain experience in preparing a reproducible
@@ -120,9 +120,10 @@ able to provide data and interesting questions to tackle from our own research.
 Additionally, we will encourage students to take on related projects so that
 they can work together on different parts of a single question.
 
-## Course GitHub Organization {-#ghorg}
 
-A large part of this course will entail getting familiar with git and GitHub.
-Homework assignments will be distributed via GitHub Classroom.  The resulting
-repositories for all students can be found in the CSU-con-gen-bioinformatics-2020 GitHub Organization page
-at [https://github.com/CSU-con-gen-bioinformatics-2020](https://github.com/CSU-con-gen-bioinformatics-2020).
+## Detailed Weekly Schedule
+
+### Tuesday, January 16, 2024
+
+Today there was a campus closure due to weather, however all students can...
+
