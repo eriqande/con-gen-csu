@@ -34,7 +34,7 @@ Building.
 
 
 
-### Zoom links
+### Video links
 
 Although this course takes place in person, there will be zoom links for several remote
 students to connect.  If you are in Fort Collins, you are expected to be in class, in
@@ -42,11 +42,9 @@ person.  The links are primarily available for our remote students; however in-p
 can take advantage of them on a limited basis, for example, if they are isolating with COVID,
 if the roads are incredibly ice and treacherous, etc.
 
-The links are:
-
-- GET LINK
-
-- Get office hour link.
+For the remote sessions, we will use Google Meetings.  Eric will email the
+links out.  It will be the same link for Tuesday and Thursday class times
+as well as for Eric's office hours.
 
 
 
@@ -125,5 +123,44 @@ they can work together on different parts of a single question.
 
 ### Tuesday, January 16, 2024
 
-Today there was a campus closure due to weather, however all students can...
+Today there was a campus closure due to weather, so students will have
+a little more self-guided prep to do for the next class.
+
+### Thursday, January 18, 2024
+
+RStudio Projects, RMarkdown, git/GitHub, and connecting to Alpine.
+
+#### Prep: (Alwasys do "prep" before class. All prep materials are subject to quizzes)
+
+RStudio and git preps:
+
+- Ensure that you have a recent version of R, and the latest version of [RStudio](https://posit.co/download/rstudio-desktop/)
+  installed on your laptop.
+- Make sure that you have `git` installed on your laptop.  Good instructions (possibly a little
+  dated) can be found in Jenny Bryan's [HappyGitWithR](https://happygitwithr.com/install-git#install-git) web book.
+- "Introduce Yourself To Git" following the directions [here](https://happygitwithr.com/hello-git#hello-git)
+- If you don't already have one, get yourself an account on [GitHub](https://github.com/), and once you have successfully
+  logged onto GitHub in your web browser, send your email account name to 
+  [eriq@rams.colostate.edu](mailto:eriq@rams.colostate.edu).
+- Download the [RStudio IDE Cheatsheet](https://rstudio.github.io/cheatsheets/rstudio-ide.pdf) and study it.
+  *Especially the "Version Control" section*
+
+  
+Rmarkdown preps:
+
+- Download the [RMarkdown cheatsheet](https://rstudio.github.io/cheatsheets/rmarkdown.pdf) and study it.
+- In R, do `install.packages("bookdown")`  That will trigger the download of a lot of other packages
+  that are useful to have.
+
+Connecting to Alpine (or another cluster) preps:
+
+- Mac Users, download and install [iTerm2](https://iterm2.com/).  This is a free replacment for the standard mac "Terminal"
+  application, and it is very good.
+- PC Users, you might want to consider downloading and installing [MobaXTerm](https://mobaxterm.mobatek.net/) to use as a terminal
+  client (for connecting to Alpine, etc.)
+  
+
+### In class:
+
+
 
