@@ -1,0 +1,114 @@
+---
+title: "About Me"
+author: "Insert Name Here"
+output:
+  html_document:
+    toc: yes
+  word_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+bibliography: references.bib
+---
+
+# Who I am and where I came from
+
+First off, replace "Insert Name Here" in the YAML header with your name.
+It has to be surrounded by double quotation marks. 
+Briefly tell us a little background about yourself, and how
+you ended up becoming a student at CSU and taking this class.
+Put in a hypertext link to your undergraduate institution.  
+
+Include a numbered list of your top-four favorite leisure activities, like this:
+
+1. My favorite
+1. Second favorite
+1. third favorite
+1. fourth favorite
+
+
+Include a picture (jpg or png) of yourself, to get some practice in inserting
+images into RMarkdown. See the example to see how that can be done.
+Note that JPEGs that include EXIF information might be incorrectly rotated.
+That is OK if you can't figure out how to fix it.
+
+
+
+
+
+# Research Interests
+
+Brief description of your research interests.
+
+## Influential papers
+
+Describe two papers that have been very influential in your
+research.  The main purpose of this is learning how to
+cite literature in RMarkdown.  You will have to add the citations
+to `references.bib` in BibTeX format, and then also cite them.
+
+An easy way to get the paper in BibTeX format is to find it on
+Google Scholar.  Then, under the paper's link, click on the big 
+fat quotation marks, and then choose the BibTex link at the bottom
+of the page.  Then copy the contents into `references.bib`.  For example
+you might paste this into `references.bib`.
+```
+@article{richardson1997bayesian,
+  title={On Bayesian analysis of mixtures with an unknown number of components (with discussion)},
+  author={Richardson, Sylvia and Green, Peter J},
+  journal={Journal of the Royal Statistical Society: series B (statistical methodology)},
+  volume={59},
+  number={4},
+  pages={731--792},
+  year={1997},
+  publisher={Wiley Online Library}
+}
+```
+Note the string before the comma on the first line.  That is the cite key.
+Once you have done that, you can cite it by including `@richardson1997bayesian`
+if you don't want the name in parenthesis, like, "As @richardson1997bayesian introduced in
+their landmark paper."  On the other hand, you can use `[@richardson1997bayesian]` if
+you do want it all in parentheses, like, "Reversible jump MCMC has been previously applied
+to the analysis of mixtures [@richardson1997bayesian]."
+
+
+## The mathematics behind my research
+
+It is easy to write complex mathematics using a mathematical typesetting
+engine called TeX.  Write two displayed equations that are relevant
+to your work.  For a quick primer on TeX and LaTeX you can
+download [this cheatsheet](https://users.dickinson.edu/~richesod/latex/latexcheatsheet.pdf)
+and then fiddle with including things between the double dollar signs below:
+$$
+\cos\theta + i\sin\theta = e^{i\theta}
+$$
+or here:
+$$
+\lim_{n\rightarrow \infty} \frac{1}{n}\sum_{i=1}^n X_i = EX
+$$
+
+## My computing experience
+
+Describe any experience you have with any programming languages.
+Include a snippet of code in two different languages using a
+non-evaluated code block.  This can be something you have previously
+written, or, if you don't have any, then find and copy a few lines of code
+off the web.
+
+## What I hope to get out of this class
+
+Give me a bullet list of three things:
+
+* This
+* That
+* Another
+
+# Evaluating some R code
+
+Here, please evaluate some R code to make a plot or a figure.
+The goal here is just to realize that you can imbed R code
+within fenced code blocks and get the output rendered into
+the document.
+
+# Citations
+
