@@ -181,7 +181,7 @@ Connecting to Alpine (or another cluster) preps:
 
 #### Assignment
 
-**This is Due by Monday, January 22nd at 6 PM.**
+**This will be described in class, and is due by Monday, January 22nd at 6 PM.**
 
 1. Clone the repository [https://github.com/eriqande/bioinf-rmarkdown-introduction](https://github.com/eriqande/bioinf-rmarkdown-introduction), open the RStudio project and make sure you can knit the `about-me-example.Rmd` file, at least to HTML.
 2. Try knitting that to PDF or DOCX format as well.
