@@ -210,8 +210,9 @@ up to and including [Handling, Manipulating, and Viewing files and streams](http
 
 #### Assignment
 
+**This is due by the start of class, Thursday, January 25, 2024**
 
-
+- Copy the contents of the file at  
 
 
 
