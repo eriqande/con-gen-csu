@@ -192,11 +192,13 @@ RStudio/GitHub:
 
 **This will be described in class, and is due by Monday, January 22nd at 6 PM.**
 
+1. Create an Rstudio project on your laptop called `con-gen-csu-githubusername` where you replace `githubusername` with your actual GitHub name/handle.
+2. Create an empty GitHub repository named `con-gen-csu-githubusername` and push the contents of your Rstudio project to it.
 1. Clone the repository [https://github.com/eriqande/bioinf-rmarkdown-introduction](https://github.com/eriqande/bioinf-rmarkdown-introduction), open the RStudio project and make sure you can knit the `about-me-example.Rmd` file, at least to HTML.
 2. Try knitting that to PDF or DOCX format as well.
-3. Copy the `about-me.Rmd` template file from the repo to a directory called `001-about-me` in your own
-  con-gen-csu-githubname project, and edit it to provide information about yourself, and 
-  to practive using RMarkdown.
+3. Copy the `about-me.Rmd` template file and the file `references.bib` from the repo to a directory called `001-about-me` in your own
+  `con-gen-csu-githubname` project, and edit it to provide information about yourself, and 
+  to practice using RMarkdown.
 4. When you are done editing it and you have knitted it:
     - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
     - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
