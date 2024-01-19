@@ -192,6 +192,10 @@ RStudio/GitHub:
 
 **This will be described in class, and is due by Monday, January 22nd at 6 PM.**
 
+_For a video demonstration of the execution of these steps (and a better
+explanation of how to Push commits to GitHub from RStudio) you can check out this
+[11 minute video](https://youtu.be/9Y5S-terl-I)_
+
 1. Create an Rstudio project on your laptop called `con-gen-csu-githubusername` where you replace `githubusername` with your actual GitHub name/handle.
 2. Create an empty GitHub repository named `con-gen-csu-githubusername` and push the contents of your Rstudio project to it.
 1. Clone the repository [https://github.com/eriqande/bioinf-rmarkdown-introduction](https://github.com/eriqande/bioinf-rmarkdown-introduction), open the RStudio project and make sure you can knit the `about-me-example.Rmd` file, at least to HTML.
