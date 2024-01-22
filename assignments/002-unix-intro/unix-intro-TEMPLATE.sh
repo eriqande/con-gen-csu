@@ -47,7 +47,7 @@ my name is Eric
 #### Ex. 3.1 Change directories to the assignments/002-unix-intro directory in the con-gen-csu repo
 
 
-#### Ex. 3: print the absolute path of the directory 002-unix-intro where the homework is taking place
+#### Ex. 3: print the absolute path of the directory 002-unix-intro that you just changed into
 
 
 
