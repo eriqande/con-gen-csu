@@ -68,7 +68,7 @@ in which they apply the skills they have learned in the course to a data set
 relevant in some way to their own research or to an interesting question relevant
 to some existing data, after discussion with the instructors (see [below](#indproj)).
 Finally, students are expected to actively engage in the reading material (and will
-be assessed on that with short quizzes) abd to  contribute to discussion and participation in the course,
+be assessed on that with short quizzes) and to  contribute to discussion and participation in the course,
 including (and most importantly) being helpful to one another in order to learn challenging material,
 together, in a supportive environment.
 
@@ -162,32 +162,47 @@ Connecting to Alpine (or another cluster) preps:
 
 #### In class: (Tentative schedule of how class time will go down)
 
+Introductions:
+
 - Introductions of the course and students
 - Brief overview of tentative syllabus
 - Example data (pre-introduction)
   
-  
+RStudio/GitHub:
+
+- Rstudio and Git Configs:
+    * [Some Slides](https://eriqande.github.io/CSU-con-gen-comp-2020/slides-and-things/setting-up-your-system.html)
 - Check git/GitHub connectivity, etc
+    * [Some slides about git and Github](https://eriqande.github.io/CSU-con-gen-comp-2020/slides-and-things/git-and-github.html)
 - Create 2 RStudio projects, commit them and push them
 - Create a con-gen-csu-githubname project and repo and push that up
   
   
 - RMarkdown. Make sure everyone is compiling the
   template.
+    * Get the repo with: `git clone https://github.com/eriqande/bioinf-rmarkdown-introduction` 
 - Introduce the assignment.
   
   
 - Make sure everyone can log on to Alpine (or their respective Unix cluster)
+    * [Getting and account on Alpine for CSU students](https://it.colostate.edu/research-computing-and-cyberinfrastructure/compute/get-started-with-alpine/)
+    * Logging in if you already have an account: go the page above and find the section on "Remote Login"
 
 #### Assignment
 
 **This will be described in class, and is due by Monday, January 22nd at 6 PM.**
 
+_For a video demonstration of the execution of these steps (and a better
+explanation of how to Push commits to GitHub from RStudio) you can check out this
+[11 minute video](https://youtu.be/9Y5S-terl-I)_
+
+1. Create an Rstudio project on your laptop called `con-gen-csu-githubusername` where you replace `githubusername` with your actual GitHub name/handle.
+2. Create an empty GitHub repository named `con-gen-csu-githubusername` and push the contents of your Rstudio project to it.
 1. Clone the repository [https://github.com/eriqande/bioinf-rmarkdown-introduction](https://github.com/eriqande/bioinf-rmarkdown-introduction), open the RStudio project and make sure you can knit the `about-me-example.Rmd` file, at least to HTML.
 2. Try knitting that to PDF or DOCX format as well.
-3. Copy the `about-me.Rmd` template file from the repo to a directory called `001-about-me` in your own
-  con-gen-csu-githubname project, and edit it to provide information about yourself, and 
-  to practive using RMarkdown.
+3. Copy the `about-me.Rmd` template file and the file `references.bib` from the repo to a directory called `001-about-me` in your own
+  `con-gen-csu-githubname` project, and edit it to provide information about yourself, and 
+  to practice using RMarkdown.
 4. When you are done editing it and you have knitted it:
     - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
     - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
