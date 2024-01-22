@@ -194,7 +194,7 @@ RStudio/GitHub:
 
 _For a video demonstration of the execution of these steps (and a better
 explanation of how to Push commits to GitHub from RStudio) you can check out this
-[11 minute video](https://youtu.be/9Y5S-terl-I)_
+[11 minute video on how to complete and turn in your "About Me" assignment](https://youtu.be/9Y5S-terl-I)_
 
 1. Create an Rstudio project on your laptop called `con-gen-csu-githubusername` where you replace `githubusername` with your actual GitHub name/handle.
 2. Create an empty GitHub repository named `con-gen-csu-githubusername` and push the contents of your Rstudio project to it.
@@ -224,7 +224,7 @@ up to and including [Handling, Manipulating, and Viewing files and streams](http
 ##### Log into Alpine and get git running and talking to GitHub
 
 _For a video demonstration of the execution of these steps see
-a [9 minute video](https://youtu.be/H5zt9h2vH4w)_
+the [9 minute video about logging into Alpine and getting setup with git and some SSH keys for GitHub](https://youtu.be/H5zt9h2vH4w)_.
 
 - Logging into Alpine
 ```sh
