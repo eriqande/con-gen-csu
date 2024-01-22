@@ -223,6 +223,9 @@ up to and including [Handling, Manipulating, and Viewing files and streams](http
 
 ##### Log into Alpine and get git running and talking to GitHub
 
+_For a video demonstration of the execution of these steps see
+a [9 minute video](https://youtu.be/H5zt9h2vH4w)_
+
 - Logging into Alpine
 ```sh
 ssh CSUeid@colostate.edu@login11.rc.colorado.edu
@@ -271,7 +274,39 @@ ssh -T git@github.com
 
 ##### Fork the class repository and clone it to Alpine
 
-We will talk about what forking means in class.  
+Forking is the process of making a clone of somebody else's
+repository on GitHub in your own GitHub account.  We will
+use this to deploy homework, moving forward.
+
+The steps here are:
+
+- Make sure you are signed into GitHub on your browser, then navigate to our
+course repository at [https://github.com/eriqande/con-gen-csu](https://github.com/eriqande/con-gen-csu).
+
+- Find the "Fork" button in the upper right and click it.  When this is done with the
+forking process, your browser should be at your own copy of the repository.
+
+- cd to  your `projects` directory.  This is
+very important!  Do the following, but replace `CSUeid` with your CSU eid.
+```sh
+cd /projects/CSUeid@colostate.edu/
+```
+
+- Once again verify that you are in your projects directory:
+```sh
+pwd
+```
+
+- Clone your fork of the `con-gen-csu` repository to Alpine: Verify your browser is
+at your own _fork_ of the repository, then, from the
+green "Code" button, get the SSH address for the repository and put it after
+`git clone` in the terminal.  That will look like:
+```sh
+git clone git@github.com:YourGitHubHandle/con-gen-csu.git
+```
+with `YourGitHubHandle` actually being your true GitHub handle.
+
+
 
 #### Assignment
 
