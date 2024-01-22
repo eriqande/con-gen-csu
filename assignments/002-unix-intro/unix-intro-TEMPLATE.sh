@@ -44,8 +44,10 @@ my name is Eric
 #### Ex. 3:  Now, for real print your name, as in Ex. 2, but put your name in there:
 
 
+#### Ex. 3.1 Change directories to the assignments/002-unix-intro directory in the con-gen-csu repo
 
-#### Ex. 3: print the absolute path of the top level of the homework directory where this is
+
+#### Ex. 3: print the absolute path of the directory 002-unix-intro where the homework is taking place
 
 
 
@@ -53,18 +55,21 @@ my name is Eric
 
 
 
-#### Ex. 5: There is a directory called `.git` in here that didn't get listed. 
+#### Ex. 4.5 Without changing directories do a long listing of the con-gen-csu directory
+
+
+#### Ex. 5: In the con-gen-csu directory there is a directory called `.git` that didn't get listed. 
 ####        List everything again, but make sure `.git` is in the output
 
 
 
 #### Ex. 6: What are the other hidden files/directories that show up
 ####        in the above listing? Just list them below (no special command)
-####        to ge them, since you did that above)
+####        to get them, since you did that above)
 
 
 
-#### Ex. 7: List (long format) the contents of the directory `.git`
+#### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
 
 
