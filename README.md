@@ -274,6 +274,9 @@ ssh -T git@github.com
 
 ##### Fork the class repository and clone it to Alpine
 
+_For a video demonstration of these steps, check out the
+[6.5 minute video on forking and cloning the class repository](https://youtu.be/6bZEt7jN5D0)_
+
 Forking is the process of making a clone of somebody else's
 repository on GitHub in your own GitHub account.  We will
 use this to deploy homework, moving forward.
