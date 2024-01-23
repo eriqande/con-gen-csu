@@ -3,10 +3,10 @@
 #### On a blank (partial) piece of paper, write your name on top and then just give the answers next to the question numbers. 
 
 1. In Unix, `cd` is:
-  a. a relic from the days before streaming services---it was used to invoke the CD player on old Unix machines
-  b. a command to change directories
-  c. a special file in the `/etc` directory
-  d. a package that can be installed using the `rpm` utility  
+  - (a) a relic from the days before streaming services---it was used to invoke the CD player on old Unix machines
+  - (b) a command to change directories
+  - (c) a special file in the `/etc` directory
+  - (d)  a package that can be installed using the `rpm` utility  
   
   
   
