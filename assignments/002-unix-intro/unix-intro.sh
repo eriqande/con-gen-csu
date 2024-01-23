@@ -43,45 +43,111 @@ my name is Eric
 
 #### Ex. 3:  Now, for real print your name, as in Ex. 2, but put your name in there:
 
+echo "my name is Brian"
+
+-----
+
+my name is Brian
+
 
 #### Ex. 3.1 Change directories to the assignments/002-unix-intro directory in the con-gen-csu repo
 
+cd /projects/bavila@colostate.edu/con-gen-csu/assignments/002-unix-intro/
 
 #### Ex. 3: print the absolute path of the directory 002-unix-intro that you just changed into
 
+[bavila@colostate.edu@login11 002-unix-intro]$ pwd
+/projects/bavila@colostate.edu/con-gen-csu/assignments/002-unix-intro
 
 
 #### Ex. 4: list, in long format, all the files and directories in this homework directory
 
-
+[bavila@colostate.edu@login11 002-unix-intro]$ ls -l
+total 280K
+drwxr-sr-x. 2 bavila@colostate.edu   80 Jan 22 17:03 bam/
+-rwxr-xr-x. 1 bavila@colostate.edu  112 Jan 22 17:03 count_files.sh*
+drwxr-sr-x. 2 bavila@colostate.edu 2.9K Jan 22 17:03 fastq/
+drwxr-sr-x. 2 bavila@colostate.edu   45 Jan 22 17:03 metadata/
+drwxr-sr-x. 2 bavila@colostate.edu   80 Jan 22 17:03 sam/
+drwxr-sr-x. 3 bavila@colostate.edu  159 Jan 22 17:03 silly/
+-rw-r--r--. 1 bavila@colostate.edu 9.3K Jan 23 13:42 unix-intro-TEMPLATE.sh
 
 #### Ex. 4.5 Without changing directories do a long listing of the con-gen-csu directory
 
+ls -l /projects/bavila@colostate.edu/con-gen-csu/
+total 240K
+drwxr-sr-x. 5 bavila@colostate.edu  87 Jan 23 13:42 assignments/
+-rw-r--r--. 1 bavila@colostate.edu 205 Jan 22 17:03 con-gen-csu.Rproj
+drwxr-sr-x. 5 bavila@colostate.edu 125 Jan 22 17:03 data/
+drwxr-sr-x. 3 bavila@colostate.edu  91 Jan 22 17:03 dev/
+-rw-r--r--. 1 bavila@colostate.edu 17K Jan 23 13:42 README.md
 
 #### Ex. 5: In the con-gen-csu directory there is a directory called `.git` that didn't get listed. 
 ####        List everything again, but make sure `.git` is in the output
 
+[bavila@colostate.edu@login11 002-unix-intro]$ ls -al /projects/bavila@colostate.edu/con-gen-csu/
+total 384K
+drwxr-sr-x. 6 bavila@colostate.edu 184 Jan 23 13:42 ./
+drwxrws---. 3 bavila@colostate.edu  58 Jan 22 17:01 ../
+drwxr-sr-x. 5 bavila@colostate.edu  87 Jan 23 13:42 assignments/
+-rw-r--r--. 1 bavila@colostate.edu 205 Jan 22 17:03 con-gen-csu.Rproj
+drwxr-sr-x. 5 bavila@colostate.edu 125 Jan 22 17:03 data/
+drwxr-sr-x. 3 bavila@colostate.edu  91 Jan 22 17:03 dev/
+drwxr-sr-x. 8 bavila@colostate.edu 322 Jan 23 13:42 .git/
+-rw-r--r--. 1 bavila@colostate.edu  52 Jan 22 17:03 .gitignore
+-rw-r--r--. 1 bavila@colostate.edu 17K Jan 23 13:42 README.md
 
 
 #### Ex. 6: What are the other hidden files/directories that show up
 ####        in the above listing? Just list them below (no special command)
 ####        to get them, since you did that above)
 
-
+drwxr-sr-x. 6 bavila@colostate.edu 184 Jan 23 13:42 ./
+drwxrws---. 3 bavila@colostate.edu  58 Jan 22 17:01 ../
+drwxr-sr-x. 8 bavila@colostate.edu 322 Jan 23 13:42 .git/
+-rw-r--r--. 1 bavila@colostate.edu  52 Jan 22 17:03 .gitignore
 
 #### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
+[bavila@colostate.edu@login11 002-unix-intro]$ ls -l /projects/bavila@colostate.edu/con-gen-csu/.git
+total 552K
+drwxr-sr-x.  2 bavila@colostate.edu   0 Jan 22 17:01 branches/
+-rw-r--r--.  1 bavila@colostate.edu 259 Jan 22 17:03 config
+-rw-r--r--.  1 bavila@colostate.edu  73 Jan 22 17:02 description
+-rw-r--r--.  1 bavila@colostate.edu  90 Jan 23 13:42 FETCH_HEAD
+-rw-r--r--.  1 bavila@colostate.edu  21 Jan 22 17:03 HEAD
+drwxr-sr-x.  2 bavila@colostate.edu 530 Jan 22 17:02 hooks/
+-rw-r--r--.  1 bavila@colostate.edu 16K Jan 23 13:42 index
+drwxr-sr-x.  2 bavila@colostate.edu  25 Jan 22 17:02 info/
+drwxr-sr-x.  3 bavila@colostate.edu  44 Jan 22 17:03 logs/
+drwxr-sr-x. 51 bavila@colostate.edu 984 Jan 23 13:42 objects/
+-rw-r--r--.  1 bavila@colostate.edu  41 Jan 23 10:16 ORIG_HEAD
+-rw-r--r--.  1 bavila@colostate.edu 112 Jan 22 17:03 packed-refs
+drwxr-sr-x.  5 bavila@colostate.edu  70 Jan 22 17:03 refs/
 
 
 #### Ex. 8: If you wanted to type `ls fastq/DPCh_plate1_A06_S6.R1.fq.gz`
 ####        on the command line, what is the fewest keystrokes that can
 ####        get you `fastq/DPCh_plate1_A06_S6.R1.fq.gz` using TAB completion?
 
+Including the pace bar and the tab key presses it takes 13 key strokes with the TAB completion to get:
+  
+  ls fastq/DPCh_plate1_A06_S6.R1.fq.gz
+  
+  Process is as follows:
+  ls f(TAB)
+  ls fastq/D(TAB)
+  ls fastq/DPCh_plate1_A06(TAB)
+  ls fastq/DPCh_plate1_A06_S6(TAB)
+  ls fastq/DPCh_plate1_A06_S6.R1(TAB)
 
 
 #### Ex. 9: Make a new directory called `lonely-fastqs`, and inside of that,
 ####        two directories R1 and R2.
 
+[bavila@colostate.edu@login11 002-unix-intro]$ mkdir -p lonely-fastqs/R1 lonely-fastqs/R2
+[bavila@colostate.edu@login11 002-unix-intro]$ ls lonely-fastqs/
+R1/  R2/
 
 
 #### Ex. 10: Copy (not move) all the read1 (`R1`) fastq files in `fastqs`
