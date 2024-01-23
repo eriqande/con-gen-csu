@@ -623,4 +623,15 @@ Estimated 77 files in the current directory
 ####         specifiers to `chmod`. Do this for all 5 files (one chmod command for each),
 ####         and at the end do `ls -l silly` to verify they are correct.
 
+[bavila@colostate.edu@login11 silly]$ chmod 640 FILE-rw-r-----
+[bavila@colostate.edu@login11 silly]$ chmod 664 FILE-rw-rw-r--
+[bavila@colostate.edu@login11 silly]$ chmod 740 FILE-rwxr-----
+[bavila@colostate.edu@login11 silly]$ chmod 774 FILE-rwxrwxr--
 
+[bavila@colostate.edu@login11 silly]$ ls -l
+total 128K
+drwxr-sr-x. 2 bavila@colostate.edu 23 Jan 22 17:03 DIRdrwxrwxr-x/
+-rw-r-----. 1 bavila@colostate.edu  0 Jan 22 17:03 FILE-rw-r-----
+-rw-rw-r--. 1 bavila@colostate.edu  0 Jan 22 17:03 FILE-rw-rw-r--
+-rwxr-----. 1 bavila@colostate.edu  0 Jan 22 17:03 FILE-rwxr-----*
+-rwxrwxr--. 1 bavila@colostate.edu  0 Jan 22 17:03 FILE-rwxrwxr--*
