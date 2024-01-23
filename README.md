@@ -322,6 +322,8 @@ Here are the steps to start working on your homework. We will go over
 these in class.  Don't start doing them until we have discussed it
 in class.
 
+_Here is a video that explains all the steps below: [Video about running two clones of your repo and editing the homework file in RStudio, while doing the Unix commands on the cluster](https://youtu.be/Bjj9gkUYtPU)._
+
 - Sync your fork of the course repository on GitHub with any changes
   I have made on the original
 - Pull down any changes to the copy of your fork of the class repo that
