@@ -315,7 +315,34 @@ with `YourGitHubHandle` actually being your true GitHub handle.
 
 **This is due by 5 PM Friday, January 26, 2024**
 
-- Copy the contents of the file at  
+
+Here are the steps to start working on your homework. We will go over
+these in class.  Don't start doing them until we have discussed it
+in class.
+
+- Sync your fork of the course repository on GitHub with any changes
+  I have made on the original
+- Pull down any changes to the copy of your fork of the class repo that
+  is on Alpine in your projects directory.
+```sh
+git pull origin main
+# if that doesn't work you might need to do:
+source ~/.bashrc
+gitup
+# and then try again
+```
+- You will be working on the command line on Alpine to test things
+  out, but I think it might be easier to edit your homework files using
+  RStudio.  So, I will walk you through that in the following.
+- Clone your fork of the class repo onto your laptop and open it with
+  RStudio.
+- Copy the file `002-unix-intro/unix-intro-TEMPLATE.sh` to     
+  `002-unix-intro/unix-intro.sh`.  The latter is the file that you will
+  be modifying and ultimately committing and pushing back to your fork.
+  _Please be careful not to modify `002-unix-intro/unix-intro-TEMPLATE.sh`.
+- Then start working through the homework on RStudio, making changes to
+  `002-unix-intro/unix-intro.sh`.  I will give an example of the first
+  few on the video.
 
 
 
