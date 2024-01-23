@@ -221,6 +221,8 @@ up to and including [Handling, Manipulating, and Viewing files and streams](http
 
 #### In class
 
+##### We will do a Quiz on the reading!
+
 ##### Log into Alpine and get git running and talking to GitHub
 
 _For a video demonstration of the execution of these steps see
@@ -333,7 +335,9 @@ gitup
 ```
 - You will be working on the command line on Alpine to test things
   out, but I think it might be easier to edit your homework files using
-  RStudio.  So, I will walk you through that in the following.
+  RStudio.  Also, doing this will help you get comfortable with having
+  two separate clones of a repo---something that I end up doing quite a
+  bit. So, I will walk you through that in the following.
 - Clone your fork of the class repo onto your laptop and open it with
   RStudio.
 - Copy the file `002-unix-intro/unix-intro-TEMPLATE.sh` to     
