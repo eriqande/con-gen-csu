@@ -339,7 +339,7 @@ gitup
 - Copy the file `002-unix-intro/unix-intro-TEMPLATE.sh` to     
   `002-unix-intro/unix-intro.sh`.  The latter is the file that you will
   be modifying and ultimately committing and pushing back to your fork.
-  _Please be careful not to modify `002-unix-intro/unix-intro-TEMPLATE.sh`.
+  _Please be careful not to modify `002-unix-intro/unix-intro-TEMPLATE.sh`_.
 - Then start working through the homework on RStudio, making changes to
   `002-unix-intro/unix-intro.sh`.  I will give an example of the first
   few on the video.
