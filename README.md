@@ -460,3 +460,19 @@ In class:
 
 - I will present a little about the Chinook salmon data.
 - We will discuss the batch effects paper.
+
+
+### Tuesday, February 6, 2024
+
+#### Prep
+
+- Read about the [trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).
+
+
+
+
+### Thursday, February 8, 2024
+
+#### Prep
+
+- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.4.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
