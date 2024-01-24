@@ -1,6 +1,6 @@
 ### Unix Intro Quiz
 
-#### On a blank (partial) piece of paper, write your name on top and then just give the answers next to the question numbers. 
+#### On a blank (partial) piece of paper, write your student ID on top and then just give the answers next to the question numbers. 
 
 1. In Unix, `cd` is:
   - (a) a relic from the days before streaming services---it was used to invoke the CD player on old Unix machines
