@@ -352,7 +352,14 @@ gitup
   `002-unix-intro/unix-intro.sh`.  I will give an example of the first
   few on the video.
 
+When you are done with everything, you are going to submit this by 
 
+1. In RStudio, making a new branch on your laptop clone of your fork of the repository
+2. committing your homework to that branch.
+3. pushing that commit on that branch to GitHub
+4. sending me a pull request from GitHub.
+
+That is a lot of weird steps, so let's see what it looks like.  
 
 
 
@@ -371,7 +378,7 @@ everyone has `mamba` installed on their system.
 
 Here are the steps to install mamba on your Alpine account:
 
-For a video of these steps, see:
+For a video of these steps, see: [Installing mamba via miniforge](https://youtu.be/3EuRRETTA5s)
 
 1. Check to see if you have conda already. Just type `conda` at the command
 line:
@@ -405,6 +412,14 @@ for input.
 It is important to **NOT PUT THE miniforge3 DIRECTORY** in your home
 directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/miniforge3`,
 where you replace `csu_eID` with your actual CSU eid.
+
+3. At the end it asks if you want to update your shell profile to automatically
+activate conda.  You want to type `yes`.
+
+4. Then logout of the `acompile` nodes by type `cntrl-d`.  Then logout of your
+login session with `cntrl-d`.  
+
+5. Finally, log back into alpine, and you should have conda/mamba.
 
 
 
