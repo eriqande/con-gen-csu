@@ -42,9 +42,11 @@ person.  The links are primarily available for our remote students; however in-p
 can take advantage of them on a limited basis, for example, if they are isolating with COVID,
 if the roads are incredibly ice and treacherous, etc.
 
-For the remote sessions, we will use Google Meetings.  Eric will email the
-links out.  It will be the same link for Tuesday and Thursday class times
-as well as for Eric's office hours.
+For the remote sessions, we will use Google Meetings. You can log in
+to [https://meet.google.com/vwh-xbhs-tzi](https://meet.google.com/vwh-xbhs-tzi) during class meeting times and/or office hours if you can't be here
+in person.
+
+
 
 
 
@@ -354,3 +356,87 @@ gitup
 
 
 
+### Thursday, January 25, 2024
+
+Today we are mostly going to be discussing Unix, and people can
+ask questions about the homework, but we will also make sure
+everyone has `mamba` installed on their system.
+
+#### Prep
+
+- Read the rest of chapter 4 in the handbook from [Chapter 4.5 to the end](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#unix-env) 
+- It is recommended to read the introductory section of the handbook in [Section 7.6](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#installing-software-on-an-hpcc).
+
+#### In class
+
+Here are the steps to install mamba on your Alpine account:
+
+For a video of these steps, see:
+
+1. Check to see if you have conda already. Just type `conda` at the command
+line:
+```sh
+conda
+```
+if that returns help information, that you already have conda.
+1. Check to see if you have mamba already:
+```sh
+mamba
+```
+If that returns help information, then you have mamba and there is not much to do.  If you have conda but not mamba, then things are a little more
+complex.  Conda is quite slow, and you really need to have mamba, but
+the cleanest way to do this is to entirely remove your conda installation.
+This can have unforeseen consequences, so talk to eric about how to proceed.
+
+If you have neither mamba nore conda, then proceed with installing mamba.
+1. Download mamba from miniforge. This can be done with a few
+shell commands:
+```sh
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+```
+2. During the installation procedure, you will be prompted a few times
+for input.  
+It is important to **NOT PUT THE MAMBAFORGE DIRECTORY** in your home
+directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/mambaforge`.
+
+
+#### Assignments:
+
+Due at the beginning of class on Tuesday January 30, 2024: Complete
+the questions in the captioned video of Illumina sequencing.  
+
+Directions:
+
+For a video running through these steps, see:
+
+1. Sync your fork of the course repo on GitHub with the original course repo.
+1. Pull those changes down to your laptop clone of your fork.
+2. Copy the file `assignments/003-illumina-sequencing-questions/illumina-seq-homework-TEMPLATE.md` to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md`
+3. Add answers to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` and save the file.
+4. When you are done, create a new branch in your laptop fork called
+`illumina-seq`, and commit `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` to
+that branch.,
+5. Push that branch back up to GitHub.
+6. Send me a pull request.
+
+
+
+
+### Tuesday, January 30, 2024
+
+Sequencing technologies and FASTA and FASTQ format.
+
+#### Prep:
+
+Read:  
+
+- [Chapters 16.1 through 16.3](https://eriqande.github.io/eca-bioinf-handbook/dna-sequences-and-sequencing.html#illumina-sequencing-by-synthesis) in the handbook.
+
+- [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
+
+
+### Tuesday, February 1, 2024
+
+
+Read: 
