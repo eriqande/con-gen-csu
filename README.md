@@ -403,8 +403,13 @@ directory (which is the default).  It should go in `/projects/csu_eID@colostate.
 
 #### Assignments:
 
-Due at the beginning of class on Tuesday January 30, 2024: Complete
-the questions in the captioned video of Illumina sequencing.  
+**Due at the beginning of class on Tuesday January 30, 2024**
+
+Complete
+the questions in Eric's [captioned video of Illumina sequencing](https://eriqande.github.io/erics-captioned-vids/vids/illumina-sbs/).
+
+These are questions you can see in the video, but they are in text format in the
+course repo to make it easier to complete.
 
 Directions:
 
