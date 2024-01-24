@@ -403,7 +403,9 @@ bash Miniforge3-$(uname)-$(uname -m).sh
 2. During the installation procedure, you will be prompted a few times
 for input.  
 It is important to **NOT PUT THE MAMBAFORGE DIRECTORY** in your home
-directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/mambaforge`.
+directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/mambaforge`,
+where you replace `csu_eID` with your actual CSU eid.
+
 
 
 #### Assignments:
@@ -453,3 +455,8 @@ Read:
 
 - [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
 - [Therkildsen and Lou. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a class paper on why you might want to trim your sequence data).
+
+In class:
+
+- I will present a little about the Chinook salmon data.
+- We will discuss the batch effects paper.
