@@ -402,8 +402,8 @@ bash Miniforge3-$(uname)-$(uname -m).sh
 ```
 2. During the installation procedure, you will be prompted a few times
 for input.  
-It is important to **NOT PUT THE MAMBAFORGE DIRECTORY** in your home
-directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/mambaforge`,
+It is important to **NOT PUT THE miniforge3 DIRECTORY** in your home
+directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/miniforge3`,
 where you replace `csu_eID` with your actual CSU eid.
 
 
