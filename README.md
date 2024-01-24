@@ -389,6 +389,11 @@ the cleanest way to do this is to entirely remove your conda installation.
 This can have unforeseen consequences, so talk to eric about how to proceed.
 
 If you have neither mamba nore conda, then proceed with installing mamba.
+1. Get onto the compile node on Alpine after logging in:
+```sh
+module load slurm/alpine
+acompile
+```
 1. Download mamba from miniforge. This can be done with a few
 shell commands:
 ```sh
@@ -441,7 +446,10 @@ Read:
 - [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
 
 
-### Tuesday, February 1, 2024
+### Thursday, February 1, 2024
 
 
 Read: 
+
+- [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
+- [Therkildsen and Lou. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a class paper on why you might want to trim your sequence data).
