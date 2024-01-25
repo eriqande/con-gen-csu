@@ -42,9 +42,11 @@ person.  The links are primarily available for our remote students; however in-p
 can take advantage of them on a limited basis, for example, if they are isolating with COVID,
 if the roads are incredibly ice and treacherous, etc.
 
-For the remote sessions, we will use Google Meetings.  Eric will email the
-links out.  It will be the same link for Tuesday and Thursday class times
-as well as for Eric's office hours.
+For the remote sessions, we will use Google Meetings. You can log in
+to [https://meet.google.com/vwh-xbhs-tzi](https://meet.google.com/vwh-xbhs-tzi) during class meeting times and/or office hours if you can't be here
+in person.
+
+
 
 
 
@@ -350,7 +352,149 @@ gitup
   `002-unix-intro/unix-intro.sh`.  I will give an example of the first
   few on the video.
 
+_Instructions for submitting the homework_
+
+When you are done with everything, you are going to submit this by:
+
+1. In RStudio, making a new branch on your laptop clone of your fork of the repository
+called `unix-intro`.  
+2. Committing the completed state of your homework to that branch.
+3. Pushing that commit on that branch to GitHub
+4. sending me a pull request from GitHub.
+
+_That is a lot of weird steps, so here is a video to see what
+I mean: [Submitting the unix-intro homework](https://youtu.be/M9SONNa611Q)._
+
+
+
+### Thursday, January 25, 2024
+
+Today we are mostly going to be discussing Unix, and people can
+ask questions about the homework, but we will also make sure
+everyone has `mamba` installed on their system.
+
+#### Prep
+
+- Read the rest of chapter 4 in the handbook from [Chapter 4.5 to the end](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#unix-env) 
+- It is recommended to read the introductory section of the handbook in [Section 7.6](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#installing-software-on-an-hpcc).
+
+#### In class
+
+Here are the steps to install mamba on your Alpine account:
+
+For a video of these steps, see: [Installing mamba via miniforge](https://youtu.be/3EuRRETTA5s)
+
+1. Check to see if you have conda already. Just type `conda` at the command
+line:
+```sh
+conda
+```
+if that returns help information, that you already have conda.
+1. Check to see if you have mamba already:
+```sh
+mamba
+```
+If that returns help information, then you have mamba and there is not much to do.  If you have conda but not mamba, then things are a little more
+complex.  Conda is quite slow, and you really need to have mamba, but
+the cleanest way to do this is to entirely remove your conda installation.
+This can have unforeseen consequences, so talk to eric about how to proceed.
+
+If you have neither mamba nore conda, then proceed with installing mamba.
+1. Get onto the compile node on Alpine after logging in:
+```sh
+module load slurm/alpine
+acompile
+```
+1. Download mamba from miniforge. This can be done with a few
+shell commands:
+```sh
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+```
+2. During the installation procedure, you will be prompted a few times
+for input.  
+It is important to **NOT PUT THE miniforge3 DIRECTORY** in your home
+directory (which is the default).  It should go in `/projects/csu_eID@colostate.edu/miniforge3`,
+where you replace `csu_eID` with your actual CSU eid.
+
+3. At the end it asks if you want to update your shell profile to automatically
+activate conda.  You want to type `yes`.
+
+4. Then logout of the `acompile` nodes by type `cntrl-d`.  Then logout of your
+login session with `cntrl-d`.  
+
+5. Finally, log back into alpine, and you should have conda/mamba.
+
+
+
+#### Assignments:
+
+**Due at the beginning of class on Tuesday January 30, 2024**
+
+Complete
+the questions in Eric's [captioned video of Illumina sequencing](https://eriqande.github.io/erics-captioned-vids/vids/illumina-sbs/).
+
+These are questions you can see in the video, but they are in text format in the
+course repo to make it easier to complete.
+
+Directions:
+
+_For a video running through these steps,
+see: [Submitting the illumina seq homework](Not made yet)._ 
+
+1. Sync your fork of the course repo on GitHub with the original course repo.
+1. On your laptop clone of your fork, in RStudio, _make sure that you are on the main
+branch_. Doing this might involve changing back to main from unix-intro.
+1. Pull any changes from your fork  down to the main branch of your laptop clone of your fork.
+1. Once that is done, make a new branch called `illumina-seq`, and switch to it.
+2. Copy the file `assignments/003-illumina-sequencing-questions/illumina-seq-homework-TEMPLATE.md` to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md`
+3. Add answers to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` and save the file.
+4. When you are done, commit `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` to
+the `illumina-seq` branch.  
+5. Push the `illumina-seq` branch back up to GitHub.
+6. Send me a pull request for your changes on the `illumina-seq` branch.
 
 
 
 
+### Tuesday, January 30, 2024
+
+Sequencing technologies and FASTA and FASTQ format.
+
+#### Prep:
+
+Read:  
+
+- [Chapters 16.1 through 16.3](https://eriqande.github.io/eca-bioinf-handbook/dna-sequences-and-sequencing.html#illumina-sequencing-by-synthesis) in the handbook.
+
+- [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
+
+
+### Thursday, February 1, 2024
+
+
+Read: 
+
+- [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
+- [Therkildsen and Lou. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a class paper on why you might want to trim your sequence data).
+
+In class:
+
+- I will present a little about the Chinook salmon data.
+- We will discuss the batch effects paper.
+
+
+### Tuesday, February 6, 2024
+
+#### Prep
+
+- Read about the [trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).
+
+
+
+
+### Thursday, February 8, 2024
+
+#### Prep
+
+- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.4.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
