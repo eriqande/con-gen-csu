@@ -117,11 +117,13 @@ Four
 
 
 
-
-
 #### Ex. 9: Make a new directory called `lonely-fastqs`, and inside of that,
 ####        two directories R1 and R2.
 
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir lonely-fastqs
+[antolin@colostate.edu@login11 lonely-fastqs]$ cd lonely-fastqs
+[antolin@colostate.edu@login11 lonely-fastqs]$ mkdir R1
+[antolin@colostate.edu@login11 lonely-fastqs]$ mkdir R2
 
 
 #### Ex. 10: Copy (not move) all the read1 (`R1`) fastq files in `fastqs`
