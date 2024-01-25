@@ -71,7 +71,7 @@ my name is Eric
 
 #### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
-
+an answer!
 
 #### Ex. 8: If you wanted to type `ls fastq/DPCh_plate1_A06_S6.R1.fq.gz`
 ####        on the command line, what is the fewest keystrokes that can
