@@ -104,6 +104,18 @@ config    FETCH_HEAD   hooks  info   objects  packed-refs
 ####        get you `fastq/DPCh_plate1_A06_S6.R1.fq.gz` using TAB completion?
 
 
+Four 
+
+
+[antolin@colostate.edu@login11 002-unix-intro]$ ls f
+[tab]
+[antolin@colostate.edu@login11 002-unix-intro]$ ls fastq/
+[tab]
+[antolin@colostate.edu@login11 002-unix-intro]$ ls fastq/DPCh_plate1_
+[tab] (warning done)
+[tab] (goes)
+
+
 
 
 
