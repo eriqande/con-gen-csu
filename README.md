@@ -439,17 +439,20 @@ course repo to make it easier to complete.
 
 Directions:
 
-For a video running through these steps, see:
+_For a video running through these steps,
+see: [Submitting the illumina seq homework](Not made yet)._ 
 
 1. Sync your fork of the course repo on GitHub with the original course repo.
-1. Pull those changes down to your laptop clone of your fork.
+1. On your laptop clone of your fork, in RStudio, _make sure that you are on the main
+branch_. Doing this might involve changing back to main from unix-intro.
+1. Pull any changes from your fork  down to the main branch of your laptop clone of your fork.
+1. Once that is done, make a new branch called `illumina-seq`, and switch to it.
 2. Copy the file `assignments/003-illumina-sequencing-questions/illumina-seq-homework-TEMPLATE.md` to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md`
 3. Add answers to `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` and save the file.
-4. When you are done, create a new branch in your laptop fork called
-`illumina-seq`, and commit `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` to
-that branch.,
-5. Push that branch back up to GitHub.
-6. Send me a pull request.
+4. When you are done, commit `assignments/003-illumina-sequencing-questions/illumina-seq-homework.md` to
+the `illumina-seq` branch.  
+5. Push the `illumina-seq` branch back up to GitHub.
+6. Send me a pull request for your changes on the `illumina-seq` branch.
 
 
 
