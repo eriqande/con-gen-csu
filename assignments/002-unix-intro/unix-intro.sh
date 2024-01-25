@@ -439,9 +439,6 @@ Tue Jan 23 15:12:03 MST 2024
 ####         Note they should be the same.
 
 
-# gzcat is not a function on alpine.  zcat is and the man page says that zcat is 
-# I did this on my mac with gzcat and got the same answer.... Doing something wrong here?
-
 [bavila@colostate.edu@login11 002-unix-intro]$ zcat fastq/*.R1.* | wc -l
 19364
 
