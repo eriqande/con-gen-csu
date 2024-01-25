@@ -53,6 +53,7 @@ My name is Michael Franc Antolin
 assignments/002-unix-intro/
 
 
+
 #### Ex. 3: print the absolute path of the directory 002-unix-intro that you just changed into
 
 [antolin@colostate.edu@login11 002-unix-intro]$ pwd
@@ -63,25 +64,53 @@ assignments/002-unix-intro/
 
 #### Ex. 4: list, in long format, all the files and directories in this homework directory
 
-[antolin@colostate.edu@login11 002-unix-intro]$ ls
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -l
 
-bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -l
+total 312
+drwxr-sr-x. 2 antolin@colostate.edu antolingrp@colostate.edu   80 Jan 23 18:58 bam
+-rwxr-xr-x. 1 antolin@colostate.edu antolingrp@colostate.edu  112 Jan 23 18:58 count_files.sh
+drwxr-sr-x. 2 antolin@colostate.edu antolingrp@colostate.edu 2940 Jan 23 18:58 fastq
+drwxr-sr-x. 4 antolin@colostate.edu antolingrp@colostate.edu   40 Jan 25 11:40 lonely-fastqs
+drwxr-sr-x. 2 antolin@colostate.edu antolingrp@colostate.edu   45 Jan 23 18:58 metadata
+drwxr-sr-x. 2 antolin@colostate.edu antolingrp@colostate.edu   80 Jan 23 18:58 sam
+drwxr-sr-x. 3 antolin@colostate.edu antolingrp@colostate.edu  159 Jan 23 18:58 silly
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu 9425 Jan 23 18:58 unix-intro-TEMPLATE.sh
 
 
 
 #### Ex. 4.5 Without changing directories do a long listing of the con-gen-csu directory
 
-[antolin@colostate.edu@login11 002-unix-intro]$ ls /projects/antolin@colostate.edu/con-gen-csu
-assignments  con-gen-csu.Rproj  data  dev  README.md
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -l /projects/antolin@colostate.edu/con-gen-csu
+total 240
+drwxr-sr-x. 7 antolin@colostate.edu antolingrp@colostate.edu   164 Jan 24 18:52 assignments
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu   205 Jan 23 18:58 con-gen-csu.Rproj
+drwxr-sr-x. 5 antolin@colostate.edu antolingrp@colostate.edu   125 Jan 23 18:58 data
+drwxr-sr-x. 3 antolin@colostate.edu antolingrp@colostate.edu    91 Jan 23 18:58 dev
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu 21962 Jan 24 18:52 README.md
 
 
 
 #### Ex. 5: In the con-gen-csu directory there is a directory called `.git` that didn't get listed. 
 ####        List everything again, but make sure `.git` is in the output
 
-[antolin@colostate.edu@login11 002-unix-intro]$ cd /projects/antolin@colostate.edu/con-gen-csu
-[antolin@colostate.edu@login11 con-gen-csu]$ ls -a
-.  ..  assignments  con-gen-csu.Rproj  data  dev  .git  .gitignore  README.md
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -a -l /projects/antolin@colostate.edu/con-gen-csu
+
+OR
+
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -al /projects/antolin@colostate.edu/con-gen-csu
+
+total 384
+drwxr-sr-x. 6 antolin@colostate.edu antolingrp@colostate.edu   184 Jan 24 18:52 .
+drwxrws---. 3 antolin@colostate.edu antolingrp@colostate.edu    58 Jan 23 18:58 ..
+drwxr-sr-x. 7 antolin@colostate.edu antolingrp@colostate.edu   164 Jan 24 18:52 assignments
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu   205 Jan 23 18:58 con-gen-csu.Rproj
+drwxr-sr-x. 5 antolin@colostate.edu antolingrp@colostate.edu   125 Jan 23 18:58 data
+drwxr-sr-x. 3 antolin@colostate.edu antolingrp@colostate.edu    91 Jan 23 18:58 dev
+drwxr-sr-x. 8 antolin@colostate.edu antolingrp@colostate.edu   322 Jan 24 18:52 .git
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu    52 Jan 23 18:58 .gitignore
+-rw-r--r--. 1 antolin@colostate.edu antolingrp@colostate.edu 21962 Jan 24 18:52 README.md
+
 
 
 #### Ex. 6: What are the other hidden files/directories that show up
@@ -92,10 +121,23 @@ assignments  con-gen-csu.Rproj  data  dev  README.md
 
 #### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
-[antolin@colostate.edu@login11 con-gen-csu]$ cd /projects/antolin@colostate.edu/con-gen-csu/.git
-[antolin@colostate.edu@login11 .git]$ ls
-branches  description  HEAD   index  logs     ORIG_HEAD    refs
-config    FETCH_HEAD   hooks  info   objects  packed-refs
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -al /projects/antolin@colostate.edu/con-gen-csu/.git
+total 616
+drwxr-sr-x.  8 antolin@colostate.edu antolingrp@colostate.edu   322 Jan 24 18:52 .
+drwxr-sr-x.  6 antolin@colostate.edu antolingrp@colostate.edu   184 Jan 24 18:52 ..
+drwxr-sr-x.  2 antolin@colostate.edu antolingrp@colostate.edu     0 Jan 23 18:58 branches
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu   262 Jan 23 18:58 config
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu    73 Jan 23 18:58 description
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu    93 Jan 24 18:52 FETCH_HEAD
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu    21 Jan 23 18:58 HEAD
+drwxr-sr-x.  2 antolin@colostate.edu antolingrp@colostate.edu   530 Jan 23 18:58 hooks
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu 15928 Jan 24 18:52 index
+drwxr-sr-x.  2 antolin@colostate.edu antolingrp@colostate.edu    25 Jan 23 18:58 info
+drwxr-sr-x.  3 antolin@colostate.edu antolingrp@colostate.edu    44 Jan 23 18:58 logs
+drwxr-sr-x. 33 antolin@colostate.edu antolingrp@colostate.edu   624 Jan 24 18:52 objects
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu    41 Jan 24 18:52 ORIG_HEAD
+-rw-r--r--.  1 antolin@colostate.edu antolingrp@colostate.edu   112 Jan 23 18:58 packed-refs
+drwxr-sr-x.  5 antolin@colostate.edu antolingrp@colostate.edu    70 Jan 23 18:58 refs
 
 
 
@@ -116,7 +158,6 @@ Four
 [tab] (goes)
 
 
-
 #### Ex. 9: Make a new directory called `lonely-fastqs`, and inside of that,
 ####        two directories R1 and R2.
 
@@ -124,6 +165,8 @@ Four
 [antolin@colostate.edu@login11 lonely-fastqs]$ cd lonely-fastqs
 [antolin@colostate.edu@login11 lonely-fastqs]$ mkdir R1
 [antolin@colostate.edu@login11 lonely-fastqs]$ mkdir R2
+[antolin@colostate.edu@login11 lonely-fastqs]$ ls
+R1  R2
 
 
 #### Ex. 10: Copy (not move) all the read1 (`R1`) fastq files in `fastqs`
@@ -131,25 +174,70 @@ Four
 ####         `lonely-fastqs/R2`. When you are done, list the contents of 
 ####         `lonely-fastqs/R1` and `lonely-fastqs/R2`
 
+[antolin@colostate.edu@login11 002-unix-intro]$ cp fastq/*R1* lonely-fastqs/R1/
+[antolin@colostate.edu@login11 002-unix-intro]$ cp fastq/*R2* lonely-fastqs/R2/
+
+[antolin@colostate.edu@login11 002-unix-intro]$ ls lonely-fastqs/R1
+DPCh_plate1_A05_S5.R1.fq.gz   DPCh_plate1_B06_S18.R1.fq.gz  DPCh_plate1_C11_S35.R1.fq.gz  DPCh_plate1_D12_S48.R1.fq.gz  DPCh_plate1_F05_S65.R1.fq.gz  DPCh_plate1_G06_S78.R1.fq.gz  DPCh_plate1_H11_S95.R1.fq.gz
+DPCh_plate1_A06_S6.R1.fq.gz   DPCh_plate1_B11_S23.R1.fq.gz  DPCh_plate1_C12_S36.R1.fq.gz  DPCh_plate1_E05_S53.R1.fq.gz  DPCh_plate1_F06_S66.R1.fq.gz  DPCh_plate1_G11_S83.R1.fq.gz  DPCh_plate1_H12_S96.R1.fq.gz
+DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_B12_S24.R1.fq.gz  DPCh_plate1_D05_S41.R1.fq.gz  DPCh_plate1_E06_S54.R1.fq.gz  DPCh_plate1_F11_S71.R1.fq.gz  DPCh_plate1_G12_S84.R1.fq.gz
+DPCh_plate1_A12_S12.R1.fq.gz  DPCh_plate1_C05_S29.R1.fq.gz  DPCh_plate1_D06_S42.R1.fq.gz  DPCh_plate1_E11_S59.R1.fq.gz  DPCh_plate1_F12_S72.R1.fq.gz  DPCh_plate1_H05_S89.R1.fq.gz
+DPCh_plate1_B05_S17.R1.fq.gz  DPCh_plate1_C06_S30.R1.fq.gz  DPCh_plate1_D11_S47.R1.fq.gz  DPCh_plate1_E12_S60.R1.fq.gz  DPCh_plate1_G05_S77.R1.fq.gz  DPCh_plate1_H06_S90.R1.fq.gz
+
+[antolin@colostate.edu@login11 002-unix-intro]$ ls lonely-fastqs/R2
+DPCh_plate1_A05_S5.R2.fq.gz   DPCh_plate1_B06_S18.R2.fq.gz  DPCh_plate1_C11_S35.R2.fq.gz  DPCh_plate1_D12_S48.R2.fq.gz  DPCh_plate1_F05_S65.R2.fq.gz  DPCh_plate1_G06_S78.R2.fq.gz  DPCh_plate1_H11_S95.R2.fq.gz
+DPCh_plate1_A06_S6.R2.fq.gz   DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_C12_S36.R2.fq.gz  DPCh_plate1_E05_S53.R2.fq.gz  DPCh_plate1_F06_S66.R2.fq.gz  DPCh_plate1_G11_S83.R2.fq.gz  DPCh_plate1_H12_S96.R2.fq.gz
+DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_B12_S24.R2.fq.gz  DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_E06_S54.R2.fq.gz  DPCh_plate1_F11_S71.R2.fq.gz  DPCh_plate1_G12_S84.R2.fq.gz
+DPCh_plate1_A12_S12.R2.fq.gz  DPCh_plate1_C05_S29.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_E11_S59.R2.fq.gz  DPCh_plate1_F12_S72.R2.fq.gz  DPCh_plate1_H05_S89.R2.fq.gz
+DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_C06_S30.R2.fq.gz  DPCh_plate1_D11_S47.R2.fq.gz  DPCh_plate1_E12_S60.R2.fq.gz  DPCh_plate1_G05_S77.R2.fq.gz  DPCh_plate1_H06_S90.R2.fq.gz
+
 
 
 #### Ex. 11: do a recursive, short listing of the contents of `lonely-fastqs`
 
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -R lonely-fastqs
+lonely-fastqs:
+R1  R2
+
+lonely-fastqs/R1:
+DPCh_plate1_A05_S5.R1.fq.gz   DPCh_plate1_B06_S18.R1.fq.gz  DPCh_plate1_C11_S35.R1.fq.gz  DPCh_plate1_D12_S48.R1.fq.gz  DPCh_plate1_F05_S65.R1.fq.gz  DPCh_plate1_G06_S78.R1.fq.gz  DPCh_plate1_H11_S95.R1.fq.gz
+DPCh_plate1_A06_S6.R1.fq.gz   DPCh_plate1_B11_S23.R1.fq.gz  DPCh_plate1_C12_S36.R1.fq.gz  DPCh_plate1_E05_S53.R1.fq.gz  DPCh_plate1_F06_S66.R1.fq.gz  DPCh_plate1_G11_S83.R1.fq.gz  DPCh_plate1_H12_S96.R1.fq.gz
+DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_B12_S24.R1.fq.gz  DPCh_plate1_D05_S41.R1.fq.gz  DPCh_plate1_E06_S54.R1.fq.gz  DPCh_plate1_F11_S71.R1.fq.gz  DPCh_plate1_G12_S84.R1.fq.gz
+DPCh_plate1_A12_S12.R1.fq.gz  DPCh_plate1_C05_S29.R1.fq.gz  DPCh_plate1_D06_S42.R1.fq.gz  DPCh_plate1_E11_S59.R1.fq.gz  DPCh_plate1_F12_S72.R1.fq.gz  DPCh_plate1_H05_S89.R1.fq.gz
+DPCh_plate1_B05_S17.R1.fq.gz  DPCh_plate1_C06_S30.R1.fq.gz  DPCh_plate1_D11_S47.R1.fq.gz  DPCh_plate1_E12_S60.R1.fq.gz  DPCh_plate1_G05_S77.R1.fq.gz  DPCh_plate1_H06_S90.R1.fq.gz
+
+lonely-fastqs/R2:
+DPCh_plate1_A05_S5.R2.fq.gz   DPCh_plate1_B06_S18.R2.fq.gz  DPCh_plate1_C11_S35.R2.fq.gz  DPCh_plate1_D12_S48.R2.fq.gz  DPCh_plate1_F05_S65.R2.fq.gz  DPCh_plate1_G06_S78.R2.fq.gz  DPCh_plate1_H11_S95.R2.fq.gz
+DPCh_plate1_A06_S6.R2.fq.gz   DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_C12_S36.R2.fq.gz  DPCh_plate1_E05_S53.R2.fq.gz  DPCh_plate1_F06_S66.R2.fq.gz  DPCh_plate1_G11_S83.R2.fq.gz  DPCh_plate1_H12_S96.R2.fq.gz
+DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_B12_S24.R2.fq.gz  DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_E06_S54.R2.fq.gz  DPCh_plate1_F11_S71.R2.fq.gz  DPCh_plate1_G12_S84.R2.fq.gz
+DPCh_plate1_A12_S12.R2.fq.gz  DPCh_plate1_C05_S29.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_E11_S59.R2.fq.gz  DPCh_plate1_F12_S72.R2.fq.gz  DPCh_plate1_H05_S89.R2.fq.gz
+DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_C06_S30.R2.fq.gz  DPCh_plate1_D11_S47.R2.fq.gz  DPCh_plate1_E12_S60.R2.fq.gz  DPCh_plate1_G05_S77.R2.fq.gz  DPCh_plate1_H06_S90.R2.fq.gz
 
 
 #### Ex. 12: Use the recursive (-r) option to remove `lonely-fastqs`
-####         and its contents
+rm -r####         and its contents
+
+[antolin@colostate.edu@login11 002-unix-intro]$ rm -r lonely-fastqs
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 
 
 
 #### Ex. 13: Make two new directories in the top level of the
 ####         repo called `fq_AB` and `fq_notAB`
 
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir fq_AB
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir fq_notAB
 
 
 #### Ex. 14: Using the `[` `]` copy the R1 files in `fastqs` that
-####         belong to sample names (the part immediately after `DPCh_plate1_`)
+####         belong to sample names (the part immediately after `A-B`)
 ####         starting with an `A` or `B` to `fq_AB`.
+
+[antolin@colostate.edu@login11 002-unix-intro]$ cp fastq/DPCh_plate1_[A-B]* fq_AB/
+[antolin@colostate.edu@login11 002-unix-intro]$ ls fq_AB
+DPCh_plate1_A05_S5.R1.fq.gz  DPCh_plate1_A06_S6.R1.fq.gz  DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_A12_S12.R1.fq.gz  DPCh_plate1_B05_S17.R1.fq.gz  DPCh_plate1_B06_S18.R1.fq.gz  DPCh_plate1_B11_S23.R1.fq.gz  DPCh_plate1_B12_S24.R1.fq.gz
+DPCh_plate1_A05_S5.R2.fq.gz  DPCh_plate1_A06_S6.R2.fq.gz  DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_A12_S12.R2.fq.gz  DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_B06_S18.R2.fq.gz  DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_B12_S24.R2.fq.gz
 
 
 
@@ -158,21 +246,43 @@ Four
 ####         `A` or a `B` to `fq_notAB`. When you are done, on the next line in
 ####         the code block, list the contents of `fq_AB` and `fq_notAB`.
 
+[antolin@colostate.edu@login11 002-unix-intro]$ cp fastq/DPCh_plate1_[^A-B]* fq_notAB/
 
+[antolin@colostate.edu@login11 002-unix-intro]$ ls fq_notAB
+DPCh_plate1_C05_S29.R1.fq.gz  DPCh_plate1_C12_S36.R2.fq.gz  DPCh_plate1_D12_S48.R1.fq.gz  DPCh_plate1_E11_S59.R2.fq.gz  DPCh_plate1_F11_S71.R1.fq.gz  DPCh_plate1_G06_S78.R2.fq.gz  DPCh_plate1_H06_S90.R1.fq.gz
+DPCh_plate1_C05_S29.R2.fq.gz  DPCh_plate1_D05_S41.R1.fq.gz  DPCh_plate1_D12_S48.R2.fq.gz  DPCh_plate1_E12_S60.R1.fq.gz  DPCh_plate1_F11_S71.R2.fq.gz  DPCh_plate1_G11_S83.R1.fq.gz  DPCh_plate1_H06_S90.R2.fq.gz
+DPCh_plate1_C06_S30.R1.fq.gz  DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_E05_S53.R1.fq.gz  DPCh_plate1_E12_S60.R2.fq.gz  DPCh_plate1_F12_S72.R1.fq.gz  DPCh_plate1_G11_S83.R2.fq.gz  DPCh_plate1_H11_S95.R1.fq.gz
+DPCh_plate1_C06_S30.R2.fq.gz  DPCh_plate1_D06_S42.R1.fq.gz  DPCh_plate1_E05_S53.R2.fq.gz  DPCh_plate1_F05_S65.R1.fq.gz  DPCh_plate1_F12_S72.R2.fq.gz  DPCh_plate1_G12_S84.R1.fq.gz  DPCh_plate1_H11_S95.R2.fq.gz
+DPCh_plate1_C11_S35.R1.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_E06_S54.R1.fq.gz  DPCh_plate1_F05_S65.R2.fq.gz  DPCh_plate1_G05_S77.R1.fq.gz  DPCh_plate1_G12_S84.R2.fq.gz  DPCh_plate1_H12_S96.R1.fq.gz
+DPCh_plate1_C11_S35.R2.fq.gz  DPCh_plate1_D11_S47.R1.fq.gz  DPCh_plate1_E06_S54.R2.fq.gz  DPCh_plate1_F06_S66.R1.fq.gz  DPCh_plate1_G05_S77.R2.fq.gz  DPCh_plate1_H05_S89.R1.fq.gz  DPCh_plate1_H12_S96.R2.fq.gz
+DPCh_plate1_C12_S36.R1.fq.gz  DPCh_plate1_D11_S47.R2.fq.gz  DPCh_plate1_E11_S59.R1.fq.gz  DPCh_plate1_F06_S66.R2.fq.gz  DPCh_plate1_G06_S78.R1.fq.gz  DPCh_plate1_H05_S89.R2.fq.gz
 
 #### Ex. 16: Remove `fq_AB` and `fq_notAB`, and their contents
 
+[antolin@colostate.edu@login11 002-unix-intro]$ rm -r fq_*
 
 
 #### Ex. 17: Using the `{,}` construct create five directories named 
 ####         `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`, and list them
 ####         (but not their contents) when you are done. (Think `ls -d`).
 
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir dir_{A,C,E,G,I}
+ls -d /projects/antolin@colostate.edu/con-gen-csu/assignments/002-unix-intro
 
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bam  count_files.sh  dir_A  dir_C  dir_E  dir_G  dir_I  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
+[antolin@colostate.edu@login11 002-unix-intro]$ ls -d
+.
+[antolin@colostate.edu@login11 002-unix-intro]$
+
+????
 
 #### Ex. 18: Using globbing, remove `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`,
 ####         using a command with 8 characters (including spaces)
 
+[antolin@colostate.edu@login11 002-unix-intro]$ rmdir dir_*
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 
 
 #### Ex. 19: Create a directory called `nice_dir_name` and then use `echo`,
@@ -180,6 +290,7 @@ Four
 ####         inside of `nice_dir_name` whose contents is the string
 ####         `A string in a file!`
 
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir nice_dir_name
 
 
 #### Ex. 20: Catenate the contents of `nice_dir_name/nice_file_name` to _stdout_
