@@ -352,14 +352,18 @@ gitup
   `002-unix-intro/unix-intro.sh`.  I will give an example of the first
   few on the video.
 
-When you are done with everything, you are going to submit this by 
+_Instructions for submitting the homework_
+
+When you are done with everything, you are going to submit this by:
 
 1. In RStudio, making a new branch on your laptop clone of your fork of the repository
-2. committing your homework to that branch.
-3. pushing that commit on that branch to GitHub
+called `unix-intro`.  
+2. Committing the completed state of your homework to that branch.
+3. Pushing that commit on that branch to GitHub
 4. sending me a pull request from GitHub.
 
-That is a lot of weird steps, so let's see what it looks like.  
+_That is a lot of weird steps, so here is a video to see what I mean:
+[Submitting the unix-intro homework](Not yet Made)._
 
 
 
