@@ -14,7 +14,7 @@ fork of the course repo on GitHub then send me a pull request.
 
 
 * Q1: True or False. This animation is showing that each of the two "fragments" is a double-stranded segment of DNA. (_from 30.0 to 33.0 seconds in the video_).
-
+Testing
 
 
 * Q2: How does the sequence of the fragment on top compare to the sequence of the fragment on the bottom? (_from 36.5 to 39.0 seconds in the video_).
