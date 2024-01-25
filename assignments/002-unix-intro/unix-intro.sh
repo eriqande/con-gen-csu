@@ -445,40 +445,8 @@ Tue Jan 23 15:12:03 MST 2024
 [bavila@colostate.edu@login11 002-unix-intro]$ zcat fastq/*.R1.* | wc -l
 19364
 
-[bavila@colostate.edu@login11 002-unix-intro]$ wc -l fastq/*.R1.*
-    55 fastq/DPCh_plate1_A05_S5.R1.fq.gz
-    32 fastq/DPCh_plate1_A06_S6.R1.fq.gz
-    42 fastq/DPCh_plate1_A11_S11.R1.fq.gz
-    68 fastq/DPCh_plate1_A12_S12.R1.fq.gz
-    60 fastq/DPCh_plate1_B05_S17.R1.fq.gz
-    49 fastq/DPCh_plate1_B06_S18.R1.fq.gz
-    41 fastq/DPCh_plate1_B11_S23.R1.fq.gz
-    33 fastq/DPCh_plate1_B12_S24.R1.fq.gz
-    59 fastq/DPCh_plate1_C05_S29.R1.fq.gz
-    47 fastq/DPCh_plate1_C06_S30.R1.fq.gz
-    39 fastq/DPCh_plate1_C11_S35.R1.fq.gz
-    83 fastq/DPCh_plate1_C12_S36.R1.fq.gz
-    28 fastq/DPCh_plate1_D05_S41.R1.fq.gz
-    56 fastq/DPCh_plate1_D06_S42.R1.fq.gz
-    32 fastq/DPCh_plate1_D11_S47.R1.fq.gz
-    62 fastq/DPCh_plate1_D12_S48.R1.fq.gz
-    66 fastq/DPCh_plate1_E05_S53.R1.fq.gz
-    49 fastq/DPCh_plate1_E06_S54.R1.fq.gz
-    33 fastq/DPCh_plate1_E11_S59.R1.fq.gz
-    57 fastq/DPCh_plate1_E12_S60.R1.fq.gz
-    51 fastq/DPCh_plate1_F05_S65.R1.fq.gz
-    45 fastq/DPCh_plate1_F06_S66.R1.fq.gz
-    58 fastq/DPCh_plate1_F11_S71.R1.fq.gz
-    62 fastq/DPCh_plate1_F12_S72.R1.fq.gz
-    60 fastq/DPCh_plate1_G05_S77.R1.fq.gz
-    56 fastq/DPCh_plate1_G06_S78.R1.fq.gz
-    41 fastq/DPCh_plate1_G11_S83.R1.fq.gz
-    53 fastq/DPCh_plate1_G12_S84.R1.fq.gz
-    44 fastq/DPCh_plate1_H05_S89.R1.fq.gz
-    31 fastq/DPCh_plate1_H06_S90.R1.fq.gz
-    35 fastq/DPCh_plate1_H11_S95.R1.fq.gz
-    64 fastq/DPCh_plate1_H12_S96.R1.fq.gz
-  1591 total
+(base) [002-unix-intro]--% cat fastq/*.R1.* | gzcat | wc -l 
+   19364
 
 
 
