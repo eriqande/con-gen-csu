@@ -54,3 +54,7 @@ fork of the course repo on GitHub then send me a pull request.
 
 
 * Q11: Is read 2 sequenced off the same strand as read 1? (_from 240.0 to 250.0 seconds in the video_).
+
+
+
+
