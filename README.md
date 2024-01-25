@@ -362,8 +362,8 @@ called `unix-intro`.
 3. Pushing that commit on that branch to GitHub
 4. sending me a pull request from GitHub.
 
-_That is a lot of weird steps, so here is a video to see what I mean:
-[Submitting the unix-intro homework](Not yet Made)._
+_That is a lot of weird steps, so here is a video to see what
+I mean: [Submitting the unix-intro homework](https://youtu.be/M9SONNa611Q)._
 
 
 
