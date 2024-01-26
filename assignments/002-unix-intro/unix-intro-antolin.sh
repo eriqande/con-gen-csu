@@ -291,7 +291,7 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         `A string in a file!`
 
 [antolin@colostate.edu@login11 002-unix-intro]$ mkdir nice_dir_name
-echo `A string in a file!` > /nice_dir_name/nice_file_name
+
 
 [antolin@colostate.edu@login11 002-unix-intro]$ mkdir nice_dir_name
 [antolin@colostate.edu@login11 002-unix-intro]$ echo 'A string in a file!' > nice_dir_name/nice_file_name
@@ -299,8 +299,8 @@ echo `A string in a file!` > /nice_dir_name/nice_file_name
 
 #### Ex. 20: Catenate the contents of `nice_dir_name/nice_file_name` to _stdout_
 
-
-
+[antolin@colostate.edu@login11 002-unix-intro]$ cat nice_dir_name/nice_file_name
+A string in a file!
 
 
 #### Ex. 21: Create a directory called `bad directory name with spaces`, and then,
@@ -308,16 +308,41 @@ echo `A string in a file!` > /nice_dir_name/nice_file_name
 ####         `bad file name with spaces` whose contents are the string
 ####         `Whoa! No spaces, please!`. Use backslash escaping instead of quoting
 
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir 'bad directory name with spaces'
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bad directory name with spaces  bam  count_files.sh  fastq  metadata  nice_dir_name  sam  silly  unix-intro-TEMPLATE.sh
+
+[antolin@colostate.edu@login11 002-unix-intro]$ echo 'Whoa! No spaces, please!' > \bad directory with no spaces\/\bad file with no spaces\
+
 
 
 
 #### Ex. 22: Catenate the contents of 
 ####         `bad directory name with spaces/bad file name with spaces` to stdout.
 
+[antolin@colostate.edu@login11 002-unix-intro]$ echo 'Whoa! No spaces, please!' > \bad directory with no spaces\/\bad file with no spaces\
+
+[antolin@colostate.edu@login11 002-unix-intro]$ cat \bad directory with no spaces\/\bad file with no spaces\
+            Whoa! No spaces, please! directory with no spaces/bad file with no spaces
+cat: directory: No such file or directory
+cat: with: No such file or directory
+cat: no: No such file or directory
+cat: spaces/bad: No such file or directory
+cat: file: No such file or directory
+cat: with: No such file or directory
+cat: no: No such file or directory
+cat: spaces/: No such file or directory
+
 
 
 #### Ex. 23: List the directories (just the names, not the contents (`-d`)) of
 ####         `bad directory name with spaces` and `nice_dir_name`.
+
+[antolin@colostate.edu@login11 002-unix-intro]$ cd nice_dir_name
+[antolin@colostate.edu@login11 nice_dir_name]$ ls
+nice_file_name
+[antolin@colostate.edu@login11 nice_dir_name]$cd ..
+
 
 
 
@@ -326,17 +351,24 @@ echo `A string in a file!` > /nice_dir_name/nice_file_name
 ####         command line using the up arrow on your keyboard) and replace `ls` with
 ####         `rm -r` to remove them. BE CAREFUL with the rm command!
 
+[antolin@colostate.edu@login11 002-unix-intro]$ rm -r nice_dir_name
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bad directory name with spaces  bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
+
+[antolin@colostate.edu@login11 002-unix-intro]$ rm -r 'bad directory name with spaces'
+[antolin@colostate.edu@login11 002-unix-intro]$ ls
+bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 
 
 #### Ex. 25: Why is it a good idea to `ls` things before removing them?
 
-
+To see what they are, and to see that the directory you wanted to remove  (and no others) is gone.
 
 #### Ex. 26: If you had just typed `rm -r bad directory name with spaces` 
 ####         what would Unix have tried to remove? (No command to type here,
 ####         just answer the question).
 
-
+The directory 'bad'
 
 #### Ex. 27: There are bam, sam, and fastq files, in the appropriately
 ####         named directories for sample `A05_S5`. Make a directory named `A05_S5`
