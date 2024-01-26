@@ -445,6 +445,7 @@ login session with `cntrl-d`.
 #### Assignment due at beginning of class on Tuesday, Jan 30
 <details>
   <summary>Click here for full details</summary>
+  
 **Due at the beginning of class on Tuesday January 30, 2024**
 
 Complete
@@ -453,7 +454,15 @@ the questions in Eric's [captioned video of Illumina sequencing](https://eriqand
 These are questions you can see in the video, but they are in text format in the
 course repo to make it easier to complete.
 
-Directions:
+Note that the readings which are prep for the following class are very relevant
+to these questions, so it is probably best to do them before or while watching
+the video:
+
+- [Chapters 16.1 through 16.3](https://eriqande.github.io/eca-bioinf-handbook/dna-sequences-and-sequencing.html#illumina-sequencing-by-synthesis) in the handbook.
+
+- [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
+
+Homework Directions:
 
 _For a video running through these steps,
 see: [Submitting the illumina seq homework](Not made yet)._ 
@@ -498,7 +507,7 @@ Describing our course example data set and discussing trimming and batch effects
 Read: 
 
 - [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
-- [Lou and Therkildsen. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a class paper on why you might want to trim your sequence data).
+- [Lou and Therkildsen. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a classic paper on why you might want to trim your sequence data).
 </details>
 
 #### In class (Eric talks about Chinook and we discuss the Lou and Therkildsen paper)
