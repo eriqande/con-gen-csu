@@ -801,7 +801,7 @@ Whoa! No spaces, please!
 ####         `bad directory name with spaces` and `nice_dir_name`.
 
 (base) [c836820202@colostate.edu@login12 002-unix-intro]$ ls bad\ directory\ name\ with\ spaces/ nice_dir_name/ -d
-bad directory name with spaces/  nice_dir_name/
+bad directory name with spaces/  nice_dir_name/ -d
 
 
 
@@ -810,37 +810,50 @@ bad directory name with spaces/  nice_dir_name/
 ####         command line using the up arrow on your keyboard) and replace `ls` with
 ####         `rm -r` to remove them. BE CAREFUL with the rm command!
 
+ rm bad\ directory\ name\ with\ spaces/ nice_dir_name/ -r
 
 
 #### Ex. 25: Why is it a good idea to `ls` things before removing them?
 
-
+If you 'ls' prior to removal you can verify the contents of a directory so that you do not remove something you did not want to
 
 #### Ex. 26: If you had just typed `rm -r bad directory name with spaces` 
 ####         what would Unix have tried to remove? (No command to type here,
 ####         just answer the question).
 
-
+Unix would have removed the working directory and would not have recognized 'bad directory name with spaces'
 
 #### Ex. 27: There are bam, sam, and fastq files, in the appropriately
 ####         named directories for sample `A05_S5`. Make a directory named `A05_S5`
 ####         and copy all those files into that new directory. List the directory
 ####         when you are done.
 
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ cp bam/*A05_S5.bam A05_S5/
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ cp sam/*A05_S5.sam A05_S5/
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ cp fastq/*A05_S5.* A05_S5/
+
+ls A05_S5/
+DPCh_plate1_A05_S5.bam  DPCh_plate1_A05_S5.R1.fq.gz  DPCh_plate1_A05_S5.R2.fq.gz  DPCh_plate1_A05_S5.sam
+
 
 
 #### Ex. 28: remove the directory `A05_S5` and its contents
 
-
+rm -r A05_S5
 
 #### Ex. 29: Use `ls` to try to list the file `it_aint_here`
 
+ls it_aint_here
+ls: cannot access it_aint_here: No such file or directory
 
 
 #### Ex. 30: Now, do the same thing but redirect _stderr_ into a file called 
 ####         `my_bad.txt`, and then catenate the contents of that file, and then remove it
 
-
+ls it_aint_here 2> my_bad.txt
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ cat my_bad.txt
+ls: cannot access it_aint_here: No such file or directory
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ rm my_bad.txt
 
 
 #### Ex. 31: The files in `fastq` are text files, but they are all gzipped.
@@ -848,27 +861,57 @@ bad directory name with spaces/  nice_dir_name/
 ####         `fastq/DPCh_plate1_C11_S35.R1.fq.gz`
 
 
+gzcat fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+-bash: gzcat: command not found
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+@K00364:64:HTYYCBBXX:1:1101:1824:48192/1
+GTAGAATAATAGTGAATCAAATCAAATGTTATTTGTCACATGCGCTGAATACAACAGGTGTGGACCTTACAGTGAAATGCTTCCTTACAAGCCCTTAACCAACAATGCAGTTTTAAGAAAAATGAGTGTGAGATAAGTAAAAAATAGAAAA
++
+AAFFFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJJJJAJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJJJJJ7JJJJJJFFFFJJJJJJ7A7AJJAFAJJJJJFJJJJ-<JFJ-FFFJJJ
+@K00364:64:HTYYCBBXX:1:1101:2869:22080/1
+TTAAAACACGGTATGATGCAAGCAGCACAACACATCAATAACAAAAATACAAGAATTAGGGTCAGAAATCCAGTAACCACCATACTAGTGTACTTACCAAACCAGGCTCCCAACCAAGAGAACAGTCCAGACTCCTCCACCCTCGCCATGG
++
+-AAFFJJJJJJJJJJJJFFJJJFJFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFFJJJ<JJJJJJFFFFJFFJJJJJJAFJJJJJJJJJJJJJJJJJJFAJJJJJJJJJJJJJJJJJJJFJJJFAJJJJJJJFJJJJJJJJFFJJ
 
 
 #### Ex. 32: Do the same to see the first 8 lines of `fastq/DPCh_plate1_C11_S35.R2.fq.gz`
 
+ zcat fastq/DPCh_plate1_C11_S35.R2.fq.gz | head -n 8
+@K00364:64:HTYYCBBXX:1:1101:1824:48192/2
+CACAAGGAACGACAGAGGGTAGTGCGTACGGCCCAGCACATCACTGGGACCAAGCATCCTGCAATCCAGGACCTCCATACCAGGCGGTGTCAGAGGAAGGCCCTAAAATTGTCAAAGACTCCAGCCACCCTAGTCATTAACTCTTCGCTCT
++
+A<-A-<-F<AJ-<---<<--<-<-7FFJ-77A<-<--7-<7-<-7<J<77A<--7-AAA7-AF-7FAF<-<FJ---7-77FJA7-77F7FFJ7F<--<--77)A7FA-A7-<---7<<F7-<-7<))7--)<)7<AF----7<<<<-)-7)
+@K00364:64:HTYYCBBXX:1:1101:2869:22080/2
+CTATGATCAACAGCGTTTTGTGATTTACCCCCGTGATGCACTCACTGGTATGTCTGAACAGCTTGAGGCCACATCTAGGGTTGCCAGACAGAATAGACTTGCTTTGGATATGCTTCTTGCCAGTCAGGGGGGTGTCTGTAAGATGTTCGGT
++
+AAAFAFJJJJJJJJJJ-FJJJJJJFJJJJFJJJJJJJJJJJJJFJFFJFFFFFFJFFJJJFJFAAA777AAJJJAA--A<-A<-JJA-<JFJJJ-7<-AAJJFJJJ<JJ<JAFFFF---7<<7777<)7<<-<777-<-7--<FJJ<F-<<
 
 
 
 #### Ex. 33: What do you notice about the names of the two reads in each 
 ####         file (Lines 1 and 5, that start with a `@`)
 
-
+They are the same in both files except for the suffix /1 or /2
 
 
 #### Ex. 34: Print the date, redirect it to a file called `now.txt`,
 ####         catenate that file to _stdout_ and then remove it
 
+date
+Fri Jan 26 14:26:29 MST 2024
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ date > now.txt
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ cat now.txt
+Fri Jan 26 14:27:58 MST 2024
+(base) [c836820202@colostate.edu@login13 002-unix-intro]$ rm now.txt
 
 
 #### Ex. 35: Count the number of lines/words/characters (using `wc`)
 ####         in the two SAM files in the `sam` directory
 
+wc sam/*
+ 14219  45092 511203 sam/DPCh_plate1_A05_S5.sam
+ 14150  43985 479977 sam/DPCh_plate1_A06_S6.sam
+ 28369  89077 991180 total
 
 
 #### Ex. 36: Note that gzcat will decompress all files you give itand send the 
@@ -877,11 +920,14 @@ bad directory name with spaces/  nice_dir_name/
 ####         and also count up all the lines in the `R1` files in `fastq`. 
 ####         Note they should be the same.
 
+ zcat fastq/*R1*.fq.gz | wc
+  19364   19364 1678394
 
 
 #### Ex. 37: Now, gzcat all the `R1` files in `fastq` and redirect that
 ####         to a file called `R1_all_via_gzcat.fq` in the top directory of the repo
 
+zcat fastq/*R1*.fq.gz > ../../../R1_all_via_zcat.fq
 
 
 #### Ex. 38: People are usually familiar with using `cat` to catenate text
@@ -890,39 +936,48 @@ bad directory name with spaces/  nice_dir_name/
 ####         Catenate all the gzipped `R1` files in `fastq` into a single (still gzipped)
 ####         file called `R1_all_via_cat.fq.gz`
 
+zcat fastq/*R1*.fq.gz | gzip > R1_all_via_cat.fq.gz
+
 
 
 #### Ex. 39: Copy `R1_all_via_cat.fq.gz` to `copy_of_R1_all_via_cat.fq.gz`
 
+ cp R1_all_via_cat.fq.gz copy_of_R1_all_via_cat.fq.gz
 
 
 
 #### Ex. 40: Now, decompress `R1_all_via_cat.fq.gz` into `R1_all_via_cat.fq`
 
 
+gunzip R1_all_via_cat.fq.gz
 
 
 #### Ex. 41: Compute the SHA1 hashes of `R1_all_via_cat.fq` and `R1_all_via_gzcat.fq`
 ####         to confirm they are identical
 
-
+d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_cat.fq
+(base) [c836820202@colostate.edu@login12 002-unix-intro]$ sha1sum ../../R1_all_via_zcat.fq
+d5b95bf950e8150c56aed90eea9febeb23ddd856  ../../R1_all_via_zcat.fq
 
 
 #### Ex. 42: But now, gzip `R1_all_via_gzcat.fq` and compare the result to
 ####         `copy_of_R1_all_via_cat.fq.gz` by computing the SHA1 hash of each
 
+41d038df95540e87ef8d1c197bf4b4fc9c886f8b  copy_of_R1_all_via_cat.fq.gz
+d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_cat.fq
 
 
 #### Ex. 43: using `du` with the `-h` (i.e. "human readable" option) print the
 ####         file sizes of `R1_all_via_cat.fq` and `copy_of_R1_all_via_cat.fq.gz`.
 
-
+2.4M    R1_all_via_cat.fq
+688K    copy_of_R1_all_via_cat.fq.gz
 
 
 #### Ex. 44: By what factor (approximately) does the compression save storage
 ####         space on your disk?
 
-
+Approximately 3.48
 
 
 #### Ex. 45: Remove all files starting with `R1_all` and `copy_of_R1`
