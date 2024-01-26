@@ -43,6 +43,8 @@ my name is Shanelle
 
 #### Ex. 3:  Now, for real print your name, as in Ex. 2, but put your name in there:
 
+[saw97@colostate.edu@login11 ~]$ echo "my name is Shanelle"
+my name is Shanelle
 
 #### Ex. 3.1 Change directories to the assignments/002-unix-intro directory in the con-gen-csu repo
 
