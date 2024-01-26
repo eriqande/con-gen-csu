@@ -725,4 +725,17 @@ ls -l count_files.sh
 ####         specifiers to `chmod`. Do this for all 5 files (one chmod command for each),
 ####         and at the end do `ls -l silly` to verify they are correct.
 
+chmod 770 FILE-rwxrwxr--
+chmod 640 FILE-rw-r-----
+chmod 664 FILE-rw-rw-r--
+chmod 744 FILE-rwxr-----
+ls -l
 
+-----
+
+total 512
+drwxr-xr-x 2 sr221061 1 Jan 23 17:47 DIRdrwxrwxr-x/
+-rw-r----- 1 sr221061 0 Jan 23 17:47 FILE-rw-r-----
+-rw-rw-r-- 1 sr221061 0 Jan 23 17:47 FILE-rw-rw-r--
+-rwxr--r-- 1 sr221061 0 Jan 23 17:47 FILE-rwxr-----*
+-rwxrwx--- 1 sr221061 0 Jan 23 17:47 FILE-rwxrwxr--*
