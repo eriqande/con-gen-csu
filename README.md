@@ -133,7 +133,8 @@ a little more self-guided prep to do for the next class.
 RStudio Projects, RMarkdown, git/GitHub, and connecting to Alpine.
 
 #### Prep: (Always do "prep" before class. All prep materials are subject to quizzes)
-
+<details>
+  <summary>Click here for full details</summary>
 RStudio and git preps:
 
 - Ensure that you have a recent version of R, and the latest version of [RStudio](https://posit.co/download/rstudio-desktop/)
@@ -160,7 +161,7 @@ Connecting to Alpine (or another cluster) preps:
   application, and it is very good.
 - PC Users, you might want to consider downloading and installing [MobaXTerm](https://mobaxterm.mobatek.net/) to use as a terminal
   client (for connecting to Alpine, etc.)
-  
+</details> 
 
 #### In class: (Tentative schedule of how class time will go down)
 
