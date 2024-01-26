@@ -291,9 +291,14 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         `A string in a file!`
 
 [antolin@colostate.edu@login11 002-unix-intro]$ mkdir nice_dir_name
+echo `A string in a file!` > /nice_dir_name/nice_file_name
+
+[antolin@colostate.edu@login11 002-unix-intro]$ mkdir nice_dir_name
+[antolin@colostate.edu@login11 002-unix-intro]$ echo 'A string in a file!' > nice_dir_name/nice_file_name
 
 
 #### Ex. 20: Catenate the contents of `nice_dir_name/nice_file_name` to _stdout_
+
 
 
 
