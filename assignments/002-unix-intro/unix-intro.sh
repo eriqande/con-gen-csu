@@ -286,16 +286,9 @@ assignments/  data/  dev/  dir_A/  dir_C/  dir_E/  dir_G/  dir_I/
 #### Ex. 18: Using globbing, remove `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`,
 ####         using a command with 8 characters (including spaces)
 
-[rbortner@colostate.edu@login11 con-gen-csu]$ rm -r dir_*
-
-I realize that's 11--alpine wouldn't take it without the '-r'. see below errors:
+[rbortner@colostate.edu@login11 con-gen-csu]$ rm -r d* 
   
-[rbortner@colostate.edu@login11 con-gen-csu]$ rm dir_*
-rm: cannot remove ‘dir_A’: Is a directory
-rm: cannot remove ‘dir_C’: Is a directory
-rm: cannot remove ‘dir_E’: Is a directory
-rm: cannot remove ‘dir_G’: Is a directory
-rm: cannot remove ‘dir_I’: Is a directory
+(although personally, rm -r dir_* is much safer ;-))
 
 #### Ex. 19: Create a directory called `nice_dir_name` and then use `echo`,
 ####         redirecting its output to create a file called `nice_file_name`
@@ -315,25 +308,29 @@ A string in a file!
 ####         `bad file name with spaces` whose contents are the string
 ####         `Whoa! No spaces, please!`. Use backslash escaping instead of quoting
 
-
-
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ mkdir bad\ directory\ name\ with\ spaces
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ echo 'Whoa! No spaces, please!' > bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces.txt
 
 #### Ex. 22: Catenate the contents of 
 ####         `bad directory name with spaces/bad file name with spaces` to stdout.
 
-
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ cat bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces.txt
+Whoa! No spaces, please!
 
 #### Ex. 23: List the directories (just the names, not the contents (`-d`)) of
 ####         `bad directory name with spaces` and `nice_dir_name`.
 
-
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ ls -d bad\ directory\ name\ with\ spaces/ nice_dir_name/
+bad directory name with spaces/  nice_dir_name/
 
 #### Ex. 24: Once you are convinced that you can list the directories
 ####         correctly in your terminal, recall that `ls` command (i.e. get it back on the
 ####         command line using the up arrow on your keyboard) and replace `ls` with
 ####         `rm -r` to remove them. BE CAREFUL with the rm command!
 
-
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ rm -r  bad\ directory\ name\ with\ spaces/ nice_dir_name/
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ ls
+assignments  con-gen-csu.Rproj  data  dev  README.md
 
 #### Ex. 25: Why is it a good idea to `ls` things before removing them?
 
