@@ -1,6 +1,8 @@
 
 #### The "Getting To Know Unix" Problem Set   ####
 
+## by R Bortner. Ready for commit to branch!##
+
 # In the following, are questions/exercises/problems labelled like:
 
 #### Ex. X: 
