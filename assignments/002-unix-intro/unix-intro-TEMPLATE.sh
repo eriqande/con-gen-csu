@@ -232,7 +232,8 @@ my name is Eric
 #### Ex. 36: Note that gzcat will decompress all files you give itand send the 
 ####         output to _stdout_. Knowing this, count how many lines are in each of 
 ####         the `R1` files in `fastq` (after decompressing them into text files),
-####         and also count up all the lines in the `R1` files in `fastq`. 
+####         and also count up all the lines in the `R1` files in `fastq` by catting
+####         all the .gz files together and the gzcatting it into wc
 ####         Note they should be the same.
 
 
