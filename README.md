@@ -465,7 +465,7 @@ the video:
 Homework Directions:
 
 _For a video running through these steps,
-see: [Submitting the illumina seq homework](Not made yet)._ 
+see: [How to get and submit the Illumina sequencing homework](https://youtu.be/4tDOM5QcgbA)._ 
 
 1. Sync your fork of the course repo on GitHub with the original course repo.
 1. On your laptop clone of your fork, in RStudio, _make sure that you are on the main
