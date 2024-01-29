@@ -410,6 +410,7 @@ CTATGATCAACAGCGTTTTGTGATTTACCCCCGTGATGCACTCACTGGTATGTCTGAACAGCTTGAGGCCACATCTAGGG
 +
 AAAFAFJJJJJJJJJJ-FJJJJJJFJJJJFJJJJJJJJJJJJJFJFFJFFFFFFJFFJJJFJFAAA777AAJJJAA--A<-A<-JJA-<JFJJJ-7<-AAJJFJJJ<JJ<JAFFFF---7<<7777<)7<<-<777-<-7--<FJJ<F-<<
 
+#text switched to green here, not sure why!
 
 #### Ex. 33: What do you notice about the names of the two reads in each 
 ####         file (Lines 1 and 5, that start with a `@`)
