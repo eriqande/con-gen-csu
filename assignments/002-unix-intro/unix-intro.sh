@@ -1,4 +1,7 @@
 
+## Lily Durkee
+## BZ562 - unix intro
+
 #### The "Getting To Know Unix" Problem Set   ####
 
 # In the following, are questions/exercises/problems labelled like:
