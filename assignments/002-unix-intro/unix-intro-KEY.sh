@@ -43,25 +43,35 @@ my name is Eric
 
 #### Ex. 3:  Now, for real print your name, as in Ex. 2, but put your name in there:
 
-(base) [login11: 002-unix-intro]--% echo "My name is Eric Anderson"
+echo "My name is Eric Anderson"
+
+------
+
 My name is Eric Anderson
 
 
 #### Ex. 3.1 Change directories to the assignments/002-unix-intro directory in the con-gen-csu repo
 
 
-(base) [login11: ~]--% cd /projects/eriq@colostate.edu/con-gen-csu/assignments/002-unix-intro/
-(base) [login11: 002-unix-intro]--%
+cd /projects/eriq@colostate.edu/con-gen-csu/assignments/002-unix-intro/
+
 
 
 #### Ex. 3: print the absolute path of the directory 002-unix-intro that you just changed into
 
-(base) [login11: 002-unix-intro]--% pwd
+pwd
+
+------
+
 /projects/eriq@colostate.edu/con-gen-csu/assignments/002-unix-intro
 
 #### Ex. 4: list, in long format, all the files and directories in this homework directory
 
-(base) [login11: 002-unix-intro]--% ls -l
+ls -l
+
+------
+
+
 total 280
 drwxr-sr-x. 2 eriq@colostate.edu eriqgrp@colostate.edu   80 Jan 22 10:48 bam
 -rwxr-xr-x. 1 eriq@colostate.edu eriqgrp@colostate.edu  112 Jan 22 10:48 count_files.sh
@@ -73,7 +83,10 @@ drwxr-sr-x. 3 eriq@colostate.edu eriqgrp@colostate.edu  159 Jan 22 10:48 silly
 
 #### Ex. 4.5 Without changing directories do a long listing of the con-gen-csu directory
 
-(base) [login11: 002-unix-intro]--% ls -l ../../
+ls -l ../../
+
+------
+
 total 216
 drwxr-sr-x. 4 eriq@colostate.edu eriqgrp@colostate.edu    62 Jan 22 10:48 assignments
 -rw-r--r--. 1 eriq@colostate.edu eriqgrp@colostate.edu   205 Jan 22 10:48 con-gen-csu.Rproj
@@ -87,7 +100,10 @@ drwxr-sr-x. 3 eriq@colostate.edu eriqgrp@colostate.edu    91 Jan 22 10:48 dev
 ####        List everything again, but make sure `.git` is in the output
 
 
-(base) [login11: 002-unix-intro]--% ls -l -a ../../
+ls -l -a ../../
+
+------
+
 total 360
 drwxr-sr-x.  6 eriq@colostate.edu eriqgrp@colostate.edu   184 Jan 23 09:22 .
 drwxrws---. 11 eriq@colostate.edu eriqgrp@colostate.edu   328 Jan 24 15:40 ..
@@ -98,9 +114,13 @@ drwxr-sr-x.  3 eriq@colostate.edu eriqgrp@colostate.edu    91 Jan 22 10:48 dev
 drwxr-sr-x.  8 eriq@colostate.edu eriqgrp@colostate.edu   322 Jan 23 09:22 .git
 -rw-r--r--.  1 eriq@colostate.edu eriqgrp@colostate.edu    52 Jan 22 10:48 .gitignore
 -rw-r--r--.  1 eriq@colostate.edu eriqgrp@colostate.edu 16225 Jan 23 09:22 README.md
+
 OR put the l and a together:
 
-(base) [login11: 002-unix-intro]--% ls -la ../../
+ls -la ../../
+
+------
+
 total 360
 drwxr-sr-x.  6 eriq@colostate.edu eriqgrp@colostate.edu   184 Jan 23 09:22 .
 drwxrws---. 11 eriq@colostate.edu eriqgrp@colostate.edu   328 Jan 24 15:40 ..
@@ -123,7 +143,10 @@ Also . and .. show up
 
 #### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
-(base) [login11: 002-unix-intro]--% ls -l ../../.git
+ls -l ../../.git
+
+------
+
 total 552
 drwxr-sr-x.  2 eriq@colostate.edu eriqgrp@colostate.edu     0 Jan 22 10:48 branches
 -rw-r--r--.  1 eriq@colostate.edu eriqgrp@colostate.edu   260 Jan 22 10:48 config
@@ -157,10 +180,13 @@ mkdir -p lonely-fastqs/{R1,R2}
 ####         `lonely-fastqs/R2`. When you are done, list the contents of 
 ####         `lonely-fastqs/R1` and `lonely-fastqs/R2`
 
-(base) [login11: 002-unix-intro]--% cp  fastq/*.R1.fq.gz lonely-fastqs/R1/
-(base) [login11: 002-unix-intro]--% cp  fastq/*.R2.fq.gz lonely-fastqs/R2/
+cp  fastq/*.R1.fq.gz lonely-fastqs/R1/
+cp  fastq/*.R2.fq.gz lonely-fastqs/R2/
 
-(base) [login11: 002-unix-intro]--% ls lonely-fastqs/*
+ls lonely-fastqs/*
+
+------
+
 lonely-fastqs/R1:
 DPCh_plate1_A05_S5.R1.fq.gz   DPCh_plate1_B12_S24.R1.fq.gz  DPCh_plate1_D11_S47.R1.fq.gz  DPCh_plate1_F06_S66.R1.fq.gz  DPCh_plate1_H05_S89.R1.fq.gz
 DPCh_plate1_A06_S6.R1.fq.gz   DPCh_plate1_C05_S29.R1.fq.gz  DPCh_plate1_D12_S48.R1.fq.gz  DPCh_plate1_F11_S71.R1.fq.gz  DPCh_plate1_H06_S90.R1.fq.gz
@@ -183,7 +209,10 @@ DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_F05_S65.
 
 #### Ex. 11: do a recursive, short listing of the contents of `lonely-fastqs`
 
-(base) [login11: 002-unix-intro]--% ls -R lonely-fastqs/
+ls -R lonely-fastqs/
+
+------
+
 lonely-fastqs/:
 R1  R2
 
@@ -205,18 +234,20 @@ DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_C12_S36.R2.fq.gz  DPCh_plate1_E11_S59.
 DPCh_plate1_B06_S18.R2.fq.gz  DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_E12_S60.R2.fq.gz  DPCh_plate1_G11_S83.R2.fq.gz
 DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_F05_S65.R2.fq.gz  DPCh_plate1_G12_S84.R2.fq.gz
 
+
+
 #### Ex. 12: Use the recursive (-r) option to remove `lonely-fastqs`
 ####         and its contents
 
 
-(base) [login11: 002-unix-intro]--% rm -r lonely-fastqs/
+rm -r lonely-fastqs/
 
 
 #### Ex. 13: Make two new directories in the top level of the
 ####         repo called `fq_AB` and `fq_notAB`
 
 
-(base) [login11: 002-unix-intro]--% mkdir ../../fq_{AB,notAB}
+mkdir ../../fq_{AB,notAB}
 
 
 
@@ -224,7 +255,7 @@ DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_F05_S65.
 ####         belong to sample names (the part immediately after `DPCh_plate1_`)
 ####         starting with an `A` or `B` to `fq_AB`.
 
-(base) [login11: 002-unix-intro]--% cp fastq/DPCh_plate1_[AB]*.gz ../../fq_AB/
+cp fastq/DPCh_plate1_[AB]*.gz ../../fq_AB/
 
 
 
@@ -233,9 +264,12 @@ DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_F05_S65.
 ####         `A` or a `B` to `fq_notAB`. When you are done, on the next line in
 ####         the code block, list the contents of `fq_AB` and `fq_notAB`.
 
-(base) [login11: 002-unix-intro]--% cp  fastq/DPCh_plate1_[^AB]*.gz  ../../fq_notAB/
+cp  fastq/DPCh_plate1_[^AB]*.gz  ../../fq_notAB/
 
-(base) [login11: 002-unix-intro]--% ls ../../fq_*
+ls ../../fq_*
+
+------
+
 ../../fq_AB:
 DPCh_plate1_A05_S5.R1.fq.gz  DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_B05_S17.R1.fq.gz  DPCh_plate1_B11_S23.R1.fq.gz
 DPCh_plate1_A05_S5.R2.fq.gz  DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_B11_S23.R2.fq.gz
@@ -256,22 +290,25 @@ DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_E06_S54.R2.fq.gz  DPCh_plate1_F11_S71.
 
 #### Ex. 16: Remove `fq_AB` and `fq_notAB`, and their contents
 
-(base) [login11: 002-unix-intro]--% rm -r ../../fq_*
+rm -r ../../fq_*
 
 #### Ex. 17: Using the `{,}` construct create five directories named 
 ####         `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`, and list them
 ####         (but not their contents) when you are done. (Think `ls -d`).
 
 
-(base) [login11: 002-unix-intro]--% mkdir dir_{A,C,E,G,I}
-(base) [login11: 002-unix-intro]--% ls -d dir_*
+mkdir dir_{A,C,E,G,I}
+ls -d dir_*
+
+------
+
 dir_A  dir_C  dir_E  dir_G  dir_I
 
 
 #### Ex. 18: Using globbing, remove `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`,
 ####         using a command with 8 characters (including spaces)
 
-(base) [login11: 002-unix-intro]--% rm -r d*
+rm -r d*
 
 #### Ex. 19: Create a directory called `nice_dir_name` and then use `echo`,
 ####         redirecting its output to create a file called `nice_file_name`
@@ -279,13 +316,15 @@ dir_A  dir_C  dir_E  dir_G  dir_I
 ####         `A string in a file!`.  Note that since the string has
 ####         an ! in it, you have to quote it with single-quotes!
 
-(base) [login11: 002-unix-intro]--% mkdir nice_dir_name
-(base) [login11: 002-unix-intro]--% echo 'A string in a file!' > nice_dir_name/nice_file_name
+mkdir nice_dir_name
+echo 'A string in a file!' > nice_dir_name/nice_file_name
 
 #### Ex. 20: Catenate the contents of `nice_dir_name/nice_file_name` to _stdout_
 
+cat nice_dir_name/nice_file_name
 
-(base) [login11: 002-unix-intro]--% cat nice_dir_name/nice_file_name
+------
+
 A string in a file!
 
 
@@ -295,22 +334,28 @@ A string in a file!
 ####         `Whoa! No spaces, please!`. Use backslash escaping instead of quoting
 
 
-(base) [login11: 002-unix-intro]--% mkdir "bad directory name with spaces"
-(base) [login11: 002-unix-intro]--% echo 'Whoa! No spaces, please!' > bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces
+mkdir "bad directory name with spaces"
+echo 'Whoa! No spaces, please!' > bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces
 
 
 
 #### Ex. 22: Catenate the contents of 
 ####         `bad directory name with spaces/bad file name with spaces` to stdout.
 
-(base) [login11: 002-unix-intro]--% cat bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces
+cat bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces
+
+------
+
 Whoa! No spaces, please!
 
 
 #### Ex. 23: List the directories (just the names, not the contents (`-d`)) of
 ####         `bad directory name with spaces` and `nice_dir_name`.
 
-(base) [login11: 002-unix-intro]--% ls -d  bad\ directory\ name\ with\ spaces/ nice_dir_name/
+ls -d  bad\ directory\ name\ with\ spaces/ nice_dir_name/
+
+------
+
 bad directory name with spaces/  nice_dir_name/
 
 #### Ex. 24: Once you are convinced that you can list the directories
@@ -319,7 +364,7 @@ bad directory name with spaces/  nice_dir_name/
 ####         `rm -r` to remove them. BE CAREFUL with the rm command!
 
 
-(base) [login11: 002-unix-intro]--% rm -r   bad\ directory\ name\ with\ spaces/ nice_dir_name/
+rm -r   bad\ directory\ name\ with\ spaces/ nice_dir_name/
 
 
 #### Ex. 25: Why is it a good idea to `ls` things before removing them?
@@ -340,31 +385,35 @@ Directories named "bad", "directory", "name", "with", and "spaces"
 ####         when you are done.
 
 
-(base) [login11: 002-unix-intro]--% mkdir A05_S5
-(base) [login11: 002-unix-intro]--% ls  */*A05_S5*  # just checking the files here
-bam/DPCh_plate1_A05_S5.bam  fastq/DPCh_plate1_A05_S5.R1.fq.gz  fastq/DPCh_plate1_A05_S5.R2.fq.gz  sam/DPCh_plate1_A05_S5.sam
-(base) [login11: 002-unix-intro]--% cp   */*A05_S5* A05_S5/
+mkdir A05_S5
+cp   */*A05_S5* A05_S5/
 
 
 #### Ex. 28: remove the directory `A05_S5` and its contents
 
 
-(base) [login11: 002-unix-intro]--% rm -r A05_S5/
+rm -r A05_S5/
 
 
 #### Ex. 29: Use `ls` to try to list the file `it_aint_here`
 
-(base) [login11: 002-unix-intro]--% ls it_aint_here
+ls it_aint_here
+
+------
+
 ls: cannot access it_aint_here: No such file or directory
 
 
 #### Ex. 30: Now, do the same thing but redirect _stderr_ into a file called 
 ####         `my_bad.txt`, and then catenate the contents of that file, and then remove it
 
-(base) [login11: 002-unix-intro]--% ls it_aint_here 2> my_bad.txt
-(base) [login11: 002-unix-intro]--% cat my_bad.txt
+ls it_aint_here 2> my_bad.txt
+cat my_bad.txt
+rm my_bad.txt
+------
+
 ls: cannot access it_aint_here: No such file or directory
-(base) [login11: 002-unix-intro]--% rm my_bad.txt
+
 
 
 #### Ex. 31: The files in `fastq` are text files, but they are all gzipped.
@@ -373,7 +422,10 @@ ls: cannot access it_aint_here: No such file or directory
 ####        It turns out that on this flavor of Linux, there is no
 ####        `gzcat` so but we can use zcat or gzip -c
 
-(base) [login11: 002-unix-intro]--% zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+
+------
+
 @K00364:64:HTYYCBBXX:1:1101:1824:48192/1
 GTAGAATAATAGTGAATCAAATCAAATGTTATTTGTCACATGCGCTGAATACAACAGGTGTGGACCTTACAGTGAAATGCTTCCTTACAAGCCCTTAACCAACAATGCAGTTTTAAGAAAAATGAGTGTGAGATAAGTAAAAAATAGAAAA
 +
@@ -383,7 +435,13 @@ TTAAAACACGGTATGATGCAAGCAGCACAACACATCAATAACAAAAATACAAGAATTAGGGTCAGAAATCCAGTAACCAC
 +
 -AAFFJJJJJJJJJJJJFFJJJFJFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFFJJJ<JJJJJJFFFFJFFJJJJJJAFJJJJJJJJJJJJJJJJJJFAJJJJJJJJJJJJJJJJJJJFJJJFAJJJJJJJFJJJJJJJJFFJJ
 
-(base) [login11: 002-unix-intro]--% gzip -cd fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+
+
+
+gzip -cd fastq/DPCh_plate1_C11_S35.R1.fq.gz | head -n 8
+
+------
+
 @K00364:64:HTYYCBBXX:1:1101:1824:48192/1
 GTAGAATAATAGTGAATCAAATCAAATGTTATTTGTCACATGCGCTGAATACAACAGGTGTGGACCTTACAGTGAAATGCTTCCTTACAAGCCCTTAACCAACAATGCAGTTTTAAGAAAAATGAGTGTGAGATAAGTAAAAAATAGAAAA
 +
@@ -398,7 +456,10 @@ TTAAAACACGGTATGATGCAAGCAGCACAACACATCAATAACAAAAATACAAGAATTAGGGTCAGAAATCCAGTAACCAC
 #### Ex. 32: Do the same to see the first 8 lines of `fastq/DPCh_plate1_C11_S35.R2.fq.gz`
 
 
-(base) [login11: 002-unix-intro]--% gzip -cd fastq/DPCh_plate1_C11_S35.R2.fq.gz | head -n 8
+gzip -cd fastq/DPCh_plate1_C11_S35.R2.fq.gz | head -n 8
+
+------
+
 @K00364:64:HTYYCBBXX:1:1101:1824:48192/2
 CACAAGGAACGACAGAGGGTAGTGCGTACGGCCCAGCACATCACTGGGACCAAGCATCCTGCAATCCAGGACCTCCATACCAGGCGGTGTCAGAGGAAGGCCCTAAAATTGTCAAAGACTCCAGCCACCCTAGTCATTAACTCTTCGCTCT
 +
@@ -420,10 +481,15 @@ Same name except R1 name ends in /1 and the other in /2
 ####         catenate that file to _stdout_ and then remove it
 
 
-(base) [login11: 002-unix-intro]--% date > now
-(base) [login11: 002-unix-intro]--% cat now
+date > now
+cat now
+rm now
+
+------
+
 Mon Jan 29 10:32:28 MST 2024
-(base) [login11: 002-unix-intro]--% rm now
+
+
 
 
 
@@ -431,7 +497,10 @@ Mon Jan 29 10:32:28 MST 2024
 ####         in the two SAM files in the `sam` directory
 
 
-(base) [login11: 002-unix-intro]--% cat sam/* | wc
+cat sam/* | wc
+
+------
+
   28369   89077  991180
 
 
@@ -442,16 +511,24 @@ Mon Jan 29 10:32:28 MST 2024
 ####         all the .gz files together and the gzcatting the result into wc
 ####         Note they should be the same.
 
-(base) [login11: 002-unix-intro]--% zcat  fastq/*R1* | wc
+zcat  fastq/*R1* | wc
+
+------
+
   19364   19364 1678394
-(base) [login11: 002-unix-intro]--% cat  fastq/*R1* | zcat | wc
+
+
+cat  fastq/*R1* | zcat | wc
+
+------
+
   19364   19364 1678394
 
 
 #### Ex. 37: Now, zcat all the `R1` files in `fastq` and redirect that
 ####         to a file called `R1_all_via_gzcat.fq` in the top directory of the repo
 
-(base) [login11: 002-unix-intro]--% zcat  fastq/*R1* > R1_all_via_gzcat.fq
+zcat  fastq/*R1* > R1_all_via_gzcat.fq
 
 
 #### Ex. 38: People are usually familiar with using `cat` to catenate text
@@ -461,20 +538,20 @@ Mon Jan 29 10:32:28 MST 2024
 ####         file called `R1_all_via_cat.fq.gz`
 
 
-(base) [login11: 002-unix-intro]--% cat  fastq/*R1* > R1_all_via_cat.fq.gz
+cat  fastq/*R1* > R1_all_via_cat.fq.gz
 
 
 
 #### Ex. 39: Copy `R1_all_via_cat.fq.gz` to `copy_of_R1_all_via_cat.fq.gz`
 
 
-(base) [login11: 002-unix-intro]--% cp  R1_all_via_cat.fq.gz  copy_of_R1_all_via_cat.fq.gz
+cp  R1_all_via_cat.fq.gz  copy_of_R1_all_via_cat.fq.gz
 
 
 #### Ex. 40: Now, decompress `R1_all_via_cat.fq.gz` into `R1_all_via_cat.fq`
 
 
-(base) [login11: 002-unix-intro]--% gunzip R1_all_via_cat.fq.gz
+gunzip R1_all_via_cat.fq.gz
 
 
 #### Ex. 41: Compute the SHA1 hashes of `R1_all_via_cat.fq` and `R1_all_via_gzcat.fq`
@@ -482,9 +559,19 @@ Mon Jan 29 10:32:28 MST 2024
 ####         On Alpine you get an SHA1 hash from sha1sum
 
 
-(base) [login11: 002-unix-intro]--% sha1sum R1_all_via_cat.fq
+sha1sum R1_all_via_cat.fq
+
+------
+
 d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_cat.fq
-(base) [login11: 002-unix-intro]--% sha1sum R1_all_via_gzcat.fq
+
+
+
+
+sha1sum R1_all_via_gzcat.fq
+
+------
+
 d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_gzcat.fq
 
 
@@ -492,9 +579,17 @@ d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_gzcat.fq
 ####         `copy_of_R1_all_via_cat.fq.gz` by computing the SHA1 hash of each
 
 
-(base) [login11: 002-unix-intro]--% sha1sum R1_all_via_cat.fq.gz
+sha1sum R1_all_via_cat.fq.gz
+
+------
+
 047369d6c71193f997b83feceb874b07cf41f8b3  R1_all_via_cat.fq.gz
-(base) [login11: 002-unix-intro]--% sha1sum copy_of_R1_all_via_cat.fq.gz
+
+
+sha1sum copy_of_R1_all_via_cat.fq.gz
+
+------
+
 93588c00857e42325bf64bb0ea5992307460737c  copy_of_R1_all_via_cat.fq.gz
 
 
@@ -502,7 +597,10 @@ d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_gzcat.fq
 ####         file sizes of `R1_all_via_cat.fq` and `copy_of_R1_all_via_cat.fq.gz`.
 
 
-(base) [login11: 002-unix-intro]--% du -h R1_all_via_cat.fq copy_of_R1_all_via_cat.fq.gz
+du -h R1_all_via_cat.fq copy_of_R1_all_via_cat.fq.gz
+
+------
+
 2.4M	R1_all_via_cat.fq
 704K	copy_of_R1_all_via_cat.fq.gz
 
@@ -510,19 +608,23 @@ d5b95bf950e8150c56aed90eea9febeb23ddd856  R1_all_via_gzcat.fq
 #### Ex. 44: By what factor (approximately) does the compression save storage
 ####         space on your disk?
 
-The compressed version takes up about 30% of the uncompressed
+The compressed version takes up about 30% of the uncompressed, so
+it reduces disk usage by a factor of about 3.
 
 
 #### Ex. 45: Remove all files starting with `R1_all` and `copy_of_R1`
 
 
-(base) [login11: 002-unix-intro]--% rm R1_all* copy_of_R1_all_via_cat.fq.gz
+rm R1_all* copy_of_R1_all_via_cat.fq.gz
 
 
 #### Ex. 46: Now, print the file sizes (with `du -h`, again) of the files
 ####         in `bam` and the files in `sam`
 
-(base) [login11: 002-unix-intro]--% du -h sam/* bam/*
+du -h sam/* bam/*
+
+------
+
 784K	sam/DPCh_plate1_A05_S5.sam
 752K	sam/DPCh_plate1_A06_S6.sam
 408K	bam/DPCh_plate1_A05_S5.bam
@@ -532,7 +634,10 @@ The compressed version takes up about 30% of the uncompressed
 #### Ex. 47: Print the last 15 lines of `sam/DPCh_plate1_A05_S5.sam` to _stdout_
 
 
-(base) [login11: 002-unix-intro]--% tail -n 15 sam/DPCh_plate1_A05_S5.sam
+tail -n 15 sam/DPCh_plate1_A05_S5.sam
+
+------
+
 K00364:64:HTYYCBBXX:5:2219:32491:45906	163	NC_037124.1	4019310	60	151M	=	4019351	192	TAAAATACACATTCAGATCTCGCCATCAACCGTTGTTAAATGTTGATTAATCAAAGGGTGAACATTTTCCCGAGTGCAAATTTAAAGCGCCGTTAATTTAAGGCTTTTGCAGATGCGTCTTGGCTGACTGTGTGTGTGTTTACCAAGACTC	AAFFFFJJJJJFJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJFJJJFFJJJJJJJJJJJJJJJFJAJJJJJJJJFF7FJJJFJJJJJJJJFFA<JJFAJJFFFJJAAFFAFJAFFJJJJFJ7AFAJAJFJJJFJJFFJFFFJJFJFFJJJJ	NM:i:0	MD:Z:151	AS:i:151	XS:i:0	RG:Z:DPCh_plate1_A05_S5
 K00364:64:HTYYCBBXX:5:2219:32491:45906	83	NC_037124.1	4019351	60	151M	=	4019310	-192	NTTGATTAATCAAAGGGTGAACATTTTCCCGAGTGCAAATTTAAAGCGCCGTTAATTTAAGGCTTTTGCAGATGCGTCTTGGCTGACTGTGTGTGTGTTTTCCAAGACTCAAACAGTCACCCTGCGCTACCTTGTACGTGAAGCAAAAATA	#AJJJJ<7J<JJJFJJJJJFJJJJJAFJJJJJJJJJJJJJJJJJA<JJJJJJJJJAFJJJJJJJJJJJJJJJJFAF-FJJJJJJJFJJJ7JJJJJJJJJJ<JJJJJJJJJJJJJFJJJJFJJJJJJJJJJJJJJJJJJJJJJJJJJFFFAA	NM:i:2	MD:Z:0G99A50	AS:i:145	XS:i:20	RG:Z:DPCh_plate1_A05_S5
 K00364:64:HTYYCBBXX:5:2217:2757:32402	163	NC_037124.1	4019543	60	151M	=	4019783	391	TAAAGAATACTCCTAGTATACATATTTGCGAGATCGTTATAAACGCTTAATGGCATAGATACGCATCCTACCTGGAAGATGTTCGGCGCGGCGGTTGCAGTTCCCCTGCGCCCAGCTTCAGTCGCTGAGAGCACAGCACAGCCCTTCTGCT	AAFFFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJFJJJJJJJJJJJJJJJFJJJJJJJJFJFJJFJJJJJJJJJJJJ-	NM:i:0	MD:Z:151	AS:i:151	XS:i:75	RG:Z:DPCh_plate1_A05_S5
@@ -555,7 +660,10 @@ K00364:64:HTYYCBBXX:6:2208:11931:34266	99	NC_037124.1	4021195	60	122M29S	=	40211
 #### Ex. 48: Print the _first_ 15 lines of `sam/DPCh_plate1_A05_S5.sam` to _stdout_
 
 
-(base) [login11: 002-unix-intro]--% head -n 15 sam/DPCh_plate1_A05_S5.sam
+head -n 15 sam/DPCh_plate1_A05_S5.sam
+
+------
+
 @HD	VN:1.3	SO:coordinate
 @SQ	SN:NC_037097.1	LN:96198142
 @SQ	SN:NC_037098.1	LN:57406636
@@ -578,7 +686,10 @@ K00364:64:HTYYCBBXX:6:2208:11931:34266	99	NC_037124.1	4021195	60	122M29S	=	40211
 #### Ex. 49: Catenate the file `count_files.sh` to _stdout_
 
 
-(base) [login11: 002-unix-intro]--% cat count_files.sh
+cat count_files.sh
+
+------
+
 # This looks fun
 ls -lR  * | awk 'NF>7' | wc | awk '{print "Estimated", $1, "files in the current directory"}'
 
@@ -587,10 +698,14 @@ ls -lR  * | awk 'NF>7' | wc | awk '{print "Estimated", $1, "files in the current
 ####         execute it with `./count_files.sh`
 
 
-(base) [login11: 002-unix-intro]--% ./count_files.sh
+./count_files.sh
+
+------
+
 -bash: ./count_files.sh: Permission denied
 
-However, I think that the permissions were set so it was executable...
+However, I think that the permissions were actually set so it was executable...
+I just changed them so they weren't.
 
 
 #### Ex. 51: List (long) `count_files.sh` to see what the permissions are,
@@ -598,11 +713,19 @@ However, I think that the permissions were set so it was executable...
 ####         the "add-or-subtract permissions syntax" of `chmod`, then long list it again
 
 
-(base) [login11: 002-unix-intro]--% chmod ug-x count_files.sh
-(base) [login11: 002-unix-intro]--% ls -l count_files.sh
+chmod ug-x count_files.sh
+ls -l count_files.sh
+
+------
+
 -rw-r--r-x. 1 eriq@colostate.edu eriqgrp@colostate.edu 112 Jan 22 10:48 count_files.sh
-(base) [login11: 002-unix-intro]--% chmod ug+x count_files.sh
-(base) [login11: 002-unix-intro]--% ls -l count_files.sh
+
+
+chmod ug+x count_files.sh
+ls -l count_files.sh
+
+------
+
 -rwxr-xr-x. 1 eriq@colostate.edu eriqgrp@colostate.edu 112 Jan 22 10:48 count_files.sh
 
 
@@ -614,14 +737,17 @@ However, I think that the permissions were set so it was executable...
 ####         and at the end do `ls -l silly` to verify they are correct.
 
 
-(base) [login11: 002-unix-intro]--% chmod 775 silly/DIRdrwxrwxr-x/
-(base) [login11: 002-unix-intro]--% chmod 640 silly/FILE-rw-r-----
-(base) [login11: 002-unix-intro]--% chmod 664 silly/FILE-rw-rw-r--
-(base) [login11: 002-unix-intro]--% chmod 740 silly/FILE-rwxr-----
-(base) [login11: 002-unix-intro]--% chmod 774 silly/FILE-rwxrwxr--
-(base) [login11: 002-unix-intro]--%
-(base) [login11: 002-unix-intro]--% ls -l silly/
+chmod 775 silly/DIRdrwxrwxr-x/
+chmod 640 silly/FILE-rw-r-----
+chmod 664 silly/FILE-rw-rw-r--
+chmod 740 silly/FILE-rwxr-----
+chmod 774 silly/FILE-rwxrwxr--
+
+ls -l silly/
 total 128
+
+------
+
 drwxrwsr-x. 2 eriq@colostate.edu eriqgrp@colostate.edu 23 Jan 22 10:48 DIRdrwxrwxr-x
 -rw-r-----. 1 eriq@colostate.edu eriqgrp@colostate.edu  0 Jan 22 10:48 FILE-rw-r-----
 -rw-rw-r--. 1 eriq@colostate.edu eriqgrp@colostate.edu  0 Jan 22 10:48 FILE-rw-rw-r--
