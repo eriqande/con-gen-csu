@@ -186,12 +186,25 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 #### Ex. 13: Make two new directories in the top level of the
 ####         repo called `fq_AB` and `fq_notAB`
 
-
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ mkdir fq_AB fq_notAB
 
 #### Ex. 14: Using the `[` `]` copy the R1 files in `fastqs` that
 ####         belong to sample names (the part immediately after `DPCh_plate1_`)
 ####         starting with an `A` or `B` to `fq_AB`.
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ cp assignments/002-unix-intro/fastq/*[A-B]* fq_AB
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls fq_AB
+
+------
+
+DPCh_plate1_A05_S5.R1.fq.gz   DPCh_plate1_B05_S17.R1.fq.gz
+DPCh_plate1_A05_S5.R2.fq.gz   DPCh_plate1_B05_S17.R2.fq.gz
+DPCh_plate1_A06_S6.R1.fq.gz   DPCh_plate1_B06_S18.R1.fq.gz
+DPCh_plate1_A06_S6.R2.fq.gz   DPCh_plate1_B06_S18.R2.fq.gz
+DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_B11_S23.R1.fq.gz
+DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_B11_S23.R2.fq.gz
+DPCh_plate1_A12_S12.R1.fq.gz  DPCh_plate1_B12_S24.R1.fq.gz
+DPCh_plate1_A12_S12.R2.fq.gz  DPCh_plate1_B12_S24.R2.fq.gz
 
 
 #### Ex. 15: Now, using negation (`^`) with `[` and `]` copy all the
@@ -199,33 +212,85 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         `A` or a `B` to `fq_notAB`. When you are done, on the next line in
 ####         the code block, list the contents of `fq_AB` and `fq_notAB`.
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ cp assignments/002-unix-intro/fastq/*[^A-B]* fq_notAB
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls fq_notAB/
 
+------ 
+
+DPCh_plate1_A05_S5.R1.fq.gz   DPCh_plate1_E05_S53.R1.fq.gz
+DPCh_plate1_A05_S5.R2.fq.gz   DPCh_plate1_E05_S53.R2.fq.gz
+DPCh_plate1_A06_S6.R1.fq.gz   DPCh_plate1_E06_S54.R1.fq.gz
+DPCh_plate1_A06_S6.R2.fq.gz   DPCh_plate1_E06_S54.R2.fq.gz
+DPCh_plate1_A11_S11.R1.fq.gz  DPCh_plate1_E11_S59.R1.fq.gz
+DPCh_plate1_A11_S11.R2.fq.gz  DPCh_plate1_E11_S59.R2.fq.gz
+DPCh_plate1_A12_S12.R1.fq.gz  DPCh_plate1_E12_S60.R1.fq.gz
+DPCh_plate1_A12_S12.R2.fq.gz  DPCh_plate1_E12_S60.R2.fq.gz
+DPCh_plate1_B05_S17.R1.fq.gz  DPCh_plate1_F05_S65.R1.fq.gz
+DPCh_plate1_B05_S17.R2.fq.gz  DPCh_plate1_F05_S65.R2.fq.gz
+DPCh_plate1_B06_S18.R1.fq.gz  DPCh_plate1_F06_S66.R1.fq.gz
+DPCh_plate1_B06_S18.R2.fq.gz  DPCh_plate1_F06_S66.R2.fq.gz
+DPCh_plate1_B11_S23.R1.fq.gz  DPCh_plate1_F11_S71.R1.fq.gz
+DPCh_plate1_B11_S23.R2.fq.gz  DPCh_plate1_F11_S71.R2.fq.gz
+DPCh_plate1_B12_S24.R1.fq.gz  DPCh_plate1_F12_S72.R1.fq.gz
+DPCh_plate1_B12_S24.R2.fq.gz  DPCh_plate1_F12_S72.R2.fq.gz
+DPCh_plate1_C05_S29.R1.fq.gz  DPCh_plate1_G05_S77.R1.fq.gz
+DPCh_plate1_C05_S29.R2.fq.gz  DPCh_plate1_G05_S77.R2.fq.gz
+DPCh_plate1_C06_S30.R1.fq.gz  DPCh_plate1_G06_S78.R1.fq.gz
+DPCh_plate1_C06_S30.R2.fq.gz  DPCh_plate1_G06_S78.R2.fq.gz
+DPCh_plate1_C11_S35.R1.fq.gz  DPCh_plate1_G11_S83.R1.fq.gz
+DPCh_plate1_C11_S35.R2.fq.gz  DPCh_plate1_G11_S83.R2.fq.gz
+DPCh_plate1_C12_S36.R1.fq.gz  DPCh_plate1_G12_S84.R1.fq.gz
+DPCh_plate1_C12_S36.R2.fq.gz  DPCh_plate1_G12_S84.R2.fq.gz
+DPCh_plate1_D05_S41.R1.fq.gz  DPCh_plate1_H05_S89.R1.fq.gz
+DPCh_plate1_D05_S41.R2.fq.gz  DPCh_plate1_H05_S89.R2.fq.gz
+DPCh_plate1_D06_S42.R1.fq.gz  DPCh_plate1_H06_S90.R1.fq.gz
+DPCh_plate1_D06_S42.R2.fq.gz  DPCh_plate1_H06_S90.R2.fq.gz
+DPCh_plate1_D11_S47.R1.fq.gz  DPCh_plate1_H11_S95.R1.fq.gz
+DPCh_plate1_D11_S47.R2.fq.gz  DPCh_plate1_H11_S95.R2.fq.gz
+DPCh_plate1_D12_S48.R1.fq.gz  DPCh_plate1_H12_S96.R1.fq.gz
+DPCh_plate1_D12_S48.R2.fq.gz  DPCh_plate1_H12_S96.R2.fq.gz
 
 #### Ex. 16: Remove `fq_AB` and `fq_notAB`, and their contents
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ rm -r fq_AB fq_notAB
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls
+
+------
+
+assignments  con-gen-csu.Rproj  data  dev  README.md
 
 
 #### Ex. 17: Using the `{,}` construct create five directories named 
 ####         `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`, and list them
 ####         (but not their contents) when you are done. (Think `ls -d`).
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ mkdir dir_{A,C,E,G,I}
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls -d dir_{A,C,E,G,I}
+
+------
+
+dir_A  dir_C  dir_E  dir_G  dir_I
 
 
 #### Ex. 18: Using globbing, remove `dir_A`, `dir_C`, `dir_E`, `dir_G`, and `dir_I`,
 ####         using a command with 8 characters (including spaces)
 
-
+rm -r dir_*
 
 #### Ex. 19: Create a directory called `nice_dir_name` and then use `echo`,
 ####         redirecting its output to create a file called `nice_file_name`
 ####         inside of `nice_dir_name` whose contents is the string
 ####         `A string in a file!`
 
-
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ echo 'A string in a file!' > nice_dir_name/nice_file_name
 
 #### Ex. 20: Catenate the contents of `nice_dir_name/nice_file_name` to _stdout_
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ cat nice_dir_name/nice_file_name
 
+-----
+
+A string in a file!
 
 
 #### Ex. 21: Create a directory called `bad directory name with spaces`, and then,
@@ -233,17 +298,27 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         `bad file name with spaces` whose contents are the string
 ####         `Whoa! No spaces, please!`. Use backslash escaping instead of quoting
 
-
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ echo 'Whoa! No spaces, please!' > bad\ directory\ name\ with\ spaces/bad\ file\ name\ with\ spaces
 
 
 #### Ex. 22: Catenate the contents of 
 ####         `bad directory name with spaces/bad file name with spaces` to stdout.
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ cat "bad directory name with spaces/bad file name with spaces"
+
+------
+
+Whoa! No spaces, please!
 
 
 #### Ex. 23: List the directories (just the names, not the contents (`-d`)) of
 ####         `bad directory name with spaces` and `nice_dir_name`.
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls -d 'bad directory name with spaces' nice_dir_name/
+
+-----
+
+bad directory name with spaces  nice_dir_name/
 
 
 #### Ex. 24: Once you are convinced that you can list the directories
@@ -251,16 +326,18 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         command line using the up arrow on your keyboard) and replace `ls` with
 ####         `rm -r` to remove them. BE CAREFUL with the rm command!
 
-
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ rm -r 'bad directory name with spaces' nice_dir_name/
 
 #### Ex. 25: Why is it a good idea to `ls` things before removing them?
 
+To double check that you are using the right naming scheme, and to avoid removing unintended files!
 
 
 #### Ex. 26: If you had just typed `rm -r bad directory name with spaces` 
 ####         what would Unix have tried to remove? (No command to type here,
 ####         just answer the question).
 
+It would just remove 'bad' and throw an error, because that directory does not exist.
 
 
 #### Ex. 27: There are bam, sam, and fastq files, in the appropriately
@@ -268,14 +345,23 @@ bam  count_files.sh  fastq  metadata  sam  silly  unix-intro-TEMPLATE.sh
 ####         and copy all those files into that new directory. List the directory
 ####         when you are done.
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls A05_S5/
 
+-----
+
+DPCh_plate1_A05_S5.bam  DPCh_plate1_A05_S5.R1.fq.gz  DPCh_plate1_A05_S5.R2.fq.gz  DPCh_plate1_A05_S5.sam
 
 #### Ex. 28: remove the directory `A05_S5` and its contents
 
-
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ rm -r A05_S5/
 
 #### Ex. 29: Use `ls` to try to list the file `it_aint_here`
 
+(base) [ldurkee@colostate.edu@login13 con-gen-csu]$ ls it_aint_here
+
+-----
+
+ls: cannot access it_aint_here: No such file or directory
 
 
 #### Ex. 30: Now, do the same thing but redirect _stderr_ into a file called 
