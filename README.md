@@ -521,8 +521,7 @@ is just an avuncular overview of how tmux works.
 - We will discuss the batch effects paper.
 - We might encourage the Mac users to start getting tmux integrated into iTerm.
 They can do this by using the instructions in
-[Handbook section 7.5](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux-for-mac-users), and following along with the video about it
-at [Needs address](needs-address).
+[Handbook section 7.5](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux-for-mac-users), and following along with the video [Setting up tmux integration with iTerm2 to access Alpine or any other remote server](https://youtu.be/vL6swuC6IMU).
 
 </details>
 
