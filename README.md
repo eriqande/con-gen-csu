@@ -501,21 +501,29 @@ Read:
 
 Describing our course example data set and discussing trimming and batch effects
 
-#### Prep: (read two scientific articles)
+#### Prep: (read two scientific articles and a short thing about tmux)
 <details>
   <summary>Click here for full details</summary>
 Read: 
 
 - [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
 - [Lou and Therkildsen. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a classic paper on why you might want to trim your sequence data).
+- [Handbook section 7.4, up through and including 7.4.1](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux). This
+is just an avuncular overview of how tmux works. 
 </details>
 
 #### In class (Eric talks about Chinook and we discuss the Lou and Therkildsen paper)
 
 <details>
   <summary>Click here for full details</summary>
+  
 - I will present a little about the Chinook salmon data.
 - We will discuss the batch effects paper.
+- We might encourage the Mac users to start getting tmux integrated into iTerm.
+They can do this by using the instructions in
+[Handbook section 7.5](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux-for-mac-users), and following along with the video about it
+at [Needs address](needs-address).
+
 </details>
 
 ### Tuesday, February 6, 2024
