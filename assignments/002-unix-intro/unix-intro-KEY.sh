@@ -119,6 +119,8 @@ drwxr-sr-x.  8 eriq@colostate.edu eriqgrp@colostate.edu   322 Jan 23 09:22 .git
 
 .gitignore
 
+Also . and .. show up 
+
 #### Ex. 7: List (long format) the contents of the directory `.git` in the con-gen-csu directory
 
 (base) [login11: 002-unix-intro]--% ls -l ../../.git
