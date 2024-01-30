@@ -580,3 +580,14 @@ drwxrwsrwx. 2 zhimei@colostate.edu zhimeigrp@colostate.edu 23 Jan 24 10:45 DIRdr
 -rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rw-rw-r--
 -rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rwxr-----
 -rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rwxrwxr--
+
+
+(base) [zhimei@colostate.edu@login11 silly]$ chmod 655 FILE-rw-r-----
+(base) [zhimei@colostate.edu@login11 silly]$ ls -l
+total 128
+drwxrwsrwx. 2 zhimei@colostate.edu zhimeigrp@colostate.edu 23 Jan 24 10:45 DIRdrwxrwxr-x
+-rw-r-xr-x. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rw-r-----
+-rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rw-rw-r--
+-rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rwxr-----
+-rwxrwx---. 1 zhimei@colostate.edu zhimeigrp@colostate.edu  0 Jan 24 10:45 FILE-rwxrwxr--
+(base) [zhimei@colostate.edu@login11 silly]$ chmod 755 DIRdrwxrwxr-x/
