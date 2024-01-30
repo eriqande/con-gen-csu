@@ -516,7 +516,10 @@ is just an avuncular overview of how tmux works.
 
 <details>
   <summary>Click here for full details</summary>
-  
+
+- Start with a discussion of the starting point of branches, keeping
+`main` synced to `main` and then branching off of `main`.
+- Also, discuss Illumina Seq Homework #6
 - I will present a little about the Chinook salmon data.
 - We will discuss the batch effects paper.
 - We might encourage the Mac users to start getting tmux integrated into iTerm.
