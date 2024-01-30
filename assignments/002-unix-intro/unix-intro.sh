@@ -480,4 +480,23 @@ Estimated 77 files in the current directory
 ####         specifiers to `chmod`. Do this for all 5 files (one chmod command for each),
 ####         and at the end do `ls -l silly` to verify they are correct.
 
+(base) [002-unix-intro]--% ll -l silly/
+total 512
+drwxr-xr-x 2 emcampbe 1 Jan 25 09:33 DIRdrwxrwxr-x/
+-rw-r--r-- 1 emcampbe 0 Jan 25 09:33 FILE-rw-r-----
+-rw-r--r-- 1 emcampbe 0 Jan 25 09:33 FILE-rw-rw-r--
+-rw-r--r-- 1 emcampbe 0 Jan 25 09:33 FILE-rwxr-----
+-rw-r--r-- 1 emcampbe 0 Jan 25 09:33 FILE-rwxrwxr--
 
+(base) [002-unix-intro]--% chmod 775 silly/DIRdrwxrwxr-x/
+(base) [002-unix-intro]--% chmod 640 silly/FILE-rw-r-----
+(base) [002-unix-intro]--% chmod 664 silly/FILE-rw-rw-r-- 
+(base) [002-unix-intro]--% chmod 740 silly/FILE-rwxr----- 
+(base) [002-unix-intro]--% chmod 774 silly/FILE-rwxrwxr-- 
+(base) [002-unix-intro]--% ls -l silly/
+total 512
+drwxrwxr-x 2 emcampbe 1 Jan 25 09:33 DIRdrwxrwxr-x/
+-rw-r----- 1 emcampbe 0 Jan 25 09:33 FILE-rw-r-----
+-rw-rw-r-- 1 emcampbe 0 Jan 25 09:33 FILE-rw-rw-r--
+-rwxr----- 1 emcampbe 0 Jan 25 09:33 FILE-rwxr-----*
+-rwxrwxr-- 1 emcampbe 0 Jan 25 09:33 FILE-rwxrwxr--*
