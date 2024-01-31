@@ -133,7 +133,8 @@ a little more self-guided prep to do for the next class.
 RStudio Projects, RMarkdown, git/GitHub, and connecting to Alpine.
 
 #### Prep: (Always do "prep" before class. All prep materials are subject to quizzes)
-
+<details>
+  <summary>Click here for full details</summary>
 RStudio and git preps:
 
 - Ensure that you have a recent version of R, and the latest version of [RStudio](https://posit.co/download/rstudio-desktop/)
@@ -160,10 +161,12 @@ Connecting to Alpine (or another cluster) preps:
   application, and it is very good.
 - PC Users, you might want to consider downloading and installing [MobaXTerm](https://mobaxterm.mobatek.net/) to use as a terminal
   client (for connecting to Alpine, etc.)
-  
+</details> 
 
 #### In class: (Tentative schedule of how class time will go down)
 
+<details>
+  <summary>Click here for full details</summary>
 Introductions:
 
 - Introductions of the course and students
@@ -189,9 +192,12 @@ RStudio/GitHub:
 - Make sure everyone can log on to Alpine (or their respective Unix cluster)
     * [Getting and account on Alpine for CSU students](https://it.colostate.edu/research-computing-and-cyberinfrastructure/compute/get-started-with-alpine/)
     * Logging in if you already have an account: go the page above and find the section on "Remote Login"
+</details>
 
-#### Assignment
+#### Assignment due Monday January 22, at 6 PM
 
+<details>
+  <summary>Click here for full details</summary>
 **This will be described in class, and is due by Monday, January 22nd at 6 PM.**
 
 _For a video demonstration of the execution of these steps (and a better
@@ -208,7 +214,7 @@ explanation of how to Push commits to GitHub from RStudio) you can check out thi
 4. When you are done editing it and you have knitted it:
     - email the `about-me.html` file to [eriq@rams.colostate.edu](eriq@rams.colostate.edu) with subject line. "About me!"
     - commit your `about-me.Rmd` to your con-gen-csu-githubname repo and push it up to GitHub.  
-
+</details>
 
 
 
@@ -217,11 +223,15 @@ explanation of how to Push commits to GitHub from RStudio) you can check out thi
 Logging into Alpine; Git on Alpine; Basic Unix Stuff;
 
 #### Prep
-
+<details>
+  <summary>Click here for full details</summary>
 - Read from the eca-bioinf-handbook from the beginning of [Chapter 4](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#essential-unixlinux-terminal-knowledge)
 up to and including [Handling, Manipulating, and Viewing files and streams](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#handling-manipulating-and-viewing-files-and-streams)
+</details>
 
-#### In class
+#### In class: logging in to Alpine, forking on GitHub
+<details>
+  <summary>Click here for full details</summary>
 
 ##### We will do a Quiz on the reading!
 
@@ -312,11 +322,14 @@ green "Code" button, get the SSH address for the repository and put it after
 git clone git@github.com:YourGitHubHandle/con-gen-csu.git
 ```
 with `YourGitHubHandle` actually being your true GitHub handle.
+</details>
 
 
+#### Assignment due Friday, Jan. 26 at 5 PM
 
-#### Assignment
-
+<details>
+  <summary>Click here for full details</summary>
+  
 **This is due by 5 PM Friday, January 26, 2024**
 
 
@@ -364,22 +377,24 @@ called `unix-intro`.
 
 _That is a lot of weird steps, so here is a video to see what
 I mean: [Submitting the unix-intro homework](https://youtu.be/M9SONNa611Q)._
-
-
+</details>
 
 ### Thursday, January 25, 2024
 
-Today we are mostly going to be discussing Unix, and people can
-ask questions about the homework, but we will also make sure
-everyone has `mamba` installed on their system.
+Unix discussion period; installing mamba
 
-#### Prep
+#### Prep (reading)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read the rest of chapter 4 in the handbook from [Chapter 4.5 to the end](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html#unix-env) 
 - It is recommended to read the introductory section of the handbook in [Section 7.6](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#installing-software-on-an-hpcc).
+</details>
 
-#### In class
+#### In class (installing mamba)
 
+<details>
+  <summary>Click here for full details</summary>
 Here are the steps to install mamba on your Alpine account:
 
 For a video of these steps, see: [Installing mamba via miniforge](https://youtu.be/3EuRRETTA5s)
@@ -424,11 +439,13 @@ activate conda.  You want to type `yes`.
 login session with `cntrl-d`.  
 
 5. Finally, log back into alpine, and you should have conda/mamba.
+</details>
 
 
-
-#### Assignments:
-
+#### Assignment due at beginning of class on Tuesday, Jan 30
+<details>
+  <summary>Click here for full details</summary>
+  
 **Due at the beginning of class on Tuesday January 30, 2024**
 
 Complete
@@ -437,10 +454,18 @@ the questions in Eric's [captioned video of Illumina sequencing](https://eriqand
 These are questions you can see in the video, but they are in text format in the
 course repo to make it easier to complete.
 
-Directions:
+Note that the readings which are prep for the following class are very relevant
+to these questions, so it is probably best to do them before or while watching
+the video:
+
+- [Chapters 16.1 through 16.3](https://eriqande.github.io/eca-bioinf-handbook/dna-sequences-and-sequencing.html#illumina-sequencing-by-synthesis) in the handbook.
+
+- [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
+
+Homework Directions:
 
 _For a video running through these steps,
-see: [Submitting the illumina seq homework](Not made yet)._ 
+see: [How to get and submit the Illumina sequencing homework](https://youtu.be/4tDOM5QcgbA)._ 
 
 1. Sync your fork of the course repo on GitHub with the original course repo.
 1. On your laptop clone of your fork, in RStudio, _make sure that you are on the main
@@ -454,6 +479,7 @@ the `illumina-seq` branch.
 5. Push the `illumina-seq` branch back up to GitHub.
 6. Send me a pull request for your changes on the `illumina-seq` branch.
 
+</details>
 
 
 
@@ -461,28 +487,46 @@ the `illumina-seq` branch.
 
 Sequencing technologies and FASTA and FASTQ format.
 
-#### Prep:
-
+#### Prep (reading from bioinf handbook)
+<details>
+  <summary>Click here for full details</summary>
 Read:  
 
 - [Chapters 16.1 through 16.3](https://eriqande.github.io/eca-bioinf-handbook/dna-sequences-and-sequencing.html#illumina-sequencing-by-synthesis) in the handbook.
 
 - [Chapter 17.2 through 17.2.2, inclusive, then all of 17.3](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#fastq) in the Handbook.
-
+</details>
 
 ### Thursday, February 1, 2024
 
+Describing our course example data set and discussing trimming and batch effects
 
+#### Prep: (read two scientific articles and a short thing about tmux)
+<details>
+  <summary>Click here for full details</summary>
 Read: 
 
 - [Thompson et al, 2020.  A complex phenotype in salmon controlled by a simple change in migratory timing. Science](https://www.science.org/doi/full/10.1126/science.aba9059)  (This is where our example data come from).
-- [Therkildsen and Lou. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a class paper on why you might want to trim your sequence data).
+- [Lou and Therkildsen. 2021. Batch effects in population... Mol Ecol Res](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13559)  (This is a classic paper on why you might want to trim your sequence data).
+- [Handbook section 7.4, up through and including 7.4.1](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux). This
+is just an avuncular overview of how tmux works. 
+</details>
 
-In class:
+#### In class (Eric talks about Chinook and we discuss the Lou and Therkildsen paper)
 
+<details>
+  <summary>Click here for full details</summary>
+
+- Start with a discussion of the starting point of branches, keeping
+`main` synced to `main` and then branching off of `main`.
+- Also, discuss Illumina Seq Homework #6
 - I will present a little about the Chinook salmon data.
 - We will discuss the batch effects paper.
+- We might encourage the Mac users to start getting tmux integrated into iTerm.
+They can do this by using the instructions in
+[Handbook section 7.5](https://eriqande.github.io/eca-bioinf-handbook/working-on-remote-servers.html#tmux-for-mac-users), and following along with the video [Setting up tmux integration with iTerm2 to access Alpine or any other remote server](https://youtu.be/vL6swuC6IMU).
 
+</details>
 
 ### Tuesday, February 6, 2024
 
