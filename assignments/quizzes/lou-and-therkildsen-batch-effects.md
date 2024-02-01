@@ -10,18 +10,18 @@
 
 ## Underlying causes labelled with capital letters
 
-A. Different calibration of base-quality scores
-B. Sensitivity of some methods to depth variation
-C. Deamination of cytosines ($C \longrightarrow U$)
-D. Poly-G tails
-E. Confidence in mapping is higher for longer sequences
+A). Different calibration of base-quality scores
+B). Sensitivity of some methods to depth variation
+- C. Deamination of cytosines ($C \longrightarrow U$)
+- D. Poly-G tails
+- E. Confidence in mapping is higher for longer sequences
 
 
 ## Ways to identify the problem labelled with lowercase letters
 
-a. Check the average depth of each individual. Color points by
+- a. Check the average depth of each individual. Color points by
 read depth
-b. Check base composition along the read, especially toward the ends (using fastqc, for example)
+- b. Check base composition along the read, especially toward the ends (using fastqc, for example)
 c. Compare diversity estimates _within_ batches with strict vs
 relaxed base-quality filters.
 d. Check that $F_\mathrm{ST}$ outliers aren't all from regions with
