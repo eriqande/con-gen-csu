@@ -532,6 +532,7 @@ They can do this by using the instructions in
 
 #### Prep
 
+Keep an eye on this!  I will update the reading list by the evening of Feb 1.
 - Read about the [trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).
 
 
