@@ -535,9 +535,10 @@ They can do this by using the instructions in
 Keep an eye on this!  I will update the reading list by the evening of Feb 1.
 - Read [Bolger et al. 2014](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096), the academic paper about
 Trimmomatic.
-- Read the [Trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).
+- ~~Read the [Trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).~~ (IF you already read this, then it is good to know, but is no longer required reading).
 - Read [Chen et al. 2018](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234), the academic paper about
 the `fastp` aligner.
+- Read the updated, 2023 paper about fastp: [Chen 2023](https://onlinelibrary.wiley.com/doi/10.1002/imt2.107)
 - Read the manual for fastp that is the [README on their Github page](https://github.com/OpenGene/fastp?tab=readme-ov-file)
 
 
