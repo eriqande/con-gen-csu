@@ -1,3 +1,4 @@
+# To each number (batch difference) write down the underlying causes (capital letters), ways to identify (lowercase letters)
 
 ## The batch differences are labelled in numbers:
 
@@ -32,7 +33,5 @@ private alleles in each batch; check diversity estimates when
 excluding transitions.
 
 
-## Ways to mitigate in lower roman numerals
-
-...Fill these in yourselves...
+# Then for each number write down ways to mitigate... 
 
