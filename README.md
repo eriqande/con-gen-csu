@@ -551,8 +551,15 @@ the `fastp` aligner.
   <summary>Click here for full details</summary>
 
 - Team quiz.
-- Running fastp on some data
+- Running fastp on some data on Alpine
   ```sh
+    module load slurm/alpine
+    srun --partition atesting -t 1:00:00 --pty /bin/bash
+
+    mamba create -n fastp -c bioconda  fastp
+
+    conda activate fastp
+    
     mkdir -p results/trimmed results/qc/fastp
     fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
           -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
