@@ -530,9 +530,11 @@ They can do this by using the instructions in
 
 ### Tuesday, February 6, 2024
 
-#### Prep
+#### Prep (read 3 academic articles and one software manual)
 
-Keep an eye on this!  I will update the reading list by the evening of Feb 1.
+<details>
+  <summary>Click here for full details</summary>
+  
 - Read [Bolger et al. 2014](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096), the academic paper about
 Trimmomatic.
 - ~~Read the [Trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).~~ (IF you already read this, then it is good to know, but is no longer required reading).
@@ -541,8 +543,26 @@ the `fastp` aligner.
 - Read the updated, 2023 paper about fastp: [Chen 2023](https://onlinelibrary.wiley.com/doi/10.1002/imt2.107)
 - Read the manual for fastp that is the [README on their Github page](https://github.com/OpenGene/fastp?tab=readme-ov-file)
 
+</details>
 
+#### In class (team quiz; running fastp; using FileZilla; introduce idea of shell programming)
 
+<details>
+  <summary>Click here for full details</summary>
+
+- Team quiz.
+- Running fastp on some data
+  ```sh
+    mkdir -p results/trimmed results/qc/fastp
+    fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
+          -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
+          -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
+          --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+          --detect_adapter_for_pe \
+          MORE_OPTIONS_AS_PER_TEAM_QUIZ    
+  ```
+
+</details>
 
 ### Thursday, February 8, 2024
 
