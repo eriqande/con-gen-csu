@@ -530,9 +530,11 @@ They can do this by using the instructions in
 
 ### Tuesday, February 6, 2024
 
-#### Prep
+#### Prep (read 3 academic articles and one software manual)
 
-Keep an eye on this!  I will update the reading list by the evening of Feb 1.
+<details>
+  <summary>Click here for full details</summary>
+  
 - Read [Bolger et al. 2014](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096), the academic paper about
 Trimmomatic.
 - ~~Read the [Trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).~~ (IF you already read this, then it is good to know, but is no longer required reading).
@@ -541,11 +543,63 @@ the `fastp` aligner.
 - Read the updated, 2023 paper about fastp: [Chen 2023](https://onlinelibrary.wiley.com/doi/10.1002/imt2.107)
 - Read the manual for fastp that is the [README on their Github page](https://github.com/OpenGene/fastp?tab=readme-ov-file)
 
+</details>
 
+#### In class (team quiz; running fastp; using FileZilla; introduce idea of shell programming)
 
+<details>
+  <summary>Click here for full details</summary>
+
+- Team quiz.
+- Running fastp on some data on Alpine.  Instructions are below, and you can check out the short video, [Running fastp on one pair of fastq files on Alpine](https://youtu.be/GLVj1cycPtE).
+  ```sh
+    module load slurm/alpine
+    srun --partition atesting -t 1:00:00 --pty /bin/bash
+
+    # if you don't have a fastp environment already
+    mamba create -n fastp -c bioconda  fastp
+
+    conda activate fastp
+
+    cd INTO_YOUR_CSU_CON_GEN_DIRECTORY
+    
+    mkdir -p results/trimmed results/qc/fastp
+    fastp ALL_THE_OPTIONS_YOU_FIGURED_OUT_IN_THE_TEAM_QUIZ  
+  ```
+- Transferring files from the cluster to your laptop.  In order to
+  view the html report from fastp, we can bring it to our laptop.  How?
+  There are many ways, but one easy GUI way that is endorsed by CURC,
+  [here](https://curc.readthedocs.io/en/latest/compute/data-transfer.html#filezilla)
+  is to use FileZilla.  The directions to do so are at the link above, and
+  I made a [short FileZilla video](https://youtu.be/mnCFtQ3-3Eg), that walks through these steps:
+  ```sh
+  # on alpine
+  cd ~  # change to your home directory
+
+  # make symbolic links to your projects and scratch directories
+  # to make it easy to get to them from your home directory
+  ln -s /projects/USERNAME projects
+  ln -s /scratch/alpine/USERNAME scratch
+
+  # Then, on your laptop, download and install FileZilla
+  # and follow the steps on the CURC page.
+  ```
+  
+- Let's think about what it would take to do this for every pair of fastq files
+  (which will get us to thinking about shell scripting and more!).  
+</details>
 
 ### Thursday, February 8, 2024
 
 #### Prep
 
-- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.4.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+- Read about shell scripting and do the follow-along and self-study exercises in the
+  [Shell Programmin](https://eriqande.github.io/nmfs-bioinf-2022/shell-prog.html) section
+  of a workshop I taught at NMFS in 2022. _Note! In order to get the files needed to run some of the
+  code, you will need to synchronize your `con-gen-csu` fork with the upstream repo and then pull
+  that down onto Alpine into the main branch.
+- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+- Read [Section 5](https://eriqande.github.io/nmfs-bioinf-2022/slurm.html) and
+  [Section 6](https://eriqande.github.io/nmfs-bioinf-2022/sbatch.html) in the NMFS workshop.  This is
+  about a cluster called SEDNA, but many of the principles are the same for Alpine---they both
+  use SLURM.
