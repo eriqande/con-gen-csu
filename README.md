@@ -551,14 +551,17 @@ the `fastp` aligner.
   <summary>Click here for full details</summary>
 
 - Team quiz.
-- Running fastp on some data on Alpine
+- Running fastp on some data on Alpine.  Check out the [short video](nolinkyet) of this:
   ```sh
     module load slurm/alpine
     srun --partition atesting -t 1:00:00 --pty /bin/bash
 
+    # if you don't have a fastp environment already
     mamba create -n fastp -c bioconda  fastp
 
     conda activate fastp
+
+    cd INTO_YOUR_CSU_CON_GEN_DIRECTORY
     
     mkdir -p results/trimmed results/qc/fastp
     fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
@@ -566,7 +569,7 @@ the `fastp` aligner.
           -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
           --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
           --detect_adapter_for_pe \
-          MORE_OPTIONS_AS_PER_TEAM_QUIZ    
+           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20    
   ```
 
 </details>
