@@ -571,7 +571,20 @@ the `fastp` aligner.
   There are many ways, but one easy GUI way that is endorsed by CURC,
   [here](https://curc.readthedocs.io/en/latest/compute/data-transfer.html#filezilla)
   is to use FileZilla.  The directions to do so are at the link above, and
-  I made a [short FileZilla video](not_here_yet).
+  I made a [short FileZilla video](not_here_yet), that walks through these steps:
+  ```sh
+  # on alpine
+  cd ~  # change to your home directory
+
+  # make symbolic links to your projects and scratch directories
+  # to make it easy to get to them from your home directory
+  ln -s /projects/USERNAME projects
+  ln -s /scratch/alpine/USERNAME scratch
+
+  # Then, on your laptop, download and install FileZilla
+  # and follow the steps on the CURC page.
+  ```
+  
 - Let's think about what it would take to do this for every pair of fastq files
   (which will get us to thinking about shell scripting and more!).  
 </details>
@@ -580,4 +593,4 @@ the `fastp` aligner.
 
 #### Prep
 
-- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.4.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
