@@ -564,7 +564,12 @@ the `fastp` aligner.
     cd INTO_YOUR_CSU_CON_GEN_DIRECTORY
     
     mkdir -p results/trimmed results/qc/fastp
-    fastp ALL_THE_OPTIONS_YOU_FIGURED_OUT_IN_THE_TEAM_QUIZ  
+    fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
+          -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
+          -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
+          --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+          --detect_adapter_for_pe \
+           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20      
   ```
 - Transferring files from the cluster to your laptop.  In order to
   view the html report from fastp, we can bring it to our laptop.  How?
