@@ -593,4 +593,13 @@ the `fastp` aligner.
 
 #### Prep
 
+- Read about shell scripting and do the follow-along and self-study exercises in the
+  [Shell Programmin](https://eriqande.github.io/nmfs-bioinf-2022/shell-prog.html) section
+  of a workshop I taught at NMFS in 2022. _Note! In order to get the files needed to run some of the
+  code, you will need to synchronize your `con-gen-csu` fork with the upstream repo and then pull
+  that down onto Alpine into the main branch.
 - Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+- Read [Section 5](https://eriqande.github.io/nmfs-bioinf-2022/slurm.html) and
+  [Section 6](https://eriqande.github.io/nmfs-bioinf-2022/sbatch.html) in the NMFS workshop.  This is
+  about a cluster called SEDNA, but many of the principles are the same for Alpine---they both
+  use SLURM.
