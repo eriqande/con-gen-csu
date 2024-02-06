@@ -571,7 +571,7 @@ the `fastp` aligner.
   There are many ways, but one easy GUI way that is endorsed by CURC,
   [here](https://curc.readthedocs.io/en/latest/compute/data-transfer.html#filezilla)
   is to use FileZilla.  The directions to do so are at the link above, and
-  I made a [short FileZilla video](not_here_yet), that walks through these steps:
+  I made a [short FileZilla video](https://youtu.be/mnCFtQ3-3Eg), that walks through these steps:
   ```sh
   # on alpine
   cd ~  # change to your home directory
