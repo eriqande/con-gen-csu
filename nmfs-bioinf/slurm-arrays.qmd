@@ -1,0 +1,234 @@
+# Slurm Job Arrays {#slurm-arrays}
+
+- The `sbatch` command takes an `--array=<array_spec>` option
+that let's you quickly launch---and easily manage---different
+instances of a single job that are all differentiated by
+a unique integer.
+- That integer is accessible within the script as the environment
+variable `SLURM_ARRAY_TASK_ID`.
+- We will see a little shell/awk script that is very helpful in
+this context.
+
+
+## Prepare for day three
+
+Get back to our playground directory. Then,
+to make sure that you have all the latest updates from the repository, 
+use git to pull down any new changes. 
+```{.sh filename="Paste this in to be sure you have the most up-to-date resources"}
+cd ~/nmfs-bioinf-2022/playground
+git pull origin main
+```
+
+Finally, we are going to check out 2 cores for interactive use for 3 hours.
+```{.sh filename="Paste this in to your shell"}
+srun -c 2 -t 03:00:00 --pty /bin/bash
+```
+## `sbatch`'s `--array` option
+
+When you give `sbatch` the `--array=1-10` option, say, then
+it runs your job 10 separate times, each time with the environment variable
+`SLURM_ARRAY_TASK_ID` set to a different number between
+1 and 10.  
+
+Let's see a quick example, using the following script:
+```{.sh filename="Contents of scripts/array_example.sh"}
+`r paste(readLines("playground/scripts/array_example.sh"), collapse = "\n")`
+```
+
+This is helpful to see a few of the variables that are defined in the
+environment of an array job:
+
+- `SLURM_ARRAY_JOB_ID`: the overall JOB_ID for the whole array
+- `SLURM_ARRAY_TASK_ID`: the index that runs from 1 to 10 in this case
+- `SLURM_JOB_ID`: The underlying job_id 
+
+Go ahead and run that:
+```{.sh filename="Paste this into you shell"}
+sbatch scripts/array_example.sh
+```
+And then use `myjobs` and `alljobs` to see what is happening on the cluster.
+
+When that job is done, look at the values written to the
+first 3 files:
+```{.sh filename="Paste this into you shell"}
+head results/array_example/output_{1..3}.txt
+```
+
+::: {.callout-note collapse=true}
+
+## Cool syntax: `{1..3}`
+
+On the shell, if you do something like:
+
+- `{2..7}`: that will expand to `2 3 4 5 6 7`
+- `{a..g}`: that will expand to `a b c d e f g`
+- `{0001..0015}`: that will expand to `0001 0002 0003 0004 0005 0006 0007 0008 0009 0010 0011 0012 0013 0014 0015`
+- `{F..M}`: that will expand to `F G H I J K L M`
+
+:::
+
+From this, we can infer that:
+
+- `SLURM_ARRAY_JOB_ID`: is a unique number that refers to the _entire set_ of jobs in the array
+- `SLURM_ARRAY_TASK_ID`: is the integer that is being cycled over in the array job
+- `SLURM_JOB_ID`: is a unique SLURM_JOB_ID of the specific array task.
+
+Also, in `alljobs` and `myjobs` you say that jobs can be referred to
+like `331989_4`.  That is `SLURM_ARRAY_JOB_ID` + underscore + `SLURM_ARRAY_TASK_ID`.
+For example: `scancel 376578_12`.
+
+In the slurm output files specified like:
+```{.sh}
+SBATCH --output=my_output_%A_%a
+```
+
+- `%A` expands to `SLURM_ARRAY_JOB_ID`
+- `%a` expands to `SLURM_ARRAY_TASK_ID`
+
+If you need to cancel a particular array task using `scancel` you would
+typically use `SLURM_ARRAY_JOB_ID` + underscore + `SLURM_ARRAY_TASK_ID`.
+
+## Variations on the `<array_spec>`
+
+There are some important variations to how you can specify that
+array numbers:
+
+- `--array=1-50`: simple, consecutive numbers
+- `--array=1-10:3`: 1 through 10 by threes, (so `1,4,7,10`)
+- `--array=1,2,3,6,9,15` non-consecutive numbers
+- `--array=1-21:10,100-200:50`: non-consecutive ranges.  It becomes (`1,11,21,100,150,200`)
+- `--array=1-10,4`: WARNING, this becomes `1,2,3,4,5,6,7,8,9,10,4`.  SLURM does not check that
+the array numbers are unique, so task array 4 would be run twice (possibly concurrently overwriting
+the output.)
+- `--array=1-20%5` VERY IMPORTANT SYNTAX:  Run the jobs, but don't ever have more the 5 running at a time.
+This is useful for making sure your jobs don't consume every last CPU on Sedna.
+
+Let's try putting all these together.  Read the following command and
+figure out what the array spec is doing:
+```{.sh filename="Paste this into you shell"}
+sbatch --array=100,200,300-400:10%5 scripts/array_example.sh
+```
+Then use `myjobs` and `alljobs` to see what is going on in the cluster.
+
+Do you ever have more than 5 jobs running?
+
+## Translating Array Indexes to Job Instances
+
+- The user is left to translate what a job array index of, say, 7, means in terms of what actions that array task should take.
+- Quite often you will want to map an array index to a different file to analyze, or perhaps a different region of a chromosome to do variant calling on, etc.
+- A flexible and generic way of doing this mapping from array indexes to job specifics is to first define the variables (things like filenames, etc.) required by each array task in a simple TAB-delimited text file in which the first row holds the names of the variables in different TAB-separated columns, and each row below that holds the values that those variables should take for different values of the array index.
+- The array index itself should be listed in the first column.
+
+### An example TAB-delimited file
+
+Let's explore the following file, which is at `inputs/fq-samples.tsv`:
+```{.sh filename="Contents of inputs/fq-samples.tsv"}
+`r paste(readLines("playground/inputs/fq-samples.tsv"), collapse = "\n")`
+```
+
+Something that would be really handy would be a little shell script
+that would pick out a particular line of that file that corresponded to
+the value in the `index` column and then define
+the shell variables `out_name`, `fq1`, `fq2`, `LB`, `Lane`, and `Sample` so that they
+could be used in an array script.
+
+Yesterday, we learned all the bash and `awk` machinery that would make that
+easy to do!
+
+### The `line-assign.sh` script
+
+Within the repository is a script called `scripts/line-assign.sh`, that looks like this:
+```{.sh filename="Contents of scripts/line-assign.sh"}
+`r paste(readLines("playground/scripts/line-assign.sh"), collapse = "\n")`
+```
+
+Let's see what sorts of results this produces:
+```{.sh filename="Paste this into your shell"}
+ ./scripts/line-assign.sh 3 inputs/fq-samples.tsv
+```
+Whoa! It returns a command line that assigns values to a lot of shell variables.
+
+So, if we wanted to run that command line, we would have to precede it with
+the `eval` keyword.  Let's do that like this:
+```{.sh filename="Paste this into your shell"}
+COMM=$(./scripts/line-assign.sh 3 inputs/fq-samples.tsv)
+eval $COMM
+```
+
+Now, that you have done that, you can see that a lot of variables
+have been assigned the values on the `index == 3` line of our TSV file:
+```{.sh filename="Paste this into your shell"}
+(
+echo "index:    $index"
+echo "out_name: $out_name"
+echo "fq1:      $fq1"
+echo "fq2:      $fq2"
+echo "LB:       $LB"
+echo "Lane:     $Lane"
+echo "Sample:   $Sample"
+)
+```
+
+Holy Smokes! These are variables that we could use in a job array script.
+
+In this case, we can assign values to the pesky Read Group string for `bwa mem`.
+
+## Putting it all together: a read-mapping job array
+
+We can now elaborate on our simple `bwa_map.sh` shell script
+and turn that into a SLURM job array script.
+
+Here is what it looks like:
+```{.sh filename="Contents of scripts/bwa_map_array.sh"}
+`r paste(readLines("playground/scripts/bwa_map_array.sh"), collapse = "\n")`
+```
+
+The main things to note there are:
+
+- The `SLURM_ARRAY_TASK_ID` is used to pick out the right line from our TSV
+file of information
+- The slurm output and error have been changed to use `%A_%a` notation.
+- There is a `#SBATCH --array=1-3` directive, now
+- The shell code that runs `bwa` and `samtools` uses  the variables that were
+defined by `eval`-ing the results of the call to the `line-assign.sh` script.
+
+Let's launch that job array and see how it goes:
+```{.sh filename="Paste this into your shell"}
+sbatch scripts/bwa_map_array.sh
+```
+Then check with `myjobs` and `alljobs` to see what is happening on Sedna.
+
+That runs really fast.
+
+Afterward you can check that the results exist:
+```{.sh filename="Paste this into your shell"}
+tree results/mapped
+```
+
+And you can look at the logs for `bwa mem`:
+```{.sh filename="Paste this into your shell"}
+tail  results/log/bwa_map_array/bwa_mem_samp_*
+```
+
+To see what one of the output files looks like:
+```{.sh filename="You could type or paste this"}
+module load bio/samtools/1.15.1
+samtools view results/mapped/samp_B.bam | less -S
+```
+
+Use the left and right arrows, and space bar and backspace to see all parts of the file.
+
+Remember to hit `q` to get out of the `less` viewer.
+
+## Wrap Up
+
+So, that was a quick tour of the capabilities of `sbatch`.
+
+Oddly enough, I haven't directly launched any jobs using `sbatch` (apart from the 
+example jobs for this course) in many months, because I drive all my bioinformatics
+projects using Snakemake, which sends my jobs to SLURM for me.
+
+Next up is a brief introduction to Snakemake!
+
+
