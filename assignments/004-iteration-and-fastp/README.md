@@ -44,9 +44,18 @@ samples in data/fastqs.
 6. Note that the script does an sha1sum on the trimmed output files.  This
 way we can quickly check if fastp is really reproducible (and that you
 trimmed the files as expected.)
-7. When you are satisfied with your script and its outputs, commit only the following files:
+7. When you are satisfied with your script and its outputs, commit only the following files to your `fastp-iteration` branch:
   - `assignments/004-iteration-and-fastp/script.sh`
-  - `assignments/004-iteration-and-fastp/sha1_fastqs.txt`
-and then push them to your fork and send me a pull request.  That constitute
-completion of the assignment.
+  - `assignments/004-iteration-and-fastp/sha1_fastqs.txt`. This is done with:
+    ```sh
+    git add assignments/004-iteration-and-fastp/script.sh assignments/004-iteration-and-fastp/sha1_fastqs.txt
+    git commit -m "Write your commit message between the quotes"
+    ```
+where you can customize the commit message.
+8. Push that commit (or those commits, if you made
+multiple commits) to the `fastp-iteration` on your fork.
+    ```sh
+    git push origin fastp-iteration
+    ```
+9. Go to your GitHub page and send me a pull request.  That constitutes completion of the assignment.
 
