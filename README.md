@@ -554,7 +554,7 @@ the `fastp` aligner.
 - Running fastp on some data on Alpine.  Instructions are below, and you can check out the short video, [Running fastp on one pair of fastq files on Alpine](https://youtu.be/GLVj1cycPtE).
   ```sh
     module load slurm/alpine
-    srun --partition atesting -t 1:00:00 --pty /bin/bash
+    srun --partition atesting -t 2:00:00 --pty /bin/bash
 
     # if you don't have a fastp environment already
     mamba create -n fastp -c bioconda  fastp
