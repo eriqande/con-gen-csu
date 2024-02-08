@@ -200,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prepare-for-day-two" id="toc-prepare-for-day-two" class="nav-link active" data-scroll-target="#prepare-for-day-two"><span class="header-section-number">4.1</span> Prepare for day two</a></li>
+  <li><a href="#prepare-for-this" id="toc-prepare-for-this" class="nav-link active" data-scroll-target="#prepare-for-this"><span class="header-section-number">4.1</span> Prepare for this</a></li>
   <li><a href="#bash-shell-scripts" id="toc-bash-shell-scripts" class="nav-link" data-scroll-target="#bash-shell-scripts"><span class="header-section-number">4.2</span> Bash shell scripts</a>
   <ul class="collapse">
   <li><a href="#script-files-must-be-executable" id="toc-script-files-must-be-executable" class="nav-link" data-scroll-target="#script-files-must-be-executable"><span class="header-section-number">4.2.1</span> Script files must be executable</a></li>
@@ -238,14 +238,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>Before we dive into cluster computing and the Joy of SLURM, we have two last topics to cover: bash shell scripts and bash functions.</p>
-<section id="prepare-for-day-two" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="prepare-for-day-two"><span class="header-section-number">4.1</span> Prepare for day two</h2>
-<p>Get back to our playground directory. Then, to make sure that you have all the latest updates from the repository, use git to pull down any new changes.</p>
+<section id="prepare-for-this" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="prepare-for-this"><span class="header-section-number">4.1</span> Prepare for this</h2>
+<p>Sync your fork of the repository. Then, make sure that you have all the latest updates from the repository by pulling them down with git. use git to pull down any new changes.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Paste this in to be sure you have the most up-to-date resources</strong></pre>
+<pre><strong>Use something like this in to be sure you have the most up-to-date resources</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/nmfs-bioinf-2022/playground</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> YOUR-CLONE-OF-YOUR-FORK-OF-THE-REPO</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -336,7 +336,7 @@ What’s this <code>#!</code> at the top of the file?
 <section id="running-a-script" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="running-a-script"><span class="header-section-number">4.2.2</span> Running a script</h3>
 <p>To run a script that is executable, you type the path to it.</p>
-<p>On Sedna, by default, the current working directory is not a place the computer looks for executable scripts, so we have to prepend <code>./</code> to its path:</p>
+<p>On some clusters, by default, the current working directory is not a place the computer looks for executable scripts, so we have to prepend <code>./</code> to its path:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this on the command line and hit RETURN.</strong></pre>
@@ -372,15 +372,25 @@ What’s this <code>#!</code> at the top of the file?
 <div class="code-with-filename-file">
 <pre><strong>Just give this a read</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/sam-stat-pp.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> <span class="va">$1</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gzip</span> <span class="at">-cd</span> <span class="va">$FILE</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-v</span> samp=<span class="va">$(</span><span class="fu">basename</span> <span class="va">${FILE</span><span class="op">/</span><span class="ss">_stats.tsv.gz</span><span class="op">/</span><span class="va">})</span> <span class="st">'</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    $1=="SN" &amp;&amp; /reads mapped:/ {rm = $4}</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">    $1=="SN" &amp;&amp; /reads properly paired:/ {rpp = $5}</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">    $1=="SN" &amp;&amp; /bases mapped \(cigar\):/ {bmc = $5}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">    END {print samp, rm, rpp, bmc}</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>See that we have replaced <code>data/samtools_stats/*.gz</code> with <code>$1</code>.</p>
-<p>We actually have that very script stored in <code>scripts/sam-stat-pp.sh</code>. And you can use it like this:</p>
+<p>Edit <code>sam-stats.sh</code> to look like the above. Now we can use it like this:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into the shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/sam-stat-pp.sh</span> <span class="st">"data/samtools_stats/s0*.gz"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./sam-stats.sh</span> <span class="st">"data/samtools_stats/s0*.gz"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here, we have passed in <code>"data/samtools_stats/s0*.gz"</code> as the first argument to the script, and, since we have a <code>$1</code> in the script where that goes, it does what it did before.</p>
 </section>

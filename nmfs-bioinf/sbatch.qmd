@@ -214,7 +214,7 @@ that doesn't do much:
 3. Then it just sits there for 15 minutes.
 
 ```{.sh filename="Contents of scripts/simple-15.sh"}
-`r paste(readLines("playground/scripts/simple-15.sh"), collapse = "\n")`
+`r paste(readLines("nmfs-bioinf/playground/scripts/simple-15.sh"), collapse = "\n")`
 ```
 
 ::: {.callout-warning}

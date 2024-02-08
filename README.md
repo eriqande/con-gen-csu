@@ -612,6 +612,12 @@ Shell programming.
     git switch main
     git pull origin main
     ```
+  After the shell programming "hands-on" we will talk a little about [Shell Scripts](http://localhost:3842/nmfs-bioinf/scripts-and-functions.html)
+
+#### Assignment due at beginning of class, Tuesday Feb. 13
+
+This assignment is about making a shell script to automate running fastp on the multiple files in `data/fastqs` in the
+course repository.  Detailed instructions for the assignment are in the [README for assignment 004](https://github.com/eriqande/con-gen-csu/tree/main/assignments/004-iteration-and-fastp).
 
 
 ### Tuesday, February 13, 2024
