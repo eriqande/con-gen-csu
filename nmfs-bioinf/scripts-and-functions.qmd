@@ -4,13 +4,14 @@ Before we dive into cluster computing and the Joy of SLURM,
 we have two last topics to cover: bash shell scripts
 and bash functions.
 
-## Prepare for day two
+## Prepare for this
 
-Get back to our playground directory. Then,
-to make sure that you have all the latest updates from the repository, 
+Sync your fork of the repository. Then,
+make sure that you have all the latest updates from the repository
+by pulling them down with git.
 use git to pull down any new changes. 
-```{.sh filename="Paste this in to be sure you have the most up-to-date resources"}
-cd ~/nmfs-bioinf-2022/playground
+```{.sh filename="Use something like this in to be sure you have the most up-to-date resources"}
+cd YOUR-CLONE-OF-YOUR-FORK-OF-THE-REPO
 git pull origin main
 ```
 
@@ -116,7 +117,7 @@ by the user.
 
 To run a script that is executable, you type the path to it.  
 
-On Sedna, by default, the current working directory is not a place
+On some clusters, by default, the current working directory is not a place
 the computer looks for executable scripts, so we have to prepend `./` to
 its path:
 ```{.sh filename="Type this on the command line and hit RETURN."}
@@ -152,16 +153,27 @@ script itself:
 
 So, we can rewrite our script as:
 ```{.sh filename="Just give this a read"}
-`r paste(readLines("playground/scripts/sam-stat-pp.sh"), collapse = "\n")`
+
+#!/bin/bash
+
+for FILE in $1; do
+  gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+    $1=="SN" && /reads mapped:/ {rm = $4}
+    $1=="SN" && /reads properly paired:/ {rpp = $5}
+    $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+    END {print samp, rm, rpp, bmc}
+  '
+done
+
 ```
 
 See that we have replaced `data/samtools_stats/*.gz` with
 `$1`.
 
-We actually have that very script stored in `scripts/sam-stat-pp.sh`.
-And you can use it like this:
+Edit `sam-stats.sh` to look like the above.  Now we can use it
+like this:
 ```{.sh filename="Paste this into the shell"}
-./scripts/sam-stat-pp.sh "data/samtools_stats/s0*.gz"
+./sam-stats.sh "data/samtools_stats/s0*.gz"
 ```
 
 Here, we have passed in `"data/samtools_stats/s0*.gz"` as the first
