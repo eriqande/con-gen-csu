@@ -1,0 +1,29 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "con-gen-csu"
+  author: "Eric C. Anderson"
+  date: "9/19/2022"
+  chapters:
+    - index.qmd
+    - nmfs-bioinf/quick-unix-review.qmd
+    - nmfs-bioinf/shell-prog.qmd
+    - nmfs-bioinf/awk-intro.qmd
+    - nmfs-bioinf/scripts-and-functions.qmd
+    - nmfs-bioinf/slurm.qmd
+    - nmfs-bioinf/sbatch.qmd
+    - nmfs-bioinf/slurm-arrays.qmd
+    - nmfs-bioinf/snake.qmd
+  sidebar:
+    logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: source
+

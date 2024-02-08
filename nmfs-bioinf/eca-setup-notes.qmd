@@ -1,0 +1,46 @@
+# Notes on Eric's Setup Process
+
+I wanted to be sure that I was not relying on systems I had already put in place,
+so I reverted myself back to a virgin .bashrc and .bash_profile.
+
+These are just notes to myself.  People shouldn't follow these steps...
+
+I copied my existing ones into `~/BACKUP_PROFILES`, then put the default ones
+into place:
+```{.sh}
+(base) [sedna: ~]--% cp /etc/skel/.bashrc ./
+(base) [sedna: ~]--% cp /etc/skel/.bash_profile ./
+```
+
+Then I logged out and back in.  Then I ran this line:
+```{.sh}
+eval "$(/opt/bioinformatics/miniconda3/bin/conda shell.bash hook)"
+```
+And I noted that in this base environment, `mamba` is available.
+
+I also listed all the environments, and I have a boatload in my home directory,
+but the main one that everyone is going to need is:
+```
+/opt/bioinformatics/miniconda3/envs/snakemake-7.7.0
+```
+
+So, after that, I added the `eval "$(/opt/bioinformatics/miniconda3/bin/conda shell.bash hook)"`
+line to my .bashrc and then logged out and back in.
+
+Then, I tried this:L
+```{.sh}
+# in: /home/eanderson/Documents/git-repos/nmfs-bioinf-2022/Snakemake-Example
+conda activate /opt/bioinformatics/miniconda3/envs/snakemake-7.7.0
+rm -rf results resources/genome.fasta.* resources/genome.dict
+
+# then
+snakemake -np --cores 20 --use-envmodules results/vcf/all.vcf
+
+# that knew just what to do.  And I tried that on a node with 20 cores
+snakemake  --cores 20 --use-envmodules results/vcf/all.vcf
+```
+
+
+
+
+

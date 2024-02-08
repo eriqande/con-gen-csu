@@ -1,0 +1,576 @@
+# Shell Programming {#shell-prog}
+
+- The bash shell is actually an interpreted programming language.
+- It has variables, `for` loops, flow control, etc.
+- Here, we survey just a few of the most useful constructs that let
+us to a lot of things, and particularly allow us to tackle
+repetitive tasks with grace.
+
+
+
+## Variables
+
+The bash shell can store strings into variables.  These variables can
+be accessed later.
+
+### Assigning variable values
+
+- bash is remarkably picky about how to assign a value to a variable.
+- Use the equals sign _with no spaces around it!_
+
+Here, we can assign a value to a variable called PHONE:
+```{.sh filename="Paste this into your shell"}
+PHONE=974-222-4444
+```
+
+In this case, the digits and dashes `974-222-4444` are treated as just
+a string of characters and assigned to the variable `PHONE`.
+
+::: {.callout-warning}
+
+## Let's make some mistakes
+
+Paste these commands into the shell and see what happens:
+```{.sh filename="Paste these mistakes into the shell and think about what is happening."}
+PHONE = 974-222-4444
+PHONE =974-222-4444
+PHONE= 974-222-4444
+```
+
+What does this tell us about how bash interprets commands with an equals sign?
+
+:::
+
+### Accessing variable values
+
+- The process of accessing the values stored in the variable is called
+"variable substitution.
+- It means: "Substitute the value for the variable where it appears on the command line."
+- In many programming languages, you can just write a variable's name and know that
+its value will be accessed, like in R:
+```{.r}
+Variable <- 16
+sqrt(Variable)
+```
+- **However, in bash, variable substitution is achieved by prepending `$` to the variable's name.**
+
+Witness:
+```{.sh filename="Paste this into your shell"}
+echo The value of PHONE is: $PHONE
+```
+
+Cool!
+
+- Remember: if you make a substitution to the menu at a fancy restaurant, it is going to cost you
+some dollars.  Same way when you make a variable substitution in bash: it costs you a dollar sign
+and you have to pay up front.
+
+
+### Valid bash variable names
+
+The bash shell demands that the names of variables:
+
+- Start with `_` (an underscore) or a letter
+- Then include only `_`, letters, or numbers
+
+```{.sh}
+# good variable names
+MY_JOBS
+_Now
+STRING
+i
+i_2
+i2
+
+# cannot be variable names
+1_node
+4THIS
+BIG-VAR
+file-name
+Sh**t!
+```
+
+::: {.callout-tip}
+
+## Self-study
+
+Choose one of the good variable names from the list above and
+assign the value `Good` to it.
+
+Choose of the bad variable names from the list above and
+try to assign the value `Bad` to it.
+
+:::
+
+::: {.callout-tip collapse=true}
+
+## Self-study answers
+
+Here is an example.
+```{.sh filename = "This works"}
+_Now=Good
+```
+
+Here is an example.
+```{.sh filename = "This does not work"}
+BIG-VAR=Bad
+```
+
+:::
+
+## Strings with spaces, etc:  Quoting.
+
+- If you want to assign a string to a variable that has spaces in it
+you can quote the string, which holds it together as one "unit."
+
+::: {.callout-warning collapse=true}
+
+## Bonus Info:
+
+When the bash shell is interpreting a line of input, it breaks
+it into chunks called _tokens_ which are separated by white space
+(spaces and TABS).  If you wrap a series of words in quotation
+marks, it turns them all into a single token.
+:::
+
+For example:
+```{.sh filename="Paste this into your shell"}
+Mandela_Quote="The greatest glory in living lies not in never falling, but in rising every time we fall."
+echo $Mandela_Quote
+```
+
+
+## Variable substitution and `"` vs `'`
+
+We have two types of quotes:
+
+- single quotes, like `'`
+- double quotes, like `"`
+
+They both chunk their contents into a single unit, but
+they behave very differently _with respect to variable
+substition_.
+
+- Single Quotes: surly and strict, you can't substitute 
+values for variables inside of these.
+
+Example:
+```{.sh filename="Paste this into your shell"}
+DESSERT="apple pie"
+echo 'Dessert tonight is $DESSERT'
+```
+
+
+- Double Quotes: soft and friendly, you CAN substitute 
+values for variables inside of these.
+
+Example:
+```{.sh filename="Paste this into your shell"}
+DESSERT="apple pie"
+echo "Dessert tonight is $DESSERT"
+```
+
+::: {.callout-tip}
+
+## Self study
+
+Assign values to three shell variables, `NAME`, `FOOD`, and `ACTIVITY`, so that
+when you run the following command, it makes sense:
+```{.sh filename="After assigning values to the three variables, run this command"}
+echo "My name is $NAME. I like to eat $FOOD, and I enjoy $ACTIVITY." 
+```
+:::
+
+::: {.callout-tip collapse=true}
+
+## Self Study answer
+
+For my case, I could put:
+```{.sh}
+NAME=Eric
+FOOD="steamed broccoli"
+ACTIVITY="inline skating long distances"
+```
+:::
+
+
+## Variables are not just to be echoed!
+
+Invariably, when learning how to use shell variables, all the
+examples have you using `echo` to print the value of the
+variable.  How boring and misleading.
+
+It is important to understand that after a value gets substituted
+onto the command line, the shell goes right ahead and evaluates
+the resulting command line.
+
+So, you can record shell variables that are command lines that
+do something, themselves, once they are run as a command line.
+
+For example, here we make a variable whose value is the command
+to decompress a file to stdout:
+```{.sh filename="Paste this into your shell"}
+MyComm="gzip -cd data/samtools_stats/s001_stats.tsv.gz"
+```
+And now if you just substitute that variable onto the command line
+```{.sh filename="Type this at the command line"}
+$MyComm
+```
+the uncompressed contents of the file `data/samtools_stats/s001_stats.tsv.gz` go
+zooming by on your screen.
+
+### Some subtlety about evaluation of substituted values
+
+If the value of the variable that is being evaluated includes _pipes_, 
+_redirections_, or _variable assignment_ statements, then if you just substitute
+it into the command line, it won't properly be evaluated as a command line
+in full.  For example, if `MyComm` was trying to decompress the file and
+pipe it to `less`, it doesn't work as expected:
+```{.sh filename="Paste this into your shell"}
+MyComm="gzip -cd data/samtools_stats/s001_stats.tsv.gz | less -S"
+```
+And now if you just substitute that variable onto the command line
+the shell gets confused, because it doesn't recognize the pipe as a pipe!
+```{.sh filename="Type this at the command line"}
+$MyComm
+```
+
+However, you can use the `eval` keyword before `$MyComm` to ensure
+that the shell recognizes that you intend for it to evaluate pipes,
+redirects, shell variable assignment, etc. in the substituted variable
+value as it normally would:
+```{.sh filename="Type this at the command line"}
+eval $MyComm
+```
+
+We will end up using this later.
+
+Remember, you can hit `q` to get out of the `less` page viewer.
+
+
+## Multiple commands on one line with `;`
+
+- You can put a `;` after a command, and it will behave like a line ending---the
+shell will run that command, and then go to the next.
+
+Example:
+```{.sh filname="Paste this into your terminal"}
+echo "Let us do this command and 2 others"; echo "here is number 2"; echo "and the third"
+```
+
+This comes in handy.
+
+
+::: {.callout-warning}
+
+## More about line endings like `;`
+
+There are two other things you might find at the end of a line:  `&` and `&&`
+
+- `&` at the end of the line means "run the command, but don't wait for it to finish.
+    - This runs the command "in the background" in some sense.
+    - This is not used very often when doing bioinformatics in a SLURM-driving system like that on Sedna
+- `&&` at the end of a command means "only run the _next_ command if the _previous one did not fail._
+    - This is very useful for making sure that you don't keep running later commands if an earlier one failed.
+    - There is also a `||` that is useful in this context, which is all about "exit status" of Unix commands, which
+      is beyond our purview today.
+      
+Examples:
+```{.sh filename="With just semicolons...Paste it into your shell"}
+echo "Yawp before it fails."; ls --not-option data ; echo "Yawp after it fails."
+```
+
+```{.sh filename="With the &&'s after each line...Paste it into your shell"}
+echo "Yawp before it fails." && ls --not-option data && echo "Yawp after it fails."
+```
+
+:::
+
+## Repetition
+
+Let's face it, bioinformatics, or any sort of data analysis or
+processing often involves doing the _same_ thing to a number of
+_different_ inputs.
+
+Most unix utilities are designed so that if you give it multiple inputs
+it will do the same thing to each and report the results in a way that is
+easy to understand.
+
+For example, to see how many lines, words, and characters are in each Quarto
+(the successor to RMarkdown) document that I used to make this website, we
+can use `wc` on all the files with a `.qmd` extension that are one directory
+level above where we are currently:
+```{.sh filename="Paste this into your shell"}
+wc ../*.qmd
+```
+
+This is nice.
+
+## For loops
+
+Sometimes, however, we have more complex operations to do, so we can't
+just provide multiple files to a single Unix utility.
+
+For example, let's say we want to know how many lines are in each of the
+samtools stats files in the `data/samtools_stats` directory.  We can't use
+`wc` directly, because these files are gzipped, and the result we get won't be
+equal to the number of lines, words, and characters in each file.
+
+For repetition in these cases, bash has a `for` loop.  Its syntax looks like this:
+```{.sh}
+for VAR in thing1 thing2 ... thingN; do
+  one or more commands where the value of VAR is set to each of the N things in turn
+done
+```
+
+The important "structural" parts of that are:
+
+- the `for`
+- the `in`
+- the semicolon after all the things
+- the `do`
+- the `done`
+
+Here is an example:
+```{.sh filename="Paste this into your terminal"}
+for LIKE in trout butterflies "blue skies" "mathematical notation"; do 
+  echo "I like $LIKE."
+done
+```
+
+
+Note that this is written over multiple lines, but we can substitute
+`;` for the ends of statements and put it all on one line. (Useful if we are
+just hacking away on the command line...)
+```{.sh filename="This does the same as the above one"}
+for LIKE in trout butterflies "blue skies" "mathematical notation"; do echo "I like $LIKE."; done
+```
+
+Note! Don't put a semicolon after `do`.
+
+::: {.callout-tip}
+
+## Self study
+
+We want to give the number of text lines, words, and characters from all
+the samtools_stats files.  
+
+**Prep:** Here is a command that prints the name of each
+file. 
+```{.sh filename="Paste this into the terminal"}
+for FILE in data/samtools_stats/*.gz; do echo $FILE; done
+```
+
+**Task:** I have added the `-n` option to the `echo` command which
+makes it not print a line ending. Your
+task is to replace YOUR_STUFF_HERE with an appropriate shell command
+to decompress each file and then print the number of lines, words, and characters
+in it:
+```{.sh filename="Paste this, edit YOUR_STUFF_HERE, and run it"}
+for FILE in data/samtools_stats/*.gz; do echo -n $FILE; YOUR_STUFF_HERE; done
+```
+
+:::
+
+::: {.callout-tip collapse=true}
+
+## Self Study answer
+
+Your edited command line should look like this:
+```{.sh}
+for FILE in data/samtools_stats/*.gz; do echo -n $FILE; gzip -cd $FILE | wc; done
+```
+
+:::
+
+
+## Redirect `stdout` from the `done`
+
+Here is something that is not always obvious: you can redirect or
+pipe the `stdout` of the whole `for` loop by using `>` or `|` immediately
+after the `done` keyword.
+
+Using the example from the self study above:
+```{.sh filename="Paste this into your terminal"}
+for FILE in data/samtools_stats/*.gz; do 
+  echo -n $FILE; gzip -cd $FILE | wc; 
+done > word_counts.txt
+```
+
+Now look at what is in `word_counts.txt`.
+
+## A few useful topics, rapidly
+
+### basename
+
+- If you have a path name to a file `this_dir/that_dir/my_file3.txt`, but you
+want to have the string for just the file name, `my_file3.txt`, you can use the
+`basename` command: 
+```{.sh filename="Try these"}
+basename this_dir/that_dir/my_file3.txt
+basename ~/Documents/git-repos/CKMRpop/R/plot_conn_comps.R
+```
+
+### Capture `stdout` into a token to put on the command line
+
+This is a pretty cool one, and is really nice if you want to capture
+a bit of output for use at a later time.
+
+Basically, if you run a command inside parentheses that are
+_immediately_ preceded by a `$`, like `$(command)`, then the
+`stdout` output of `command` gets put onto the command line
+as a single token.
+
+Observe:
+```{.sh filename="Paste this into your terminal"}
+START_TIME=$(date)
+sleep 3
+STOP_TIME=$(date)
+echo "We started at $START_TIME, and finished at $STOP_TIME, and it is now $(date)"
+```
+
+Or even:
+```{.sh filename="Paste this into your terminal"}
+WCOUT=$(gzip -cd data/samtools_stats/s016_stats.tsv.gz | wc)
+echo $WCOUT
+```
+::: {.callout-note collapse=true}
+
+## Unix commands we just saw:
+
+- `date`: prints the current time and date to `stdout`.
+- `sleep`: causes the shell to pause for however many seconds you tell it to,
+  like `sleep 3` for three seconds, `sleep 180` for three minutes.
+:::
+
+## Fancier variable substitution
+
+### Wrap it in curly braces ${VAR}
+
+Especially if you want to substitute a variable into a string
+adjacent to a letter or number or underscore, you can wrap it in curly braces.
+```{.sh filename="Try this"}
+sample=001
+# this works:
+echo "The sequences are in the file called ${sample}_seqs.fq.gz"
+
+# this does not work the way you want it to
+echo "The sequences are in the file called $sample_seqs.fq.gz"
+```
+
+::: {.callout-tip}
+
+## Self study
+
+Why do you think the second `echo` line above produced the output that it did?
+:::
+
+::: {.callout-tip collapse=true}
+
+## Self Study answer
+
+Since `_` is a valid character for a variable name, `$sample_seqs.fq.gz`
+gets broken up by the shell as `$sample_seqs` plus `.fq.gz`, and there
+is no variable named `sample_seqs`, so the shell just substitutes an
+empty string into `$sample_seqs`.
+:::
+
+### Variable modification while substituting it
+
+bash has a whole lot of tricky syntaxes for manipulating
+variable values when substituting them onto the command line.
+
+The one I use more than any other is `${VAR/pattern/replacement}`.
+This looks for a text pattern `pattern` in the variable `VAR` and replaces
+it with the text `replacement`.  
+
+Here are some examples.
+```{.sh filename="Fancy substitution fun. Paste into your terminal."}
+file=myfile.eps
+echo ${file/eps/pdf}
+
+# or maybe you want to get the sample name, s007
+# out of a file path like data/samtools_stats/s007_stats.tsv.gz
+path=data/samtools_stats/s007_stats.tsv.gz
+echo $(basename ${path/_stats.tsv.gz/})
+```
+Whoa! On that last one we nested a `${//}` inside a `$()`!
+
+::: {.callout-warning }
+
+## Hot tip!
+
+You can use `*` the way that you might when _globbing_ filenames
+on the command line in the _pattern_ for variable substitution with
+`${var/pattern/replacement}`:
+
+```{.sh filename="If we want to extract just the s001 part..."}
+STRING="A-whole-lot-of-junk-before-then_s001_and-a-whole-lot_of-other-garbage.63713973"
+
+# remove all the garbage in the beginning
+N1=${STRING/*then_/}
+
+# see what we have at this point
+echo $N1
+
+# remove the remaining junk off the end
+N2=${N1/_and-*}
+
+# see what we ended up with
+echo $N2
+```
+:::
+
+
+### Grouping multiple commands with `(...)`
+
+- Sometimes it is convenient lump a number of commands
+together into a group.
+- The main reason I do this is to capture `stdout` or `stderr` from
+all of them into a single file with one redirect (as opposed to
+redirecting (`>`) output from the first command, and then redirect-appending
+(`>>`) output from successive commands to the same place).
+- When you wrap a series of commands in a pair of parentheses, they
+get executed as a group and you can redirect that from the right side
+of the last parenthesis:
+```{.sh filename="Paste this into your terminal"}
+(
+  echo "This"
+  echo "that"
+  echo "and the"
+  echo "other"
+) > group_it.txt
+```
+Check out the result with `cat group_it.txt`.
+
+
+::: {.callout-warning collapse=true}
+
+## Bonus Info:
+
+With grouping parentheses, you can also redirect `stderr` to a single place
+even if there are pipes involved. Comparing to the Self-Study answer at the
+end of the Quick Unix Review session:
+```{.sh filename="A stderr example"}
+(gzip -cd --bogus-option data/samtools_stats/s001_stats.tsv.gz | wc) > so.txt 2>se.txt
+```
+Even though the error happened with the `gzip` command, the error message gets
+relayed through to be redirected into `se.txt`.
+
+:::
+
+
+## Leaving here for now...
+
+You might be thinking, "Wow, could I use a `for` loop or something
+like it in bash to cycle over the lines of a text file to process
+each line in turn?"
+
+The answer, is, "You can, but bash is not always the best tool for processing
+text files...especially if they are large."
+
+There is a Unix utility called `awk` that is much better for that.
+
+That is where we are heading next.
+
+

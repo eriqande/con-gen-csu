@@ -1,0 +1,307 @@
+# Bash scripts and functions {#script-func}
+
+Before we dive into cluster computing and the Joy of SLURM,
+we have two last topics to cover: bash shell scripts
+and bash functions.
+
+## Prepare for this
+
+Sync your fork of the repository. Then,
+make sure that you have all the latest updates from the repository
+by pulling them down with git.
+use git to pull down any new changes. 
+```{.sh filename="Use something like this in to be sure you have the most up-to-date resources"}
+cd YOUR-CLONE-OF-YOUR-FORK-OF-THE-REPO
+git pull origin main
+```
+
+## Bash shell scripts
+
+We have been doing all of our bash scripting by writing commands
+on the command line.
+
+Useful bash code can be stored in a text file called a script,
+and then run like a normal Unix utility.
+
+To illustrate this, we will copy our samtools-stats-processing
+commands from before into a file using the `nano` text editor.
+
+At your command line, type this:
+```{.sh filename="Type this at the command line"}
+nano sam-stats.sh
+```
+
+This opens a file called `sam-stats.sh` with a text editor called `nano`.  
+
+The convention with bash shell scripts is to give them a `.sh` extension,
+but this is not required.
+
+Now we copy our commands into `nano`.
+```{.sh filename="Copy this onto your clipboard and paste it into nano in your terminal"}
+#!/bin/bash
+
+for FILE in data/samtools_stats/*.gz; do
+  gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+    $1=="SN" && /reads mapped:/ {rm = $4}
+    $1=="SN" && /reads properly paired:/ {rpp = $5}
+    $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+    END {print samp, rm, rpp, bmc}
+  '
+done
+```
+
+
+Then:
+
+1. do `cntrl-X` 
+2. Answer `Y` when asked if you want to save the file
+3. Hit return to save the file as `sam-stats.sh`
+
+Voila! That should exit the `nano` editor, and now you have a script containing that bash code.
+
+Check out its contents with:
+```{.sh filename="Type this at the command line"}
+cat sam-stats.sh
+```
+
+
+::: {.callout-warning}
+
+### What's this `#!` at the top of the file?
+
+That is colloquially referred to as the `shebang` line.
+
+A `#` usually tells the shell to "ignore everything to the right of the `#` on this line"
+
+`#` is used to precede comments in your code.
+
+However, in this case, at the top of the file and followed by a `!`
+it tells the computer what language to use to interpret this file.
+
+In our case `/bin/bash` is where the bash shell interpreter typically
+is found on most Unix or Linux system.
+
+(If bash is the default shell on your system, you may not always need to
+have the shebang line, but it is good practice to do so.)
+:::
+
+
+### Script files must be executable
+
+The Unix operating system distinguishes between files that
+just hold data, and files that can the run or be "executed" by the
+computer.  
+
+For your bash commands in a script to run on the computer, it must be
+of an executable type.
+
+We can make the file executable using the `chmod` command, like this:
+```{.sh filename="Paste this into your shell"}
+chmod u+x sam-stats.sh
+```
+
+If we then use `ls -l` to list the file in long format like this:
+```{.sh filename="Type this in"}
+ls -l sam-stats.sh
+```
+
+we see:
+```{.sh}
+-rwxrw-r-- 1 eanderson eanderson 317 Oct 14 13:40 sam-stats.sh
+```
+
+The `x` in the first field of that line indicates that the file is executable
+by the user.
+
+### Running a script 
+
+To run a script that is executable, you type the path to it.  
+
+On some clusters, by default, the current working directory is not a place
+the computer looks for executable scripts, so we have to prepend `./` to
+its path:
+```{.sh filename="Type this on the command line and hit RETURN."}
+./sam-stats.sh
+```
+
+That runs our script.
+
+### Scripts are more useful if you can specify the inputs
+
+So, that runs our script and produces results, but that is not
+so useful.  We already had those results, in a sense.
+
+Shell scripts become much more useful when you can change the inputs
+that go to them.  
+
+One way to do so involves using _positional parameters_
+
+### Arguments following a script can be accessed within the script
+
+If you put arguments after a script on the command line, for example like:
+```{.sh filename="Don't paste this in anywhere"}
+script.sh arg1 some_other_arg  And_another_arg
+```
+then in the
+script itself:
+
+- the value of the first argument (`arg1`) is accessible as `$1`
+- the value of the second argument (`some_other_arg1`) is accessible as `$2`
+- the value of the third argument (`And_another_arg`) is accessible as `$3`
+
+...and so forth for as many arguments as you want.  
+
+So, we can rewrite our script as:
+```{.sh filename="Just give this a read"}
+
+#!/bin/bash
+
+for FILE in $1; do
+  gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+    $1=="SN" && /reads mapped:/ {rm = $4}
+    $1=="SN" && /reads properly paired:/ {rpp = $5}
+    $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+    END {print samp, rm, rpp, bmc}
+  '
+done
+
+```
+
+See that we have replaced `data/samtools_stats/*.gz` with
+`$1`.
+
+Edit `sam-stats.sh` to look like the above.  Now we can use it
+like this:
+```{.sh filename="Paste this into the shell"}
+./sam-stats.sh "data/samtools_stats/s0*.gz"
+```
+
+Here, we have passed in `"data/samtools_stats/s0*.gz"` as the first
+argument to the script, and, since we have a `$1` in the script
+where that goes, it does what it did before.
+
+### Now we can use it on other samtools stats files
+
+It is not very exciting to see it just run again on the same
+set of files.
+
+But, now we could direct the script to operate on a different
+set of files, just by changing the argument that we pass to the
+script.
+
+I have put a much larger set of samtools stats files within subdirectory of the `/share`
+directory on Sedna.  You should be able to list them all with:
+```{.sh filename="Paste this into your shell. This should work..."}
+ ls /share/all/eriq/big_sam_stats/s*.gz
+```
+
+Whoa! 275 files.  (They are here on Sedna, in the shared folder, because I didn't want to
+put them all on GitHub.)
+
+But, now, we can summarize them all just by pointing our script to
+them:
+
+```{.sh filename="This should work on Sedna, Paste it into your shell"}
+./scripts/sam-stat-pp.sh "/share/all/eriq/big_sam_stats/s*.gz"
+```
+
+That is fast.  
+
+If we wanted to redirect that into a file we could do so 
+
+::: {.callout-warning collapse=true}
+
+## Fun Tip! -- Record the positional parameters passed to a script.
+
+Sometimes it is nice to know and record the values of all the arguments
+passed to a script that you have written.  This can be done
+by adding something like this to your script:
+```{.sh}
+echo "Script $0 started at $(date) with arguments $* " > /dev/stderr
+```
+In that:
+
+- `$0` is the path to the script
+- `$(date)` puts the current date and time in the line
+- `$*` expands to a single string with all the arguments passed to the script
+- `> /dev/stderr` redirects `stdout` from `echo` to `stderr`
+
+So, for the last script, that might look like:
+```{.sh}
+#!/bin/bash
+
+echo "Script $0 started at $(date) with arguments $* " > /dev/stderr
+
+for FILE in $1; do
+  gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+    $1=="SN" && /reads mapped:/ {rm = $4}
+    $1=="SN" && /reads properly paired:/ {rpp = $5}
+    $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+    END {print samp, rm, rpp, bmc}
+  '
+done
+```
+
+:::
+
+
+## Bash functions
+
+Like most programming languages, you can define functions in bash.
+
+The syntax for defining a function named `MyFunc` is:
+```{.sh filename="Just read this"}
+function MyFunc {
+  ...code that MyFunc executes...
+}
+```
+In this regard, it has a similar syntax to R.  
+
+Once defined, you can use the name of the function (in the above
+case, `MyFunc`) as if it were just another Unix command.
+
+### Example: congratulate yourself on making it through your day
+
+Here is a gratuitous example: we make a bash function called
+`congrats` that tells us what time it is and encourages us to keep
+getting through our day:
+```{.sh filename="Paste this into your terminal"}
+function congrats { echo "It is now $(date).  Congrats on making it this far in your day."; }
+```
+
+::: {.callout-warning}
+
+## Warning
+
+Curly braces in bash are extremely finicky.  They don't like to be near
+other characters.  In the above, the space after the `{` is critical,
+as is the `;` before the `}`.  (The last `}` needs to have a `;` before it
+if it does not have a line ending before it).
+
+:::
+
+Now, you can just type `congrats` at the command line:
+```{.sh filename="Type this on the command line"}
+congrats
+```
+
+### Bash functions take positional parameters too
+
+We can rewrite our function as `congrats2` so that it can use
+two arguments, the first a name, and the second an adjective:
+```{.sh filename="Paste this into your terminal"}
+function congrats2 { 
+  echo "It is now $(date).  Congrats, $1, you are $2."
+}
+```
+
+Now, you can use that function and supply it with whatever names and adjectives
+you would like:
+```{.sh filename="Paste these in and see what it does."}
+congrats2 Fred splendid
+congrats2 Eric tired
+congrats2 Amy amazing
+```
+
+We will write a few functions, later, to simplify our life in SLURM.
+
