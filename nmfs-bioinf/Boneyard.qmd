@@ -1,0 +1,36 @@
+---
+title: "BONEYARD"
+---
+
+
+
+Not only that, but you can capture line endings in quoted material.
+
+```{.sh filename="Paste this into your shell"}
+Chaucer_Quote="Whan that Aprill with his shoures soote
+The droghte of March hath perced to the roote,
+And bathed every veyne in switch licour
+Of which vertu engendred is the flour;
+Whan Zephirus eek with his sweete breeth
+Inspired hath in every holt and heeth
+The tendre croppes, and the yonge sonne
+Hath in the Ram his half cours yronne,
+And smale foweles maken melodye,
+That slepen al the nyght with open ye
+(So Priketh hem Nature in hir corages),
+Thanne longen folk to goon on pilgrimages"
+```
+
+Then hit return a few times to clear your screen/prompt, and do:
+```{.sh filename="Paste this into your shell"}
+echo $Chaucer_Quote
+```
+
+
+
+
+
+
+
+
+
