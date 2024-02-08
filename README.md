@@ -516,7 +516,10 @@ is just an avuncular overview of how tmux works.
 
 <details>
   <summary>Click here for full details</summary>
-  
+
+- Start with a discussion of the starting point of branches, keeping
+`main` synced to `main` and then branching off of `main`.
+- Also, discuss Illumina Seq Homework #6
 - I will present a little about the Chinook salmon data.
 - We will discuss the batch effects paper.
 - We might encourage the Mac users to start getting tmux integrated into iTerm.
@@ -527,15 +530,111 @@ They can do this by using the instructions in
 
 ### Tuesday, February 6, 2024
 
-#### Prep
+#### Prep (read 3 academic articles and one software manual)
 
-- Read about the [trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).
+<details>
+  <summary>Click here for full details</summary>
+  
+- Read [Bolger et al. 2014](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096), the academic paper about
+Trimmomatic.
+- ~~Read the [Trimmomatic manual](https://github.com/eriqande/con-gen-csu/blob/main/assignments/readings/TrimmomaticManual_V0.32.pdf) (Click the download link to get a proper PDF version).~~ (IF you already read this, then it is good to know, but is no longer required reading).
+- Read [Chen et al. 2018](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234), the academic paper about
+the `fastp` aligner.
+- Read the updated, 2023 paper about fastp: [Chen 2023](https://onlinelibrary.wiley.com/doi/10.1002/imt2.107)
+- Read the manual for fastp that is the [README on their Github page](https://github.com/OpenGene/fastp?tab=readme-ov-file)
 
+</details>
 
+#### In class (team quiz; running fastp; using FileZilla; introduce idea of shell programming)
 
+<details>
+  <summary>Click here for full details</summary>
+
+- Team quiz.
+- Running fastp on some data on Alpine.  Instructions are below, and you can check out the short video, [Running fastp on one pair of fastq files on Alpine](https://youtu.be/GLVj1cycPtE).
+  ```sh
+    module load slurm/alpine
+    srun --partition atesting -t 2:00:00 --pty /bin/bash
+
+    # if you don't have a fastp environment already
+    mamba create -n fastp -c bioconda  fastp
+
+    conda activate fastp
+
+    cd INTO_YOUR_CSU_CON_GEN_DIRECTORY
+    
+    mkdir -p results/trimmed results/qc/fastp
+    fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
+          -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
+          -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
+          --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+          --detect_adapter_for_pe \
+           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20      
+  ```
+- Transferring files from the cluster to your laptop.  In order to
+  view the html report from fastp, we can bring it to our laptop.  How?
+  There are many ways, but one easy GUI way that is endorsed by CURC,
+  [here](https://curc.readthedocs.io/en/latest/compute/data-transfer.html#filezilla)
+  is to use FileZilla.  The directions to do so are at the link above, and
+  I made a [short FileZilla video](https://youtu.be/mnCFtQ3-3Eg), that walks through these steps:
+  ```sh
+  # on alpine
+  cd ~  # change to your home directory
+
+  # make symbolic links to your projects and scratch directories
+  # to make it easy to get to them from your home directory
+  ln -s /projects/USERNAME projects
+  ln -s /scratch/alpine/USERNAME scratch
+
+  # Then, on your laptop, download and install FileZilla
+  # and follow the steps on the CURC page.
+  ```
+  
+- Let's think about what it would take to do this for every pair of fastq files
+  (which will get us to thinking about shell scripting and more!).  
+</details>
 
 ### Thursday, February 8, 2024
 
+Shell programming.  
+
 #### Prep
 
-- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.4.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+- Read the eca-bioinf-handbook section from section [5.2](https://eriqande.github.io/eca-bioinf-handbook/shell-programming.html#the-structure-of-a-bash-script)
+  through section 5.10, inclusive.
+
+#### In Class (Working together through some notes/exercises)
+
+- We will work together through the [Shell Programming section](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/shell-prog.html).
+  For this to work well for you, you will need to sync the main branch of your fork (on the GitHub website), and then pull that down into the main
+  branch of your clone on your cluster:
+    ```sh
+    git switch main
+    git pull origin main
+    ```
+  After the shell programming "hands-on" we will talk a little about [Shell Scripts](http://localhost:3842/nmfs-bioinf/scripts-and-functions.html)
+
+#### Assignment due at beginning of class, Tuesday Feb. 13
+
+This assignment is about making a shell script to automate running fastp on the multiple files in `data/fastqs` in the
+course repository.  Detailed instructions for the assignment are in the [README for assignment 004](https://github.com/eriqande/con-gen-csu/tree/main/assignments/004-iteration-and-fastp).
+
+
+### Tuesday, February 13, 2024
+
+SLURM
+
+#### Prep
+
+- Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+
+
+#### In class (working through some SLURM)
+
+- We will work together through the [SLURM Intro](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm.html). This is
+  about a cluster called SEDNA, but many of the principles are the same for Alpine---they both
+  use SLURM.
+
+### Thursday, February 15, 2024
+
+
