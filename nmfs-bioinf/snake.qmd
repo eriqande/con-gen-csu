@@ -1,0 +1,18 @@
+#  Snakemake Tutorial Introduction {#snake}
+
+- Snakemake is a Python-based system for orchestrating bioinformatic workflows.
+- It is loosely based on the GNU utility `make` that was designed
+for coordinating the compilation of large software projects.
+- But, it is tailored to bioinformatic problems and it is _much_ easier
+to use the `make` (in my opinion).
+- Nonetheless, it has a bit of a learning curve.
+
+Our goal today is to let y'all interact with Snakemake on a small
+example project, to get a sense for some of its features.
+
+This part of the presentation is structured as a set of slides,
+rather than as a book.  
+
+Please clink on this following link:
+
+[Snakemake Slides](https://eriqande.github.io/nmfs-bioinf-2022/snake-slides.html#/section)

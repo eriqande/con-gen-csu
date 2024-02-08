@@ -554,7 +554,7 @@ the `fastp` aligner.
 - Running fastp on some data on Alpine.  Instructions are below, and you can check out the short video, [Running fastp on one pair of fastq files on Alpine](https://youtu.be/GLVj1cycPtE).
   ```sh
     module load slurm/alpine
-    srun --partition atesting -t 1:00:00 --pty /bin/bash
+    srun --partition atesting -t 2:00:00 --pty /bin/bash
 
     # if you don't have a fastp environment already
     mamba create -n fastp -c bioconda  fastp
@@ -564,7 +564,12 @@ the `fastp` aligner.
     cd INTO_YOUR_CSU_CON_GEN_DIRECTORY
     
     mkdir -p results/trimmed results/qc/fastp
-    fastp ALL_THE_OPTIONS_YOU_FIGURED_OUT_IN_THE_TEAM_QUIZ  
+    fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
+          -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
+          -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
+          --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+          --detect_adapter_for_pe \
+           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20      
   ```
 - Transferring files from the cluster to your laptop.  In order to
   view the html report from fastp, we can bring it to our laptop.  How?
@@ -591,15 +596,45 @@ the `fastp` aligner.
 
 ### Thursday, February 8, 2024
 
+Shell programming.  
+
 #### Prep
 
-- Read about shell scripting and do the follow-along and self-study exercises in the
-  [Shell Programmin](https://eriqande.github.io/nmfs-bioinf-2022/shell-prog.html) section
-  of a workshop I taught at NMFS in 2022. _Note! In order to get the files in the directory `data/samtools_stats` needed to run some of the
-  code, you will need to synchronize your `con-gen-csu` fork with the upstream repo and then pull
-  that down onto Alpine into the main branch.
+- Read the eca-bioinf-handbook section from section [5.2](https://eriqande.github.io/eca-bioinf-handbook/shell-programming.html#the-structure-of-a-bash-script)
+  through section 5.10, inclusive.
+
+#### In Class (Working together through some notes/exercises)
+
+- We will work together through the [Shell Programming section](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/shell-prog.html).
+  For this to work well for you, you will need to sync the main branch of your fork (on the GitHub website), and then pull that down into the main
+  branch of your clone on your cluster:
+    ```sh
+    git switch main
+    git pull origin main
+    ```
+  After the shell programming "hands-on" we will talk a little about [Shell Scripts](http://localhost:3842/nmfs-bioinf/scripts-and-functions.html)
+
+#### Assignment due at beginning of class, Tuesday Feb. 13
+
+This assignment is about making a shell script to automate running fastp on the multiple files in `data/fastqs` in the
+course repository.  Detailed instructions for the assignment are in the [README for assignment 004](https://github.com/eriqande/con-gen-csu/tree/main/assignments/004-iteration-and-fastp).
+
+
+### Tuesday, February 13, 2024
+
+SLURM
+
+#### Prep
+
 - Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
-- Read [Section 5](https://eriqande.github.io/nmfs-bioinf-2022/slurm.html) and
-  [Section 6](https://eriqande.github.io/nmfs-bioinf-2022/sbatch.html) in the NMFS workshop.  This is
+
+
+#### In class (working through some SLURM)
+
+- We will work together through the [SLURM Intro](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm.html). This is
   about a cluster called SEDNA, but many of the principles are the same for Alpine---they both
   use SLURM.
+
+### Thursday, February 15, 2024
+
+
