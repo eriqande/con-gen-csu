@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>con-gen-csu - 1&nbsp; Quick Unix Review</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../nmfs-bioinf/shell-prog.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/quick-unix-review.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">con-gen-csu</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/quick-unix-review.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/shell-prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/awk-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/scripts-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bash scripts and functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sedna and SLURM intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sbatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm-arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-bash" id="toc-what-is-bash" class="nav-link active" data-scroll-target="#what-is-bash"><span class="header-section-number">1.1</span> What is <code>bash</code>?</a></li>
+  <li><a href="#setting-up-our-workspace" id="toc-setting-up-our-workspace" class="nav-link" data-scroll-target="#setting-up-our-workspace"><span class="header-section-number">1.2</span> Setting up our workspace</a></li>
+  <li><a href="#a-motivating-example" id="toc-a-motivating-example" class="nav-link" data-scroll-target="#a-motivating-example"><span class="header-section-number">1.3</span> A motivating example</a>
+  <ul class="collapse">
+  <li><a href="#one-of-our-missions" id="toc-one-of-our-missions" class="nav-link" data-scroll-target="#one-of-our-missions"><span class="header-section-number">1.3.1</span> (One of) Our Missions…</a></li>
+  </ul></li>
+  <li><a href="#the-anatomy-of-a-unix-command" id="toc-the-anatomy-of-a-unix-command" class="nav-link" data-scroll-target="#the-anatomy-of-a-unix-command"><span class="header-section-number">1.4</span> The anatomy of a Unix command</a>
+  <ul class="collapse">
+  <li><a href="#what-do-all-these-options-mean" id="toc-what-do-all-these-options-mean" class="nav-link" data-scroll-target="#what-do-all-these-options-mean"><span class="header-section-number">1.4.1</span> What do all these options mean?</a></li>
+  </ul></li>
+  <li><a href="#streams-and-redirection" id="toc-streams-and-redirection" class="nav-link" data-scroll-target="#streams-and-redirection"><span class="header-section-number">1.5</span> Streams and redirection</a></li>
+  <li><a href="#pipes-redirecting-into-another-unix-command" id="toc-pipes-redirecting-into-another-unix-command" class="nav-link" data-scroll-target="#pipes-redirecting-into-another-unix-command"><span class="header-section-number">1.6</span> Pipes: redirecting into another Unix command</a></li>
+  <li><a href="#stderr-the-stream-unix-uses-to-yell-at-you" id="toc-stderr-the-stream-unix-uses-to-yell-at-you" class="nav-link" data-scroll-target="#stderr-the-stream-unix-uses-to-yell-at-you"><span class="header-section-number">1.7</span> <code>stderr</code>: The stream Unix uses to yell at you</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="quick-unix-review" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>We are going to take 15 or 20 minutes to do a whirlwind review of some crucial Unix topics</p>
+<section id="what-is-bash" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-bash"><span class="header-section-number">1.1</span> What is <code>bash</code>?</h2>
+<p>We start by acknowledging that there are many different flavors of Unix and Linux. I will refer to them all simply as Unix or unix.</p>
+<p>Also, there are a number of different <em>shells</em> for Unix. The shell is the part that interprets commands.</p>
+<p>We will be talking about the <code>bash</code> shell. This is the default shell on Sedna, and it is also the most popular shell for bioinformatics.</p>
+<p>Bash stands for “Bourne-again shell”. It is an update to an earlier shell called the Bourne shell.</p>
+</section>
+<section id="setting-up-our-workspace" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="setting-up-our-workspace"><span class="header-section-number">1.2</span> Setting up our workspace</h2>
+<ul>
+<li>I have prepared a repository with a few different example data files that we be using.</li>
+<li>It also contains all these notes.</li>
+<li>I want everyone to download it to their home directory and then <code>cd</code> into its <code>playground</code> directory, where we will be playing today and tomorrow.</li>
+</ul>
+<p>After logging onto Sedna:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/eriqande/nmfs-bioinf-2022.git</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nmfs-bioinf-2022/playground</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we say “Paste this into your shell” or “Type this at your command prompt” we also implicitly mean “Hit RETURN afterward.”</p>
+</div>
+</div>
+<ul>
+<li>This is where our working directory will be for the next two days.</li>
+<li>Use the <code>tree</code> utility to see the files that we have to play with within this playground:</li>
+</ul>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Type this command at your prompt</strong></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>data</code> directory has a few things that we will be using for examples.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unix commands we just saw:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>cd</code>: change directories</li>
+<li><code>git</code>: run git subcommands, like <code>clone</code> with this. In the above case it clones the repository that is found at the GitHub URL.</li>
+<li><code>tree</code>: Super cool “text-graphical” directory listing</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="a-motivating-example" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="a-motivating-example"><span class="header-section-number">1.3</span> A motivating example</h2>
+<ul>
+<li>The <code>data/samtools_stats</code> directory has gzipped output from running the <code>samtools stats</code> program on 30 different samples.</li>
+<li>This provides information about reads that have been mapped to a reference genome in a BAM file.</li>
+</ul>
+<p>To see what those files look like:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Hit the SPACE-bar to go down a screenful, the <code>b</code> key to go back up</li>
+<li>Most terminal emulators let you use <code>up-arrow</code> and <code>down-arrow</code> to go one line at a time, too.</li>
+<li>Hit the <code>q</code> key to quit out of the <code>less</code> viewer.</li>
+</ul>
+<p>To see it without lines wrapping all over the place try this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Now you can use the left and right arrows to see different parts of lines that are not wrapped on the screen.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unix commands we just saw:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>gzip -cd</code>: decompress gzipped file to <em>stdout</em> (this is what <code>zcat</code> does, but <code>zcat</code> is not portable).</li>
+<li><code>less</code>: page view. Great to pipe output into. (<code>SPACE-bar</code>, <code>b</code>, <code>q</code>, <code>down-arrow</code>, <code>up-arrow</code>)
+<ul>
+<li><code>less -S</code>: option to not wrap lines. (<code>left-arrow</code>, <code>right-arrow</code>)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<section id="one-of-our-missions" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="one-of-our-missions"><span class="header-section-number">1.3.1</span> (One of) Our Missions…</h3>
+<p>It is pretty typical that Bioinformatic outputs will be spread as small bits of information across multiple files.</p>
+<p>One motivating example is summarizing the total number of reads mapped, the number of properly paired reads, and the total number of bases mapped, in all 30 samples, <em>in a table</em>.</p>
+</section>
+</section>
+<section id="the-anatomy-of-a-unix-command" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="the-anatomy-of-a-unix-command"><span class="header-section-number">1.4</span> The anatomy of a Unix command</h2>
+<p>Nearly every line in a bash script, or every line you type when banging away at the Unix terminal is a command that has this structure:</p>
+<p><code>command</code> options <em>arguments</em></p>
+<ul>
+<li>The <code>command</code> is the name of the command itself (like <code>cd</code> or <code>less</code>).</li>
+<li>The options are often given:
+<ul>
+<li>with a dash plus a single character, like <code>-l</code> or <code>-S</code> or <code>-a</code>, <code>-v</code>, <code>-z</code>.
+<ul>
+<li>In most commands that are part of Unix, these single options can be combined, so <code>-cd</code>, is the same as <code>-c -d</code>.</li>
+</ul></li>
+<li>with two dashes and a word, like <code>--long</code> or <code>--version</code></li>
+<li>Sometimes options take arguments, like <code>--cores 20</code>, but sometimes, they stand alone.
+<ul>
+<li>When they stand alone they are sometimes called <em>flags</em>.</li>
+</ul></li>
+</ul></li>
+<li>The <em>arguments</em> are typically file or paths.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Identify the command, options, and arguments in:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-d</span> ..</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s001_stats.tsv.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>First case:</p>
+<ul>
+<li><code>tree</code> is the command</li>
+<li><code>-d</code> is the option (print only directory names, not files)</li>
+<li><code>..</code> is the argument (one directory level up)</li>
+</ul>
+<p>Second case:</p>
+<ul>
+<li><code>gzip</code> is the command</li>
+<li>The options are <code>-c</code> and <code>-d</code>, contracted into <code>-cd</code></li>
+<li><code>data/samtools_stats/s001_stats.tsv.gz</code> is the argument</li>
+</ul>
+</div>
+</div>
+</div>
+<section id="what-do-all-these-options-mean" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="what-do-all-these-options-mean"><span class="header-section-number">1.4.1</span> What do all these options mean?</h3>
+<p>Everything you need to know about any Unix command will typically be found with the <code>man</code> command. For example:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>type this at your terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> tree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>That gives you more information than you will ever want to know.</li>
+<li>It starts with a synopsis of the syntax, which can feel <em>very</em> intimidating.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bonus Tips:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Man uses the <code>less</code> viewer for presenting contents of the man pages.</p></li>
+<li><p>When you are viewing <code>man</code> pages, you can scroll down with SPACE-bar and up with <code>b</code>, and get out with <code>q</code>, just like in <code>less</code></p></li>
+<li><p>To search for patterns in the manual pages, you can type <code>/</code> then the string you want and then RETURN.</p>
+<ul>
+<li>When in pattern-searching mode, use <code>n</code> to go to the next occurrence, and <code>N</code> to the previous.</li>
+<li>If searching for a single letter option try searching with <code>[, ]</code> afterward.</li>
+<li>For example, to search for the <code>-d</code> flag you would type <code>/</code>, then <code>-d[, ]</code>, then hit RETURN. Try it on the <code>tree</code> man page.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Learn about <code>gzip</code>
+<ul>
+<li>Use man to read information about the <code>gzip</code> command</li>
+<li>Find information about the <code>-c</code> and the <code>-d</code> options.
+<ul>
+<li>Maybe even search for those using the “slash-pattern” bonus tip from above.</li>
+</ul></li>
+</ul></li>
+<li>Learn about the <code>ls</code> command
+<ul>
+<li>Use <code>man</code> to see information about the <code>ls</code> command, which lists directories and their contents</li>
+<li>Find out what the <code>-R</code> option does. Maybe even look for it using the Bonus Tip above.</li>
+<li>Do the same for the <code>-Q</code> option.</li>
+<li>Look at what those do by doing <code>ls -RQ</code> on your terminal.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><ul>
+<li><code>man gzip</code></li>
+<li>To search for <code>-c</code>, type <code>/-c</code> + return. You might have better results with <code>/-c[, ]</code>.
+<ul>
+<li>use <code>n</code> or <code>N</code> to go forward or backward through the occurrences of <code>-c</code>.</li>
+</ul></li>
+</ul></li>
+<li><ul>
+<li>You would do <code>man ls</code></li>
+<li>To search for <code>-R</code> in the man pages, a good way to do it would be to type <code>/-Q</code> + RETURN, or maybe <code>/-Q[, ]</code> + RETURN.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="streams-and-redirection" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="streams-and-redirection"><span class="header-section-number">1.5</span> Streams and redirection</h2>
+<ul>
+<li>When you’ve executed the unix commands above, they have typically responded by writing text or data to the terminal screen.</li>
+<li>The command is actually writing to a <em>stream</em> that is called <code>stdout</code>, which is short for “standard output.”</li>
+<li>It turns out that, by default, the <code>stdout</code> stream gets written to the terminal.</li>
+</ul>
+<p>Aha! But here is where it gets fun:</p>
+<ul>
+<li>You can <em>redirect</em> the <code>stdout</code> stream to a file by using <code>&gt;</code> or <code>&gt;&gt;</code> after the command, options, and arguments.</li>
+</ul>
+<p>For example:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> outputs</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-d</span> .. <span class="op">&gt;</span> outputs/repo-tree.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, you can use the <code>less</code> viewer to see what got into the file <code>outputs/repo-tree.txt</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Type this at the terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> outputs/repo-tree.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aha! Instead of writing the output to the screen, it just puts it in the file <code>outputs/repo-tree.txt</code>, as we told it to.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Danger!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you redirect <code>stdout</code> into a file that already exists, the contents of that file will get erased!!!</p>
+<p>For example, if you now do:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into the shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"New content coming through..."</span> <span class="op">&gt;</span> outputs/repo-tree.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then you will no longer have the output of the <code>tree</code> command in the file <code>outputs/repo-tree.txt</code>. Check it out with the <code>less</code> command.</p>
+</div>
+</div>
+<p>If you want to merely <em>append</em> <code>stdout</code> to an existing file, you can use <code>&gt;&gt;</code>. For example:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Add this line"</span> <span class="op">&gt;&gt;</span> outputs/repo-tree.txt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"And then add another line"</span> <span class="op">&gt;&gt;</span> outputs/repo-tree.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unix commands we just saw:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>mkdir</code>: make a new directory
+<ul>
+<li>(check out the <code>-p</code> option, which means “make any necessary parent directories and don’t complain if the directory already exists.”)</li>
+</ul></li>
+<li><code>echo</code>: print the argument (usually a string) to <code>stdout</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="pipes-redirecting-into-another-unix-command" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="pipes-redirecting-into-another-unix-command"><span class="header-section-number">1.6</span> Pipes: redirecting into another Unix command</h2>
+<p>As we have said, many Unix utilities take files as their arguments, and they operate on the contents of that file. They can also receive input from <em>streams</em>, and almost all Unix utilities are set up to accept input from the stream called <code>stdin</code>, which is short for <em>standard input</em>.</p>
+<ul>
+<li><p>The most important way to pass the <code>stdin</code> stream to a Unix command is by <em>piping</em> the <code>stdout</code> from one command in as the <code>stdin</code> to the next command.</p></li>
+<li><p>This uses the <code>|</code> which is called the “pipe”.</p></li>
+</ul>
+<p>We have already used the pipe when we did:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pipe syntax is pretty simple:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">command1</span> <span class="kw">|</span> <span class="ex">command2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>means pipe the <code>stdout</code> output of <code>command1</code> in as <code>stdin</code> input for <code>command2</code>.</p>
+</section>
+<section id="stderr-the-stream-unix-uses-to-yell-at-you" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="stderr-the-stream-unix-uses-to-yell-at-you"><span class="header-section-number">1.7</span> <code>stderr</code>: The stream Unix uses to yell at you</h2>
+<ul>
+<li>If a Unix command fails, typically the program/command will bark at you to tell you why it failed. This can be very useful.</li>
+<li>The stream it writes this information to is called <code>stderr</code>, which is short for <em>standard error</em>.</li>
+<li>Some bioinformatics programs write progess and log output to <code>stderr</code>, in addition to actual error messages.</li>
+</ul>
+<p>If you are running a program non-interactively, it is <strong>extremely</strong> valuable and important to redirect <code>stderr</code> to a file, so you can come back later to see what went wrong, if your job failed.</p>
+<ul>
+<li><code>stderr</code> is redirected with <code>2&gt;</code>.</li>
+<li>Think of the 2 as meaning that <code>stderr</code> is the second-most important stream, after <code>stdout</code>.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bonus side comment:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>As you might imagine, you could redirect <code>stdout</code> by using <code>1&gt;</code> instead of <code>&gt;</code>, since <code>stdout</code> is stream #1.</p>
+</div>
+</div>
+</div>
+<p>For example, try this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-d</span> <span class="at">--not-a-real-option</span> .. <span class="op">&gt;</span> outputs/repo-tree.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Aha! We get a warning note printed on the screen,</li>
+<li>Because, <code>stderr</code> gets printed to the terminal by default.</li>
+<li>Also <code>outputs/repo-tree.txt</code> has been overwritten and is now a file with nothing in it.</li>
+</ul>
+<p>So, try this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-d</span> <span class="at">--not-a-real-option</span> .. <span class="op">&gt;</span> outputs/repo-tree.txt <span class="dv">2</span><span class="op">&gt;</span>outputs/error.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, look at the contents of both <code>outputs/error.txt</code> and <code>outputs/repo-tree.txt</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> outputs/repo-tree.txt outputs/error.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stream operators and commands that we just saw:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>&gt; path/to/file</code>: redirect <code>stdout</code> to file at <code>path/to/file</code>. This <em>overwrites</em> any file already at <code>path/to/file</code>.</li>
+<li><code>&gt;&gt; path/to/file</code>: redirect <code>stdout</code> to <em>append</em> to file at <code>path/to/file</code>. If <code>path/to/file</code> does not exist, it creates it and then adds the contents of <code>stdout</code> to it.</li>
+<li><code>2&gt; path/to/file</code>: redirect <code>stderr</code> to the file at <code>path/to/file</code>.</li>
+<li><code>|</code>: the uber-useful Unix pipe. (Just as an aside, when R finally got a similar construct—the <code>%&gt;%</code> from the ‘magrittr’ package—it became much easier for Unixy people to enjoy coding in R).</li>
+<li><code>head</code>: print the first ten lines of a file to <code>stdout</code>. If multiple file arguments are given, they are separated by little <code>==&gt; filename &lt;==</code> lines, which is super convenient if you want to look at the top of a lot of files.
+<ul>
+<li><code>head -n XX</code>: print the first XX lines (instead of 10).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Decompress <code>data/samtools_stats/s001_stats.tsv.gz</code> onto <code>stdout</code> using the <code>gzip -cd</code> command <em>and</em> pipe the output into <code>wc</code> to count how many lines words, and characters are in the file.</li>
+<li>Do the same that you did above, but redirect the <code>stdout</code> to a file <code>so.txt</code> and <code>stderr</code> to a file <code>se.txt</code> in the current working directory.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self-study answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>These could be done like this:</p>
+<ol type="1">
+<li><code>gzip -cd data/samtools_stats/s001_stats.tsv.gz | wc</code></li>
+<li><code>gzip -cd data/samtools_stats/s001_stats.tsv.gz | wc &gt; so.txt 2&gt;se.txt</code></li>
+</ol>
+<p>As an interesting side note, this will only redirect stderr for the <code>wc</code> command into <code>se.txt</code>. If the first command fails, its <code>stderr</code> will to to the screen. Try this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> <span class="at">--bogus-option</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="op">&gt;</span> so.txt <span class="dv">2</span><span class="op">&gt;</span>se.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An interesting fact is that you can redirect <code>stderr</code> from the first command before the pipe. So, to redirect <code>stderr</code> for the <code>gzip</code> command into a file called <code>ze.txt</code>, we could do:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-cd</span> <span class="at">--bogus-option</span> data/samtools_stats/s001_stats.tsv.gz <span class="dv">2</span><span class="op">&gt;</span>ze.txt <span class="kw">|</span> <span class="fu">wc</span> <span class="op">&gt;</span> so.txt <span class="dv">2</span><span class="op">&gt;</span>se.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Have a look at the contents of <code>ze.txt</code>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pro-tip: Redirect <code>stdout</code> and <code>stderr</code> to the same place
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The astute reader might note that if you redirect <code>stdout</code> to a file, and then redirect <code>stderr</code> to the same file, you might end up overwriting the contents of <code>stdout</code> with <code>stderr</code>.</p>
+<p>If you want to redirect <code>stdout</code> and <code>stderr</code> to the same place then you first redirect <code>stdout</code> to a file, and then after that, you say “redirect <code>stderr</code> to wherever <code>stdout</code> has been redirected to,” by using <code>2&gt;&amp;1</code>.</p>
+<p>So it looks like this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">command</span> <span class="op">&gt;</span> file.out <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome!</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../nmfs-bioinf/shell-prog.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -3,5 +3,11 @@
 .RData
 .Ruserdata
 README.html
+<<<<<<< HEAD
 .DS_Store
 
+=======
+results
+
+/.quarto/
+>>>>>>> f753408797822fc6db1d17c62396b2d9b8546612

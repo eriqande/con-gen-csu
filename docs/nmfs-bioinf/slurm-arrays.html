@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>con-gen-csu - 7&nbsp; Slurm Job Arrays</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../nmfs-bioinf/snake.html" rel="next">
+<link href="../nmfs-bioinf/sbatch.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/slurm-arrays.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">con-gen-csu</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/quick-unix-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/shell-prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/awk-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/scripts-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bash scripts and functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sedna and SLURM intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sbatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm-arrays.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#prepare-for-day-three" id="toc-prepare-for-day-three" class="nav-link active" data-scroll-target="#prepare-for-day-three"><span class="header-section-number">7.1</span> Prepare for day three</a></li>
+  <li><a href="#sbatchs---array-option" id="toc-sbatchs---array-option" class="nav-link" data-scroll-target="#sbatchs---array-option"><span class="header-section-number">7.2</span> <code>sbatch</code>’s <code>--array</code> option</a></li>
+  <li><a href="#variations-on-the-array_spec" id="toc-variations-on-the-array_spec" class="nav-link" data-scroll-target="#variations-on-the-array_spec"><span class="header-section-number">7.3</span> Variations on the <code>&lt;array_spec&gt;</code></a></li>
+  <li><a href="#translating-array-indexes-to-job-instances" id="toc-translating-array-indexes-to-job-instances" class="nav-link" data-scroll-target="#translating-array-indexes-to-job-instances"><span class="header-section-number">7.4</span> Translating Array Indexes to Job Instances</a>
+  <ul class="collapse">
+  <li><a href="#an-example-tab-delimited-file" id="toc-an-example-tab-delimited-file" class="nav-link" data-scroll-target="#an-example-tab-delimited-file"><span class="header-section-number">7.4.1</span> An example TAB-delimited file</a></li>
+  <li><a href="#the-line-assign.sh-script" id="toc-the-line-assign.sh-script" class="nav-link" data-scroll-target="#the-line-assign.sh-script"><span class="header-section-number">7.4.2</span> The <code>line-assign.sh</code> script</a></li>
+  </ul></li>
+  <li><a href="#putting-it-all-together-a-read-mapping-job-array" id="toc-putting-it-all-together-a-read-mapping-job-array" class="nav-link" data-scroll-target="#putting-it-all-together-a-read-mapping-job-array"><span class="header-section-number">7.5</span> Putting it all together: a read-mapping job array</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up"><span class="header-section-number">7.6</span> Wrap Up</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="slurm-arrays" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<ul>
+<li>The <code>sbatch</code> command takes an <code>--array=&lt;array_spec&gt;</code> option that let’s you quickly launch—and easily manage—different instances of a single job that are all differentiated by a unique integer.</li>
+<li>That integer is accessible within the script as the environment variable <code>SLURM_ARRAY_TASK_ID</code>.</li>
+<li>We will see a little shell/awk script that is very helpful in this context.</li>
+</ul>
+<section id="prepare-for-day-three" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="prepare-for-day-three"><span class="header-section-number">7.1</span> Prepare for day three</h2>
+<p>Get back to our playground directory. Then, to make sure that you have all the latest updates from the repository, use git to pull down any new changes.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this in to be sure you have the most up-to-date resources</strong></pre>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/nmfs-bioinf-2022/playground</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we are going to check out 2 cores for interactive use for 3 hours.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this in to your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-c</span> 2 <span class="at">-t</span> 03:00:00 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sbatchs---array-option" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sbatchs---array-option"><span class="header-section-number">7.2</span> <code>sbatch</code>’s <code>--array</code> option</h2>
+<p>When you give <code>sbatch</code> the <code>--array=1-10</code> option, say, then it runs your job 10 separate times, each time with the environment variable <code>SLURM_ARRAY_TASK_ID</code> set to a different number between 1 and 10.</p>
+<p>Let’s see a quick example, using the following script:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Contents of scripts/array_example.sh</strong></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/array_example.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is helpful to see a few of the variables that are defined in the environment of an array job:</p>
+<ul>
+<li><code>SLURM_ARRAY_JOB_ID</code>: the overall JOB_ID for the whole array</li>
+<li><code>SLURM_ARRAY_TASK_ID</code>: the index that runs from 1 to 10 in this case</li>
+<li><code>SLURM_JOB_ID</code>: The underlying job_id</li>
+</ul>
+<p>Go ahead and run that:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into you shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then use <code>myjobs</code> and <code>alljobs</code> to see what is happening on the cluster.</p>
+<p>When that job is done, look at the values written to the first 3 files:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into you shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> results/array_example/output_{1..3}.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cool syntax: <code>{1..3}</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>On the shell, if you do something like:</p>
+<ul>
+<li><code>{2..7}</code>: that will expand to <code>2 3 4 5 6 7</code></li>
+<li><code>{a..g}</code>: that will expand to <code>a b c d e f g</code></li>
+<li><code>{0001..0015}</code>: that will expand to <code>0001 0002 0003 0004 0005 0006 0007 0008 0009 0010 0011 0012 0013 0014 0015</code></li>
+<li><code>{F..M}</code>: that will expand to <code>F G H I J K L M</code></li>
+</ul>
+</div>
+</div>
+</div>
+<p>From this, we can infer that:</p>
+<ul>
+<li><code>SLURM_ARRAY_JOB_ID</code>: is a unique number that refers to the <em>entire set</em> of jobs in the array</li>
+<li><code>SLURM_ARRAY_TASK_ID</code>: is the integer that is being cycled over in the array job</li>
+<li><code>SLURM_JOB_ID</code>: is a unique SLURM_JOB_ID of the specific array task.</li>
+</ul>
+<p>Also, in <code>alljobs</code> and <code>myjobs</code> you say that jobs can be referred to like <code>331989_4</code>. That is <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>. For example: <code>scancel 376578_12</code>.</p>
+<p>In the slurm output files specified like:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">SBATCH</span> <span class="at">--output</span><span class="op">=</span>my_output_%A_%a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>%A</code> expands to <code>SLURM_ARRAY_JOB_ID</code></li>
+<li><code>%a</code> expands to <code>SLURM_ARRAY_TASK_ID</code></li>
+</ul>
+<p>If you need to cancel a particular array task using <code>scancel</code> you would typically use <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>.</p>
+</section>
+<section id="variations-on-the-array_spec" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="variations-on-the-array_spec"><span class="header-section-number">7.3</span> Variations on the <code>&lt;array_spec&gt;</code></h2>
+<p>There are some important variations to how you can specify that array numbers:</p>
+<ul>
+<li><code>--array=1-50</code>: simple, consecutive numbers</li>
+<li><code>--array=1-10:3</code>: 1 through 10 by threes, (so <code>1,4,7,10</code>)</li>
+<li><code>--array=1,2,3,6,9,15</code> non-consecutive numbers</li>
+<li><code>--array=1-21:10,100-200:50</code>: non-consecutive ranges. It becomes (<code>1,11,21,100,150,200</code>)</li>
+<li><code>--array=1-10,4</code>: WARNING, this becomes <code>1,2,3,4,5,6,7,8,9,10,4</code>. SLURM does not check that the array numbers are unique, so task array 4 would be run twice (possibly concurrently overwriting the output.)</li>
+<li><code>--array=1-20%5</code> VERY IMPORTANT SYNTAX: Run the jobs, but don’t ever have more the 5 running at a time. This is useful for making sure your jobs don’t consume every last CPU on Sedna.</li>
+</ul>
+<p>Let’s try putting all these together. Read the following command and figure out what the array spec is doing:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into you shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span><span class="op">=</span>100,200,300-400:10%5 scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then use <code>myjobs</code> and <code>alljobs</code> to see what is going on in the cluster.</p>
+<p>Do you ever have more than 5 jobs running?</p>
+</section>
+<section id="translating-array-indexes-to-job-instances" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="translating-array-indexes-to-job-instances"><span class="header-section-number">7.4</span> Translating Array Indexes to Job Instances</h2>
+<ul>
+<li>The user is left to translate what a job array index of, say, 7, means in terms of what actions that array task should take.</li>
+<li>Quite often you will want to map an array index to a different file to analyze, or perhaps a different region of a chromosome to do variant calling on, etc.</li>
+<li>A flexible and generic way of doing this mapping from array indexes to job specifics is to first define the variables (things like filenames, etc.) required by each array task in a simple TAB-delimited text file in which the first row holds the names of the variables in different TAB-separated columns, and each row below that holds the values that those variables should take for different values of the array index.</li>
+<li>The array index itself should be listed in the first column.</li>
+</ul>
+<section id="an-example-tab-delimited-file" class="level3" data-number="7.4.1">
+<h3 data-number="7.4.1" class="anchored" data-anchor-id="an-example-tab-delimited-file"><span class="header-section-number">7.4.1</span> An example TAB-delimited file</h3>
+<p>Let’s explore the following file, which is at <code>inputs/fq-samples.tsv</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Contents of inputs/fq-samples.tsv</strong></pre>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/inputs/fq-samples.tsv"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Something that would be really handy would be a little shell script that would pick out a particular line of that file that corresponded to the value in the <code>index</code> column and then define the shell variables <code>out_name</code>, <code>fq1</code>, <code>fq2</code>, <code>LB</code>, <code>Lane</code>, and <code>Sample</code> so that they could be used in an array script.</p>
+<p>Yesterday, we learned all the bash and <code>awk</code> machinery that would make that easy to do!</p>
+</section>
+<section id="the-line-assign.sh-script" class="level3" data-number="7.4.2">
+<h3 data-number="7.4.2" class="anchored" data-anchor-id="the-line-assign.sh-script"><span class="header-section-number">7.4.2</span> The <code>line-assign.sh</code> script</h3>
+<p>Within the repository is a script called <code>scripts/line-assign.sh</code>, that looks like this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Contents of scripts/line-assign.sh</strong></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/line-assign.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s see what sorts of results this produces:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">./scripts/line-assign.sh</span> 3 inputs/fq-samples.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Whoa! It returns a command line that assigns values to a lot of shell variables.</p>
+<p>So, if we wanted to run that command line, we would have to precede it with the <code>eval</code> keyword. Let’s do that like this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMM</span><span class="op">=</span><span class="va">$(</span><span class="ex">./scripts/line-assign.sh</span> 3 inputs/fq-samples.tsv<span class="va">)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$COMM</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, that you have done that, you can see that a lot of variables have been assigned the values on the <code>index == 3</code> line of our TSV file:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"index:    </span><span class="va">$index</span><span class="st">"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"out_name: </span><span class="va">$out_name</span><span class="st">"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq1:      </span><span class="va">$fq1</span><span class="st">"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq2:      </span><span class="va">$fq2</span><span class="st">"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"LB:       </span><span class="va">$LB</span><span class="st">"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Lane:     </span><span class="va">$Lane</span><span class="st">"</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Sample:   </span><span class="va">$Sample</span><span class="st">"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Holy Smokes! These are variables that we could use in a job array script.</p>
+<p>In this case, we can assign values to the pesky Read Group string for <code>bwa mem</code>.</p>
+</section>
+</section>
+<section id="putting-it-all-together-a-read-mapping-job-array" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="putting-it-all-together-a-read-mapping-job-array"><span class="header-section-number">7.5</span> Putting it all together: a read-mapping job array</h2>
+<p>We can now elaborate on our simple <code>bwa_map.sh</code> shell script and turn that into a SLURM job array script.</p>
+<p>Here is what it looks like:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Contents of scripts/bwa_map_array.sh</strong></pre>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map_array.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The main things to note there are:</p>
+<ul>
+<li>The <code>SLURM_ARRAY_TASK_ID</code> is used to pick out the right line from our TSV file of information</li>
+<li>The slurm output and error have been changed to use <code>%A_%a</code> notation.</li>
+<li>There is a <code>#SBATCH --array=1-3</code> directive, now</li>
+<li>The shell code that runs <code>bwa</code> and <code>samtools</code> uses the variables that were defined by <code>eval</code>-ing the results of the call to the <code>line-assign.sh</code> script.</li>
+</ul>
+<p>Let’s launch that job array and see how it goes:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_map_array.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then check with <code>myjobs</code> and <code>alljobs</code> to see what is happening on Sedna.</p>
+<p>That runs really fast.</p>
+<p>Afterward you can check that the results exist:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> results/mapped</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And you can look at the logs for <code>bwa mem</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>  results/log/bwa_map_array/bwa_mem_samp_<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To see what one of the output files looks like:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>You could type or paste this</strong></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view results/mapped/samp_B.bam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use the left and right arrows, and space bar and backspace to see all parts of the file.</p>
+<p>Remember to hit <code>q</code> to get out of the <code>less</code> viewer.</p>
+</section>
+<section id="wrap-up" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="wrap-up"><span class="header-section-number">7.6</span> Wrap Up</h2>
+<p>So, that was a quick tour of the capabilities of <code>sbatch</code>.</p>
+<p>Oddly enough, I haven’t directly launched any jobs using <code>sbatch</code> (apart from the example jobs for this course) in many months, because I drive all my bioinformatics projects using Snakemake, which sends my jobs to SLURM for me.</p>
+<p>Next up is a brief introduction to Snakemake!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../nmfs-bioinf/sbatch.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../nmfs-bioinf/snake.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
