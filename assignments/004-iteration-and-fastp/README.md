@@ -21,13 +21,14 @@ clone of your fork on Alpine:
     and then pull in the changes on main
     that you just synced:
     ```sh
+    gitup
     git pull origin main
     ```
 3. Now, immediately create a new branch called `fastp-iteration`,
 and push it up to your fork of the repo.
     ```sh
-    git switch -c fastp-iteration
-    git push origin -u 
+    git checkout -B fastp-iteration
+    git push -u origin fastp-iteration
     ```
 4. Get onto a compute node on alpine:
     ```sh
