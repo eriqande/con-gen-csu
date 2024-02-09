@@ -612,7 +612,7 @@ Shell programming.
     git switch main
     git pull origin main
     ```
-  After the shell programming "hands-on" we will talk a little about [Shell Scripts](http://localhost:3842/nmfs-bioinf/scripts-and-functions.html)
+  After the shell programming "hands-on" we will talk a little about [Shell Scripts](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/scripts-and-functions.html)
 
 #### Assignment due at beginning of class, Tuesday Feb. 13
 
