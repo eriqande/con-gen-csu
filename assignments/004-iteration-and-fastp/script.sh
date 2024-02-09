@@ -1,4 +1,4 @@
-
+#!/usr/bin/bash
 
 # this assumes that you created an environment
 # called fastp in class on Tuesday.  If you accidentally
@@ -6,7 +6,7 @@
 # getting an error saying I need to run conda init?
 # activating fastp outside of this script and will figure 
 # this error out after if this works..
-# conda activate fastp
+conda activate fastp
 
 # This just makes the necessary output directories
 mkdir -p results/trimmed results/qc/fastp
