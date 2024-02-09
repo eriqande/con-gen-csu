@@ -3,7 +3,7 @@
 # this assumes that you created an environment
 # called fastp in class on Tuesday.  If you accidentally
 # installed fastp into base, then you don't need this line.
-source activate fastp
+conda activate fastp
 
 # This just makes the necessary output directories
 mkdir -p results/trimmed results/qc/fastp
@@ -15,13 +15,13 @@ mkdir -p results/trimmed results/qc/fastp
 # DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 ...
 # WITH ALL THE SAMPLE NAME THERE
 
-SAMPLES=(DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 DPCh_plate1_C11_S35 DPCh_plate1_C12_S36 DPCh_plate1_D09_S45 DPCh_plate1_D11_S47 DPCh_plate1_F10_S70 DPCh_plate1_F11_S71 DPCh_plate1_F12_S72 DPCh_plate1_G09_S81 DPCh_plate1_G10_S82 DPCh_plate1_G12_S84 DPCh_plate1_H09_S93 DPCh_plate1_H10_S94)
+SAMPLES=$(basename -s _R2.fq.gz -a data/fastqs/*R2*)
 
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
 # NAME IN THE COMMAND (i.e. replace DPCh_plate1_B10_S22 with the variable S---not that you will
 # need to wrap S in curly braces!)
 
-for S in ${SAMPLES[@]}; do
+for S in $SAMPLES; do
     fastp -i data/fastqs/${S}_R1.fq.gz -I data/fastqs/${S}_R2.fq.gz  \
           -o results/trimmed/${S}_R1.fq.gz -O results/trimmed/${S}_R2.fq.gz \
           -h results/qc/fastp/${S}.html  -j results/qc/fastp/${S}.json \
