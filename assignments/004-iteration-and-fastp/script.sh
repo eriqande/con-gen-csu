@@ -1,4 +1,4 @@
-
+####  Mike Antolin's Shell Script for Assignment 004
 
 # this assumes that you created an environment
 # called fastp in class on Tuesday.  If you accidentally
@@ -15,21 +15,30 @@ mkdir -p results/trimmed results/qc/fastp
 # DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 ...
 # WITH ALL THE SAMPLE NAME THERE
 
-SAMPLES=..your code goes here..
+path=data/fastqs
+SAMPLES=$(basename -s _R1.fq.gz -a $path/*R1*)
+echo $SAMPLES
+
 
 
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
 # NAME IN THE COMMAND (i.e. replace DPCh_plate1_B10_S22 with the variable S---not that you will
 # need to wrap S in curly braces!)
 
+###  TEST
+for S in $SAMPLES; do echo ${S}_R1.fq.gz ${S}_R2.fq.gz; done
+
+# MODIFIED WITH ${S}
 for S in $SAMPLES; do
-    fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz  \
-          -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz \
-          -h results/qc/fastp/DPCh_plate1_B10_S22.html  -j results/qc/fastp/DPCh_plate1_B10_S22.json \
+    fastp -i data/fastqs/${S}_R1.fq.gz -I data/fastqs/${S}_R2.fq.gz  \
+          -o results/trimmed/${S}_R1.fq.gz -O results/trimmed/${S}_R2.fq.gz \
+          -h results/qc/fastp/${S}.html  -j results/qc/fastp/${S}.json \
           --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
           --detect_adapter_for_pe \
-           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20    
+           --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20
+          echo "IN PROGRESS"
 done
+
 
 
 # Once that is done, we will sha1sum the trimmed files and store the result
