@@ -3,7 +3,10 @@
 # this assumes that you created an environment
 # called fastp in class on Tuesday.  If you accidentally
 # installed fastp into base, then you don't need this line.
-conda activate fastp
+# getting an error saying I need to run conda init?
+# activating fastp outside of this script and will figure 
+# this error out after if this works..
+# conda activate fastp
 
 # This just makes the necessary output directories
 mkdir -p results/trimmed results/qc/fastp
@@ -23,9 +26,9 @@ SAMPLES=$(basename -s _R1.fq.gz -a data/fastqs/*_R1.fq.gz)
 # need to wrap S in curly braces!)
 
 for S in $SAMPLES; do
-    fastp -i data/fastqs/{S}_R1.fq.gz -I data/fastqs/{S}_R2.fq.gz  \
-          -o results/trimmed/{S}_R1.fq.gz -O results/trimmed/{S}_R2.fq.gz \
-          -h results/qc/fastp/{S}.html  -j results/qc/fastp/{S}.json \
+    fastp -i data/fastqs/${S}_R1.fq.gz -I data/fastqs/${S}_R2.fq.gz  \
+          -o results/trimmed/${S}_R1.fq.gz -O results/trimmed/${S}_R2.fq.gz \
+          -h results/qc/fastp/${S}.html  -j results/qc/fastp/${S}.json \
           --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
           --detect_adapter_for_pe \
            --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20    
