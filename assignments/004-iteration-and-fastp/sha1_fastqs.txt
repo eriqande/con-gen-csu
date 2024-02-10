@@ -1,0 +1,2 @@
+b2c77438eb6faa0667b855bab716a6442f04b045  results/trimmed/out.R1.fq.gz
+bf719b13afb437275eb0af6b4153a47f402c7a50  results/trimmed/out.R2.fq.gz
