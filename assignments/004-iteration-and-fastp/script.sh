@@ -18,6 +18,7 @@ mkdir -p results/trimmed results/qc/fastp
 SAMPLES=..your code goes here..
 
 
+
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
 # NAME IN THE COMMAND (i.e. replace DPCh_plate1_B10_S22 with the variable S---not that you will
 # need to wrap S in curly braces!)
