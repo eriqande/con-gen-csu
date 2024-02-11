@@ -16,7 +16,7 @@ mkdir -p results/trimmed results/qc/fastp
 # DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 ...
 # WITH ALL THE SAMPLE NAME THERE
 
-SAMPLES="$(basename -s .fq.gz data/fastqs/* | for i in $names; do echo "${i%_R*}"; done > samples.txt | sort -u samples.txt)"
+SAMPLES=$(basename -s _R1.fq.gz -a  data/fastqs/DPCh_plate1_*R1*)
 
 
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
