@@ -1,6 +1,5 @@
 51fbb90f7296e53af3f59b38d41c6e090e607bf7  results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz
 8647c9650348058911b5bd51d0b52e7050bec062  results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz
-8647c9650348058911b5bd51d0b52e7050bec062  results/trimmed/DPCh_plate1_B10_S22_R2_fq.gz
 e6466e631fc90508df663ef8280de9c9ecac3433  results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz
 e4753348af238e239ed135d27ca89936e2b67735  results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz
 40b22d31b842009de3797817fb879aef3fdb94d6  results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz

@@ -16,7 +16,7 @@ mkdir -p results/trimmed results/qc/fastp
 # WITH ALL THE SAMPLE NAME THERE
 
 SAMPLE=$(basename -s _R1.fq.gz data/fastqs/*)
-SAMPLES=$(basename -s _R2.fq.gz ${SAMPLE})
+SAMPLES=$(basename -s _R2.fq.gz ${SAMPLE}|uniq)
 
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
 # NAME IN THE COMMAND (i.e. replace DPCh_plate1_B10_S22 with the variable S---not that you will
