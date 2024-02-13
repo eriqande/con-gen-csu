@@ -12,7 +12,7 @@
 eval "$(conda  shell.bash hook)"
 conda activate fastp
 
-ls /hellgate/home/sr221061/con-gen-csu/data/fastqs | cut -d '_' -f 1-4 > sample_names.txt
+ls /hellgate/home/sr221061/con-gen-csu/data/fastqs | cut -d '_' -f 1-4 | sort -u > sample_names.txt
 
 JOBS_FILE=sample_names.txt
 SAMPLES=$(cat ${JOBS_FILE})
