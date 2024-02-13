@@ -269,6 +269,11 @@ slinfop | awk '$2~/amilan/'
 Quickly scan the output of the above command and estimate the number
 of idle (i.e. _available_) cores in the `amilan` partition.
 
+Then, read about the `amilan` partition (here)[https://curc.readthedocs.io/en/stable/clusters/alpine/alpine-hardware.html#partitions].
+In particular, note how much memory is available per core, and the default and max wall times.
+
+We will discuss this.
+
 :::
 
 

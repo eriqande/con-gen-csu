@@ -303,7 +303,7 @@ Fun fact:
 <p>Let’s look at an example like one might do in an sbatch script:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Contents of an sbatch script to run bwa index</strong></pre>
+<pre><strong>Contents of scripts/bwa_index.sh</strong></pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -370,13 +370,13 @@ Get email from SLURM.
 <p>Since all of the <code>sbatch</code> options are imbedded within the shell script, all that we need to do, now, is:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Paste this into your shell</strong></pre>
+<pre><strong>Paste this into your shell at the top level of the con-gen-csu repo</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_index.sh resources/genome.fasta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_index.sh data/genome/genome.fasta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The first argument is the script <code>scripts/bwa_index.sh</code> and the second, <code>resources/genome.fasta</code>, is the path to the genome that we want to index with <code>bwa</code>.</p>
 <p>When this command executes, it returns the <code>SLURM_JOB_ID</code>. Make a note of it.</p>
-<p>Once you have launched the job, try using <code>myjobs</code> and <code>alljobs</code> to see your job running in the queue, and also everyone else’s. (You don’t have much time, because it doesn’t take very long).</p>
+<p>Once you have launched the job, try using <code>myjobs</code> to see your job running. (You don’t have much time, because it doesn’t take very long).</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">

@@ -70,7 +70,7 @@ after the shebang line that are preceded by `#SBATCH`.
 ## Storing SLURM options in your shell script
 
 Let's look at an example like one might do in an sbatch script:
-```{.sh filename="Contents of an sbatch script to run bwa index"}
+```{.sh filename="Contents of scripts/bwa_index.sh"}
 #!/bin/bash
 
 #SBATCH --cpus-per-task=1
@@ -107,6 +107,8 @@ In the above script, you will see
 In this context, the `%j` gets replaced by `sbatch` with the
 `SLURM_JOB_ID`.
 
+
+
 :::
 
 ::: {.callout-caution collapse=true}
@@ -137,8 +139,8 @@ are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
 
 Since all of the `sbatch` options are imbedded within the
 shell script, all that we need to do, now, is:
-```{.sh filename="Paste this into your shell"}
-sbatch scripts/bwa_index.sh resources/genome.fasta
+```{.sh filename="Paste this into your shell at the top level of the con-gen-csu repo"}
+sbatch scripts/bwa_index.sh data/genome/genome.fasta
 ```
 
 The first argument is the script `scripts/bwa_index.sh` and the
@@ -147,8 +149,8 @@ we want to index with `bwa`.
 
 When this command executes, it returns the `SLURM_JOB_ID`.  Make a note of it.
 
-Once you have launched the job, try using `myjobs` and `alljobs` to see your job running
-in the queue, and also everyone else's. (You don't have much time, because it doesn't take very long).
+Once you have launched the job, try using `myjobs` to see your job running.
+(You don't have much time, because it doesn't take very long).
 
 ::: {.callout-caution  collapse=true}
 
