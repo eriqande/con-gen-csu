@@ -45,6 +45,24 @@ directory whose basename is `playground`.
 
 The login node for Sedna is named `sedna`.  So, this is telling
 me that I am logged into the _login node_ of Sedna.
+
+**If you don't have such an informative prompt...**
+
+On Alpine, I am not sure what the default command prompt is, but you can always change
+yours by setting the `PS1` variable.  Try doing:
+```{.sh}
+export PS1='[\h: \W]--% '
+```
+That will give you a command prompt with the _hostname_ (`\h`) and the
+working directory basename (`\W`), which is helpful.  Mine, right now,
+looks like:
+```{.sh}
+[login11: con-gen-csu]--%
+```
+
+Of course, you can put the `export PS1='[\h: \W]--% '` into your `~/.bashrc` file
+and then always have an informative prompt.
+
 :::
 
 :::{.callout-tip}
@@ -75,22 +93,32 @@ login nodes?
     - The number of cores to use.
     - The maximum amount of RAM memory you might need.
     - The amount of time that you will need those resources for.
-- To prepare for the next part of the course, each one of us is going
+- To prepare for the next part of the course **on SEDNA**, each one of us is going
 to "check out" 2 cores for 3 hours for _interactive_ work.
     - Interactive here means that we will have a Unix shell that has access
       to compute power on the cores that we checked out.
 
-Here is the command to checkout 2 cores for 3 hours for interactive use:
-```{.sh filename="Paste this into your shell"}
-srun -c 2 -t 03:00:00 --pty /bin/bash
-```
+    - Here is the command to checkout 2 cores for 3 hours for interactive use:
+    ```{.sh filename="Paste this into your shell on SEDNA"}
+    srun -c 2 -t 03:00:00 --pty /bin/bash
+    ```
+- If you are working **on ALPINE** then you can get on a compute node differently:
+    - Load the `slurm/alpine` module
+    - Request a shell on the oversubscribed `atesting` partition.
+    - The commands for that look like:
+    ```{.sh filename="Paste this into your shell on ALPINE"}
+    module load slurm/alpine
+    srun --partition atesting --pty /bin/bash
+    ```
 
 ::: {.callout-tip}
 
 ## Self study:
 
-Have a look at your command prompt now.  It should show that you
-are logged in to `nodeXX` where `XX` is a number like `04` or `33`.
+Have a look at your command prompt now.  If you are on SEDNA, it should show that you
+are logged in to `nodeXX` where `XX` is a number like `04` or `33`. If you are on
+Alpine, then the node you are on will be named something more cryptic, like
+`c3cpu-a5-u34-3`.
 
 :::
 
@@ -115,9 +143,17 @@ A _partition_ is a collection of nodes that tend to be similar.
     - Might be an option, but it doesn't perform at the same level as the `node` partition
     
 
+## What does ALPINE have under the hood?
+
+Alpine is a pretty darn large cluster, with a boatload of different machines,
+many of them with 64 cores.  It also has some GPU machines, etc.
+
+We will have a look at it with the commands, like `sinfo` described next.
+
+
 ## Ask SLURM about what nodes are available, and how busy they are
 
-When I login to Sedna, before launching and jobs or working on anything,
+When I login **to Sedna**, before launching and jobs or working on anything,
 I always like to get a summary of how hard Sedna is currently working.
 
 For this we have the `sinfo` command:
@@ -153,6 +189,20 @@ This is a hugely informative summary for being so compact.
     soon, etc.
 - The `node` partition is starred `node*` because it is the default partition.
 - Notation like `node[01,29-31,33]` gives the specific node numbers, compactly.
+
+
+If you type `sinfo` **on ALPINE** you get a similar output, but it is much larger
+and more complex because there are more partitions and more, different nodes in each
+partition.  
+
+The CURC lists the partitions on a web page 
+[here](https://curc.readthedocs.io/en/stable/clusters/alpine/alpine-hardware.html#partitions).
+
+If you are going to be working on Alpine, it is worth reading over the entire CURC documentation
+for it, starting from [here](https://curc.readthedocs.io/en/stable/clusters/alpine/quick-start.html).
+
+
+
 
 ::: {.callout-tip}
 
@@ -192,9 +242,44 @@ This gives information about each node.
 - `MEMORY` is total RAM available on the node (in Megabytes)
 - `ALLOCMEM` is the total RAM allocated to jobs.
 
+This view shows each node just once.  But it might be useful to also see what
+partition(s) each of those nodes are in (especially on ALPINE).  So, here is a quick function to do that:
+```{.sh filename="Paste this into your shell"}
+function slinfop {
+  sinfo -N -O nodelist,partition,cpusstate,memory,allocmem
+}
+```
+Once you have done that:
+```{.sh filename="Type this at your command prompt"}
+slinfop
+```
+
+Note that many nodes are included in multiple partitions.
+
+Since the main partition on Alpine for general computing is `amilan` you can
+look specifically at nodes in that partition with:
+```{.sh filename="Copy this into your command prompt"}
+slinfop | awk '$2~/amilan/'
+```
+
+::: {.callout-tip}
+
+## ALPINE Self-study
+
+Quickly scan the output of the above command and estimate the number
+of idle (i.e. _available_) cores in the `amilan` partition.
+
+Then, read about the `amilan` partition (here)[https://curc.readthedocs.io/en/stable/clusters/alpine/alpine-hardware.html#partitions].
+In particular, note how much memory is available per core, and the default and max wall times.
+
+We will discuss this.
+
+:::
 
 
-## Summarize what Sedna is doing by job
+
+
+## Summarize what the cluster is doing _by job_
 
 SLURM keeps track of individual jobs that get submitted.
 
@@ -222,13 +307,15 @@ allocated resources or are waiting for resources.
 **One thing to note**: 
 - Every job is assigned a `SLURM_JOB_ID`.
 Which is a unique integer (that gets assigned successively).
-- And jobs might have a job NAME, that is assigned by the user
-of is the name of the script that the job runs.
+- And jobs might have a job NAME, that is assigned by the user, which
+is the name of the script that the job runs, or is defined in the
+SBATCH directives (we will talk about that later!)
 
-## I find the standard `squeue` output lacking
+## I find the standard, default, `squeue` output sorely lacking
 
 The standard way that `squeue` presents information is not super informative,
-_especially_ if the job names are not very short.
+_especially_ if the job names are not very short, or if you are interested in how
+many cores (not just nodes) each job involves.
 
 Once again, we make a bash function, `alljobs`, that runs `squeue` but
 provides more information.  
@@ -250,6 +337,36 @@ For example, try:
 ```{.sh filename="Type this at the command prompt"}
 alljobs 30
 ```
+
+
+This is kind of fun to see the full names of the jobs.
+
+::: {.callout-warning}
+
+## Hot Tip!
+
+It is worth taking special note of the columns, `NODELIST(REASON)` and
+`CPUS`:
+
+- `NODELIST(REASON)`: If the job is running, then this gives the name(s) of the
+node(s) upon which it is running.  If it is not running, it says _why_ it is not
+yet running. The most typical reason it:
+    - `Priority`: Too many other users are already using the cluster.  Your job is
+    waiting for resources to become available. 
+- CPUS: the number of CPUs the job is using
+
+It is worth noting that, when I look at `alljobs` on Alpine, most of the jobs that
+are waiting due to `Priority` are jobs that are requesting all or most of the CPUs
+(like 64 or 32) on a single node.  Many of the jobs that are _not_ waiting are those
+that are requesting only one or a few cores.  
+
+In general, if you can break your workflows down into a small chunks that run on just
+one or a few cores, you have a better chance of getting compute time, than if
+you request all the cores on a node.
+  
+:::
+
+
 
 ## Just tell me about my jobs!
 
@@ -312,6 +429,10 @@ source ~/.bashrc
 ```
 :::
 
+Most modules on Alpine are only available if you are on a compute node.
+
+
+
 ## Example: Let's try running `samtools`
 
 `samtools` is a common bioinformatic utility.
@@ -327,15 +448,13 @@ that it is not available:
 samtools
 ```
 The response I get from the computer is:
-```
+```{.sh}
 bash: samtools: command not found...
-Install package 'samtools' to provide command 'samtools'? [N/y]
 ```
-You should get that response, **and please answer `N` to the question.**
+You will likely get that response, too.
 
-You do not want to install samtools.
-
-Instead, you want to see if it is available in the system _modules_.
+On Alpine, you could install `samtools` via `mamba` or you could
+see if it is available in the system _modules_.
 
 ## Check which software programs are available in the modules
 
@@ -347,8 +466,11 @@ software modules.
 module avail
 ```
 
-There is a lot of tasty bioinformatics software there.
-(A nice change from HPCC's that primarily serve geoscientists...)
+On SEDNA, there is a lot of tasty bioinformatics software there.
+On Alpine, there is now a dedicated "Bioinformatics" section in the
+output of `module avail`, which is
+a nice change from Alpine's predecessor, SUMMIT, which was mostly loaded up
+with software for geoscientists.
 
 The numbers are the version numbers.  The `(D)` after some of them
 tells us that version is the default.
@@ -357,9 +479,17 @@ tells us that version is the default.
 
 We will load the module for version 1.15.1 of `samtools`.  That
 can be done like this:
-```{.sh filename="Paste this into your shell"}
+
+**SEDNA** 
+```{.sh filename="On SEDNA, Paste this into your shell"}
 module load bio/samtools/1.15.1
 ```
+
+**Alpine** 
+```{.sh filename="On Alpine, Paste this into your shell"}
+module load samtools
+```
+
 
 (using the `load` subcommand of `module`)
 
@@ -430,13 +560,13 @@ of the script.
 
 Not every cluster that you use will have the same
 modules set up in the same way. (Though it does seem that Giles has
-set out modules up according to the accepted best practices!).
+set the modules up on Sedna according to the accepted best practices!).
 
 So, if you use code you developed for
-Sedna on another cluster, you might have to modify things to ensure that
+Sedna (or Alpine) on another cluster, you might have to modify things to ensure that
 software is available.  
 
-The conda package manager is an option if you are going to be running
+The conda/mamba package manager is an option if you are going to be running
 your scripts on different clusters.
 
 :::
@@ -445,9 +575,15 @@ your scripts on different clusters.
 
 You can request software installations by using the [Sedna work request form](https://docs.google.com/forms/d/e/1FAIpQLSf2tDl9nJjihmHX9hM6ytMI3ToldqERVem1ge25-kp3JHw3tQ/viewform?usp=sf_link)
 
-## Before we go, make our convenience functions available whenever we are on Sedna
 
-We defined three convenience functions in bash: `slinfo`, `alljobs`, and `myjobs`.  
+## If you need more software or newer versions on Alpine
+
+You probably can request it from the sys admins, but you will almost indubitably
+have your required software up and running faster if you install it with mamba.
+
+## Before we go, make our convenience functions available whenever we are on our cluster
+
+We defined four convenience functions in bash: `slinfo`, `slinfop`, `alljobs`, and `myjobs`.  
 
 Once we log out of the current session, or login to a different session, those
 convenience functions will be lost.
@@ -459,7 +595,7 @@ The `.bashrc` file is a file in your home directory in which you can put functio
 definitions and other configurations that will be applied whenever you open a new
 bash shell.
 
-To add our three convenience functions to your `.bashrc` file, first start
+To add our four convenience functions to your `.bashrc` file, first start
 editing your `~/.bashrc` file with `nano`.
 ```{.sh filename="Paste this into your shell"}
 nano ~/.bashrc
@@ -493,8 +629,8 @@ function myjobs {
 ```
 
 
-Then paste those function definitions into the editor at the bottom
-of the file (or before your conda block if you have one),
+Then paste those function definitions into the editor in your .bashrc
+file (before your conda/mamba block if you have one),
 and then do `cntrl-X`, `Y`, `RETURN` to save the file
 and get out of `nano`.
 

@@ -622,7 +622,7 @@ And a short video showing all the steps (except actually doing the homework) is 
 
 ### Tuesday, February 13, 2024
 
-SLURM
+SLURM intro
 
 #### Prep
 
@@ -637,4 +637,22 @@ SLURM
 
 ### Thursday, February 15, 2024
 
+SLURM: `sbatch` and slurm job arrays (applied to sequence alignment)
 
+#### Prep
+
+- Read [Chapter 19](https://eriqande.github.io/eca-bioinf-handbook/alignment-of-sequence-data-to-a-reference-genome-and-associated-steps.html) of the handbook, up to, and including
+  section 19.3.
+- If you want to (i.e., if you are excited by mathematical notation) feel free to peruse some papers about `bwa`:
+  + [BWA original paper](https://academic.oup.com/bioinformatics/article/25/14/1754/225615)
+  + [BWA-mem Paper on Arxiv](https://arxiv.org/abs/1303.3997)
+
+#### In class
+
+- We will be going through two sections of the udpated NMFS workshop notes:
+  + [Submitting jobs with sbatch](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sbatch.html)
+  + [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
+
+#### Assignment
+
+We will have an assignment due the following Tuesday.  TBA.
