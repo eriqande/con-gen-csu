@@ -205,18 +205,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#say-it-again-dont-do-heavy-computing-on-the-login-nodes" id="toc-say-it-again-dont-do-heavy-computing-on-the-login-nodes" class="nav-link" data-scroll-target="#say-it-again-dont-do-heavy-computing-on-the-login-nodes"><span class="header-section-number">5.3</span> Say it again: Don’t do heavy computing on the login nodes!</a></li>
   <li><a href="#do-your-computation-on-the-compute-nodes" id="toc-do-your-computation-on-the-compute-nodes" class="nav-link" data-scroll-target="#do-your-computation-on-the-compute-nodes"><span class="header-section-number">5.4</span> Do your computation on the compute nodes</a></li>
   <li><a href="#what-does-sedna-have-under-the-hood" id="toc-what-does-sedna-have-under-the-hood" class="nav-link" data-scroll-target="#what-does-sedna-have-under-the-hood"><span class="header-section-number">5.5</span> What does Sedna have under the hood?</a></li>
-  <li><a href="#ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" id="toc-ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" class="nav-link" data-scroll-target="#ask-slurm-about-what-nodes-are-available-and-how-busy-they-are"><span class="header-section-number">5.6</span> Ask SLURM about what nodes are available, and how busy they are</a></li>
-  <li><a href="#more-detailed-sinfo-output" id="toc-more-detailed-sinfo-output" class="nav-link" data-scroll-target="#more-detailed-sinfo-output"><span class="header-section-number">5.7</span> More detailed <code>sinfo</code> output</a></li>
-  <li><a href="#summarize-what-sedna-is-doing-by-job" id="toc-summarize-what-sedna-is-doing-by-job" class="nav-link" data-scroll-target="#summarize-what-sedna-is-doing-by-job"><span class="header-section-number">5.8</span> Summarize what Sedna is doing by job</a></li>
-  <li><a href="#i-find-the-standard-squeue-output-lacking" id="toc-i-find-the-standard-squeue-output-lacking" class="nav-link" data-scroll-target="#i-find-the-standard-squeue-output-lacking"><span class="header-section-number">5.9</span> I find the standard <code>squeue</code> output lacking</a></li>
-  <li><a href="#just-tell-me-about-my-jobs" id="toc-just-tell-me-about-my-jobs" class="nav-link" data-scroll-target="#just-tell-me-about-my-jobs"><span class="header-section-number">5.10</span> Just tell me about my jobs!</a></li>
-  <li><a href="#finding-software-on-a-cluster" id="toc-finding-software-on-a-cluster" class="nav-link" data-scroll-target="#finding-software-on-a-cluster"><span class="header-section-number">5.11</span> Finding Software on a Cluster</a></li>
-  <li><a href="#example-lets-try-running-samtools" id="toc-example-lets-try-running-samtools" class="nav-link" data-scroll-target="#example-lets-try-running-samtools"><span class="header-section-number">5.12</span> Example: Let’s try running <code>samtools</code></a></li>
-  <li><a href="#check-which-software-programs-are-available-in-the-modules" id="toc-check-which-software-programs-are-available-in-the-modules" class="nav-link" data-scroll-target="#check-which-software-programs-are-available-in-the-modules"><span class="header-section-number">5.13</span> Check which software programs are available in the modules</a></li>
-  <li><a href="#load-the-samtools-module" id="toc-load-the-samtools-module" class="nav-link" data-scroll-target="#load-the-samtools-module"><span class="header-section-number">5.14</span> Load the samtools module</a></li>
-  <li><a href="#two-notes-about-modules" id="toc-two-notes-about-modules" class="nav-link" data-scroll-target="#two-notes-about-modules"><span class="header-section-number">5.15</span> Two notes about modules</a></li>
-  <li><a href="#if-you-need-more-software-or-newer-versions-on-sedna" id="toc-if-you-need-more-software-or-newer-versions-on-sedna" class="nav-link" data-scroll-target="#if-you-need-more-software-or-newer-versions-on-sedna"><span class="header-section-number">5.16</span> If you need more software or newer versions on Sedna</a></li>
-  <li><a href="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-sedna" id="toc-before-we-go-make-our-convenience-functions-available-whenever-we-are-on-sedna" class="nav-link" data-scroll-target="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-sedna"><span class="header-section-number">5.17</span> Before we go, make our convenience functions available whenever we are on Sedna</a></li>
+  <li><a href="#what-does-alpine-have-under-the-hood" id="toc-what-does-alpine-have-under-the-hood" class="nav-link" data-scroll-target="#what-does-alpine-have-under-the-hood"><span class="header-section-number">5.6</span> What does ALPINE have under the hood?</a></li>
+  <li><a href="#ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" id="toc-ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" class="nav-link" data-scroll-target="#ask-slurm-about-what-nodes-are-available-and-how-busy-they-are"><span class="header-section-number">5.7</span> Ask SLURM about what nodes are available, and how busy they are</a></li>
+  <li><a href="#more-detailed-sinfo-output" id="toc-more-detailed-sinfo-output" class="nav-link" data-scroll-target="#more-detailed-sinfo-output"><span class="header-section-number">5.8</span> More detailed <code>sinfo</code> output</a></li>
+  <li><a href="#summarize-what-the-cluster-is-doing-by-job" id="toc-summarize-what-the-cluster-is-doing-by-job" class="nav-link" data-scroll-target="#summarize-what-the-cluster-is-doing-by-job"><span class="header-section-number">5.9</span> Summarize what the cluster is doing <em>by job</em></a></li>
+  <li><a href="#i-find-the-standard-default-squeue-output-sorely-lacking" id="toc-i-find-the-standard-default-squeue-output-sorely-lacking" class="nav-link" data-scroll-target="#i-find-the-standard-default-squeue-output-sorely-lacking"><span class="header-section-number">5.10</span> I find the standard, default, <code>squeue</code> output sorely lacking</a></li>
+  <li><a href="#just-tell-me-about-my-jobs" id="toc-just-tell-me-about-my-jobs" class="nav-link" data-scroll-target="#just-tell-me-about-my-jobs"><span class="header-section-number">5.11</span> Just tell me about my jobs!</a></li>
+  <li><a href="#finding-software-on-a-cluster" id="toc-finding-software-on-a-cluster" class="nav-link" data-scroll-target="#finding-software-on-a-cluster"><span class="header-section-number">5.12</span> Finding Software on a Cluster</a></li>
+  <li><a href="#example-lets-try-running-samtools" id="toc-example-lets-try-running-samtools" class="nav-link" data-scroll-target="#example-lets-try-running-samtools"><span class="header-section-number">5.13</span> Example: Let’s try running <code>samtools</code></a></li>
+  <li><a href="#check-which-software-programs-are-available-in-the-modules" id="toc-check-which-software-programs-are-available-in-the-modules" class="nav-link" data-scroll-target="#check-which-software-programs-are-available-in-the-modules"><span class="header-section-number">5.14</span> Check which software programs are available in the modules</a></li>
+  <li><a href="#load-the-samtools-module" id="toc-load-the-samtools-module" class="nav-link" data-scroll-target="#load-the-samtools-module"><span class="header-section-number">5.15</span> Load the samtools module</a></li>
+  <li><a href="#two-notes-about-modules" id="toc-two-notes-about-modules" class="nav-link" data-scroll-target="#two-notes-about-modules"><span class="header-section-number">5.16</span> Two notes about modules</a></li>
+  <li><a href="#if-you-need-more-software-or-newer-versions-on-sedna" id="toc-if-you-need-more-software-or-newer-versions-on-sedna" class="nav-link" data-scroll-target="#if-you-need-more-software-or-newer-versions-on-sedna"><span class="header-section-number">5.17</span> If you need more software or newer versions on Sedna</a></li>
+  <li><a href="#if-you-need-more-software-or-newer-versions-on-alpine" id="toc-if-you-need-more-software-or-newer-versions-on-alpine" class="nav-link" data-scroll-target="#if-you-need-more-software-or-newer-versions-on-alpine"><span class="header-section-number">5.18</span> If you need more software or newer versions on Alpine</a></li>
+  <li><a href="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster" id="toc-before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster" class="nav-link" data-scroll-target="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster"><span class="header-section-number">5.19</span> Before we go, make our convenience functions available whenever we are on our cluster</a></li>
   </ul>
 </nav>
     </div>
@@ -287,6 +289,12 @@ Hot tip!
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[eanderson@sedna</span> playground]$</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Which tells me that I am user <code>eanderson</code> and I am logged in to <code>sedna</code> in the directory whose basename is <code>playground</code>.</p>
 <p>The login node for Sedna is named <code>sedna</code>. So, this is telling me that I am logged into the <em>login node</em> of Sedna.</p>
+<p><strong>If you don’t have such an informative prompt…</strong></p>
+<p>On Alpine, I am not sure what the default command prompt is, but you can always change yours by setting the <code>PS1</code> variable. Try doing:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PS1</span><span class="op">=</span><span class="st">'[\h: \W]--% '</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That will give you a command prompt with the <em>hostname</em> (<code>\h</code>) and the working directory basename (<code>\W</code>), which is helpful. Mine, right now, looks like:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[login11:</span> con-gen-csu]--%</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Of course, you can put the <code>export PS1='[\h: \W]--% '</code> into your <code>~/.bashrc</code> file and then always have an informative prompt.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -319,18 +327,31 @@ Self study
 <li>The maximum amount of RAM memory you might need.</li>
 <li>The amount of time that you will need those resources for.</li>
 </ul></li>
-<li>To prepare for the next part of the course, each one of us is going to “check out” 2 cores for 3 hours for <em>interactive</em> work.
+<li>To prepare for the next part of the course <strong>on SEDNA</strong>, each one of us is going to “check out” 2 cores for 3 hours for <em>interactive</em> work.
 <ul>
-<li>Interactive here means that we will have a Unix shell that has access to compute power on the cores that we checked out.</li>
-</ul></li>
+<li><p>Interactive here means that we will have a Unix shell that has access to compute power on the cores that we checked out.</p></li>
+<li><p>Here is the command to checkout 2 cores for 3 hours for interactive use:</p></li>
 </ul>
-<p>Here is the command to checkout 2 cores for 3 hours for interactive use:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Paste this into your shell</strong></pre>
+<pre><strong>Paste this into your shell on SEDNA</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-c</span> 2 <span class="at">-t</span> 03:00:00 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-c</span> 2 <span class="at">-t</span> 03:00:00 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li>If you are working <strong>on ALPINE</strong> then you can get on a compute node differently:
+<ul>
+<li>Load the <code>slurm/alpine</code> module</li>
+<li>Request a shell on the oversubscribed <code>atesting</code> partition.</li>
+<li>The commands for that look like:</li>
+</ul>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell on ALPINE</strong></pre>
 </div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load slurm/alpine</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--partition</span> atesting <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -341,7 +362,7 @@ Self study:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Have a look at your command prompt now. It should show that you are logged in to <code>nodeXX</code> where <code>XX</code> is a number like <code>04</code> or <code>33</code>.</p>
+<p>Have a look at your command prompt now. If you are on SEDNA, it should show that you are logged in to <code>nodeXX</code> where <code>XX</code> is a number like <code>04</code> or <code>33</code>. If you are on Alpine, then the node you are on will be named something more cryptic, like <code>c3cpu-a5-u34-3</code>.</p>
 </div>
 </div>
 </section>
@@ -369,26 +390,31 @@ Self study:
 </ul></li>
 </ul>
 </section>
-<section id="ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="ask-slurm-about-what-nodes-are-available-and-how-busy-they-are"><span class="header-section-number">5.6</span> Ask SLURM about what nodes are available, and how busy they are</h2>
-<p>When I login to Sedna, before launching and jobs or working on anything, I always like to get a summary of how hard Sedna is currently working.</p>
+<section id="what-does-alpine-have-under-the-hood" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="what-does-alpine-have-under-the-hood"><span class="header-section-number">5.6</span> What does ALPINE have under the hood?</h2>
+<p>Alpine is a pretty darn large cluster, with a boatload of different machines, many of them with 64 cores. It also has some GPU machines, etc.</p>
+<p>We will have a look at it with the commands, like <code>sinfo</code> described next.</p>
+</section>
+<section id="ask-slurm-about-what-nodes-are-available-and-how-busy-they-are" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="ask-slurm-about-what-nodes-are-available-and-how-busy-they-are"><span class="header-section-number">5.7</span> Ask SLURM about what nodes are available, and how busy they are</h2>
+<p>When I login <strong>to Sedna</strong>, before launching and jobs or working on anything, I always like to get a summary of how hard Sedna is currently working.</p>
 <p>For this we have the <code>sinfo</code> command:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this at your command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sinfo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sinfo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The answer will look somethign like this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">PARTITION</span> AVAIL  TIMELIMIT  NODES  STATE NODELIST</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite      5    mix node<span class="pp">[</span><span class="ss">01,29</span><span class="pp">-</span><span class="ss">31,33</span><span class="pp">]</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite      1  alloc node32</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite     30   idle node<span class="pp">[</span><span class="ss">02</span><span class="pp">-</span><span class="ss">28,34</span><span class="pp">-</span><span class="ss">36</span><span class="pp">]</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">himem</span>        up   infinite      1    mix himem01</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">himem</span>        up   infinite      3   idle himem<span class="pp">[</span><span class="ss">02</span><span class="pp">-</span><span class="ss">04</span><span class="pp">]</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite      8  down<span class="pp">*</span> bionode<span class="pp">[</span><span class="ss">10</span><span class="pp">-</span><span class="ss">11,13</span><span class="pp">-</span><span class="ss">18</span><span class="pp">]</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite      1  drain bionode12</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite     10   idle bionode<span class="pp">[</span><span class="ss">01</span><span class="pp">-</span><span class="ss">09,19</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">PARTITION</span> AVAIL  TIMELIMIT  NODES  STATE NODELIST</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite      5    mix node<span class="pp">[</span><span class="ss">01,29</span><span class="pp">-</span><span class="ss">31,33</span><span class="pp">]</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite      1  alloc node32</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">node*</span>        up   infinite     30   idle node<span class="pp">[</span><span class="ss">02</span><span class="pp">-</span><span class="ss">28,34</span><span class="pp">-</span><span class="ss">36</span><span class="pp">]</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">himem</span>        up   infinite      1    mix himem01</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">himem</span>        up   infinite      3   idle himem<span class="pp">[</span><span class="ss">02</span><span class="pp">-</span><span class="ss">04</span><span class="pp">]</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite      8  down<span class="pp">*</span> bionode<span class="pp">[</span><span class="ss">10</span><span class="pp">-</span><span class="ss">11,13</span><span class="pp">-</span><span class="ss">18</span><span class="pp">]</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite      1  drain bionode12</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bionode</span>      up   infinite     10   idle bionode<span class="pp">[</span><span class="ss">01</span><span class="pp">-</span><span class="ss">09,19</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This is a hugely informative summary for being so compact.</p>
 <ul>
 <li>The output is sorted by partition.</li>
@@ -407,6 +433,9 @@ Self study:
 <li>The <code>node</code> partition is starred <code>node*</code> because it is the default partition.</li>
 <li>Notation like <code>node[01,29-31,33]</code> gives the specific node numbers, compactly.</li>
 </ul>
+<p>If you type <code>sinfo</code> <strong>on ALPINE</strong> you get a similar output, but it is much larger and more complex because there are more partitions and more, different nodes in each partition.</p>
+<p>The CURC lists the partitions on a web page <a href="https://curc.readthedocs.io/en/stable/clusters/alpine/alpine-hardware.html#partitions">here</a>.</p>
+<p>If you are going to be working on Alpine, it is worth reading over the entire CURC documentation for it, starting from <a href="https://curc.readthedocs.io/en/stable/clusters/alpine/quick-start.html">here</a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -421,24 +450,24 @@ Self-study
 </div>
 </div>
 </section>
-<section id="more-detailed-sinfo-output" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="more-detailed-sinfo-output"><span class="header-section-number">5.7</span> More detailed <code>sinfo</code> output</h2>
+<section id="more-detailed-sinfo-output" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="more-detailed-sinfo-output"><span class="header-section-number">5.8</span> More detailed <code>sinfo</code> output</h2>
 <p>Sometimes you want more information about what is going on with the cluster. <code>sinfo</code> can do that, too, but the syntax is hard to remember and even harder to type.</p>
 <p>Here is a bash function we will define called <code>slinfo</code> for (<code>s-long-info</code>) that uses <code>sinfo</code> to provide more detailed output.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> slinfo</span> <span class="kw">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sinfo</span> <span class="at">-N</span> <span class="at">-O</span> nodelist,cpusstate,memory,allocmem</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> slinfo</span> <span class="kw">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sinfo</span> <span class="at">-N</span> <span class="at">-O</span> nodelist,cpusstate,memory,allocmem</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once you have done that:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this at your command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">slinfo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">slinfo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This gives information about each node.</p>
 <ul>
@@ -452,9 +481,46 @@ Self-study
 <li><code>MEMORY</code> is total RAM available on the node (in Megabytes)</li>
 <li><code>ALLOCMEM</code> is the total RAM allocated to jobs.</li>
 </ul>
+<p>This view shows each node just once. But it might be useful to also see what partition(s) each of those nodes are in (especially on ALPINE). So, here is a quick function to do that:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> slinfop</span> <span class="kw">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sinfo</span> <span class="at">-N</span> <span class="at">-O</span> nodelist,partition,cpusstate,memory,allocmem</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you have done that:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Type this at your command prompt</strong></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">slinfop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that many nodes are included in multiple partitions.</p>
+<p>Since the main partition on Alpine for general computing is <code>amilan</code> you can look specifically at nodes in that partition with:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Copy this into your command prompt</strong></pre>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">slinfop</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$2~/amilan/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+ALPINE Self-study
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Quickly scan the output of the above command and estimate the number of idle (i.e.&nbsp;<em>available</em>) cores in the <code>amilan</code> partition.</p>
+</div>
+</div>
 </section>
-<section id="summarize-what-sedna-is-doing-by-job" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="summarize-what-sedna-is-doing-by-job"><span class="header-section-number">5.8</span> Summarize what Sedna is doing by job</h2>
+<section id="summarize-what-the-cluster-is-doing-by-job" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="summarize-what-the-cluster-is-doing-by-job"><span class="header-section-number">5.9</span> Summarize what the cluster is doing <em>by job</em></h2>
 <p>SLURM keeps track of individual jobs that get submitted.</p>
 <p>For SLURM, each <em>job</em> is basically a request for resources.</p>
 <p>If SLURM finds the requested resources are available, it provides the resources and starts the job.</p>
@@ -465,27 +531,27 @@ Self-study
 <div class="code-with-filename-file">
 <pre><strong>Type this at your command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This tells us a little about all the jobs that are currently allocated resources or are waiting for resources.</p>
-<p><strong>One thing to note</strong>: - Every job is assigned a <code>SLURM_JOB_ID</code>. Which is a unique integer (that gets assigned successively). - And jobs might have a job NAME, that is assigned by the user of is the name of the script that the job runs.</p>
+<p><strong>One thing to note</strong>: - Every job is assigned a <code>SLURM_JOB_ID</code>. Which is a unique integer (that gets assigned successively). - And jobs might have a job NAME, that is assigned by the user, which is the name of the script that the job runs, or is defined in the SBATCH directives (we will talk about that later!)</p>
 </section>
-<section id="i-find-the-standard-squeue-output-lacking" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="i-find-the-standard-squeue-output-lacking"><span class="header-section-number">5.9</span> I find the standard <code>squeue</code> output lacking</h2>
-<p>The standard way that <code>squeue</code> presents information is not super informative, <em>especially</em> if the job names are not very short.</p>
+<section id="i-find-the-standard-default-squeue-output-sorely-lacking" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="i-find-the-standard-default-squeue-output-sorely-lacking"><span class="header-section-number">5.10</span> I find the standard, default, <code>squeue</code> output sorely lacking</h2>
+<p>The standard way that <code>squeue</code> presents information is not super informative, <em>especially</em> if the job names are not very short, or if you are interested in how many cores (not just nodes) each job involves.</p>
 <p>Once again, we make a bash function, <code>alljobs</code>, that runs <code>squeue</code> but provides more information.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this at your command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> alljobs</span> <span class="kw">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">squeue</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.15u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L"</span><span class="kw">;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> alljobs</span> <span class="kw">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">squeue</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.15u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L"</span><span class="kw">;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Also, if you follow the command with an integer like <code>20</code>, that is how many spaces the output will allow for the job NAME.</p>
 <p>For example, try:</p>
@@ -493,35 +559,58 @@ Self-study
 <div class="code-with-filename-file">
 <pre><strong>Type this at the command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">alljobs</span> 30</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">alljobs</span> 30</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is kind of fun to see the full names of the jobs.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hot Tip!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is worth taking special note of the columns, <code>NODELIST(REASON)</code> and <code>CPUS</code>:</p>
+<ul>
+<li><code>NODELIST(REASON)</code>: If the job is running, then this gives the name(s) of the node(s) upon which it is running. If it is not running, it says <em>why</em> it is not yet running. The most typical reason it:
+<ul>
+<li><code>Priority</code>: Too many other users are already using the cluster. Your job is waiting for resources to become available.</li>
+</ul></li>
+<li>CPUS: the number of CPUs the job is using</li>
+</ul>
+<p>It is worth noting that, when I look at <code>alljobs</code> on Alpine, most of the jobs that are waiting due to <code>Priority</code> are jobs that are requesting all or most of the CPUs (like 64 or 32) on a single node. Many of the jobs that are <em>not</em> waiting are those that are requesting only one or a few cores.</p>
+<p>In general, if you can break your workflows down into a small chunks that run on just one or a few cores, you have a better chance of getting compute time, than if you request all the cores on a node.</p>
+</div>
 </div>
 </section>
-<section id="just-tell-me-about-my-jobs" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="just-tell-me-about-my-jobs"><span class="header-section-number">5.10</span> Just tell me about my jobs!</h2>
+<section id="just-tell-me-about-my-jobs" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="just-tell-me-about-my-jobs"><span class="header-section-number">5.11</span> Just tell me about my jobs!</h2>
 <p>We can make a similar function that only tells us about our own jobs that are running or waiting in the queue:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myjobs</span> <span class="kw">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.10u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L %p"</span><span class="kw">;</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myjobs</span> <span class="kw">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.10u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L %p"</span><span class="kw">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can run that the same way as <code>alljobs</code>, and you should see the 2-core job you started with <code>srun</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">myjobs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">myjobs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="finding-software-on-a-cluster" class="level2" data-number="5.11">
-<h2 data-number="5.11" class="anchored" data-anchor-id="finding-software-on-a-cluster"><span class="header-section-number">5.11</span> Finding Software on a Cluster</h2>
+<section id="finding-software-on-a-cluster" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="finding-software-on-a-cluster"><span class="header-section-number">5.12</span> Finding Software on a Cluster</h2>
 <ul>
 <li>Analysis software is not automatically available on a cluster</li>
 <li>On many clusters you have to install it yourself</li>
@@ -548,27 +637,28 @@ Bioinformatic modules on Sedna are only available if the MODULEPATH is specified
 <div class="code-with-filename-file">
 <pre><strong>Paste this in your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$MODULEPATH</span> <span class="kw">|</span> <span class="fu">grep</span> bioinformatics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$MODULEPATH</span> <span class="kw">|</span> <span class="fu">grep</span> bioinformatics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If that command did not return anything to <code>stdout</code>, then you need to add a command to your <code>~/.bashrc</code> that will add <code>/opt/bioinformatics/modulefiles</code> to your MODULEPATH. You can do that (as detailed in the <a href="https://docs.google.com/document/d/1nn0T0OWEsQCBoCdaH6DSY69lQSbK3XnPlseyyQuU2Lc/edit#">Sedna Google Doc</a>) like this:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>If you need to, paste this into the shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export MODULEPATH=${MODULEPATH}:/opt/bioinformatics/modulefiles'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export MODULEPATH=${MODULEPATH}:/opt/bioinformatics/modulefiles'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And when you are done with that, reload your <code>.bashrc</code> to get the change to take effect:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>If you need to, paste this into the shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
+<p>Most modules on Alpine are only available if you are on a compute node.</p>
 </section>
-<section id="example-lets-try-running-samtools" class="level2" data-number="5.12">
-<h2 data-number="5.12" class="anchored" data-anchor-id="example-lets-try-running-samtools"><span class="header-section-number">5.12</span> Example: Let’s try running <code>samtools</code></h2>
+<section id="example-lets-try-running-samtools" class="level2" data-number="5.13">
+<h2 data-number="5.13" class="anchored" data-anchor-id="example-lets-try-running-samtools"><span class="header-section-number">5.13</span> Example: Let’s try running <code>samtools</code></h2>
 <p><code>samtools</code> is a common bioinformatic utility.</p>
 <p>Typically, if you run it with no arguments, it gives you some usage information.</p>
 <p>However, on Sedna, unless you have installed <code>samtools</code> yourself, or have set your environment up to always have it available, when you type <code>samtools</code> at the shell, you will get a response saying that it is not available:</p>
@@ -576,36 +666,42 @@ Bioinformatic modules on Sedna are only available if the MODULEPATH is specified
 <div class="code-with-filename-file">
 <pre><strong>Type this at the command prompt</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The response I get from the computer is:</p>
-<pre><code>bash: samtools: command not found...
-Install package 'samtools' to provide command 'samtools'? [N/y]</code></pre>
-<p>You should get that response, <strong>and please answer <code>N</code> to the question.</strong></p>
-<p>You do not want to install samtools.</p>
-<p>Instead, you want to see if it is available in the system <em>modules</em>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bash:</span> samtools: command not found...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You will likely get that response, too.</p>
+<p>On Alpine, you could install <code>samtools</code> via <code>mamba</code> or you could see if it is available in the system <em>modules</em>.</p>
 </section>
-<section id="check-which-software-programs-are-available-in-the-modules" class="level2" data-number="5.13">
-<h2 data-number="5.13" class="anchored" data-anchor-id="check-which-software-programs-are-available-in-the-modules"><span class="header-section-number">5.13</span> Check which software programs are available in the modules</h2>
+<section id="check-which-software-programs-are-available-in-the-modules" class="level2" data-number="5.14">
+<h2 data-number="5.14" class="anchored" data-anchor-id="check-which-software-programs-are-available-in-the-modules"><span class="header-section-number">5.14</span> Check which software programs are available in the modules</h2>
 <p>The command <code>module</code> and its subcommands let you interact with the software modules.</p>
 <p><code>module avail</code> tells you what software is available in the modules.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> avail</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> avail</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>There is a lot of tasty bioinformatics software there. (A nice change from HPCC’s that primarily serve geoscientists…)</p>
+<p>On SEDNA, there is a lot of tasty bioinformatics software there. On Alpine, there is now a dedicated “Bioinformatics” section in the output of <code>module avail</code>, which is a nice change from Alpine’s predecessor, SUMMIT, which was mostly loaded up with software for geoscientists.</p>
 <p>The numbers are the version numbers. The <code>(D)</code> after some of them tells us that version is the default.</p>
 </section>
-<section id="load-the-samtools-module" class="level2" data-number="5.14">
-<h2 data-number="5.14" class="anchored" data-anchor-id="load-the-samtools-module"><span class="header-section-number">5.14</span> Load the samtools module</h2>
+<section id="load-the-samtools-module" class="level2" data-number="5.15">
+<h2 data-number="5.15" class="anchored" data-anchor-id="load-the-samtools-module"><span class="header-section-number">5.15</span> Load the samtools module</h2>
 <p>We will load the module for version 1.15.1 of <code>samtools</code>. That can be done like this:</p>
+<p><strong>SEDNA</strong></p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Paste this into your shell</strong></pre>
+<pre><strong>On SEDNA, Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Alpine</strong></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>On Alpine, Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load samtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>(using the <code>load</code> subcommand of <code>module</code>)</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -619,7 +715,7 @@ About the default versions
 </div>
 <div class="callout-body-container callout-body">
 <p>The same would have been achieved with</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>because 1.15.1 is the default samtools version.</p>
 <p>Nonetheless, it is typically best from a reproducibility standpoint to be explicit about version numbers of software you are using.</p>
 </div>
@@ -629,7 +725,7 @@ About the default versions
 <div class="code-with-filename-file">
 <pre><strong>Type this at your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -642,15 +738,15 @@ Inventory and Unload modules
 </div>
 <div class="callout-body-container callout-body">
 <p>To know which modules you have loaded:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To unload all the modules you have loaded</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There are many more module commands, but those are the only ones that you really need to know.</p>
 </div>
 </div>
 </section>
-<section id="two-notes-about-modules" class="level2" data-number="5.15">
-<h2 data-number="5.15" class="anchored" data-anchor-id="two-notes-about-modules"><span class="header-section-number">5.15</span> Two notes about modules</h2>
+<section id="two-notes-about-modules" class="level2" data-number="5.16">
+<h2 data-number="5.16" class="anchored" data-anchor-id="two-notes-about-modules"><span class="header-section-number">5.16</span> Two notes about modules</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -676,57 +772,61 @@ Modules are not always portable
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Not every cluster that you use will have the same modules set up in the same way. (Though it does seem that Giles has set out modules up according to the accepted best practices!).</p>
-<p>So, if you use code you developed for Sedna on another cluster, you might have to modify things to ensure that software is available.</p>
-<p>The conda package manager is an option if you are going to be running your scripts on different clusters.</p>
+<p>Not every cluster that you use will have the same modules set up in the same way. (Though it does seem that Giles has set the modules up on Sedna according to the accepted best practices!).</p>
+<p>So, if you use code you developed for Sedna (or Alpine) on another cluster, you might have to modify things to ensure that software is available.</p>
+<p>The conda/mamba package manager is an option if you are going to be running your scripts on different clusters.</p>
 </div>
 </div>
 </section>
-<section id="if-you-need-more-software-or-newer-versions-on-sedna" class="level2" data-number="5.16">
-<h2 data-number="5.16" class="anchored" data-anchor-id="if-you-need-more-software-or-newer-versions-on-sedna"><span class="header-section-number">5.16</span> If you need more software or newer versions on Sedna</h2>
+<section id="if-you-need-more-software-or-newer-versions-on-sedna" class="level2" data-number="5.17">
+<h2 data-number="5.17" class="anchored" data-anchor-id="if-you-need-more-software-or-newer-versions-on-sedna"><span class="header-section-number">5.17</span> If you need more software or newer versions on Sedna</h2>
 <p>You can request software installations by using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSf2tDl9nJjihmHX9hM6ytMI3ToldqERVem1ge25-kp3JHw3tQ/viewform?usp=sf_link">Sedna work request form</a></p>
 </section>
-<section id="before-we-go-make-our-convenience-functions-available-whenever-we-are-on-sedna" class="level2" data-number="5.17">
-<h2 data-number="5.17" class="anchored" data-anchor-id="before-we-go-make-our-convenience-functions-available-whenever-we-are-on-sedna"><span class="header-section-number">5.17</span> Before we go, make our convenience functions available whenever we are on Sedna</h2>
-<p>We defined three convenience functions in bash: <code>slinfo</code>, <code>alljobs</code>, and <code>myjobs</code>.</p>
+<section id="if-you-need-more-software-or-newer-versions-on-alpine" class="level2" data-number="5.18">
+<h2 data-number="5.18" class="anchored" data-anchor-id="if-you-need-more-software-or-newer-versions-on-alpine"><span class="header-section-number">5.18</span> If you need more software or newer versions on Alpine</h2>
+<p>You probably can request it from the sys admins, but you will almost indubitably have your required software up and running faster if you install it with mamba.</p>
+</section>
+<section id="before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster" class="level2" data-number="5.19">
+<h2 data-number="5.19" class="anchored" data-anchor-id="before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster"><span class="header-section-number">5.19</span> Before we go, make our convenience functions available whenever we are on our cluster</h2>
+<p>We defined four convenience functions in bash: <code>slinfo</code>, <code>slinfop</code>, <code>alljobs</code>, and <code>myjobs</code>.</p>
 <p>Once we log out of the current session, or login to a different session, those convenience functions will be lost.</p>
 <p>To make sure that they are accessible the next time we login, we will put them into our own <code>.bashrc</code> files.</p>
 <p>The <code>.bashrc</code> file is a file in your home directory in which you can put function definitions and other configurations that will be applied whenever you open a new bash shell.</p>
-<p>To add our three convenience functions to your <code>.bashrc</code> file, first start editing your <code>~/.bashrc</code> file with <code>nano</code>.</p>
+<p>To add our four convenience functions to your <code>.bashrc</code> file, first start editing your <code>~/.bashrc</code> file with <code>nano</code>.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then come back to this web page and copy the following text:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Copy this onto your clipboard</strong></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> slinfo</span> <span class="kw">{</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sinfo</span> <span class="at">-N</span> <span class="at">-O</span> nodelist,cpusstate,memory,allocmem</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> alljobs</span> <span class="kw">{</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.15u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L"</span><span class="kw">;</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myjobs</span> <span class="kw">{</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.10u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L %p"</span><span class="kw">;</span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> slinfo</span> <span class="kw">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sinfo</span> <span class="at">-N</span> <span class="at">-O</span> nodelist,cpusstate,memory,allocmem</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> alljobs</span> <span class="kw">{</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.15u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L"</span><span class="kw">;</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myjobs</span> <span class="kw">{</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> <span class="at">-o</span>  <span class="st">"%.12i %.9P %.</span><span class="va">${JL}</span><span class="st">j %.10u %.2t %.15M %.6D %.18R %.5C %.12m %.12l %.12L %p"</span><span class="kw">;</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then paste those function definitions into the editor at the bottom of the file (or before your conda block if you have one), and then do <code>cntrl-X</code>, <code>Y</code>, <code>RETURN</code> to save the file and get out of <code>nano</code>.</p>
+<p>Then paste those function definitions into the editor in your .bashrc file (before your conda/mamba block if you have one), and then do <code>cntrl-X</code>, <code>Y</code>, <code>RETURN</code> to save the file and get out of <code>nano</code>.</p>
 <p>Now, the next time you login you will have all those functions.</p>
 
 

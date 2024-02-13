@@ -300,12 +300,31 @@ Fun fact:
 </section>
 <section id="storing-slurm-options-in-your-shell-script" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="storing-slurm-options-in-your-shell-script"><span class="header-section-number">6.3</span> Storing SLURM options in your shell script</h2>
-<p>Let’s look at an example, in the file <code>scripts/bwa_index.sh</code></p>
+<p>Let’s look at an example like one might do in an sbatch script:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Contents of the file scripts/bwa_index.sh</strong></pre>
+<pre><strong>Contents of an sbatch script to run bwa index</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_index.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse=<span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=2:00:00</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=3G</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=bwa_index-%j.out</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=bwa_index-%j.err</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># this is a little script to index the genome given</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># by the first positional parameter ($1)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># load the module that gives us the bwa software</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bwa</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># make a directory for log output if it does not already exist</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="va">DIR</span><span class="op">=</span>results/log/bwa_index</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DIR</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># run bwa index on the input</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> index <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$DIR</span>/log.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -341,6 +360,7 @@ Get email from SLURM.
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>where you would replace <code>myemail@emailserver.com</code> with your own email address.</p>
 <p>Note that option <code>--mail-type</code> can be tailored to modulate how much email you will get from SLURM.</p>
+<p>TBH, though, I don’t have SLURM email any news about my jobs anymore. Workflows that are optimized into a lot of smaller jobs would fill your inbox pretty quickly!</p>
 </div>
 </div>
 </div>

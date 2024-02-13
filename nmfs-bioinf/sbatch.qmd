@@ -69,9 +69,29 @@ after the shebang line that are preceded by `#SBATCH`.
 
 ## Storing SLURM options in your shell script
 
-Let's look at an example, in the file `scripts/bwa_index.sh`
-```{.sh filename="Contents of the file scripts/bwa_index.sh"}
-`r paste(readLines("playground/scripts/bwa_index.sh"), collapse="\n")`
+Let's look at an example like one might do in an sbatch script:
+```{.sh filename="Contents of an sbatch script to run bwa index"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --mem=3G
+#SBATCH --output=bwa_index-%j.out
+#SBATCH --error=bwa_index-%j.err
+
+# this is a little script to index the genome given
+# by the first positional parameter ($1)
+
+# load the module that gives us the bwa software
+module load bwa
+
+# make a directory for log output if it does not already exist
+DIR=results/log/bwa_index
+mkdir -p $DIR
+
+# run bwa index on the input
+bwa index $1 > $DIR/log.txt 2>&1
+
 ```
 
 ::: {.callout-warning}
@@ -107,6 +127,9 @@ email address.
 
 Note that option `--mail-type` can be tailored to modulate how much email
 you will get from SLURM.
+
+TBH, though, I don't have SLURM email any news about my jobs anymore. Workflows that
+are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
 
 :::
 
