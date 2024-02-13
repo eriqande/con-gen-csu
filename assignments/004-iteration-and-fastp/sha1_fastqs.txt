@@ -1,0 +1,2 @@
+51fbb90f7296e53af3f59b38d41c6e090e607bf7  results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz
+8647c9650348058911b5bd51d0b52e7050bec062  results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz
