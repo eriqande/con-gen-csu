@@ -19,6 +19,7 @@ book:
   sidebar:
     logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
 
+
 format:
   html:
     theme: cosmo
@@ -26,4 +27,3 @@ format:
     documentclass: scrreprt
 
 editor: source
-

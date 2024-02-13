@@ -69,9 +69,29 @@ after the shebang line that are preceded by `#SBATCH`.
 
 ## Storing SLURM options in your shell script
 
-Let's look at an example, in the file `scripts/bwa_index.sh`
-```{.sh filename="Contents of the file scripts/bwa_index.sh"}
-`r paste(readLines("playground/scripts/bwa_index.sh"), collapse="\n")`
+Let's look at an example like one might do in an sbatch script:
+```{.sh filename="Contents of scripts/bwa_index.sh"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --mem=3G
+#SBATCH --output=bwa_index-%j.out
+#SBATCH --error=bwa_index-%j.err
+
+# this is a little script to index the genome given
+# by the first positional parameter ($1)
+
+# load the module that gives us the bwa software
+module load bwa
+
+# make a directory for log output if it does not already exist
+DIR=results/log/bwa_index
+mkdir -p $DIR
+
+# run bwa index on the input
+bwa index $1 > $DIR/log.txt 2>&1
+
 ```
 
 ::: {.callout-warning}
@@ -86,6 +106,8 @@ In the above script, you will see
 ```
 In this context, the `%j` gets replaced by `sbatch` with the
 `SLURM_JOB_ID`.
+
+
 
 :::
 
@@ -108,14 +130,17 @@ email address.
 Note that option `--mail-type` can be tailored to modulate how much email
 you will get from SLURM.
 
+TBH, though, I don't have SLURM email any news about my jobs anymore. Workflows that
+are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
+
 :::
 
 ## Let us submit the `bwa_index.sh` job to SLURM
 
 Since all of the `sbatch` options are imbedded within the
 shell script, all that we need to do, now, is:
-```{.sh filename="Paste this into your shell"}
-sbatch scripts/bwa_index.sh resources/genome.fasta
+```{.sh filename="Paste this into your shell at the top level of the con-gen-csu repo"}
+sbatch scripts/bwa_index.sh data/genome/genome.fasta
 ```
 
 The first argument is the script `scripts/bwa_index.sh` and the
@@ -124,8 +149,8 @@ we want to index with `bwa`.
 
 When this command executes, it returns the `SLURM_JOB_ID`.  Make a note of it.
 
-Once you have launched the job, try using `myjobs` and `alljobs` to see your job running
-in the queue, and also everyone else's. (You don't have much time, because it doesn't take very long).
+Once you have launched the job, try using `myjobs` to see your job running.
+(You don't have much time, because it doesn't take very long).
 
 ::: {.callout-caution  collapse=true}
 
