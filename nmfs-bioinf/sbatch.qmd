@@ -283,16 +283,17 @@ sbatch scripts/simple-15.sh
 ```
 
 Now, use `myjobs` to see how many cores this job is using (1) and
-how much memory (4700 Mb).  Those are the default values.
+how much memory (4700 Mb on Sedna, 3840 on Alpine).  Those are the default values.
 
 
-By default, both `stdout` and `stderr` get written to `slurm-%j.out`
+By default, on some systems both `stdout` and `stderr` get written to `slurm-%j.out`
 (where `%j%` is replaced with the SLURM_JOB_ID).
 
 You can see that is in that by doing:
 ```{.sh filename="Type this, but replace 331979 with whathever your actual SLURM job id is"}
 cat slurm-331979.out
 ```
+
 
 We see that `stderr` gets written to `slurm-%j.out` immediately.
 The `stdout` stream is supposed to get written there, as well, but
@@ -365,7 +366,12 @@ core on the "higher-memory" standard compute nodes, `node[29-36]`)
 Note, however, that if the programs running in your job are not
 multithreaded, then you might not be able to use all those cores.
 In which case, it might be better to specify additional memory allocation with
-`--mem`, and leave the other cores to other users. (?)
+`--mem`, and leave the other cores to other users.
+
+However, on Alpine, if you ask for 3.74 Gb * 10 = 37.4 Gb of memory and only one
+core for computing, you will still be "charged" (i.e., you will run through
+your quota) as if you were using 10 cores!  (i.e., billing is by the core, 
+and you are charged for the number of cores that would give you a certain amount of memory).
 
 :::
 
@@ -380,7 +386,7 @@ Nonetheless, I have found that the following R commands will exceed 4700 Mb of R
 x <- runif(1e9); y <- x + 1; y[1:10]
 ```
 Somewhere in the `y <- x + 1` command, memory usage will exceed the default 4700 Mb (4.7 Gb)
-of RAM that SLURM allows by default.  
+of RAM that SLURM allows by default (on SEDNA) or the 3.74 Gb of RAM allowed on Alpine.  
 
 So, what we are going to do here is run those commands in an `sbatch` script
 and see what happens. (You will probably exceed your allocated memory while doing bioinformatics,
@@ -388,7 +394,21 @@ so you might as well get used to what that looks like.)
 
 Here is a listing of a shell script to run under `sbatch` to exceed our memory usage:
 ```{.sh filename="Contents of scripts/r-too-much-mem.sh"}
-`r paste(readLines("playground/scripts/r-too-much-mem.sh"), collapse = "\n")`
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --output=r-too-much-mem-%j.out
+#SBATCH --error=r-too-much-mem-%j.err
+
+
+mkdir -p outputs
+EDIR=results/log/r-too-much-mem
+mkdir -p $EDIR
+
+module load R
+Rscript --vanilla -e "x <- runif(1e9); y <- x + 1; y[1:10]" > outputs/r-too-much.out 2> $EDIR/log.txt
+
 ```
 
 Run it like this:
@@ -442,14 +462,14 @@ You can mix and match `sbatch` options on the command line with
 
 So, we could provide sufficient memory to `scripts/r-too-much-mem.sh` and at the
 same time, override the time it is allotted with this command:
-```{.sh filename="Paste this into your shell"}
+```{.sh filename="Don't paste this into your shell---it uses too much resources"}
 sbatch --mem=16G --time=01:00:00 scripts/r-too-much-mem.sh
 ```
 
-After running that, use your `myjobs` function to see that the `MIN_MEMORY` is `16G`
+If you launched that job, you could use your `myjobs` function to see that the `MIN_MEMORY` is `16G`
 and the `TIME_LIMIT` is 1 hour.
 
-When it is done, run `myacct` to see that it successfully completed, and
+When it finished you could run `myacct` to see that it successfully completed, and
 look in the output file `outputs/r-too-much.out` to see that it printed
 the first 10 of one billion random numbers with 1 added to them.
 
@@ -473,7 +493,7 @@ you can recognize them when you see them later.
 
 So, try this:
 ```{.sh filename="Paste this into your shell"}
-sbatch --mem=16G --time=00:01:00 scripts/simple-15.sh
+sbatch --time=00:01:00 scripts/simple-15.sh
 ```
 
 That will fail in a minute, after which, use `myacct` to see what
@@ -482,7 +502,7 @@ it says about how it failed.
 It will tell you that the main script hit a `TIMEOUT` and the batch job
 running in that script was `CANCELLED`
 
-## A major gotcha: Do not `sbatch`'s `output` or `error` to a path that does not exist
+## A major gotcha: Do not direct `sbatch`'s `output` or `error` to a path that does not exist
 
 ::: {.callout-important}
 
@@ -515,7 +535,41 @@ genome that we indexed a few steps ago.
 
 Let's review the shell code in `scripts/bwa-map.sh`:
 ```{.sh filename="Contents of file scripts/bwa_map.sh"}
-`r paste(readLines("playground/scripts/bwa_map.sh"), collapse = "\n")`
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=bwa_map-%j.out
+#SBATCH --error=bwa_map-%j.err
+
+# this is a little script to map a pair of fastq files
+# that are in data/fastqs.
+#
+# The first positional parameter ($1)
+# should be something like: DPCh_plate1_B10_S22
+
+# load the module that gives us the bwa software
+module load bwa
+module load samtools
+
+# make a directory for log output if it does not already exist
+LDIR=results/log/bwa_map
+ODIR=results/mapped
+
+mkdir -p $LDIR $ODIR
+
+SAMP=$1
+
+# run bwa mem on the input and pipe it to samtools to sort it
+bwa mem data/genome/genome.fasta \
+  data/fastqs/${SAMP}_R1.fq.gz \
+  data/fastqs/${SAMP}_R2.fq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
+(
+  samtools view -u - | \
+  samtools sort -o $ODIR/$SAMP.bam
+) 2> $LDIR/samtools_$SAMP.log
+
+
 ```
 
 Note that we are using backslashes (`\`) at the ends of the lines
@@ -523,13 +577,14 @@ so that we can break a long line up onto separate lines of text.
 
 Also note that grouping of commands by parentheses.
 
-This script is run by passing it `A`, `B`, or `C` as the first
+This script is run by passing it `DPCh_plate1_B10_S22`, `DPCh_plate1_B11_S23`, or
+`DPCh_plate1_B12_S24`, etc., as the first
 postitional parameter.
 
-So, if we wanted to schedule all three of those mapping jobs, we
+So, if we wanted to schedule three of those mapping jobs, we
 could do:
 ```{.sh filename="Paste this code into your shell"}
-for S in A B C; do sbatch scripts/bwa_map.sh $S; done
+for S in DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24; do sbatch scripts/bwa_map.sh $S; done
 ```
 
 When that is done, check what is running with `myjobs` and `alljobs`.

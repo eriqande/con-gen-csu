@@ -25,8 +25,8 @@ SAMP=$1
 
 # run bwa mem on the input and pipe it to samtools to sort it
 bwa mem data/genome/genome.fasta \
-  data/fastqs/${SAMP}_R1.fastq.gz \
-  data/fastqs/${SAMP}_R2.fastq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
+  data/fastqs/${SAMP}_R1.fq.gz \
+  data/fastqs/${SAMP}_R2.fq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
 (
   samtools view -u - | \
   samtools sort -o $ODIR/$SAMP.bam
