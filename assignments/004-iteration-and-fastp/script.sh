@@ -15,8 +15,7 @@ mkdir -p results/trimmed results/qc/fastp
 # DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 ...
 # WITH ALL THE SAMPLE NAME THERE
 
-SAMPLES=DPCh_plate1_[B-H][0-1][0-2]_S[2-9][2-9]_
-#SAMPLES=(DPCh_plate1_B10_S22_ DPCh_plate1_B11_S23_ DPCh_plate1_B12_S24_ DPCh_plate1_C10_S34_ DPCh_plate1_C11_S35_ DPCh_plate1_C12_S36_ DPCh_plate1_D11_S47_ DPCh_plate1_F12_S72_ DPCh_plate1_G10_S82_ DPCh_plate1_G12_S84_ DPCh_plate1_H10_S94_)
+SAMPLES=$(basename -s R1.fq.gz -a  data/fastqs/DPCh_plate1*R1*)
 
 # NOW, MODIFY THE FOLLOWING, USING VARIABLE SUBSTITUTION SO THAT S IS USED IN PLACE OF THE SAMPLE
 # NAME IN THE COMMAND (i.e. replace DPCh_plate1_B10_S22 with the variable S---not that you will
