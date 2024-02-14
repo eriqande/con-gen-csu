@@ -6,15 +6,14 @@
 #SBATCH --error=bwa_map-%j.err
 
 # this is a little script to map a pair of fastq files
-# that in in data/fastq.  They are named as
-# {A,B,C}_R{1,2}.fastq.gz
+# that are in data/fastqs.
 #
 # The first positional parameter ($1)
-# should be A, B, or C.
+# should be something like: DPCh_plate1_B10_S22
 
 # load the module that gives us the bwa software
-module load aligners/bwa/0.7.17
-module load bio/samtools/1.15.1
+module load bwa
+module load samtools
 
 # make a directory for log output if it does not already exist
 LDIR=results/log/bwa_map
@@ -25,9 +24,9 @@ mkdir -p $LDIR $ODIR
 SAMP=$1
 
 # run bwa mem on the input and pipe it to samtools to sort it
-bwa mem resources/genome.fasta \
-  data/fastq/${SAMP}_R1.fastq.gz \
-  data/fastq/${SAMP}_R2.fastq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
+bwa mem data/genome/genome.fasta \
+  data/fastqs/${SAMP}_R1.fastq.gz \
+  data/fastqs/${SAMP}_R2.fastq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
 (
   samtools view -u - | \
   samtools sort -o $ODIR/$SAMP.bam
