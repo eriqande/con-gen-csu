@@ -202,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-sbatch-function-and-its-options" id="toc-the-sbatch-function-and-its-options" class="nav-link active" data-scroll-target="#the-sbatch-function-and-its-options"><span class="header-section-number">6.1</span> The <code>sbatch</code> function and its options</a></li>
+  <li><a href="#the-sbatch-command-and-its-options" id="toc-the-sbatch-command-and-its-options" class="nav-link active" data-scroll-target="#the-sbatch-command-and-its-options"><span class="header-section-number">6.1</span> The <code>sbatch</code> command and its options</a></li>
   <li><a href="#what-an-invocation-of-sbatch-could-look-like" id="toc-what-an-invocation-of-sbatch-could-look-like" class="nav-link" data-scroll-target="#what-an-invocation-of-sbatch-could-look-like"><span class="header-section-number">6.2</span> What an invocation of <code>sbatch</code> could look like</a></li>
   <li><a href="#storing-slurm-options-in-your-shell-script" id="toc-storing-slurm-options-in-your-shell-script" class="nav-link" data-scroll-target="#storing-slurm-options-in-your-shell-script"><span class="header-section-number">6.3</span> Storing SLURM options in your shell script</a></li>
   <li><a href="#let-us-submit-the-bwa_index.sh-job-to-slurm" id="toc-let-us-submit-the-bwa_index.sh-job-to-slurm" class="nav-link" data-scroll-target="#let-us-submit-the-bwa_index.sh-job-to-slurm"><span class="header-section-number">6.4</span> Let us submit the <code>bwa_index.sh</code> job to SLURM</a></li>
@@ -240,15 +240,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <ul>
-<li><p>Up till now we have allocated ourselves two cores for <em>interactive</em> use.</p></li>
+<li><p>Up till now we have allocated ourselves computing resources for <em>interactive</em> use.</p></li>
 <li><p>This is what you would do if you were going to be doing computationally intensive things directly while hacking on the command line….</p></li>
 <li><p>…or if you were going to start an R session and interactively work on some big data on it.</p></li>
 <li><p>etc.</p></li>
 </ul>
 <p>Running an interactive shell on a compute node is also a great way to test your scripts.</p>
-<p>However, once your scripts are tested, for most of your heavy computation, you will want to submit jobs as non-interactive <em>batch</em> jobs using SLURM’s <code>sbatch</code> function.</p>
-<section id="the-sbatch-function-and-its-options" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="the-sbatch-function-and-its-options"><span class="header-section-number">6.1</span> The <code>sbatch</code> function and its options</h2>
+<p>However, once your scripts are tested, for most of your heavy computation, you will want to submit jobs as non-interactive <em>batch</em> jobs using SLURM’s <code>sbatch</code> command.</p>
+<section id="the-sbatch-command-and-its-options" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="the-sbatch-command-and-its-options"><span class="header-section-number">6.1</span> The <code>sbatch</code> command and its options</h2>
 <p>If you do <code>man sbatch</code> you will see an insanely large number of options and all sorts of complicated stuff.</p>
 <p>You can get by with a fairly minimal set of options for almost everything you need to do. They are:</p>
 <ul>
@@ -256,9 +256,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>On Sedna, the default is 1.</li>
 </ul></li>
-<li><code>--mem=&lt;size[units]</code>: How much total memory for the job. Example: <code>--mem=4G</code>
+<li><code>--mem=&lt;size[units]&gt;</code>: How much total memory for the job. Example: <code>--mem=4G</code>
 <ul>
 <li>On Sedna, the default is about 4.7 Gb for each requested core.</li>
+<li>On Alpine’s <code>amilan</code> partition, the machines have 3.74 Gb per core.</li>
 </ul></li>
 <li><code>--time=[D-]HH:MM:SS</code>: How much time are you requesting? You don’t have to specify days, so you could say, <code>--time=1-12:00:00</code> for one day and twelve hours, or you could say <code>--time=36:00:00</code> for 36 hours.
 <ul>
@@ -289,7 +290,7 @@ Fun fact:
 <div class="code-with-filename-file">
 <pre><strong>Don't bother copying or pasting this.</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--cpus-per-task</span><span class="op">=</span>4 <span class="at">--mem</span><span class="op">=</span>80G <span class="at">--time</span><span class="op">=</span>16:00:00 <span class="at">--output</span><span class="op">=</span>myscript_stdout <span class="at">--error</span> myscript_error MyScript.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--cpus-per-task</span><span class="op">=</span>4 <span class="at">--mem</span><span class="op">=</span>80G <span class="at">--time</span><span class="op">=</span>16:00:00 <span class="at">--output</span><span class="op">=</span>myscript_stdout <span class="at">--error</span><span class="op">=</span>myscript_error MyScript.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Some points about that:</p>
 <ul>
@@ -367,12 +368,21 @@ Get email from SLURM.
 </section>
 <section id="let-us-submit-the-bwa_index.sh-job-to-slurm" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="let-us-submit-the-bwa_index.sh-job-to-slurm"><span class="header-section-number">6.4</span> Let us submit the <code>bwa_index.sh</code> job to SLURM</h2>
-<p>Since all of the <code>sbatch</code> options are imbedded within the shell script, all that we need to do, now, is:</p>
+<p>Since all of the <code>sbatch</code> options are imbedded within the shell script it is easy to write the command to launch the script.</p>
+<p>Let’s prepare for that first. If you are on Alpine, make sure the slurm module is loaded.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>If you are working on Alpine, be sure to paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load slurm/alpine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that you do <strong>not</strong> need to be on a compute node to submit a job via <code>sbatch</code>—you can do that from a login node.</p>
+<p>To launch the script using <code>sbatch</code>, all you do is:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell at the top level of the con-gen-csu repo</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_index.sh data/genome/genome.fasta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_index.sh data/genome/genome.fasta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The first argument is the script <code>scripts/bwa_index.sh</code> and the second, <code>resources/genome.fasta</code>, is the path to the genome that we want to index with <code>bwa</code>.</p>
 <p>When this command executes, it returns the <code>SLURM_JOB_ID</code>. Make a note of it.</p>
@@ -395,7 +405,7 @@ Hey! That job ran in the current working directory
 </div>
 </div>
 </div>
-<p>Once that job is done, use <code>ls -lrt resources</code> to see all the files that were newly created by the <code>bwa-index.sh</code> script.</p>
+<p>Once that job is done, use <code>ls -lrt data/genome</code> to see all the files that were newly created by the <code>bwa-index.sh</code> script.</p>
 </section>
 <section id="how-many-resources-did-that-job-use-seff" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="how-many-resources-did-that-job-use-seff"><span class="header-section-number">6.5</span> How many resources did that job use? — <code>seff</code></h2>
@@ -406,7 +416,7 @@ Hey! That job ran in the current working directory
 <div class="code-with-filename-file">
 <pre><strong>Here is the sytnax</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">seff</span> slurm-jobid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">seff</span> slurm-jobid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -437,14 +447,14 @@ More tips on learning about past job resource use
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell to get a myacct function</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myacct</span> <span class="kw">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sacct</span>  <span class="at">--format</span> JobID,JobName%<span class="va">${JL}</span>,User,Group,State%20,Cluster,AllocCPUS,REQMEM,TotalCPU,Elapsed,MaxRSS,ExitCode,NNodes,NTasks <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> myacct</span> <span class="kw">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span>10<span class="kw">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="va">JL</span><span class="op">=</span><span class="va">$1</span><span class="kw">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sacct</span>  <span class="at">--format</span> JobID,JobName%<span class="va">${JL}</span>,User,Group,State%20,Cluster,AllocCPUS,REQMEM,TotalCPU,Elapsed,MaxRSS,ExitCode,NNodes,NTasks <span class="at">-u</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you like being able to use this, you ought to add it to your <code>~/.bashrc</code> file.</p>
 </div>
@@ -465,7 +475,21 @@ More tips on learning about past job resource use
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/simple-15.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"nmfs-bioinf/playground/scripts/simple-15.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"(stdout) Running with Slurm Job ID: </span><span class="va">$SLURM_JOB_ID</span><span class="st">"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"(stdout) Note that we are running this thing through"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"(stdout) the tee utility to try to unbuffer it."</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span> <span class="kw">|</span> <span class="fu">tee</span> simple-15.stdout</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"(stderr) This line is being written to stderr"</span> <span class="op">&gt;</span> /dev/stderr</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"(stderr) Interestingly, stderr does not seem to get buffered."</span> <span class="op">&gt;&gt;</span> /dev/stderr</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 900</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -485,7 +509,7 @@ Scripts running under SLURM have access to <code>SLURM_*</code> environment vari
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/simple-15.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/simple-15.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, use <code>myjobs</code> to see how many cores this job is using (1) and how much memory (4700 Mb). Those are the default values.</p>
 <p>By default, both <code>stdout</code> and <code>stderr</code> get written to <code>slurm-%j.out</code> (where <code>%j%</code> is replaced with the SLURM_JOB_ID).</p>
@@ -494,7 +518,7 @@ Scripts running under SLURM have access to <code>SLURM_*</code> environment vari
 <div class="code-with-filename-file">
 <pre><strong>Type this, but replace 331979 with whathever your actual SLURM job id is</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> slurm-331979.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> slurm-331979.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We see that <code>stderr</code> gets written to <code>slurm-%j.out</code> immediately. The <code>stdout</code> stream is supposed to get written there, as well, but it seems that there is some hard-core buffering that goes on with slurm: we can see the output in <code>simple-15.stdout</code>, but not in <code>slurm-%j.out</code>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -528,7 +552,7 @@ Cancelling jobs started with <code>sbatch</code>
 <div class="callout-body-container callout-body">
 <p>If you have the job number (which is returned when <code>sbatch</code> launched the job or which you can see on the corresponding line of <code>myjobs</code>) you can use <code>scancel</code> followed by the job number.</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> 329656</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> 329656</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>…but you have to replace the number above with your job’s job number.</p>
 <p>Please do that now!</p>
 </div>
@@ -557,7 +581,7 @@ Memory gets allocated with cores or via <code>--mem</code>
 <h2 data-number="6.9" class="anchored" data-anchor-id="what-happens-if-we-exceed-our-resources"><span class="header-section-number">6.9</span> What happens if we exceed our resources?</h2>
 <p>R uses 8 bytes for each numeric value it stores in a vector. But it also seems to do some fancy stuff with delayed evaluation, etc. So it is hard to know exactly how much system RAM R’s process will use.</p>
 <p>Nonetheless, I have found that the following R commands will exceed 4700 Mb of RAM:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e9</span>); y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span>; y[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e9</span>); y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span>; y[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Somewhere in the <code>y &lt;- x + 1</code> command, memory usage will exceed the default 4700 Mb (4.7 Gb) of RAM that SLURM allows by default.</p>
 <p>So, what we are going to do here is run those commands in an <code>sbatch</code> script and see what happens. (You will probably exceed your allocated memory while doing bioinformatics, so you might as well get used to what that looks like.)</p>
 <p>Here is a listing of a shell script to run under <code>sbatch</code> to exceed our memory usage:</p>
@@ -565,14 +589,14 @@ Memory gets allocated with cores or via <code>--mem</code>
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/r-too-much-mem.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/r-too-much-mem.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/r-too-much-mem.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Run it like this:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/r-too-much-mem.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/r-too-much-mem.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It takes about a minute before it runs out of memory. During the time, check that it is still running using <code>myjobs</code>.</p>
 <p>Once you see it is no longer running, check on the status of that job using <code>myacct 15</code>. The bottom line of output should show the results for that last job:</p>
@@ -606,7 +630,7 @@ Self study answer
 <div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>You need to allocate more memory to the job. You can do this by adding an sbatch directive line like:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=12G</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=12G</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>amongst all the other sbatch directives. I don’t know if 12G of ram will be enough, but it might be. You could try it.</p>
 <p><strong>OR</strong> as we will see below, you could add that memory option on the command line.</p>
 </div>
@@ -622,7 +646,7 @@ Self study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--mem</span><span class="op">=</span>16G <span class="at">--time</span><span class="op">=</span>01:00:00 scripts/r-too-much-mem.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--mem</span><span class="op">=</span>16G <span class="at">--time</span><span class="op">=</span>01:00:00 scripts/r-too-much-mem.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After running that, use your <code>myjobs</code> function to see that the <code>MIN_MEMORY</code> is <code>16G</code> and the <code>TIME_LIMIT</code> is 1 hour.</p>
 <p>When it is done, run <code>myacct</code> to see that it successfully completed, and look in the output file <code>outputs/r-too-much.out</code> to see that it printed the first 10 of one billion random numbers with 1 added to them.</p>
@@ -652,7 +676,7 @@ Eric, why are making us run so many jobs that fail?
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--mem</span><span class="op">=</span>16G <span class="at">--time</span><span class="op">=</span>00:01:00 scripts/simple-15.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--mem</span><span class="op">=</span>16G <span class="at">--time</span><span class="op">=</span>00:01:00 scripts/simple-15.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>That will fail in a minute, after which, use <code>myacct</code> to see what it says about how it failed.</p>
 <p>It will tell you that the main script hit a <code>TIMEOUT</code> and the batch job running in that script was <code>CANCELLED</code></p>
@@ -670,8 +694,8 @@ Beware!
 </div>
 <div class="callout-body-container callout-body">
 <p>If you try something like:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH output=outputs/mydir/outfile.txt</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH error=outputs/mydir/errfile.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH output=outputs/mydir/outfile.txt</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH error=outputs/mydir/errfile.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>but do so without having actually made the directory <code>outputs/mydir</code>, then <code>sbatch</code> will fail, and it won’t be able to write out why it failed.</p>
 <p>This is dynamite. If you ever find that your <code>sbatch</code> jobs are failing immediately but with no reasonable error messages anywhere, check to make sure that you aren’t sending SLURM’s <code>output</code> or <code>error</code> to a directory that does not exist.</p>
 <p>Note that you <em>cannot</em> make <code>outputs/mydir</code> within your script, because SLURM needs those directories before your script even gets executed.</p>
@@ -686,7 +710,7 @@ Beware!
 <div class="code-with-filename-file">
 <pre><strong>Contents of file scripts/bwa_map.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that we are using backslashes (<code>\</code>) at the ends of the lines so that we can break a long line up onto separate lines of text.</p>
 <p>Also note that grouping of commands by parentheses.</p>
@@ -696,7 +720,7 @@ Beware!
 <div class="code-with-filename-file">
 <pre><strong>Paste this code into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> S <span class="kw">in</span> A B C<span class="kw">;</span> <span class="cf">do</span> <span class="ex">sbatch</span> scripts/bwa_map.sh <span class="va">$S</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> S <span class="kw">in</span> A B C<span class="kw">;</span> <span class="cf">do</span> <span class="ex">sbatch</span> scripts/bwa_map.sh <span class="va">$S</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When that is done, check what is running with <code>myjobs</code> and <code>alljobs</code>. (But do it fast! Because these jobs finish very quickly).</p>
 </section>

@@ -1,6 +1,6 @@
 # Submitting jobs with `sbatch` {#sbatch}
 
-- Up till now we have allocated ourselves two cores for
+- Up till now we have allocated ourselves computing resources for
 _interactive_ use.
 
 - This is what you would do if you were going to be doing computationally
@@ -14,9 +14,9 @@ to test your scripts.
 
 However, once your scripts are tested, for most of your heavy
 computation, you will want to submit jobs as non-interactive _batch_ jobs
-using SLURM's `sbatch` function.  
+using SLURM's `sbatch` command.  
 
-## The `sbatch` function and its options
+## The `sbatch` command and its options
 
 If you do `man sbatch` you will see an insanely large number of options
 and all sorts of complicated stuff.  
@@ -27,8 +27,9 @@ you need to do.  They are:
 - `--cpus-per-task=<n>`: the number of cores to use for the job.  The syntax has you
 using it like this `--cpus-per-task=2`
     - On Sedna, the default is 1.
-- `--mem=<size[units]`: How much total memory for the job. Example: `--mem=4G`
+- `--mem=<size[units]>`: How much total memory for the job. Example: `--mem=4G`
     - On Sedna, the default is about 4.7 Gb for each requested core.
+    - On Alpine's `amilan` partition, the machines have 3.74 Gb per core.
 - `--time=[D-]HH:MM:SS`: How much time are you requesting?  You don't have to specify days,
     so you could say, `--time=1-12:00:00` for one day and twelve hours, or you could
     say `--time=36:00:00`  for 36 hours.
@@ -56,7 +57,7 @@ and memory of 80Gb, with an allowance of 16 hours, and we wanted to tell
 SLURM where to capture any otherwise un-redirected `stdout` and `stderr`, we
 would type something like this:
 ```{.sh filename="Don't bother copying or pasting this."}
-sbatch --cpus-per-task=4 --mem=80G --time=16:00:00 --output=myscript_stdout --error myscript_error MyScript.sh
+sbatch --cpus-per-task=4 --mem=80G --time=16:00:00 --output=myscript_stdout --error=myscript_error MyScript.sh
 ```
 
 Some points about that:
@@ -138,7 +139,17 @@ are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
 ## Let us submit the `bwa_index.sh` job to SLURM
 
 Since all of the `sbatch` options are imbedded within the
-shell script, all that we need to do, now, is:
+shell script it is easy to write the command to launch the script.
+
+Let's prepare for that first.  If you are on Alpine, make sure the
+slurm module is loaded.
+```{.sh filename="If you are working on Alpine, be sure to paste this into your shell"}
+module load slurm/alpine
+```
+Note that you do **not** need to be on a compute node to submit a job via `sbatch`---you
+can do that from a login node.
+
+To launch the script using `sbatch`, all you do is:
 ```{.sh filename="Paste this into your shell at the top level of the con-gen-csu repo"}
 sbatch scripts/bwa_index.sh data/genome/genome.fasta
 ```
@@ -169,7 +180,7 @@ and you had to explicitly tell it to run from the current working directory---wh
 was the source of endless gnashing of teeth)
 :::
 
-Once that job is done, use `ls -lrt resources` to see all the files that
+Once that job is done, use `ls -lrt data/genome` to see all the files that
 were newly created by the `bwa-index.sh` script.
 
 ## How many resources did that job use? --- `seff`
@@ -239,7 +250,21 @@ that doesn't do much:
 3. Then it just sits there for 15 minutes.
 
 ```{.sh filename="Contents of scripts/simple-15.sh"}
-`r paste(readLines("nmfs-bioinf/playground/scripts/simple-15.sh"), collapse = "\n")`
+#!/bin/bash
+
+
+(
+  echo "(stdout) Running with Slurm Job ID: $SLURM_JOB_ID"
+  echo "(stdout) Note that we are running this thing through"
+  echo "(stdout) the tee utility to try to unbuffer it."
+  echo
+) | tee simple-15.stdout
+
+echo "(stderr) This line is being written to stderr" > /dev/stderr
+echo "(stderr) Interestingly, stderr does not seem to get buffered." >> /dev/stderr
+
+
+sleep 900
 ```
 
 ::: {.callout-warning}
