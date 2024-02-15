@@ -1,3 +1,4 @@
+#!/bin/bash
 # simple script.  Arguments are:
 #  1. The index to pick out (like 1, or 2, or 7, etc)
 #  2. Path to a TAB delimited file with the first column named index

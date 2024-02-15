@@ -16,6 +16,18 @@ However, once your scripts are tested, for most of your heavy
 computation, you will want to submit jobs as non-interactive _batch_ jobs
 using SLURM's `sbatch` command.  
 
+## Prepare for this session
+
+Get on your cluster and navigate to the top level (`con-gen-csu`)
+of your fork of the class repository. Then,
+to make sure that you have all the latest updates from the repository,
+sync the main branch of your fork with the main branch of
+`eriqande/con-gen-csu` on GitHub, then in your shell, use
+`git switch main` to make sure you are on the main branch of your
+fork, and then use `git pull origin main` to pull down those changes.
+
+
+
 ## The `sbatch` command and its options
 
 If you do `man sbatch` you will see an insanely large number of options

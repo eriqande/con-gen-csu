@@ -200,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prepare-for-day-three" id="toc-prepare-for-day-three" class="nav-link active" data-scroll-target="#prepare-for-day-three"><span class="header-section-number">7.1</span> Prepare for day three</a></li>
+  <li><a href="#prepare-for-this-session" id="toc-prepare-for-this-session" class="nav-link active" data-scroll-target="#prepare-for-this-session"><span class="header-section-number">7.1</span> Prepare for this session</a></li>
   <li><a href="#sbatchs---array-option" id="toc-sbatchs---array-option" class="nav-link" data-scroll-target="#sbatchs---array-option"><span class="header-section-number">7.2</span> <code>sbatch</code>’s <code>--array</code> option</a></li>
   <li><a href="#variations-on-the-array_spec" id="toc-variations-on-the-array_spec" class="nav-link" data-scroll-target="#variations-on-the-array_spec"><span class="header-section-number">7.3</span> Variations on the <code>&lt;array_spec&gt;</code></a></li>
   <li><a href="#translating-array-indexes-to-job-instances" id="toc-translating-array-indexes-to-job-instances" class="nav-link" data-scroll-target="#translating-array-indexes-to-job-instances"><span class="header-section-number">7.4</span> Translating Array Indexes to Job Instances</a>
@@ -238,23 +238,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>That integer is accessible within the script as the environment variable <code>SLURM_ARRAY_TASK_ID</code>.</li>
 <li>We will see a little shell/awk script that is very helpful in this context.</li>
 </ul>
-<section id="prepare-for-day-three" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="prepare-for-day-three"><span class="header-section-number">7.1</span> Prepare for day three</h2>
-<p>Get back to our playground directory. Then, to make sure that you have all the latest updates from the repository, use git to pull down any new changes.</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Paste this in to be sure you have the most up-to-date resources</strong></pre>
-</div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/nmfs-bioinf-2022/playground</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Finally, we are going to check out 2 cores for interactive use for 3 hours.</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Paste this in to your shell</strong></pre>
-</div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-c</span> 2 <span class="at">-t</span> 03:00:00 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<section id="prepare-for-this-session" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="prepare-for-this-session"><span class="header-section-number">7.1</span> Prepare for this session</h2>
+<p>Get on your cluster and navigate to the top level (<code>con-gen-csu</code>) of your fork of the class repository. Then, to make sure that you have all the latest updates from the repository, sync the main branch of your fork with the main branch of <code>eriqande/con-gen-csu</code> on GitHub, then in your shell, use <code>git switch main</code> to make sure you are on the main branch of your fork, and then use <code>git pull origin main</code> to pull down those changes.</p>
 </section>
 <section id="sbatchs---array-option" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="sbatchs---array-option"><span class="header-section-number">7.2</span> <code>sbatch</code>’s <code>--array</code> option</h2>
@@ -264,7 +250,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/array_example.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/array_example.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:05:00</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=my_output_%A_%a</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=my_error_%A_%a</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-10</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">ODIR</span><span class="op">=</span>results/array_example</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$ODIR</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"The SLURM_ARRAY_JOB_ID is : </span><span class="va">$SLURM_ARRAY_JOB_ID</span><span class="st">"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"The SLURM_ARRAY_TASK_ID is: </span><span class="va">$SLURM_ARRAY_TASK_ID</span><span class="st">"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"The SLURM_JOB_ID is: </span><span class="va">$SLURM_JOB_ID</span><span class="st">"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"You can refer to this individual SLURM array task as: </span><span class="va">${SLURM_ARRAY_JOB_ID}</span><span class="st">_</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$ODIR</span>/output_<span class="va">$SLURM_ARRAY_TASK_ID</span>.txt</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 20</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is helpful to see a few of the variables that are defined in the environment of an array job:</p>
 <ul>
@@ -272,20 +277,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>SLURM_ARRAY_TASK_ID</code>: the index that runs from 1 to 10 in this case</li>
 <li><code>SLURM_JOB_ID</code>: The underlying job_id</li>
 </ul>
-<p>Go ahead and run that:</p>
+<p>One can run this script, but we don’t want a whole classroom full of people throwing all these jobs on the cluster. So, get into groups of three or four, talk amongst yourselves about what you think this script will do, and then have just one person from each group launch the job with the following command:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>One person from each group, paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then use <code>myjobs</code> and <code>alljobs</code> to watch what is happening on the cluster.</p>
+<p>When that job is done, or when it is running, look at the values written to the first output files:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into you shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>And then use <code>myjobs</code> and <code>alljobs</code> to see what is happening on the cluster.</p>
-<p>When that job is done, look at the values written to the first 3 files:</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Paste this into you shell</strong></pre>
-</div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> results/array_example/output_{1..3}.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> results/array_example/output_{1..10}.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -293,7 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Cool syntax: <code>{1..3}</code>
+Cool syntax interlude: <code>{1..10}</code>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -309,24 +314,25 @@ Cool syntax: <code>{1..3}</code>
 </div>
 </div>
 </div>
-<p>From this, we can infer that:</p>
+<p>From looking at the array_example output files, we can infer that:</p>
 <ul>
 <li><code>SLURM_ARRAY_JOB_ID</code>: is a unique number that refers to the <em>entire set</em> of jobs in the array</li>
 <li><code>SLURM_ARRAY_TASK_ID</code>: is the integer that is being cycled over in the array job</li>
 <li><code>SLURM_JOB_ID</code>: is a unique SLURM_JOB_ID of the specific array task.</li>
 </ul>
-<p>Also, in <code>alljobs</code> and <code>myjobs</code> you say that jobs can be referred to like <code>331989_4</code>. That is <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>. For example: <code>scancel 376578_12</code>.</p>
+<p>Also, in <code>alljobs</code> and <code>myjobs</code> you see that jobs can be referred to like <code>331989_4</code>. That is <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>. For example: <code>scancel 376578_12</code>.</p>
 <p>In the slurm output files specified like:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">SBATCH</span> <span class="at">--output</span><span class="op">=</span>my_output_%A_%a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">SBATCH</span> <span class="at">--output</span><span class="op">=</span>my_output_%A_%a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>%A</code> expands to <code>SLURM_ARRAY_JOB_ID</code></li>
 <li><code>%a</code> expands to <code>SLURM_ARRAY_TASK_ID</code></li>
 </ul>
-<p>If you need to cancel a particular array task using <code>scancel</code> you would typically use <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>.</p>
+<p>If you need to cancel a particular array task using <code>scancel</code> you would typically use <code>SLURM_ARRAY_JOB_ID</code> + underscore + <code>SLURM_ARRAY_TASK_ID</code>, unless you wanted to cancel all remaining instances of an array task, in which case you would use</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> SLURM_ARRAY_JOB_ID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="variations-on-the-array_spec" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="variations-on-the-array_spec"><span class="header-section-number">7.3</span> Variations on the <code>&lt;array_spec&gt;</code></h2>
-<p>There are some important variations to how you can specify that array numbers:</p>
+<p>There are some important variations to how you can specify those array numbers:</p>
 <ul>
 <li><code>--array=1-50</code>: simple, consecutive numbers</li>
 <li><code>--array=1-10:3</code>: 1 through 10 by threes, (so <code>1,4,7,10</code>)</li>
@@ -335,12 +341,12 @@ Cool syntax: <code>{1..3}</code>
 <li><code>--array=1-10,4</code>: WARNING, this becomes <code>1,2,3,4,5,6,7,8,9,10,4</code>. SLURM does not check that the array numbers are unique, so task array 4 would be run twice (possibly concurrently overwriting the output.)</li>
 <li><code>--array=1-20%5</code> VERY IMPORTANT SYNTAX: Run the jobs, but don’t ever have more the 5 running at a time. This is useful for making sure your jobs don’t consume every last CPU on Sedna.</li>
 </ul>
-<p>Let’s try putting all these together. Read the following command and figure out what the array spec is doing:</p>
+<p>Let’s try putting all these together. Read the following command and, talking among the members of your group, figure out what the array spec is doing. Then have one person from each group submit the job with the following command:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Paste this into you shell</strong></pre>
+<pre><strong>One person from each group, aste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span><span class="op">=</span>100,200,300-400:10%5 scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span><span class="op">=</span>100,200,300-400:10%5 scripts/array_example.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then use <code>myjobs</code> and <code>alljobs</code> to see what is going on in the cluster.</p>
 <p>Do you ever have more than 5 jobs running?</p>
@@ -351,19 +357,36 @@ Cool syntax: <code>{1..3}</code>
 <li>The user is left to translate what a job array index of, say, 7, means in terms of what actions that array task should take.</li>
 <li>Quite often you will want to map an array index to a different file to analyze, or perhaps a different region of a chromosome to do variant calling on, etc.</li>
 <li>A flexible and generic way of doing this mapping from array indexes to job specifics is to first define the variables (things like filenames, etc.) required by each array task in a simple TAB-delimited text file in which the first row holds the names of the variables in different TAB-separated columns, and each row below that holds the values that those variables should take for different values of the array index.</li>
-<li>The array index itself should be listed in the first column.</li>
+<li>The array index itself should be listed in the first column, whose name is <code>index</code>.</li>
 </ul>
 <section id="an-example-tab-delimited-file" class="level3" data-number="7.4.1">
 <h3 data-number="7.4.1" class="anchored" data-anchor-id="an-example-tab-delimited-file"><span class="header-section-number">7.4.1</span> An example TAB-delimited file</h3>
-<p>Let’s explore the following file, which is at <code>inputs/fq-samples.tsv</code>:</p>
+<p>Let’s explore the following file, which is at <code>data/sample-array-info.tsv</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Contents of inputs/fq-samples.tsv</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/inputs/fq-samples.tsv"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">index</span>   sample  library flowcell    platform    lane    barcode fq1 fq2</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span>   DPCh_plate1_B10_S22 plate1  HTYYCBBXX   ILLUMINA    1   GACGTCAT+TCAACTGG   fastqs/DPCh_plate1_B10_S22_R1.fq.gz fastqs/DPCh_plate1_B10_S22_R2.fq.gz</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>   DPCh_plate1_B11_S23 plate1  HTYYCBBXX   ILLUMINA    1   CCGCTTAA+ACGATGAC   fastqs/DPCh_plate1_B11_S23_R1.fq.gz fastqs/DPCh_plate1_B11_S23_R2.fq.gz</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span>   DPCh_plate1_B12_S24 plate1  HTYYCBBXX   ILLUMINA    1   GACGAACT+TCGCATTG   fastqs/DPCh_plate1_B12_S24_R1.fq.gz fastqs/DPCh_plate1_B12_S24_R2.fq.gz</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">4</span>   DPCh_plate1_C10_S34 plate1  HTYYCBBXX   ILLUMINA    1   AGTCACAT+CCATAATG   fastqs/DPCh_plate1_C10_S34_R1.fq.gz fastqs/DPCh_plate1_C10_S34_R2.fq.gz</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span>   DPCh_plate1_C11_S35 plate1  HTYYCBBXX   ILLUMINA    1   CCTTTCAC+AAACAAGA   fastqs/DPCh_plate1_C11_S35_R1.fq.gz fastqs/DPCh_plate1_C11_S35_R2.fq.gz</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">6</span>   DPCh_plate1_C12_S36 plate1  HTYYCBBXX   ILLUMINA    1   GCACACAA+TCGTCAAG   fastqs/DPCh_plate1_C12_S36_R1.fq.gz fastqs/DPCh_plate1_C12_S36_R2.fq.gz</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span>   DPCh_plate1_D09_S45 plate1  HTYYCBBXX   ILLUMINA    1   CTTTCCCT+AGTAAGCC   fastqs/DPCh_plate1_D09_S45_R1.fq.gz fastqs/DPCh_plate1_D09_S45_R2.fq.gz</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">8</span>   DPCh_plate1_D11_S47 plate1  HTYYCBBXX   ILLUMINA    1   GACAATTC+CATATCGT   fastqs/DPCh_plate1_D11_S47_R1.fq.gz fastqs/DPCh_plate1_D11_S47_R2.fq.gz</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span>   DPCh_plate1_F10_S70 plate1  HTYYCBBXX   ILLUMINA    1   ACACGACT+CTGCGGAT   fastqs/DPCh_plate1_F10_S70_R1.fq.gz fastqs/DPCh_plate1_F10_S70_R2.fq.gz</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span>  DPCh_plate1_F11_S71 plate1  HTYYCBBXX   ILLUMINA    1   TCCACGTT+GTTCAACC   fastqs/DPCh_plate1_F11_S71_R1.fq.gz fastqs/DPCh_plate1_F11_S71_R2.fq.gz</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">11</span>  DPCh_plate1_F12_S72 plate1  HTYYCBBXX   ILLUMINA    1   AACCAGAG+AACCGAAG   fastqs/DPCh_plate1_F12_S72_R1.fq.gz fastqs/DPCh_plate1_F12_S72_R2.fq.gz</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span>  DPCh_plate1_G09_S81 plate1  HTYYCBBXX   ILLUMINA    1   CGAATACG+GTCGGTAA   fastqs/DPCh_plate1_G09_S81_R1.fq.gz fastqs/DPCh_plate1_G09_S81_R2.fq.gz</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">13</span>  DPCh_plate1_G10_S82 plate1  HTYYCBBXX   ILLUMINA    1   CAGTGCTT+ACCTGGAA   fastqs/DPCh_plate1_G10_S82_R1.fq.gz fastqs/DPCh_plate1_G10_S82_R2.fq.gz</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="ex">14</span>  DPCh_plate1_G12_S84 plate1  HTYYCBBXX   ILLUMINA    1   TCCATTGC+AGACCGTA   fastqs/DPCh_plate1_G12_S84_R1.fq.gz fastqs/DPCh_plate1_G12_S84_R2.fq.gz</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ex">15</span>  DPCh_plate1_H09_S93 plate1  HTYYCBBXX   ILLUMINA    1   GTCGATTG+ACGGTCTT   fastqs/DPCh_plate1_H09_S93_R1.fq.gz fastqs/DPCh_plate1_H09_S93_R2.fq.gz</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ex">16</span>  DPCh_plate1_H10_S94 plate1  HTYYCBBXX   ILLUMINA    1   ATAACGCC+TGAACCTG   fastqs/DPCh_plate1_H10_S94_R1.fq.gz fastqs/DPCh_plate1_H10_S94_R2.fq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Something that would be really handy would be a little shell script that would pick out a particular line of that file that corresponded to the value in the <code>index</code> column and then define the shell variables <code>out_name</code>, <code>fq1</code>, <code>fq2</code>, <code>LB</code>, <code>Lane</code>, and <code>Sample</code> so that they could be used in an array script.</p>
-<p>Yesterday, we learned all the bash and <code>awk</code> machinery that would make that easy to do!</p>
+<p>An easier way to view this might be to look at in on GitHub at: <a href="https://github.com/eriqande/con-gen-csu/blob/main/data/sample-array-info.tsv">here</a></p>
+<p>Something that would be really handy would be a little shell script that would pick out a particular line of that file that corresponds to the value in the <code>index</code> column and then define some shell variables according to the columns names: <code>index</code>, <code>sample</code>, <code>library</code>, <code>flowcell</code>, <code>platform</code>, <code>lane</code>, <code>barcode</code>, <code>fq1</code>, <code>fq2</code> so that they could be used in an array script.</p>
+<p>We have already seen some of the bash and <code>awk</code> machinery that would make that possible, and we have wrapped it up in the <code>line-assign.sh</code> script.</p>
 </section>
 <section id="the-line-assign.sh-script" class="level3" data-number="7.4.2">
 <h3 data-number="7.4.2" class="anchored" data-anchor-id="the-line-assign.sh-script"><span class="header-section-number">7.4.2</span> The <code>line-assign.sh</code> script</h3>
@@ -372,38 +395,60 @@ Cool syntax: <code>{1..3}</code>
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/line-assign.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/line-assign.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># simple script.  Arguments are:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  1. The index to pick out (like 1, or 2, or 7, etc)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  2. Path to a TAB delimited file with the first column named index</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     and subsequent columns named valid shell variable names.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This script will pick out the line that matches $1, and return a command</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># line assigning the column header names as shell variables whose values are the</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># values in each cell in the file $2.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: this is not written with a whole lot of error checking or catching.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 2 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Wrong number of arguments in </span><span class="va">$0</span><span class="st"> "</span> <span class="op">&gt;</span> /dev/stderr</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span><span class="st">"\t"</span> <span class="at">-v</span> LINE=<span class="va">$1</span> <span class="st">'</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="st">  $1 == "index" {for(i=1; i&lt;=NF; i++) vars[i]=$i; next}</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="st">  $1 == LINE {for(i=1; i&lt;=NF; i++) printf("%s=\"%s\"; ", vars[i], $i); printf("\n");}</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="st">'</span> <span class="va">$2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s see what sorts of results this produces:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">./scripts/line-assign.sh</span> 3 inputs/fq-samples.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">./scripts/line-assign.sh</span> 3 data/sample-array-info.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Whoa! It returns a command line that assigns values to a lot of shell variables.</p>
-<p>So, if we wanted to run that command line, we would have to precede it with the <code>eval</code> keyword. Let’s do that like this:</p>
+<p>So, if we wanted to run that command line, we would have to precede it with the <code>eval</code> keyword (because the command line itself includes special characters like <code>=</code>). Let’s do that like this:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMM</span><span class="op">=</span><span class="va">$(</span><span class="ex">./scripts/line-assign.sh</span> 3 inputs/fq-samples.tsv<span class="va">)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$COMM</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMM</span><span class="op">=</span><span class="va">$(</span><span class="ex">./scripts/line-assign.sh</span> 3 data/sample-array-info.tsv<span class="va">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$COMM</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, that you have done that, you can see that a lot of variables have been assigned the values on the <code>index == 3</code> line of our TSV file:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"index:    </span><span class="va">$index</span><span class="st">"</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"out_name: </span><span class="va">$out_name</span><span class="st">"</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq1:      </span><span class="va">$fq1</span><span class="st">"</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq2:      </span><span class="va">$fq2</span><span class="st">"</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"LB:       </span><span class="va">$LB</span><span class="st">"</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Lane:     </span><span class="va">$Lane</span><span class="st">"</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Sample:   </span><span class="va">$Sample</span><span class="st">"</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"index:      </span><span class="va">$index</span><span class="st">"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"sample:     </span><span class="va">$sample</span><span class="st">"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"library:    </span><span class="va">$library</span><span class="st">"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"platform:   </span><span class="va">$platform</span><span class="st">"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"lane:       </span><span class="va">$lane</span><span class="st">"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"barcode:    </span><span class="va">$barcode</span><span class="st">"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq1:        </span><span class="va">$fq1</span><span class="st">"</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"fq2:        </span><span class="va">$fq2</span><span class="st">"</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Holy Smokes! These are variables that we could use in a job array script.</p>
 <p>In this case, we can assign values to the pesky Read Group string for <code>bwa mem</code>.</p>
@@ -411,13 +456,13 @@ Cool syntax: <code>{1..3}</code>
 </section>
 <section id="putting-it-all-together-a-read-mapping-job-array" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="putting-it-all-together-a-read-mapping-job-array"><span class="header-section-number">7.5</span> Putting it all together: a read-mapping job array</h2>
-<p>We can now elaborate on our simple <code>bwa_map.sh</code> shell script and turn that into a SLURM job array script.</p>
+<p>We can now elaborate on our simple <code>bwa_map.sh</code> shell script and turn that into a SLURM job array script. The key here is that when SLURM runs the script as a slurm array, there will be an environment variable called <code>SLURM_ARRAY_TASK_ID</code> that we can use to pick out the desired sample from the <code>data/sample-array-info.tsv</code> file.</p>
 <p>Here is what it looks like:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/bwa_map_array.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map_array.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map_array.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The main things to note there are:</p>
 <ul>
@@ -431,7 +476,7 @@ Cool syntax: <code>{1..3}</code>
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_map_array.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/bwa_map_array.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then check with <code>myjobs</code> and <code>alljobs</code> to see what is happening on Sedna.</p>
 <p>That runs really fast.</p>
@@ -440,22 +485,22 @@ Cool syntax: <code>{1..3}</code>
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> results/mapped</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> results/mapped</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And you can look at the logs for <code>bwa mem</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>  results/log/bwa_map_array/bwa_mem_samp_<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>  results/log/bwa_map_array/bwa_mem_samp_<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To see what one of the output files looks like:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>You could type or paste this</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view results/mapped/samp_B.bam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view results/mapped/samp_B.bam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use the left and right arrows, and space bar and backspace to see all parts of the file.</p>
 <p>Remember to hit <code>q</code> to get out of the <code>less</code> viewer.</p>
