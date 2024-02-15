@@ -3,7 +3,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=1:00:00
 #SBATCH --output=bwa_map_array-%A_%a.out
-#SBATCH --error=bwa_map-_array-%A_%a.err
+#SBATCH --error=bwa_map_array-%A_%a.err
 #SBATCH --array=1-16
 
 # load the module that gives us the bwa software
@@ -24,7 +24,7 @@ eval $COMM
 # run bwa mem on the input and pipe it to samtools to sort it
 bwa mem \
   -R "@RG\tID:${sample}.${library}.${flowcell}.${lane}\tSM:${sample}\tLB:${library}\tBC:${barcode}\tPU:\tID:${sample}.${library}.${flowcell}.${lane}.${barcode}\tPL:ILLUMINA" \
-  resources/genome.fasta \
+  data/genome/genome.fasta \
   $fq1 $fq2  2> $LDIR/bwa_mem_$sample.log | \
 (
   samtools view -u - | \
