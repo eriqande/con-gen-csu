@@ -462,16 +462,47 @@ Cool syntax interlude: <code>{1..10}</code>
 <div class="code-with-filename-file">
 <pre><strong>Contents of scripts/bwa_map_array.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">r</span> paste<span class="er">(</span><span class="ex">readLines</span><span class="er">(</span><span class="st">"playground/scripts/bwa_map_array.sh"</span><span class="kw">)</span><span class="ex">,</span> collapse = <span class="st">"\n"</span><span class="kw">)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=bwa_map_array-%A_%a.out</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=bwa_map_array-%A_%a.err</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-16</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># load the module that gives us the bwa software</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bwa</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load samtools</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># make a directory for log output if it does not already exist</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="va">LDIR</span><span class="op">=</span>results/log/bwa_map_array</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="va">ODIR</span><span class="op">=</span>results/mapped</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$LDIR</span> <span class="va">$ODIR</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># get shell variables for this array task:</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="va">COMM</span><span class="op">=</span><span class="va">$(</span><span class="ex">./scripts/line-assign.sh</span> <span class="va">$SLURM_ARRAY_TASK_ID</span> data/sample-array-info.tsv<span class="va">)</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$COMM</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># run bwa mem on the input and pipe it to samtools to sort it</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="dt">\</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> <span class="st">"@RG\tID:</span><span class="va">${sample}</span><span class="st">.</span><span class="va">${library}</span><span class="st">.</span><span class="va">${flowcell}</span><span class="st">.</span><span class="va">${lane}</span><span class="st">\tSM:</span><span class="va">${sample}</span><span class="st">\tLB:</span><span class="va">${library}</span><span class="st">\tBC:</span><span class="va">${barcode}</span><span class="st">\tPU:\tID:</span><span class="va">${sample}</span><span class="st">.</span><span class="va">${library}</span><span class="st">.</span><span class="va">${flowcell}</span><span class="st">.</span><span class="va">${lane}</span><span class="st">.</span><span class="va">${barcode}</span><span class="st">\tPL:ILLUMINA"</span> <span class="dt">\</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  data/genome/genome.fasta <span class="dt">\</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="va">$fq1</span> <span class="va">$fq2</span>  <span class="dv">2</span><span class="op">&gt;</span> <span class="va">$LDIR</span>/bwa_mem_<span class="va">$sample</span>.log <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> view <span class="at">-u</span> <span class="at">-</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> sort <span class="at">-o</span> <span class="va">$ODIR</span>/<span class="va">$sample</span>.bam</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span> <span class="dv">2</span><span class="op">&gt;</span> <span class="va">$LDIR</span>/samtools_<span class="va">$sample</span>.log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The main things to note there are:</p>
+<p>The main differences from our simple <code>bwa_map.sh</code> script are:</p>
 <ul>
 <li>The <code>SLURM_ARRAY_TASK_ID</code> is used to pick out the right line from our TSV file of information</li>
 <li>The slurm output and error have been changed to use <code>%A_%a</code> notation.</li>
-<li>There is a <code>#SBATCH --array=1-3</code> directive, now</li>
+<li>There is a <code>#SBATCH --array=1-16</code> directive, to run it over the 16 different files.</li>
 <li>The shell code that runs <code>bwa</code> and <code>samtools</code> uses the variables that were defined by <code>eval</code>-ing the results of the call to the <code>line-assign.sh</code> script.</li>
 </ul>
-<p>Let’s launch that job array and see how it goes:</p>
+<p>You can launch that job array and see how it goes:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
@@ -485,22 +516,30 @@ Cool syntax interlude: <code>{1..10}</code>
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> results/mapped</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> results/mapped</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And you can look at the logs for <code>bwa mem</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>  results/log/bwa_map_array/bwa_mem_samp_<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>  results/log/bwa_map_array/bwa_mem_<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To see what one of the output files looks like:</p>
+<p>To see what one of the output files looks like, you can use samtools. On Alpine, you have to get onto a compute node to do that, so you would first do:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>You could type or paste this</strong></pre>
+<pre><strong>Do this if you are on the Alpine cluster</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/samtools/1.15.1</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view results/mapped/samp_B.bam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load slurm/alpine</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--partition</span><span class="op">=</span>atesting <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then do like this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Paste this into your shell</strong></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load samtools</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view results/mapped/DPCh_plate1_F10_S70.bam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use the left and right arrows, and space bar and backspace to see all parts of the file.</p>
 <p>Remember to hit <code>q</code> to get out of the <code>less</code> viewer.</p>
@@ -509,7 +548,7 @@ Cool syntax interlude: <code>{1..10}</code>
 <h2 data-number="7.6" class="anchored" data-anchor-id="wrap-up"><span class="header-section-number">7.6</span> Wrap Up</h2>
 <p>So, that was a quick tour of the capabilities of <code>sbatch</code>.</p>
 <p>Oddly enough, I haven’t directly launched any jobs using <code>sbatch</code> (apart from the example jobs for this course) in many months, because I drive all my bioinformatics projects using Snakemake, which sends my jobs to SLURM for me.</p>
-<p>Next up is a brief introduction to Snakemake!</p>
+<p>Eventually we will have an introduction to Snakemake!</p>
 
 
 </section>
