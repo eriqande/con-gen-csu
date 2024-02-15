@@ -3,9 +3,9 @@
 ## 1. Select (by clicking the box) all of the following that are crucially important to identifying PCR duplicates:
 
 - [x] The lane a sample was sequenced on.
-- [ ] The sample ID of the sample.
+- [x] The sample ID of the sample.
 - [x] The flowcell identifier
-- [ ] The library that the sample was prepped in
+- [x] The library that the sample was prepped in
 - [ ] Whether the sequencing center used was a commercial or academic entity
 
 
