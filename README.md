@@ -663,7 +663,7 @@ SLURM: `sbatch` and slurm job arrays (applied to sequence alignment)
   + [BWA-mem Paper on Arxiv](https://arxiv.org/abs/1303.3997)
 
 #### In class
-
+- Quiz: Sync your fork; navigate to assignments/quizzes/read-groups-and-bwa-quiz.md; edit the file to turn `- [ ]` into `- [x]` where appropriate; commit changes to a new branch called `read-groups-quiz`; send eric a pull request from that branch to `main`.
 - We will be going through two sections of the udpated NMFS workshop notes:
   + [Submitting jobs with sbatch](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sbatch.html)
   + [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
