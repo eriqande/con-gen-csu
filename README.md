@@ -598,13 +598,18 @@ the `fastp` aligner.
 
 Shell programming.  
 
-#### Prep
-
+#### Prep (read some parts of the handbook)
+<details>
+  <summary>Click here for full details</summary>
 - Read the eca-bioinf-handbook section from section [5.2](https://eriqande.github.io/eca-bioinf-handbook/shell-programming.html#the-structure-of-a-bash-script)
   through section 5.10, inclusive.
+</details>
 
 #### In Class (Working together through some notes/exercises)
 
+<details>
+  <summary>Click here for full details</summary>
+  
 - We will work together through the [Shell Programming section](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/shell-prog.html).
   For this to work well for you, you will need to sync the main branch of your fork (on the GitHub website), and then pull that down into the main
   branch of your clone on your cluster:
@@ -613,27 +618,37 @@ Shell programming.
     git pull origin main
     ```
   After the shell programming "hands-on" we will talk a little about [Shell Scripts](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/scripts-and-functions.html)
+</details>
 
-#### Assignment due at beginning of class, Tuesday Feb. 13
+#### Assignment due at beginning of class, Tuesday Feb. 13  (make a shell script to automate running fastp on multiple files)
 
+<details>
+  <summary>Click here for full details</summary>
+  
 This assignment is about making a shell script to automate running fastp on the multiple files in `data/fastqs` in the
 course repository.  Detailed instructions for the assignment are in the [README for assignment 004](https://github.com/eriqande/con-gen-csu/tree/main/assignments/004-iteration-and-fastp).
 And a short video showing all the steps (except actually doing the homework) is available [here](https://youtu.be/tcrymsK77UE).
+</details>
 
 ### Tuesday, February 13, 2024
 
 SLURM intro
 
-#### Prep
+#### Prep (reading about HPCCs and SLURM)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read about HPCCs and SLURM in the handbook. [Chapter 8, up through and including all of 8.2](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+</details>
 
+#### In class (working through some SLURM informational commands)
 
-#### In class (working through some SLURM)
-
+<details>
+  <summary>Click here for full details</summary>
 - We will work together through the [SLURM Intro](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm.html). This is
   about a cluster called SEDNA, but many of the principles are the same for Alpine---they both
   use SLURM.
+</details>
 
 ### Thursday, February 15, 2024
 
@@ -648,7 +663,7 @@ SLURM: `sbatch` and slurm job arrays (applied to sequence alignment)
   + [BWA-mem Paper on Arxiv](https://arxiv.org/abs/1303.3997)
 
 #### In class
-
+- Quiz: Sync your fork; navigate to assignments/quizzes/read-groups-and-bwa-quiz.md; edit the file to turn `- [ ]` into `- [x]` where appropriate; commit changes to a new branch called `read-groups-quiz`; send eric a pull request from that branch to `main`.
 - We will be going through two sections of the udpated NMFS workshop notes:
   + [Submitting jobs with sbatch](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sbatch.html)
   + [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
