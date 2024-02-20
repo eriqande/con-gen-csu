@@ -1,0 +1,13 @@
+Job ID: 833168
+Cluster: sedna
+User/Group: hmoyle/hmoyle
+State: COMPLETED (exit code 0)
+Cores: 1
+CPU Utilized: 00:01:28
+CPU Efficiency: 96.70% of 00:01:31 core-walltime
+Job Wall-clock time: 00:01:31
+Memory Utilized: 1.36 GB
+Memory Efficiency: 45.25% of 3.00 GB
+
+# Based on 16 samples with original sbatch commands with 1 cpu/task, 2 hrs, and 3G of mem.
+# Correcting to decrease to only 15 mins and 2G.

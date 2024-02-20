@@ -1,0 +1,13 @@
+Job ID: 833200
+Cluster: sedna
+User/Group: hmoyle/hmoyle
+State: COMPLETED (exit code 0)
+Cores: 1
+CPU Utilized: 00:00:10
+CPU Efficiency: 90.91% of 00:00:11 core-walltime
+Job Wall-clock time: 00:00:11
+Memory Utilized: 1.23 MB
+Memory Efficiency: 0.04% of 3.00 GB
+
+# Run on 20M genome fasta. Original sbatch commands were 1cpu/task, 2 hrs, and 3G
+# Altering to 15 mins and 1M

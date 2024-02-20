@@ -1,0 +1,15 @@
+Job ID: 833207
+Array Job ID: 833205_2
+Cluster: sedna
+User/Group: hmoyle/hmoyle
+State: COMPLETED (exit code 0)
+Cores: 1
+CPU Utilized: 00:00:47
+CPU Efficiency: 95.92% of 00:00:49 core-walltime
+Job Wall-clock time: 00:00:49
+Memory Utilized: 350.54 MB
+Memory Efficiency: 7.46% of 4.59 GB
+
+# One of sixteen jobs, all with similar stats using bwa-mem2 mem. Original sbatch commands were 1cpu/task and 1 hr
+# with default memory
+# Altering to 15 min and 1G of mem
