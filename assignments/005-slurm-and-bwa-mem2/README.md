@@ -1,6 +1,13 @@
 # Homework: Trimming with `fastp`, indexing and mapping with bwa-mem2
 
-The goal of this homework is to practice using `sbatch` to dispatch jobs.
+The goal of this homework is to practice using `sbatch` to dispatch jobs, and to start thinking about
+the process of putting together workflows with multiple steps.  By the end of Tuesday's class
+you will have done all of the separate steps in this assignment, albeit using
+`bwa` rather than `bwa-mem2` as required for this assignment.  
+
+In broad overview, we want to 1) trim each pair of fastqs in `data/fastqs` and put the
+results in `results/trimmed2`, 2) index the reference genome in `data/genome/genome.fasta`
+again _with `bwa-mem2`_, and 3) map the _trimmed2_ reads to the genome using 
 
 You should make three different `sbatch` scripts.  Write and save them in this directory.
 
@@ -22,5 +29,13 @@ You should make three different `sbatch` scripts.  Write and save them in this d
 
 
 Then record the sbatch command lines you used to launch these scripts from the command line in a file called `sbatchy.txt`.
+It should be clear that you will launch `trim_all.sh` and `index2.sh` first,
+then, when both of those are done, you will launch `map2.sh`.  Each script should run from the top-level
+directory of the repo (i.e. the `con-gen-csu` directory).
+
+Finally, when it is all done, record the SHA1 hashes (with `sha1sum`) of all the output bam files that have
+been created.
+
+To complete this assignment, create a new branch called `005-trim-map2` 
 
 
