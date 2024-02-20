@@ -32,7 +32,8 @@ You should make three different `sbatch` scripts.  Write and save them in this d
    The reads that you are mapping should be the trimmed ones in the `results/trimmed2` directory, and the
    resulting mapped and sorted bam files should be placed in `results/mapped2`.  The `sbatch` script
    [here](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html#putting-it-all-together-a-read-mapping-job-array)
-   is a template for this, but realize that it must be modified to use `bwa-mem2`.
+   is a template for this, but realize that it must be modified to use `bwa-mem2`, and also it must be
+   modified to map the _trimmed_ reads, not just the raw fastqs.
 
 
 Then record the command lines you used (that contain the `sbatch` command)
