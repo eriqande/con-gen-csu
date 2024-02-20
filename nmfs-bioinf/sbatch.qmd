@@ -1,6 +1,6 @@
 # Submitting jobs with `sbatch` {#sbatch}
 
-- Up till now we have allocated ourselves two cores for
+- Up till now we have allocated ourselves computing resources for
 _interactive_ use.
 
 - This is what you would do if you were going to be doing computationally
@@ -14,9 +14,21 @@ to test your scripts.
 
 However, once your scripts are tested, for most of your heavy
 computation, you will want to submit jobs as non-interactive _batch_ jobs
-using SLURM's `sbatch` function.  
+using SLURM's `sbatch` command.  
 
-## The `sbatch` function and its options
+## Prepare for this session
+
+Get on your cluster and navigate to the top level (`con-gen-csu`)
+of your fork of the class repository. Then,
+to make sure that you have all the latest updates from the repository,
+sync the main branch of your fork with the main branch of
+`eriqande/con-gen-csu` on GitHub, then in your shell, use
+`git switch main` to make sure you are on the main branch of your
+fork, and then use `git pull origin main` to pull down those changes.
+
+
+
+## The `sbatch` command and its options
 
 If you do `man sbatch` you will see an insanely large number of options
 and all sorts of complicated stuff.  
@@ -27,8 +39,9 @@ you need to do.  They are:
 - `--cpus-per-task=<n>`: the number of cores to use for the job.  The syntax has you
 using it like this `--cpus-per-task=2`
     - On Sedna, the default is 1.
-- `--mem=<size[units]`: How much total memory for the job. Example: `--mem=4G`
+- `--mem=<size[units]>`: How much total memory for the job. Example: `--mem=4G`
     - On Sedna, the default is about 4.7 Gb for each requested core.
+    - On Alpine's `amilan` partition, the machines have 3.74 Gb per core.
 - `--time=[D-]HH:MM:SS`: How much time are you requesting?  You don't have to specify days,
     so you could say, `--time=1-12:00:00` for one day and twelve hours, or you could
     say `--time=36:00:00`  for 36 hours.
@@ -56,7 +69,7 @@ and memory of 80Gb, with an allowance of 16 hours, and we wanted to tell
 SLURM where to capture any otherwise un-redirected `stdout` and `stderr`, we
 would type something like this:
 ```{.sh filename="Don't bother copying or pasting this."}
-sbatch --cpus-per-task=4 --mem=80G --time=16:00:00 --output=myscript_stdout --error myscript_error MyScript.sh
+sbatch --cpus-per-task=4 --mem=80G --time=16:00:00 --output=myscript_stdout --error=myscript_error MyScript.sh
 ```
 
 Some points about that:
@@ -69,9 +82,29 @@ after the shebang line that are preceded by `#SBATCH`.
 
 ## Storing SLURM options in your shell script
 
-Let's look at an example, in the file `scripts/bwa_index.sh`
-```{.sh filename="Contents of the file scripts/bwa_index.sh"}
-`r paste(readLines("playground/scripts/bwa_index.sh"), collapse="\n")`
+Let's look at an example like one might do in an sbatch script:
+```{.sh filename="Contents of scripts/bwa_index.sh"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --mem=3G
+#SBATCH --output=bwa_index-%j.out
+#SBATCH --error=bwa_index-%j.err
+
+# this is a little script to index the genome given
+# by the first positional parameter ($1)
+
+# load the module that gives us the bwa software
+module load bwa
+
+# make a directory for log output if it does not already exist
+DIR=results/log/bwa_index
+mkdir -p $DIR
+
+# run bwa index on the input
+bwa index $1 > $DIR/log.txt 2>&1
+
 ```
 
 ::: {.callout-warning}
@@ -86,6 +119,8 @@ In the above script, you will see
 ```
 In this context, the `%j` gets replaced by `sbatch` with the
 `SLURM_JOB_ID`.
+
+
 
 :::
 
@@ -108,14 +143,27 @@ email address.
 Note that option `--mail-type` can be tailored to modulate how much email
 you will get from SLURM.
 
+TBH, though, I don't have SLURM email any news about my jobs anymore. Workflows that
+are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
+
 :::
 
 ## Let us submit the `bwa_index.sh` job to SLURM
 
 Since all of the `sbatch` options are imbedded within the
-shell script, all that we need to do, now, is:
-```{.sh filename="Paste this into your shell"}
-sbatch scripts/bwa_index.sh resources/genome.fasta
+shell script it is easy to write the command to launch the script.
+
+Let's prepare for that first.  If you are on Alpine, make sure the
+slurm module is loaded.
+```{.sh filename="If you are working on Alpine, be sure to paste this into your shell"}
+module load slurm/alpine
+```
+Note that you do **not** need to be on a compute node to submit a job via `sbatch`---you
+can do that from a login node.
+
+To launch the script using `sbatch`, all you do is:
+```{.sh filename="Paste this into your shell at the top level of the con-gen-csu repo"}
+sbatch scripts/bwa_index.sh data/genome/genome.fasta
 ```
 
 The first argument is the script `scripts/bwa_index.sh` and the
@@ -124,8 +172,8 @@ we want to index with `bwa`.
 
 When this command executes, it returns the `SLURM_JOB_ID`.  Make a note of it.
 
-Once you have launched the job, try using `myjobs` and `alljobs` to see your job running
-in the queue, and also everyone else's. (You don't have much time, because it doesn't take very long).
+Once you have launched the job, try using `myjobs` to see your job running.
+(You don't have much time, because it doesn't take very long).
 
 ::: {.callout-caution  collapse=true}
 
@@ -144,7 +192,7 @@ and you had to explicitly tell it to run from the current working directory---wh
 was the source of endless gnashing of teeth)
 :::
 
-Once that job is done, use `ls -lrt resources` to see all the files that
+Once that job is done, use `ls -lrt data/genome` to see all the files that
 were newly created by the `bwa-index.sh` script.
 
 ## How many resources did that job use? --- `seff`
@@ -214,7 +262,21 @@ that doesn't do much:
 3. Then it just sits there for 15 minutes.
 
 ```{.sh filename="Contents of scripts/simple-15.sh"}
-`r paste(readLines("nmfs-bioinf/playground/scripts/simple-15.sh"), collapse = "\n")`
+#!/bin/bash
+
+
+(
+  echo "(stdout) Running with Slurm Job ID: $SLURM_JOB_ID"
+  echo "(stdout) Note that we are running this thing through"
+  echo "(stdout) the tee utility to try to unbuffer it."
+  echo
+) | tee simple-15.stdout
+
+echo "(stderr) This line is being written to stderr" > /dev/stderr
+echo "(stderr) Interestingly, stderr does not seem to get buffered." >> /dev/stderr
+
+
+sleep 900
 ```
 
 ::: {.callout-warning}
@@ -233,16 +295,17 @@ sbatch scripts/simple-15.sh
 ```
 
 Now, use `myjobs` to see how many cores this job is using (1) and
-how much memory (4700 Mb).  Those are the default values.
+how much memory (4700 Mb on Sedna, 3840 on Alpine).  Those are the default values.
 
 
-By default, both `stdout` and `stderr` get written to `slurm-%j.out`
+By default, on some systems both `stdout` and `stderr` get written to `slurm-%j.out`
 (where `%j%` is replaced with the SLURM_JOB_ID).
 
 You can see that is in that by doing:
 ```{.sh filename="Type this, but replace 331979 with whathever your actual SLURM job id is"}
 cat slurm-331979.out
 ```
+
 
 We see that `stderr` gets written to `slurm-%j.out` immediately.
 The `stdout` stream is supposed to get written there, as well, but
@@ -315,7 +378,12 @@ core on the "higher-memory" standard compute nodes, `node[29-36]`)
 Note, however, that if the programs running in your job are not
 multithreaded, then you might not be able to use all those cores.
 In which case, it might be better to specify additional memory allocation with
-`--mem`, and leave the other cores to other users. (?)
+`--mem`, and leave the other cores to other users.
+
+However, on Alpine, if you ask for 3.74 Gb * 10 = 37.4 Gb of memory and only one
+core for computing, you will still be "charged" (i.e., you will run through
+your quota) as if you were using 10 cores!  (i.e., billing is by the core, 
+and you are charged for the number of cores that would give you a certain amount of memory).
 
 :::
 
@@ -330,7 +398,7 @@ Nonetheless, I have found that the following R commands will exceed 4700 Mb of R
 x <- runif(1e9); y <- x + 1; y[1:10]
 ```
 Somewhere in the `y <- x + 1` command, memory usage will exceed the default 4700 Mb (4.7 Gb)
-of RAM that SLURM allows by default.  
+of RAM that SLURM allows by default (on SEDNA) or the 3.74 Gb of RAM allowed on Alpine.  
 
 So, what we are going to do here is run those commands in an `sbatch` script
 and see what happens. (You will probably exceed your allocated memory while doing bioinformatics,
@@ -338,7 +406,21 @@ so you might as well get used to what that looks like.)
 
 Here is a listing of a shell script to run under `sbatch` to exceed our memory usage:
 ```{.sh filename="Contents of scripts/r-too-much-mem.sh"}
-`r paste(readLines("playground/scripts/r-too-much-mem.sh"), collapse = "\n")`
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --output=r-too-much-mem-%j.out
+#SBATCH --error=r-too-much-mem-%j.err
+
+
+mkdir -p outputs
+EDIR=results/log/r-too-much-mem
+mkdir -p $EDIR
+
+module load R
+Rscript --vanilla -e "x <- runif(1e9); y <- x + 1; y[1:10]" > outputs/r-too-much.out 2> $EDIR/log.txt
+
 ```
 
 Run it like this:
@@ -392,14 +474,14 @@ You can mix and match `sbatch` options on the command line with
 
 So, we could provide sufficient memory to `scripts/r-too-much-mem.sh` and at the
 same time, override the time it is allotted with this command:
-```{.sh filename="Paste this into your shell"}
+```{.sh filename="Don't paste this into your shell---it uses too much resources"}
 sbatch --mem=16G --time=01:00:00 scripts/r-too-much-mem.sh
 ```
 
-After running that, use your `myjobs` function to see that the `MIN_MEMORY` is `16G`
+If you launched that job, you could use your `myjobs` function to see that the `MIN_MEMORY` is `16G`
 and the `TIME_LIMIT` is 1 hour.
 
-When it is done, run `myacct` to see that it successfully completed, and
+When it finished you could run `myacct` to see that it successfully completed, and
 look in the output file `outputs/r-too-much.out` to see that it printed
 the first 10 of one billion random numbers with 1 added to them.
 
@@ -423,7 +505,7 @@ you can recognize them when you see them later.
 
 So, try this:
 ```{.sh filename="Paste this into your shell"}
-sbatch --mem=16G --time=00:01:00 scripts/simple-15.sh
+sbatch --time=00:01:00 scripts/simple-15.sh
 ```
 
 That will fail in a minute, after which, use `myacct` to see what
@@ -432,7 +514,7 @@ it says about how it failed.
 It will tell you that the main script hit a `TIMEOUT` and the batch job
 running in that script was `CANCELLED`
 
-## A major gotcha: Do not `sbatch`'s `output` or `error` to a path that does not exist
+## A major gotcha: Do not direct `sbatch`'s `output` or `error` to a path that does not exist
 
 ::: {.callout-important}
 
@@ -465,7 +547,41 @@ genome that we indexed a few steps ago.
 
 Let's review the shell code in `scripts/bwa-map.sh`:
 ```{.sh filename="Contents of file scripts/bwa_map.sh"}
-`r paste(readLines("playground/scripts/bwa_map.sh"), collapse = "\n")`
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=bwa_map-%j.out
+#SBATCH --error=bwa_map-%j.err
+
+# this is a little script to map a pair of fastq files
+# that are in data/fastqs.
+#
+# The first positional parameter ($1)
+# should be something like: DPCh_plate1_B10_S22
+
+# load the module that gives us the bwa software
+module load bwa
+module load samtools
+
+# make a directory for log output if it does not already exist
+LDIR=results/log/bwa_map
+ODIR=results/mapped
+
+mkdir -p $LDIR $ODIR
+
+SAMP=$1
+
+# run bwa mem on the input and pipe it to samtools to sort it
+bwa mem data/genome/genome.fasta \
+  data/fastqs/${SAMP}_R1.fq.gz \
+  data/fastqs/${SAMP}_R2.fq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
+(
+  samtools view -u - | \
+  samtools sort -o $ODIR/$SAMP.bam
+) 2> $LDIR/samtools_$SAMP.log
+
+
 ```
 
 Note that we are using backslashes (`\`) at the ends of the lines
@@ -473,13 +589,14 @@ so that we can break a long line up onto separate lines of text.
 
 Also note that grouping of commands by parentheses.
 
-This script is run by passing it `A`, `B`, or `C` as the first
+This script is run by passing it `DPCh_plate1_B10_S22`, `DPCh_plate1_B11_S23`, or
+`DPCh_plate1_B12_S24`, etc., as the first
 postitional parameter.
 
-So, if we wanted to schedule all three of those mapping jobs, we
+So, if we wanted to schedule three of those mapping jobs, we
 could do:
 ```{.sh filename="Paste this code into your shell"}
-for S in A B C; do sbatch scripts/bwa_map.sh $S; done
+for S in DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24; do sbatch scripts/bwa_map.sh $S; done
 ```
 
 When that is done, check what is running with `myjobs` and `alljobs`.
