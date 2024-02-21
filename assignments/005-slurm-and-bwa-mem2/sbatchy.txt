@@ -1,0 +1,32 @@
+# Commands used to launch scripts as part of assignment 005-slurm-and-bwa-mem2
+
+# Trimming reads
+
+# First, set permissions to include execute permission
+[login11: con-gen-csu]--% chmod u+x assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+# Second, submit job to sbatch
+[login11: con-gen-csu]--% sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+
+# Create reference indexes to do mapping with bwa-mem2
+
+# First, set permissions to include execture permission
+[login11: con-gen-csu]--% chmod u+x assignments/005-slurm-and-bwa-mem2/index2.sh
+
+# Second, submit job to sbatch
+[login11: con-gen-csu]--% sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+
+
+# Mapping reads with bwa-mem2
+
+# First, set permissions to include execture permission
+[login11: con-gen-csu]--% chmod	u+x assignments/005-slurm-and-bwa-mem2/map2.sh
+
+# Second, submit job to sbatch
+[login11: con-gen-csu]--% sbatch assignments/005-slurm-and-bwa-mem2/map2.sh 
+
+
+# Once that is done, record the SHA1 hashes (using sha1sum) of the output bam files and store the result
+# in the assignments folder
+sha1sum results/trimmed2/*.gz > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
