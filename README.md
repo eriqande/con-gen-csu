@@ -654,20 +654,51 @@ SLURM intro
 
 SLURM: `sbatch` and slurm job arrays (applied to sequence alignment)
 
-#### Prep
+#### Prep (Read about read groups, with optional reading about the bwa algorithm)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read [Chapter 19](https://eriqande.github.io/eca-bioinf-handbook/alignment-of-sequence-data-to-a-reference-genome-and-associated-steps.html) of the handbook, up to, and including
   section 19.3.
 - If you want to (i.e., if you are excited by mathematical notation) feel free to peruse some papers about `bwa`:
   + [BWA original paper](https://academic.oup.com/bioinformatics/article/25/14/1754/225615)
   + [BWA-mem Paper on Arxiv](https://arxiv.org/abs/1303.3997)
+</details>
+
+#### In class (A quiz, then a practical session on `sbatch`)
+
+<details>
+  <summary>Click here for full details</summary>
+- Quiz: Sync your fork; navigate to assignments/quizzes/read-groups-and-bwa-quiz.md; edit the file to turn `- [ ]` into `- [x]` where appropriate; commit changes to a new branch called `read-groups-quiz`; send eric a pull request from that branch to `main`.
+- We will be going through one section of the udpated NMFS workshop notes:
+  + [Submitting jobs with sbatch](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sbatch.html)
+</details>  
+
+### Tuesday, February 19, 2024
+
+Dispatching jobs via slurm job arrays.
+
+#### In class (Slurm Job Arrays!)
+
+- [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
+
+#### Assignment (Due Friday, Feb 23, 2024, at 5 PM)
+
+- We have an assignment due Friday, Feb 23, 2024. The instructions for it are [here](https://github.com/eriqande/con-gen-csu/tree/main/assignments/005-slurm-and-bwa-mem2/README.md).  The
+  instructions are not super explicit. This is a chance for everyone to go from a verbal description to the finished assignment.
+
+
+### Thursday February 21, 2024
+
+Alignment; SAM/BAM formats; samtools
+
+#### Prep (read a couple sections)
+
+- Read (and follow along with the computer if you are inclined) the entire [Alignments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#sambamfiles)
+  section (i.e., all of section 9.4).
+- Read (and follow along with the computer if you are inclined) the entire [Processing alignment output with `samtools`](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sequence-alignment.html#samtools)
+  section (i.e., all of section 10.4).
 
 #### In class
-- Quiz: Sync your fork; navigate to assignments/quizzes/read-groups-and-bwa-quiz.md; edit the file to turn `- [ ]` into `- [x]` where appropriate; commit changes to a new branch called `read-groups-quiz`; send eric a pull request from that branch to `main`.
-- We will be going through two sections of the udpated NMFS workshop notes:
-  + [Submitting jobs with sbatch](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sbatch.html)
-  + [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
 
-#### Assignment
-
-We will have an assignment due the following Tuesday.  TBA.
+- We will be going through the readings and discussing then to cement those ideas.

@@ -190,6 +190,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/bioinf-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -219,6 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#if-you-need-more-software-or-newer-versions-on-sedna" id="toc-if-you-need-more-software-or-newer-versions-on-sedna" class="nav-link" data-scroll-target="#if-you-need-more-software-or-newer-versions-on-sedna"><span class="header-section-number">5.17</span> If you need more software or newer versions on Sedna</a></li>
   <li><a href="#if-you-need-more-software-or-newer-versions-on-alpine" id="toc-if-you-need-more-software-or-newer-versions-on-alpine" class="nav-link" data-scroll-target="#if-you-need-more-software-or-newer-versions-on-alpine"><span class="header-section-number">5.18</span> If you need more software or newer versions on Alpine</a></li>
   <li><a href="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster" id="toc-before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster" class="nav-link" data-scroll-target="#before-we-go-make-our-convenience-functions-available-whenever-we-are-on-our-cluster"><span class="header-section-number">5.19</span> Before we go, make our convenience functions available whenever we are on our cluster</a></li>
+  <li><a href="#bonus-thoughts-what-are-other-people-doing" id="toc-bonus-thoughts-what-are-other-people-doing" class="nav-link" data-scroll-target="#bonus-thoughts-what-are-other-people-doing"><span class="header-section-number">5.20</span> Bonus Thoughts — What are other people doing?</a></li>
   </ul>
 </nav>
     </div>
@@ -830,6 +843,12 @@ Modules are not always portable
 </div>
 <p>Then paste those function definitions into the editor in your .bashrc file (before your conda/mamba block if you have one), and then do <code>cntrl-X</code>, <code>Y</code>, <code>RETURN</code> to save the file and get out of <code>nano</code>.</p>
 <p>Now, the next time you login you will have all those functions.</p>
+</section>
+<section id="bonus-thoughts-what-are-other-people-doing" class="level2" data-number="5.20">
+<h2 data-number="5.20" class="anchored" data-anchor-id="bonus-thoughts-what-are-other-people-doing"><span class="header-section-number">5.20</span> Bonus Thoughts — What are other people doing?</h2>
+<p>Especially when you are working on a smaller workgroup cluster and you are wondering if other users are using it efficiently, there are a few ways you can check up on what they are doing.</p>
+<p>Using <code>alljobs</code> you can see what other people are doing. Then you can <code>ssh</code> to the node that they are running jobs on, and then do <code>ps -auxww | grep user</code> (where <code>user</code> is their username) and that will show the currently running command lines. This can be useful, for example, to see if their jobs are multithreaded while they are using many cores or not.</p>
+<p>You can also get information about failures on different nodes with <code>dmesg -T</code>.</p>
 
 
 </section>
