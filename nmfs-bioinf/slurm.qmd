@@ -635,3 +635,19 @@ and then do `cntrl-X`, `Y`, `RETURN` to save the file
 and get out of `nano`.
 
 Now, the next time you login you will have all those functions.
+
+
+## Bonus Thoughts --- What are other people doing?
+
+Especially when you are working on a smaller workgroup cluster and
+you are wondering if other users are using it efficiently, there are a few
+ways you can check up on what they are doing.
+
+Using `alljobs` you can see what other people are doing.  Then you can
+`ssh` to the node that they are running jobs on, and then do
+`ps -auxww | grep user` (where `user` is their username) and that will
+show the currently running command lines.  This can be useful, for example, to see
+if their jobs are multithreaded while they are using many cores or not.
+
+You can also get information about failures on different nodes with
+`dmesg -T`.
