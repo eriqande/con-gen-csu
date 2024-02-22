@@ -29,4 +29,4 @@
 
 # Once that is done, record the SHA1 hashes (using sha1sum) of the output bam files and store the result
 # in the assignments folder
-sha1sum results/trimmed2/*.gz > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
