@@ -1,0 +1,14 @@
+#First trim_all.sh is launched to trim fastqs in the data directory 
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh 
+
+#Then Index2.sh is launches to create reference indexes from the reference genomin data/genome/ directory 
+sbatch assignments/005-slurm-and-bwa-mem2/Index2.sh data/genome/genome.fasta
+
+#Before launching map2, I copied the sample-array-info.tsv file to sample-array-info2.tsv
+#I changed the file paths in there to the results/trimmed2 files 
+#Then made map2.sh based on bwa_map_array.sh so that it uses line-assign.sh and sample-array-info2.tsv to launch each job separately 
+
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
+
+#recording SHA1 hashes of bam files 
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
