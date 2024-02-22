@@ -1,0 +1,25 @@
+# Login to ALPINE
+
+# changed into the con-gen-csu repo section
+cd /projects/bavila@colostate.edu/con-gen-csu
+
+# NOTE: needed to fix the sample-array-info.tsv file to point to the results/trimmed2/...
+sed 's+data/fastqs+results/trimmed2+g' data/sample-array-info.tsv > data/sample-fixed.tsv
+cp data/sample-fixed.tsv data/sample-arrya-info.tsv
+
+#load the slurm module
+module load slurm/alpine
+
+# get onto a computing cluster
+srun --partition=atesting --pty /bin/bash
+
+# run the shell scripts individually
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
+
+
+
+
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
+
