@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>con-gen-csu - 10&nbsp; Sequence alignment and handling BAM files</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../nmfs-bioinf/bioinf-formats.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/sequence-alignment.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">con-gen-csu</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/quick-unix-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/shell-prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/awk-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/scripts-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bash scripts and functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sedna and SLURM intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sbatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm-arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/bioinf-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#read-journey" id="toc-read-journey" class="nav-link active" data-scroll-target="#read-journey"><span class="header-section-number">10.1</span> The Journey of each DNA Fragment from Organism to Sequencing Read</a></li>
+  <li><a href="#read-groups" id="toc-read-groups" class="nav-link" data-scroll-target="#read-groups"><span class="header-section-number">10.2</span> Read Groups</a></li>
+  <li><a href="#aligning-reads-with-bwa" id="toc-aligning-reads-with-bwa" class="nav-link" data-scroll-target="#aligning-reads-with-bwa"><span class="header-section-number">10.3</span> Aligning reads with <code>bwa</code></a>
+  <ul class="collapse">
+  <li><a href="#indexing-the-genome-for-alignment" id="toc-indexing-the-genome-for-alignment" class="nav-link" data-scroll-target="#indexing-the-genome-for-alignment"><span class="header-section-number">10.3.1</span> Indexing the genome for alignment</a></li>
+  <li><a href="#mapping-reads-with-bwa-mem" id="toc-mapping-reads-with-bwa-mem" class="nav-link" data-scroll-target="#mapping-reads-with-bwa-mem"><span class="header-section-number">10.3.2</span> Mapping reads with <code>bwa mem</code></a></li>
+  <li><a href="#hold-it-right-there-buddy-what-about-the-read-groups" id="toc-hold-it-right-there-buddy-what-about-the-read-groups" class="nav-link" data-scroll-target="#hold-it-right-there-buddy-what-about-the-read-groups"><span class="header-section-number">10.3.3</span> Hold it Right There, Buddy! What about the Read Groups?</a></li>
+  </ul></li>
+  <li><a href="#samtools" id="toc-samtools" class="nav-link" data-scroll-target="#samtools"><span class="header-section-number">10.4</span> Processing alignment output with <code>samtools</code></a>
+  <ul class="collapse">
+  <li><a href="#samtools-subcommands" id="toc-samtools-subcommands" class="nav-link" data-scroll-target="#samtools-subcommands"><span class="header-section-number">10.4.1</span> <code>samtools</code> subcommands</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Upon receiving next generation sequencing data (and when already in possession of a decent reference genome to which you can align those sequences), there are effectively three main phases of bioinformatic analysis. The first phase (<em>Alignment</em>) involves <em>aligning</em> or <em>mapping</em> the reads to the reference genome. This tells you which precise location in the genome each base pair in each sequencing read comes from. The second phase (<em>Variant Calling</em>) uses those mapped reads to identify genetic variation—and the genotypes of individuals—at different locations in the genome. In the final phase (<em>Analysis</em>) you bring the outputs of the first two phases to bear upon the questions you want to answer about the organism or system you are studying. The final phase is often the most interesting, and the one that requires the most understanding of population genetics in order to be conducted well and correctly. However, the first two phases are essential steps that must be undertaken to get to the “fun part.”</p>
+<p>This chapter describes the tools used, and the steps taken, to produce aligned reads from raw sequencing data. The computer commands used to simply map reads to a reference are quite straightforward; however, right at the beginning of this phase of analysis, it is prudent to attach to each read some information about the journey that it took to finally arrive in your bioinformatics workflow. Such extra information about each sequencing read is called <em>read group</em> information. Read group information is used, for example, to combine all the reads from a single individual to call genotypes from that individual. Read group information can also be used to correct issues that occurred in the library preparation and the sequencing steps. Though a good understanding and a faithful recording of read group information is central to principled bioinformatic analysis, any cursory perusal of bioinformatics help sites like <a href="https://www.biostars.org/">BioStars</a> indicates that there is sustained and abiding confusion about the role and meaning of read groups. The first section of this chapter attempts to provide some background that we hope will alleviate such confusion for you.</p>
+<p>Following that section, we cover the workings of <code>bwa</code>, a popular piece of software for performing alignments. Subsequent sections detail the use of <code>samtools</code>, for manipulating SAM and BAM files, and show ways to use <code>samtools</code> to prepare BAM files for variant calling. Finally, we wrap up this chapter with a description of the program <code>bedtools</code>, and how to use it to investigate the depth of reads aligning to different portions of the reference genome.</p>
+<section id="read-journey" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="read-journey"><span class="header-section-number">10.1</span> The Journey of each DNA Fragment from Organism to Sequencing Read</h2>
+<p>In Section @ref(get-seqs) we discussed one solution for downloading gzipped FASTQ files from a sequencing center. This turns out to be the last step in a very long process of acquiring sequencing data from a collection of organisms that you are studying. We could say that the DNA of each organism that you are studying took an extraordinary journey to get to you. This journey included, 1) you (or a colleague) sampling tissue or blood from that organism, 2) DNA being extracted from that tissue or blood, 3) that DNA getting Illumina adapters (with sample-specific barcodes) attached to it and then getting PCR amplified some number of times in the <em>library preparation stage</em>, 4) the products of the library preparations are sequenced, sometimes on multiple flow cells and often across multiple lanes, during the <em>sequencing stage</em>, 5) the sequencer processes the read data into FASTQ files, 6) finally, you download the data.</p>
+<p>Anyone who has ever been involved in research knows that at every stage of the above process there are opportunities for errors or biases to occur that could affect the final data (and inferences) produced. The effects of some of the errors and biases that occur during the library prep stage and the sequencing stage can be eliminated or lessened. Doing so requires that we keep careful track of the route that each read took during those those steps in its journey. This is the role of read groups, which we discuss below. For now, however, we will offer that the main errors/effects that can be controlled for by careful accounting of reads into read groups are: 1) controlling for effects on the reported base quality scores of the particular flowcell or the particular lane on a flowcell that a read was sequenced on; 2) The identification of sequencing reads which are PCR duplicates of another read in the data set. Thus, most of the focus on defining read groups is concerned with identifying features of a read’s journey that can be used to ameliorate those two types of errors/biases.</p>
+<p>The process of controlling for batch effects of flowcells and lanes on base quality scores is called, unsurprisingly, Base Quality Score recalibration. This might be discussed in a later section. It is a very important process when one is searching for <em>de novo</em> mutations, or otherwise attempting to very accurately identify variants that occur at very low frequency. Doing base quality score recalibration is considered a “best practice” when using GATK (Section XX), but I have my doubts as to whether it will make appreciable differences in analyses where the importance of rare variants is downweighted. Nonetheless, whether you are going to do base quality score recalibration or not, you should certainly prepare your data so that you can do it should you decide to. In order to do it, you must know which flowcell and upon which lane each read was sequenced. That information can be found in the FASTQ file as part of the name for each sequence, however, methods for doing base quality score recalibration do not typically use the names of the reads to access that information. Rather it must be stored in the read group information.</p>
+<p>A PCR duplicate is a template sequence that happens to be a copy (made by PCR) of another sequence that has also been sequenced. They are considered “errors” in bioinformatics, because many of the models for inferring genotypes from next generation sequencing data assume a process of independent sampling of gene copies (i.e.&nbsp;the maternal and paternal copies of a choromosome) within a diploid individual, and that model and the data are used to estimate how likely an individual is a homozygote versus a heterozygote at each position. For example, if Individual X produces one read covering position Y—a position known to be a variable SNP with alleles <code>A</code> and <code>G</code> in the species—and the read carries an <code>A</code> at position Y, then you would conclude that Individual X likely has genotype <code>AA</code> or <code>AG</code> at position Y, and is less likely to have genotype <code>GG</code>, because our observed read with an <code>A</code> at that position would have only occurred because of a sequencing error in that case. If we saw 10 reads from individual X, and they all had the <code>A</code> base at position Y, however, we could be quite confident that the genotype is <code>AA</code> rather than <code>AG</code>, because if the indvidual had genotype <code>AG</code>, then each read should have a 50% chance of carrying an <code>A</code> and a 50% chance of carrying a <code>G</code>, and it is very unlikely, in that case, that all 10 would carry the <code>A</code> allele. However, imagine how your conclusions would change if someone were to tell you that 95% of the reads were PCR duplicates of another one of the reads. In that case, even if the individual has genotype <code>AG</code>, there is high probability that only a single, true template carrying an <code>A</code> came from the individual, and the remaining 9 reads that carry an <code>A</code> are just PCR copies of that first original template.</p>
+<p>PCR duplicates are copies of the same template fragments. Therefore in paired-end data if a pair of reads maps to exactly the same location as another pair of reads, it is likely that one of them is a PCR duplicate of the other. <a href="#fig-pcr-duplicates">Figure&nbsp;<span>10.1</span></a> provides a simplified schematic (with merely single-end data) describing a situation with high and low numbers of PCR duplicates. The PCR duplicate fragments are denoted with gray-colored flanking sequence. In the figure, note that the length of the fragments gives information about which fragments are duplicated and which are not—if two fragments of the same length are identified, then one of them is considered a PCR duplicate. It is worth noting that it isn’t (to my knowledge) really known which fragment is the duplicate and which is the “original,” but, in order to correct the situtation, one (or more of them) will be identified as duplicates, and one of them will be identified as an “original.”</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pcr-duplicates" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/pcr-duplicates.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.1: An example of PCR duplicates. Note that in paired end data, duplicates are identified by the lengths of both reads as well as the insert length. This figure represents a simplified, toy, situation, showing just single-end data.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>PCR duplicates occur during the library prep stage, and also are only possible for fragments originating from the same individual sample. In other words, if you found two different paired-end reads that mapped to the same location in the genome, but they were from different individuals (i.e.&nbsp;had different sample-specific DNA barcodes), you would not suspect that they were PCR duplicates. Likewise, DNA fragments from two different library preps, even if they came from the same individual—in the case that DNA from that individual had been prepared in two separate libraries—would not be considered to be PCR duplicates. (We should pause here to note what is considered a “library prep.” Basically, if a batch of samples were all processed together in the same day with reagents from the same kit, that is considered a single “library prep.”) Accordingly, when keeping track of read groups <em>for the purposes of identifying PCR duplicates</em>, the most important information is which individuals the DNA came from and which library preparation it was prepared in.</p>
+<p>What we can conclude from this section is that, for downstream analyses, we need a way to quickly (and efficiently, in terms of data storage space) identify, for each read the:</p>
+<ul>
+<li>Sample it originated from</li>
+<li>The library in which it was prepared for sequencing.</li>
+<li>The flowcell that it was sequenced on.</li>
+<li>The lane on that flowcell that it was sequenced on</li>
+</ul>
+<p>This information can be strored in the alignment file using read group information as described below.</p>
+</section>
+<section id="read-groups" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="read-groups"><span class="header-section-number">10.2</span> Read Groups</h2>
+<p>We previously touched briefly on read groups, noting that the SAM file header can contain lines like this one:</p>
+<pre><code>@RG ID:HTYYCBBXX.1.CH_plate1_A01    SM:CH_plate1_A01    LB:Lib-1    PU:HTYYCBBXX.1.TCAATCCG+TTCGCAGT    PL:ILLUMINA</code></pre>
+<p>The purpose of this line is to identify a read group that is named via the <code>ID</code> tag. In the above case the read group is named <code>HTYYCBBXX.1.CH_plate1_A01</code>. The attributes of this read group are stored using the remaining tags in the <code>@RG</code> line. Happily, those attributes mirror exactly what we might need to know to identify PCR duplicates and to perform base quality score recalibration; namely:</p>
+<ul>
+<li><code>SM</code> : give the name of the sample, <code>CH_plate1_A01</code>, the read is from,</li>
+<li><code>LB</code> : gives the name of the library prep, <code>Lib-1</code>, the read is from,</li>
+<li><code>PU</code> : gives the name of the flowcell, <code>HTYYCBBXX</code>, and the lane, <code>1</code>, the read is from.</li>
+</ul>
+<p>It is important to note that this line in the SAM header is just a header line that gives information about a particular read group that is found in the file. It is not, <em>by itself</em> giving you information about any particular read found in the alignment file. Read group information about a particular read in the alignment file is given on the alignment line in a column (way off near the end of the line typically) tagged with <code>RG:Z</code>. That <code>RG:Z</code> column in an alignment row simply holds the <code>ID</code> of the read group that the read belongs to. In this way, all the information that applies to the read—i.e., the sample it came from, (<code>SM</code>), the library prep it was in (<code>LB</code>), and information about the flowcell and lane (<code>PU</code>)—can be assigned to the read, <em>without writing all of that information on every line in the alignment file</em>. Accordingly, it should be obvious why the read group IDs must be unique across all the different read groups (<code>@RG</code> tags) in a SAM/BAM file: the ID is used to identify all the other information that goes along with that read, and is used to differentiate those different read groups!</p>
+<p>You can download the first 100 lines (without the <code>@SQ</code> lines) of a SAM file that has 8 different read groups in it <a href="https://eriqande.github.io/eca-bioinf-handbook/downloads/CH_plate1_A01_mkdup-100-lines.sam">here</a>. Let’s do that and have a look at it.</p>
+<p>The way that read group information—particularly the platform unit, or <code>PU</code> information—is recorded is dictated by which software will be used for downstream processing. We describe the conventions that are useful for passing the aligned data to the Genome Analysis Toolkit (GATK), an extensive and well-supported piece of software developed by the Broad Institute. Currently, the GATK conventions for read group tags are these:</p>
+<ul>
+<li><code>ID</code> : any string that uniquely identifies a read group. The user must make sure that these uniquely identify the read groups. If you have multiple samples, libraries, flowcells, and lanes, and easy way to ensure this is to just bung those all together in a format like <code>{Sample}.{Library}.{Flowcell}.{Lane}</code>, where the parts in curly braces should be replaced by the actual names of those items. As long as there is a <code>PU</code> field, however, you can make the ID anything you want, as long as it is unique for each read group.</li>
+<li><code>SM</code> : any string (no spaces please!) that serves as an identifier for the individual the sample was taken from. This is used to assign genotypes to indvididuals, so even if you have different “samples” from the same individual (i.e.&nbsp;some blood and some tissue, prepped in different libraries; or an original extraction prepared in an earlier library and a later extraction prepared in a library for individuals that needed more sequening coverage after an initial sequencing run) you should still assign them <em>all</em> the same <code>SM</code> tag because they are the same individual, and you will’ want all of the DNA sequences from them to apply to calling genotypes for them.</li>
+<li><code>LB</code> : any string which gives the name of the library prep these reads were prepared in. If you prepped 192 individuals in one day, they are all part of the same library.</li>
+<li><code>PU</code> : GATK expects this information to be given in a specific format. You can provide it as <code>{Flowcell}.{Lane}</code> (for example, <code>HTYYCBBXX.1</code>), but with later versions of the base quality score recalibration methods in GATK, it appears that it might be useful to also add information about the particular individual/library the read came from. It is suggested that this be done by including the barcode of reads, as <code>{Flowcell}.{Lane}.{Barcode}</code>, like <code>HTYYCBBXX.1.TCAATCCG+TTCGCAGT</code>.</li>
+<li><code>PL</code> : It is also important for base calibration to indicate what type of sequencer was used. Most of the time, currently, that will be <code>ILLUMINA</code>.</li>
+</ul>
+<p>Usually, when you get data back from the sequencing center, it will be in a series of different FASTQ files, each one containing reads from a single DNA sample well (on a plate that you sent to them), that was sequenced on a certain lane on a given flow cell. The files will often be named something like: <code>DPCh_plate1_C07_S31_L7_R2.fq.gz</code> where the first part gives a sample identifier, the part after the <code>L</code> gives the lane, and the part after the <code>R</code> tells whether the file holds read 1 or read 2 of paired end reads. You can get the flowcell name by looking at the sequence names inside the file (See Section @ref(illumina-ids)). You will map the reads in each file separately, and when you do so, you will attach the read group information to them (see below). Accordingly, it is a great idea to maintain a spreadsheet that links the different files to the attributes and the read group information of the reads inside them, like this:</p>
+<pre><code>index   file_prefix ID  PU  SM  PL  LB  Flowcell    Lane
+1   DPCh_plate1_A01_S1_L1_R HTYYCBBXX.1.CH_plate1_A01   HTYYCBBXX.1.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   1
+2   DPCh_plate1_A01_S1_L2_R HTYYCBBXX.2.CH_plate1_A01   HTYYCBBXX.2.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   2
+3   DPCh_plate1_A01_S1_L3_R HTYYCBBXX.3.CH_plate1_A01   HTYYCBBXX.3.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   3
+4   DPCh_plate1_A01_S1_L4_R HTYYCBBXX.4.CH_plate1_A01   HTYYCBBXX.4.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   4
+5   DPCh_plate1_A01_S1_L5_R HTYYCBBXX.5.CH_plate1_A01   HTYYCBBXX.5.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   5
+6   DPCh_plate1_A01_S1_L6_R HTYYCBBXX.6.CH_plate1_A01   HTYYCBBXX.6.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   6
+7   DPCh_plate1_A01_S1_L7_R HTYYCBBXX.7.CH_plate1_A01   HTYYCBBXX.7.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   7
+8   DPCh_plate1_A01_S1_L8_R HTYYCBBXX.8.CH_plate1_A01   HTYYCBBXX.8.TCAATCCG+TTCGCAGT   CH_plate1_A01   ILLUMINA    Lib-1   HTYYCBBXX   8
+9   DPCh_plate1_A02_S2_L1_R HTYYCBBXX.1.CH_plate1_A02   HTYYCBBXX.1.CGCTACAT+CGAGACTA   CH_plate1_A02   ILLUMINA    Lib-1   HTYYCBBXX   1</code></pre>
+<p>In the exercise we will see how to use such a file to assign read groups when mapping.</p>
+</section>
+<section id="aligning-reads-with-bwa" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="aligning-reads-with-bwa"><span class="header-section-number">10.3</span> Aligning reads with <code>bwa</code></h2>
+<p>There are several programs for aligning reads to a reference genome. We focus on <code>bwa</code> which is an industry standard aligner written by Heng Li and Richard Durbin <span class="citation" data-cites="liFastAccurateShort2009">[@liFastAccurateShort2009]</span>. The name stands for “Burrows-Wheeler Aligner.” We won’t go deeply into the guts of this alignment algorithm, but we will briefly state that nearly all alignment methods rely on pre-processing the reference genome into a data-structure (like a suffix tree) that provides an <em>index</em> which makes it fast to find the place in a genome where a query sequence matches. Such indexes can take up a large amount of computer memory. The Burrows-Wheeler Transform (BWT) provides a way of decreasing the size of such indexes. The BWT is an operation that takes a sequence of characters (in this case DNA bases) and re-orders them so that similar characters tend to appear together in long runs of the same character. Sequences with long runs of the same character can be easily compressed to take up less space using <em>run length encoding</em>, for example. (We have already seen an example of run length encoding in the CIGAR string (Section @ref(cigar)), in which runs of the same kind of alignment characteristic (Matches, Deletions, etc) where encoded by their type and the length of the run.) The remarkable thing about the BWT is that it is <em>invertible</em>: if someone gives you a sequence and says that it is the result of applying the BWT to an original sequence, you can actually recover the original sequence without any other information! The program <code>bwa</code> uses the BWT to compress the index used for alignment so that it can easily fit into memory—even for very large genomes—on most any computer system, even a low-powered laptop produced in the last half decade.</p>
+<section id="indexing-the-genome-for-alignment" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="indexing-the-genome-for-alignment"><span class="header-section-number">10.3.1</span> Indexing the genome for alignment</h3>
+<p>As the foregoing discussion suggests, it is necessary to index a genome before aligning to it with <code>bwa</code>. This is a step that only needs to be done once, since the process creates an index that is stored on the hard drive alongside the genome. So, after you download a reference genome, before you can start aligning sequences to it, you must index it using <code>bwa</code>. The syntax for this is very straightforward:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> index path-to-genome</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> index genome/GCA_002872995.1_Otsh_v1.0_genomic.fna.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The reference genome must be stored as a FASTA file (Section @ref(fasta)), which can be compressed using <code>gzip</code>. (In the above example, the <code>.fna.gz</code> prefix means that the file is a FASTA file of nucleotides (<code>.fna</code>) and has been gzipped (<code>.gz</code>)).</p>
+<p>This process may take several hours, depending upon the size of the reference genome. When it is complete, several new files with names that are the orginal reference genome file plus several extensions will have been produced and saved in the same directory as the reference genome. In the above example, after indexing, a long listing of the directory with the genome file in it shows these files:</p>
+<pre><code>% ls -hl
+total 3.8G
+-rw-rw-r-- 1 eanderson eanderson 704M Mar  5 00:08 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz
+-rw-rw-r-- 1 eanderson eanderson 4.4M Mar  5 00:47 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz.amb
+-rw-rw-r-- 1 eanderson eanderson 2.1M Mar  5 00:47 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz.ann
+-rw-rw-r-- 1 eanderson eanderson 2.3G Mar  5 00:47 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz.bwt
+-rw-rw-r-- 1 eanderson eanderson 579M Mar  5 00:47 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz.pac
+-rw-rw-r-- 1 eanderson eanderson 1.2G Mar  5 00:58 GCA_002872995.1_Otsh_v1.0_genomic.fna.gz.sa</code></pre>
+<p>The first file is the original gzipped compressed reference genome, and the remaining files are all part of the index. Note that the index files occupy considerably more space than the original reference file (but not so much as they would if the BWT were not used to reduce the size of the index).</p>
+<p>If you ever wonder whether you have indexed a certain reference genome with <code>bwa</code>, it is a simple matter to go to the directory holding the reference genome and see what other files are there. If you find files with the same name, but having the suffixes, <code>.amb</code>, <code>.ann</code>, <code>.bwt</code>, <code>.pac</code> and <code>.sa</code>, that means that the reference genome <em>has</em> already been indexed.</p>
+</section>
+<section id="mapping-reads-with-bwa-mem" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="mapping-reads-with-bwa-mem"><span class="header-section-number">10.3.2</span> Mapping reads with <code>bwa mem</code></h3>
+<p>Once the reference genome has been indexed, you are ready to align reads to it. The program <code>bwa</code> includes several different alignment algorithms. For paired-end Illumina data, the best available <code>bwa</code> algorithm, today, is the <code>mem</code> algorithm. The syntax is very simple. While there are many options available to tune the parameters used for alignment, the default values usually give good performance. Thus, at its simplest, <code>bwa mem</code> simply takes three file arguments:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem   path-to-reference-genome   path-to-read1-fastq-file   path-to-read2-fastq-file</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>An example might look like:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem genome/GCA_002872995.1_Otsh_v1.0_genomic.fna.gz fastqs/DPCh_plate1_A01_S1_L1_R1.fq.gz fastqs/DPCh_plate1_A01_S1_L1_R2.fq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>bwa mem</code> prints progress messages to <em>stderr</em> and prints its output in SAM format to <em>stdout</em>. The read alignments come spewing out in the order they are listed in the FASTQ files, such that each read and its paired-end mate appear in adjacent rows in the output. It’s all super simple!</p>
+</section>
+<section id="hold-it-right-there-buddy-what-about-the-read-groups" class="level3" data-number="10.3.3">
+<h3 data-number="10.3.3" class="anchored" data-anchor-id="hold-it-right-there-buddy-what-about-the-read-groups"><span class="header-section-number">10.3.3</span> Hold it Right There, Buddy! What about the Read Groups?</h3>
+<p>Indeed! It is during the mapping with <code>bwa mem</code> that we must include read group tags for our reads. This is straightforward if the pair of FASTQ files contains reads that are all from a single read group, we merely have to give the read group information that we want to see as the argument to the <code>-R</code> option of <code>bwa mem</code>. This argument must be a single token on the command line, so, if it does not include spaces or other whitespace it can be supplied unquoted; however, it is usually safer to quote the argument on the command line. The tabs that occur between read group tags are given as <code>\t</code> in the argument to the <code>-R</code> option.</p>
+<p>Thus, in the <code>bwa mem</code> documentation, the example invocation of the <code>-R</code> option shows it single quoted as <code>'@RG\tID:foo\tSM:bar'</code>. In other words, you pass it the read group header line, complete with the <code>@RG</code> header tag, encoding the tabs between identifiers with <code>\t</code>. What this example does not make clear is that you can also use <em>double quotes</em> around that argument. Double quotes, you will recall, allow variable substitution (Section @ref(quotes-and-var-subs)) to occur inside them. So, in your own scripts, especially when cycling over very many different pairs of FASTQ files, it is extremely useful to be able to define the values of the read group tags, and then supply them on the command line. Coarsely this would look like:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">ID</span><span class="op">=</span>HTYYCBBXX.1.CH_plate1_A01</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">SM</span><span class="op">=</span>CH_plate1_A01</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">LB</span><span class="op">=</span>Lib-1</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">PU</span><span class="op">=</span>HTYYCBBXX.1.TCAATCCG+TTCGCAGT</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">PL</span><span class="op">=</span>ILLUMINA</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-R</span> <span class="st">"@RG\tID:</span><span class="va">$ID</span><span class="st">\tSM:</span><span class="va">$SM</span><span class="st">\tLB:</span><span class="va">$LB</span><span class="st">\tPU:</span><span class="va">$PU</span><span class="st">\tPL:</span><span class="va">$PL</span><span class="st">"</span>  genome.fasta  file_R1.fq file_R2.fq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, you would probably want some way of assigning the values of the shell variables <code>ID</code>, <code>SM</code>, etc., programmatically, perhaps from the spreadsheet that holds all that information. The exercise this week shows one example of that using <code>awk</code> and a TAB-delimited spreadsheet.</p>
+</section>
+</section>
+<section id="samtools" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="samtools"><span class="header-section-number">10.4</span> Processing alignment output with <code>samtools</code></h2>
+<p>Doing the alignment with <code>bwa mem</code> is only the first step of getting data ready to do variant calling. Once the SAM format data comes out of <code>bwa mem</code>, a number of things must happen to it before it can be used for variant calling:</p>
+<ol type="1">
+<li>It must be converted to BAM format (the compressed binary companion format to SAM)</li>
+<li>Additional information about mate pairs might need to be attached to sequences</li>
+<li>You must sort the BAM files from the original ordering produced by <code>bwa mem</code> into a <em>coordinate-ordered</em> format, in which the reads are sorted by where they appear within the reference genome.</li>
+<li>If you started with multiple pairs of FASTQ files for a single individual (i.e.&nbsp;from different lanes or from different sequencing runs or libraries) you might need to merge those all into a single BAM file before variant calling.</li>
+<li>You might want to mark PCR duplicates as such in the BAM file.</li>
+<li>Finally when you have your BAM file all ready for variant calling, you typically will need to index it for rapid access by the variant caller program.</li>
+</ol>
+<p>Phew! That is a lot of steps! Fortunately, there is a single “go-to” program (one-stop shopping!) that can manage all of that for you. It is the program <code>samtools</code>, brought to you by the same people who developed the SAM/BAM formats <span class="citation" data-cites="liSequenceAlignmentMap2009">[@liSequenceAlignmentMap2009]</span> and the <code>bwa</code> aligner (and <code>bcftools</code> for that matter). If you want to get anywhere in bioinformatics, it is important to become good friends with <code>samtools</code>.</p>
+<p>The program <code>samtools</code> includes a large number of different subcommands. We will cover just a few of them, here, that are used in our typical paired-end workflow for whole genome sequencing, and in a somewhat cursory fashion, and we will disscuss only the most commonly used options. All readers are encouraged to completely read the online <a href="http://www.htslib.org/doc/samtools.html">manual page</a> for samtools for a complete account of its uses.</p>
+<p>Or, you can read the usage guidelines for any subcommand from the command line:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bwasam</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This lists all the different subcommands for you, categorized by</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># their uses</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span>  </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># if you follow samtools by any subcommand with nothing else, it gives you information</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># about all the options of that subcommand.  For example:</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The usage patterns of the subcommands can broadly be categorized into two groups:</p>
+<ol type="1">
+<li>Subcommands that explicitly require an argument that gives the name of an output file. These subcommands are usually described like this:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> subcommand <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span> out.bam in.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>where an output file is explicitly called for. These commands <em>do not write output to stdout</em>! They must be given an output file name. It is <em>not possible</em> to pipe output from one of these subcommands to another program or utility.</p>
+<ol start="2" type="1">
+<li>Subcommands that don’t explicitly require an argument giving an output file:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> subcommand <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span> in.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These subcommands write their output to stdout, and that output can be piped into other programs or can be redirected into a file (some also provide a <code>-o file</code> option to write output to <code>file</code> rather than to stdout.)</p>
+<p>In short, if the syntax of the subcommand explicitly calls for an output file on the command line (not as part of a <code>-o file</code> option), then that subcommand does not write its output to <em>stdout</em> and you can’t pipe it into the next part of your pipeline.</p>
+<p>On the other hand, if you can write output from samtools to <em>stdout</em>, you might be interested in knowing how you can pipe that into the input for another <code>samtools</code> subcommand. Rejoice! There is a syntactically economical and lovely way to do that. Any subcommand which expects a single input file will be described like:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> subcommand <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span>  in.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You would typically put the path to the input file in the place of <code>in.bam</code> there. However, if you put <code>-</code> in place of <code>in.bam</code> then <code>samtools</code> will take input for <code>in.bam</code> from <em>stdin</em>.</p>
+<p>So, for example, you can do something like this:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem genome.fna R1.fq R2.fq <span class="kw">|</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> view <span class="at">-u</span> <span class="at">-</span>  <span class="kw">|</span>   <span class="co"># convert the SAM output from bwa mem into BAM format</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> sort <span class="at">-l</span> 9  <span class="at">-</span> <span class="at">-o</span> output_file.bam  <span class="co"># take stdin as the input, sort it, and write (with the best</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="co"># compression possible: -l 9) the output to output_file.bam</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is HUGE! It means that you don’t even have to save the initial SAM file that <code>bwa mem</code> makes, you can proceed directly to the sorted BAM file you want without eating up disk space on the intermediate files.</p>
+<section id="samtools-subcommands" class="level3" data-number="10.4.1">
+<h3 data-number="10.4.1" class="anchored" data-anchor-id="samtools-subcommands"><span class="header-section-number">10.4.1</span> <code>samtools</code> subcommands</h3>
+<p>We will go through some of the <code>samtools</code> subcommands that are particularly important in processing whole genome sequencing data in a step-by-step fashion, so you can get some experience with them, rather than just running them as parts of long and complex pipelines.</p>
+<p>To do these steps, you will need to have a SAM file that is in the location <code>example-files/s001---1.sam</code> relative to the current working directory. To get that, you might need to sync your fork and then pull that into main.</p>
+<p>Also, you will need <code>samtools</code>. On Alpine you can get that with</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load samtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>from a compute node.</p>
+<p>You should be doing this <em>on an interactive shell</em>.</p>
+<section id="samtools-view" class="level4" data-number="10.4.1.1">
+<h4 data-number="10.4.1.1" class="anchored" data-anchor-id="samtools-view"><span class="header-section-number">10.4.1.1</span> <code>samtools view</code></h4>
+<p>The <code>view</code> command is a major <code>samtools</code> workhorse.</p>
+<p>It is often used to convert between SAM and BAM format, or to view them easily. Look at the options:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To convert from SAM to BAM format specify that the output should be BAM with the <code>-b</code> option:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-b</span> example-files/s001---1.sam <span class="op">&gt;</span> example-files/s001---1.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once you have done that, compare the size of the SAM and BAM versions of the same data:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> example-files/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How much of a reduction in storage is that?</p>
+<p>Note that you can’t read a BAM file as a human. Try it with head and get the universal symbols of “HEY THIS IS A BINARY FILE!!”</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> example-files/s001---1.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can use <code>samtools view</code> to look at the alignments in a bam file. By default it doesn’t show you the SAM header:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pipe output to head to look at the first 10 alignments</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view example-files/s001---1.bam <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you want the output to inlude the header, you use the <code>-h</code> option:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-h</span> example-files/s001---1.bam <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If all you want to print is the SAM header, then use the <code>-H</code> command:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is a handy way to get the last N (12 in this case) lines of the</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SAM header:</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-H</span> example-files/s001---1.bam <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Check out that read group line! Also, note that some PG lines have been added there</p>
+<p>In general, you will almost exclusively use BAM format instead of SAM format in bioinformatics, because it is much faster to process BAM input that SAM input. But it is worth understanding that BAM format can come in uncompressed or highly compressed versions. The compressed versions take up less disk space, but could require more time to operate on.</p>
+<p>When <code>samtools view</code> is used for converting from the text-based SAM format to BAM format, you might not want to spend time compressing the output. This is particularly true if you are piping the output back into another command that would just have to de-compress the BAM output in order to use it. If that is the case, then BAM output using the <code>-u</code> option is preferred over the <code>-b</code> option, since <code>-u</code> makes BAM output, but it saves the time that would be spent compressing and then decompressing the data as it gets piped from one <code>samtools</code> command to the next.</p>
+<p>We will see an example of that when we do sorting.</p>
+</section>
+<section id="samtools-sort" class="level4" data-number="10.4.1.2">
+<h4 data-number="10.4.1.2" class="anchored" data-anchor-id="samtools-sort"><span class="header-section-number">10.4.1.2</span> <code>samtools sort</code></h4>
+<p>This subcommand sorts the alignments in a BAM file in order of their placement in the reference genome. This must be done for many downstream operations, so it is something that you will often do to alignments that come out of <code>bwa mem</code> or any other aligner.</p>
+<p>When a BAM file is sorted by genomic coordinates (i.e., by order of the placement of the alignments in the genome), it is said to be “coordinate-sorted.”</p>
+<p>First notice that our <code>example-files/s001---1.sam</code> file is not coordinate-sorted. Just look at it with <code>less -S</code> and note that the successive sequences are on different chromosomes/scaffolds and are not in sorted order at all!</p>
+<p>Here we will coordinate sort the BAM file we made above. We will put it into a file called <code>example-files/s001---1.srt.bam</code>. First, look at the <code>samtools sort</code> syntax:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, let’s sort the file and make sure it is well compressed:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-l</span> 9 <span class="at">-o</span> example-files/s001---1.srt.bam example-files/s001---1.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Check out how big the resulting file is:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> example-files/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cool! Even smaller than the original BAM file!</p>
+<p>For fun, check out the header for the file and see that it now has an <code>@HD</code> line:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-H</span> example-files/s001---1.srt.bam <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And, for fun, look at the <code>@PG</code> lines at the bottom of the header:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-H</span> example-files/s001---1.srt.bam <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that every command that has been used to modify the file contents is there!</p>
+<p><code>samtools sort</code> produces intermediate files when it is sorting large BAM files. You will sometimes see them if <code>ls</code>-ing the contents of directories while running a sort job. You used to have to be very careful if sorting multiple files at the same time that those intermediate files didn’t overwrite one another, but that is largely fixed/taken care of automatically by versions of <code>samtools sort</code> available today.</p>
+<p>Note that, instead of making the intermediate bam file, we could have piped BAM output into sort. This is very useful:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the .bam .srt.bam files:</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> example-files/s001---1.bam example-files/s001---1.srt.bam</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now, directly make a sorted BAM file at example-files/s001---1.srt.bam</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># by piping samtools view output into samtools sort.  Note the use</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># of -u for uncompressed BAM output, and the - at the end of the</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># line, instead of a file name, to mean take</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># input from stdin instead of a file</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-u</span> example-files/s001---1.sam <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> sort <span class="at">-l</span> 9 <span class="at">-o</span> example-files/s001---1.srt.bam <span class="at">-</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="samtools-index" class="level4" data-number="10.4.1.3">
+<h4 data-number="10.4.1.3" class="anchored" data-anchor-id="samtools-index"><span class="header-section-number">10.4.1.3</span> <code>samtools index</code></h4>
+<p>The <code>samtools index</code> command operates on a <em>coordinate-sorted</em> BAM file and creates a new file having the name of the original file, but with the extension <code>.bai</code> added. <code>.bai</code> stands for “bam index.” It is an index that makes it very fast to access the alignments within certain genomic regions.</p>
+<p>We can index our sorted BAM file like this:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index example-files/s001---1.srt.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once we’ve done that, let’s see how big that .bai file is:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> example-files/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It’s pretty small! It is also a binary file.</p>
+<p>If you have <em>indexed</em> a BAM file, you can use <code>samtools view</code> to retrieve and print all the reads in that indexed BAM file covering one or more genomic regions as specified using genomic coordinates. This happens very fast.</p>
+<p>For example, to see all the read that overlap the 100 base pairs from 1001 to 1100 on chromosome <code>CM031202.1</code>, you would do this.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view example-files/s001---1.srt.bam CM031202.1:1001-1100</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the full dataset there are three sequences that overlap that region. In the small data set, if you directly downloaded it today, there might not be any.</p>
+</section>
+<section id="samtools-merge" class="level4" data-number="10.4.1.4">
+<h4 data-number="10.4.1.4" class="anchored" data-anchor-id="samtools-merge"><span class="header-section-number">10.4.1.4</span> <code>samtools merge</code></h4>
+<p>If you have multiple <em>sorted</em> BAM files that you wish to merge into a single BAM file, you can use <code>samtools merge</code>. This subcommand opens up connections to each of the files and steps through each of them, alignment-by-alignment, copying alignments from each of the original BAMs into the merged BAM file. Thought of this way, it is clear why the input BAM files must be sorted. The merged BAM in outputted in sorted order.</p>
+<p>There is some arcana with this utility when you have different reference genomes represented in your different BAMs, and older versions of <code>samtools merge</code> didn’t always play nicely with mutliple read groups in different files. For the most part, those issues were resolved in later releases. So, if you have just mapped a bunch of fastqs into BAMs and have sorted them, <code>samtools merge</code> should work and behave appropriately when merging those files.</p>
+<p>Why should you merge files? The reason we typically to it is to make a single file that holds all the reads that came from one individual in one library prep for finding PCR duplicates. Alternatively, you might want to merge all BAMS from a single individual into a single BAM for variant calling.</p>
+<p>Back in the “old days” people would sometimes merge all the BAMs from multiple individuals. This is definitely <em>not</em> recommended today. It is easier to have a single BAM for each sample. Some utilities, like ANGSD, even require that input for variant discovery be done with one individual per BAM. So, you should almost never take BAM-merging further than merging all the alignments for a single individual (i.e., when you are done you should have one BAM file per individual.)</p>
+<p>The syntax for <code>samtools merge</code> is:</p>
+<pre><code>samtools merge [options] output-bam-name.bam  sorted-input-bam-1.bam sorted-input-bam-2.bam ...</code></pre>
+<p>In other words, you give it the name of the output file you want it to produce, followed by all the input file names. If you get the order of the filenames wrong—for example putting the output file last, then it will usually bark you an error because you are, in effect, asking it to overwrite an existing input file.</p>
+<p>We don’t have multiple files to merge at this point, but you might see this at a later time.</p>
+</section>
+<section id="samtools-flagstats" class="level4" data-number="10.4.1.5">
+<h4 data-number="10.4.1.5" class="anchored" data-anchor-id="samtools-flagstats"><span class="header-section-number">10.4.1.5</span> <code>samtools flagstats</code></h4>
+<p>Provide summary information about the SAM flags of the alignments. This is a great utility to assess how many reads mapped, how many didn’t, and the nature of their mapping (as relayed by their SAM flags).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstats example-files/s001---1.srt.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="samtools-idxstats" class="level4" data-number="10.4.1.6">
+<h4 data-number="10.4.1.6" class="anchored" data-anchor-id="samtools-idxstats"><span class="header-section-number">10.4.1.6</span> <code>samtools idxstats</code></h4>
+<p>From an indexed BAM file, report how many reads map to each sequence in the reference genome.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> idxstats example-files/s001---1.srt.bam <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The columns that come out of this are:</p>
+<ol type="1">
+<li>Reference sequence name</li>
+<li>Length of reference sequence</li>
+<li>Number of reads that properly paired-end-map to the reference sequence</li>
+<li>Number of reads that align to the reference sequence, but not as part of a properly paired read</li>
+</ol>
+</section>
+<section id="samtools-stats" class="level4" data-number="10.4.1.7">
+<h4 data-number="10.4.1.7" class="anchored" data-anchor-id="samtools-stats"><span class="header-section-number">10.4.1.7</span> <code>samtools stats</code></h4>
+<p>Comprehensive summaries of features of the alignments.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats example-files/s001---1.srt.bam <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that, in the headers for each of the different summaries in the output from <code>samtools stats</code>, instructions are given on how to extract just that summary.</p>
+<p>Page through the output. It isn’t always easy to read in text format. MULTIQC can gobble it up and make pretty graphs of it.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../nmfs-bioinf/bioinf-formats.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
