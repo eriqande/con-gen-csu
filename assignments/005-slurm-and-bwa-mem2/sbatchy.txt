@@ -1,0 +1,17 @@
+#First, trim fastq files:
+
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+-----------
+
+#Then, I created a reference index
+
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+-----------
+
+#Now, I test ran two of the reads instead of all of them to see if it works
+
+sbatch --array=1-2 assignments/005-slurm-and-bwa-mem2/map2.sh
+
+#Lastly, run the rest of the job array
+
+sbatch --array=3-16 assignments/005-slurm-and-bwa-mem2/map2.sh
