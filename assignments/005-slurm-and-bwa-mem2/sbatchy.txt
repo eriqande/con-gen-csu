@@ -1,0 +1,8 @@
+# The first command I ran to launch trim_all.sh was:
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+# Next, I ran the following command to launch index2.sh:
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh
+
+# Finally, I ran this command to launch map2.sh:
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
