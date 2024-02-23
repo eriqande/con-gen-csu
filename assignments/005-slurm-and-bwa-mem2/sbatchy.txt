@@ -1,0 +1,105 @@
+Assignment 005 Notes:
+
+First we want to trim all of the files. I created the script trim-all.sh to accomplish this
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=fastp.%j.out
+#SBATCH --error=fastp.%j.err
+
+set -x
+source ~/.bashrc
+
+conda activate fastp
+
+# This just makes the necessary output directories
+mkdir -p results/trimmed2 results/qc2/fastp
+
+#Sample names:
+# DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24 DPCh_plate1_C10_S34 ...
+#These are within data/fastqs
+
+#Reading out the sample names but cleaned up
+SAMPLES=$(basename -a data/fastqs/*_R*.fq.gz | cut -f1-4 -d'_'| uniq)
+
+for S in $SAMPLES; do
+			# Running fastp with input and output files
+    fastp -i data/fastqs/${S}_R1.fq.gz -I data/fastqs/${S}_R2.fq.gz \
+          -o results/trimmed2/${S}_R1.fq.gz -O results/trimmed2/${S}_R2.fq.gz \
+          -h results/qc2/fastp/${S}.html -j results/qc2/fastp/${S}.json \
+          # Writing HTML and JSON reports
+          --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA --adapter_sequence_r2=AGATCGGAAGAGCG \
+          # Providing adapter sequences for trimming
+          --detect_adapter_for_pe \
+          # Turning on adapter sequence auto-detection
+          --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20
+          # Moving sliding window front to tail, dropping bases to the right if they're below the threshold
+			# Setting the window size and the threshold quality score
+
+done
+
+# Once that is done, we will sha1sum the trimmed files and store the result
+# in the assignments folder
+sha1sum results/trimmed/*.gz > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
+
+
+Once the files are trimmed, I want to align them. To do this I first need to index the 
+reference genome. I'll use the script 
+
+#!/bin/bash
+
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=15G
+#SBATCH --time=1:00:00
+#SBATCH --output=index.%j.out
+#SBATCH --error=index.%j.err
+
+source ~/.bashrc
+
+conda activate bioinf
+
+#indexing the reference fasta
+bwa-mem2 index data/genome/genome.fasta
+
+Super simple little script.
+
+Finally we wanna use BWA-mem2 to do an alignment of our trimmed fastq files to this reference. 
+The script I wrote for this is called map2.sh. Note that here I'm just testing with the first
+line of the sample-array-info.tsv file, so the array is set 1-1.
+
+
+#!/bin/bash
+
+#SBATCH --job-name=BWA-mem
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=bwa.%j.out
+#SBATCH --error=bwa.%j.err
+#SBATCH --array=1-1
+
+set -x
+source ~/.bashrc
+
+conda activate bioinf
+module load samtools
+
+
+SAMPLE_PATH="/projects/ericacnr@colostate.edu/con-gen-csu"
+ID=$(./scripts/line-assign.sh $SLURM_ARRAY_TASK_ID data/sample-array-info.tsv)
+eval $ID
+REFERENCE="/projects/ericacnr@colostate.edu/con-gen-csu/data/genome/genome.fasta"
+
+mkdir results/mapped2
+
+
+bwa-mem2 mem  $REFERENCE        \
+        -R "@RG\tID:${sample}.${library}.${flowcell}.${lane}\tSM:${sample}\tLB:${library}\tBC:${barcode}\tPU:\tID:${sample}.${library}.${flowcell}.${lane}.${barcode}\tPL:ILLUMINA"     \
+        results/trimmed2/"$sample"_R1.fq.gz results/trimmed2/"$sample"_R2.fq.gz         \
+        > results/mapped2/aln_"$sample".sam 2>bwa_mem_"$sample".log
+
+cd results/mapped2
+samtools sort -o aln_"$sample".bam aln_"$sample".sam
+
+This code basically just does the alignment for each sample in an array style (separate 
+jobs per sample) and then plugs it into samtools sort to get sorted and compressed.
