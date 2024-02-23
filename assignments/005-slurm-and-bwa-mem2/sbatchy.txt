@@ -1,0 +1,4 @@
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh;
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh;
+data/genome/genome.fasta && sbatch assignments/005-slurm-and-bwa-mem2/map2.sh;
+sha1sum results/mapped/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt;
