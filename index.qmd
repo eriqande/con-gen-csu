@@ -1,0 +1,58 @@
+# Welcome! {.unnumbered}
+
+Welcome to the website for the National Marine Fisheries Service
+Linux, Slurm, and Bioinformatics training to be held virtually
+over three days:
+
+* Day 1: Monday, October 17, 2022. 10 AM - 12 PM PDT
+* Day 2: Tuesday, October 18, 2022. 10 AM - 12:30 PM PDT
+* Day 3: Wednesday, October 19, 2022. 10 AM - 12 PM PDT
+
+
+## Prerequisites
+
+This course will be using the Sedna high-performance computing
+cluster located at the Northwest Fisheries Science Center. This cluster
+(and, hence, this course)
+is only available to NMFS employees and affiliates. If you are a NMFS
+employee and you are interested in this course, please see 
+[here](https://docs.google.com/document/d/1nn0T0OWEsQCBoCdaH6DSY69lQSbK3XnPlseyyQuU2Lc/edit#heading=h.qpx57rvxr0sj) for information about how to
+get an account on the cluster. 
+
+This course is intended for people who have already had some exposure
+to Unix or Linux.  You should be reasonably comfortable navigating around 
+the Unix filesystem using the command line.
+For a refresher, please read [this chapter from my
+online bioinformatics book](https://eriqande.github.io/eca-bioinf-handbook/essential-unixlinux-terminal-knowledge.html).
+
+My goal is to:
+
+- teach the shell programming constructs and
+the text processing tricks that I find myself using all the time in my 
+day-to-day work
+- provide an introduction to how to use SLURM to do cluster computing
+- On the last day, show how Snakemake works, and how it can be used on the
+Sedna cluster to simplify your bioinformatics life.
+
+## Course Topics and Sessions
+
+
+* Day 1: Intro, Unix-review, shell programming, `awk`
+    - Introduction to the Sedna cluster (15 minutes Krista and Giles)
+        - Cluster infrastructure and configuration.
+        - Scientific software and the installation requests
+    - [Quick Unix Review](nmfs-bioinf/quick-unix-review.qmd#quick-unix-review) (25 minutes)
+    - [Shell Programming](nmfs-bioinf/shell-prog.qmd#shell-prog) (50 Minutes)
+    - [A Brief `awk` Intro](nmfs-bioinf/awk-intro.qmd#awk-intro)  Processing text files with `awk` (30 minutes)
+* Day 2: A little bash stuff, then Sedna and SLURM
+    - [Bash scripts and functions](nmfs-bioinf/scripts-and-functions.qmd#script-func) (20 minutes)
+    - [Sedna and SLURM intro](nmfs-bioinf/slurm.qmd#ssintro) (40 minutes) 
+    - [Submitting jobs with `sbatch`](nmfs-bioinf/sbatch.qmd#sbatch) (40 minutes)
+    - [Slurm Job Arrays](nmfs-bioinf/slurm-arrays.qmd#slurm-arrays) (40 minutes)
+* Day 3: Job Arrays, then an introduction to Snakemake
+    - [Slurm Job Arrays](nmfs-bioinf/slurm-arrays.qmd#slurm-arrays) (25 minutes)
+    - [Snakemake Tutorial Introduction](nmfs-bioinf/snake.qmd#snake) (90 minutes)
+
+
+
+

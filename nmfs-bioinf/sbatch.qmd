@@ -1,0 +1,612 @@
+# Submitting jobs with `sbatch` {#sbatch}
+
+- Up till now we have allocated ourselves computing resources for
+_interactive_ use.
+
+- This is what you would do if you were going to be doing computationally
+intensive things directly while hacking on the command line....
+- ...or if you were going to start an R session and interactively work
+on some big data on it.
+- etc.
+
+Running an interactive shell on a compute node is also a great way
+to test your scripts.
+
+However, once your scripts are tested, for most of your heavy
+computation, you will want to submit jobs as non-interactive _batch_ jobs
+using SLURM's `sbatch` command.  
+
+## Prepare for this session
+
+Get on your cluster and navigate to the top level (`con-gen-csu`)
+of your fork of the class repository. Then,
+to make sure that you have all the latest updates from the repository,
+sync the main branch of your fork with the main branch of
+`eriqande/con-gen-csu` on GitHub, then in your shell, use
+`git switch main` to make sure you are on the main branch of your
+fork, and then use `git pull origin main` to pull down those changes.
+
+
+
+## The `sbatch` command and its options
+
+If you do `man sbatch` you will see an insanely large number of options
+and all sorts of complicated stuff.  
+
+You can get by with a fairly minimal set of options for almost everything
+you need to do.  They are:
+
+- `--cpus-per-task=<n>`: the number of cores to use for the job.  The syntax has you
+using it like this `--cpus-per-task=2`
+    - On Sedna, the default is 1.
+- `--mem=<size[units]>`: How much total memory for the job. Example: `--mem=4G`
+    - On Sedna, the default is about 4.7 Gb for each requested core.
+    - On Alpine's `amilan` partition, the machines have 3.74 Gb per core.
+- `--time=[D-]HH:MM:SS`: How much time are you requesting?  You don't have to specify days,
+    so you could say, `--time=1-12:00:00` for one day and twelve hours, or you could
+    say `--time=36:00:00`  for 36 hours.
+    - On Sedna, the default is 8 hours. 
+- `--output=<filename pattern>`: Where should anything on `stdout` that is not otherwise redirected be written to?
+- `--error=<filename pattern>`: Where should anything on `stderr` that is not otherwise redirected be written to?
+
+On top of the options,  `sbatch` takes a single required argument, which must be the
+path to a shell script (we know about those!) that the job will run.
+
+::: {.callout-warning}
+
+## Fun fact:
+
+If you pass any arguments after the name of the shell script that you want
+`sbatch` to execute, those are interpreted as arguments to the shell script
+itself.
+
+:::
+
+## What an invocation of `sbatch` could look like
+
+So, if we wanted to schedule a script called `MyScript.sh` to run with 4 cores
+and memory of 80Gb, with an allowance of 16 hours, and we wanted to tell
+SLURM where to capture any otherwise un-redirected `stdout` and `stderr`, we
+would type something like this:
+```{.sh filename="Don't bother copying or pasting this."}
+sbatch --cpus-per-task=4 --mem=80G --time=16:00:00 --output=myscript_stdout --error=myscript_error MyScript.sh
+```
+
+Some points about that:
+
+- Typing all of that is a huge hassle.
+- Most of the options will be specific to the actual job in `MyScript.sh`
+
+So...`sbatch` allows you to store the options in your shell script on lines
+after the shebang line that are preceded by `#SBATCH`.
+
+## Storing SLURM options in your shell script
+
+Let's look at an example like one might do in an sbatch script:
+```{.sh filename="Contents of scripts/bwa_index.sh"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --mem=3G
+#SBATCH --output=bwa_index-%j.out
+#SBATCH --error=bwa_index-%j.err
+
+# this is a little script to index the genome given
+# by the first positional parameter ($1)
+
+# load the module that gives us the bwa software
+module load bwa
+
+# make a directory for log output if it does not already exist
+DIR=results/log/bwa_index
+mkdir -p $DIR
+
+# run bwa index on the input
+bwa index $1 > $DIR/log.txt 2>&1
+
+```
+
+::: {.callout-warning}
+
+### What's that %j in the output and error options?
+
+In the above script, you will see
+
+```{.sh}
+#SBATCH --output=bwa_index-%j.out
+#SBATCH --error=bwa_index-%j.err
+```
+In this context, the `%j` gets replaced by `sbatch` with the
+`SLURM_JOB_ID`.
+
+
+
+:::
+
+::: {.callout-caution collapse=true}
+
+## Get email from SLURM.
+
+One useful feature of SLURM---especially if you are running just a few
+long jobs---is that you can tell it to send you email whenever some event
+occurs related to a job (like it Starts, or Finishes, or Fails).
+
+The SBATCH directives for that look like:
+```{.sh}
+#SBATCH --mail-user=myemail@emailserver.com
+#SBATCH --mail-type=ALL
+```
+where you would replace `myemail@emailserver.com` with your own
+email address.
+
+Note that option `--mail-type` can be tailored to modulate how much email
+you will get from SLURM.
+
+TBH, though, I don't have SLURM email any news about my jobs anymore. Workflows that
+are optimized into a lot of smaller jobs would fill your inbox pretty quickly!
+
+:::
+
+## Let us submit the `bwa_index.sh` job to SLURM
+
+Since all of the `sbatch` options are imbedded within the
+shell script it is easy to write the command to launch the script.
+
+Let's prepare for that first.  If you are on Alpine, make sure the
+slurm module is loaded.
+```{.sh filename="If you are working on Alpine, be sure to paste this into your shell"}
+module load slurm/alpine
+```
+Note that you do **not** need to be on a compute node to submit a job via `sbatch`---you
+can do that from a login node.
+
+To launch the script using `sbatch`, all you do is:
+```{.sh filename="Paste this into your shell at the top level of the con-gen-csu repo"}
+sbatch scripts/bwa_index.sh data/genome/genome.fasta
+```
+
+The first argument is the script `scripts/bwa_index.sh` and the
+second, `resources/genome.fasta`, is the path to the genome that
+we want to index with `bwa`.
+
+When this command executes, it returns the `SLURM_JOB_ID`.  Make a note of it.
+
+Once you have launched the job, try using `myjobs` to see your job running.
+(You don't have much time, because it doesn't take very long).
+
+::: {.callout-caution  collapse=true}
+
+## Hey! That job ran in the current working directory
+
+Note that our script ran `bwa index` by passing it the path of a
+reference genome specified as a _relative path_: the path was relative
+to our current working directory.
+
+One of the wonderful features of SLURM is that, when `sbatch` runs your
+script, it does so from the current working directory of the shell in which
+you ran `sbatch`.  
+
+(I mention this because the first cluster I used was set up differently,
+and you had to explicitly tell it to run from the current working directory---which
+was the source of endless gnashing of teeth)
+:::
+
+Once that job is done, use `ls -lrt data/genome` to see all the files that
+were newly created by the `bwa-index.sh` script.
+
+## How many resources did that job use? --- `seff`
+
+When you first start doing bioinformatics, you will not be very familiar
+with how long each job will run, or how much memory it will need.
+
+That takes some time, but one helpful utility, `seff`, will tell you the
+effective usage of the allocated resources by any _completed_ job.
+
+It's simple to use:
+```{.sh filename="Here is the sytnax"}
+seff slurm-jobid
+```
+
+::: {.callout-tip}
+
+## Self-study
+
+Try that command, `seff slurm-jobid`, replacing `slurm-jobid` with the actual `SLURM_JOB_ID` of the
+job that you just ran.
+
+:::
+
+
+::: {.callout-warning}
+
+## More tips on learning about past job resource use
+
+You can also use the `sacct` command.  Check it out with `man sacct`.
+
+You can get information much like `seff` for your recent jobs with `sacct` and it is somewhat
+easier to look at all the jobs that have run (or are running) in the last 12 to 48 hours with it.
+So, here we define a function to use it easily, and also we can give it more space to print the
+job names:
+```{.sh filename="Paste this into your shell to get a myacct function"}
+function myacct {
+  if [ $# -ne 1 ]; then
+      JL=10;
+  else
+      JL=$1;
+  fi;
+  sacct  --format JobID,JobName%${JL},User,Group,State%20,Cluster,AllocCPUS,REQMEM,TotalCPU,Elapsed,MaxRSS,ExitCode,NNodes,NTasks -u $(whoami)
+}
+```
+
+If you like being able to use this, you ought to add it to your `~/.bashrc` file.
+:::
+
+
+## A simple job with default sbatch settings
+
+We jumped right into talking about all the most useful options
+for `sbatch`.
+
+However, on Sedna (and, indeed, on most clusters), SLURM defines reasonable
+defaults for an `sbatch` job.  
+
+It even sends the `output` and `error` to reasonably named files, as we
+shall see.
+
+The following lists the contents of a script called `simple-15.sh`
+that doesn't do much:
+
+1. It writes out the SLURM_JOB_ID to `stdout`
+2. It writes a message to `stderr`
+3. Then it just sits there for 15 minutes.
+
+```{.sh filename="Contents of scripts/simple-15.sh"}
+#!/bin/bash
+
+
+(
+  echo "(stdout) Running with Slurm Job ID: $SLURM_JOB_ID"
+  echo "(stdout) Note that we are running this thing through"
+  echo "(stdout) the tee utility to try to unbuffer it."
+  echo
+) | tee simple-15.stdout
+
+echo "(stderr) This line is being written to stderr" > /dev/stderr
+echo "(stderr) Interestingly, stderr does not seem to get buffered." >> /dev/stderr
+
+
+sleep 900
+```
+
+::: {.callout-warning}
+
+## Scripts running under SLURM have access to `SLURM_*` environment variables
+
+When a job is run by SLURM, it is done so in a shell environment that has
+a number of extra shell variables defined.  In the above, we print the value
+of one of those: `SLURM_JOB_ID`.
+
+:::
+
+Now we will submit that script to run as a SLURM job with:
+```{.sh filename="Paste this into your shell"}
+sbatch scripts/simple-15.sh
+```
+
+Now, use `myjobs` to see how many cores this job is using (1) and
+how much memory (4700 Mb on Sedna, 3840 on Alpine).  Those are the default values.
+
+
+By default, on some systems both `stdout` and `stderr` get written to `slurm-%j.out`
+(where `%j%` is replaced with the SLURM_JOB_ID).
+
+You can see that is in that by doing:
+```{.sh filename="Type this, but replace 331979 with whathever your actual SLURM job id is"}
+cat slurm-331979.out
+```
+
+
+We see that `stderr` gets written to `slurm-%j.out` immediately.
+The `stdout` stream is supposed to get written there, as well, but
+it seems that there is some hard-core buffering that goes on with slurm:
+we can see the output in `simple-15.stdout`, but not in `slurm-%j.out`.
+
+
+::: {.callout-warning }
+
+## Don't leave `stdout` and `stderr` un-redirected in your scripts
+
+Seeing the buffering issues above hardens my own convictions that you should
+not rely on SLURM to capture any output to `stdout` or `stderr` that is not
+otherwise redirected to a file.  You should always be explicit about redirecting
+`stdout` or `stderr` within your own scripts to files where we want it to go.
+
+That way the slurm output logs are left to mostly capture messages from SLURM itself
+(for example, telling you that you ran out of memory or the job was cancelled.)
+
+:::
+
+## Oh no!  I need to stop my job(s): `scancel`
+
+Now, we have a job that is sitting around doing nothing for the
+next 15 minutes or so.
+
+This is a great time to talk about how to abort jobs that are running
+under `sbatch`:
+
+::: {.callout-important}
+
+## Cancelling jobs started with `sbatch`
+
+If you have the job number (which is returned when `sbatch` launched the job
+or which you can see on the corresponding line of `myjobs`) you can use
+`scancel` followed by the job number.
+
+For example:
+```{.sh}
+scancel 329656
+```
+...but you have to replace the number above with your job's job number.
+
+Please do that now!
+:::
+
+
+## A note about memory
+
+::: {.callout-warning }
+
+## Memory gets allocated with cores or via `--mem`
+
+It is quite clear that the `--mem` option to `sbatch` is
+intended to increase the memory allocated to the job; however
+adding cores with `--cpus-per-task`, without adding any options
+to dictate memory use, also increases the memory
+available.
+
+On Sedna's standard compute nodes, which each have 20 cores,
+if you ask for $x$ cores, the total amount of memory your job will
+get is about $\frac{x}{20} T$, where $T$ is a little less than
+the total memory on the machine. 
+
+On the standard memory compute nodes, that means your job gets
+roughly 4700 Mb (4.7 Gb) of RAM for each
+_core_ that it is allocated.  (9400 Mb or 9.4 Gb for each
+core on the "higher-memory" standard compute nodes, `node[29-36]`)
+
+Note, however, that if the programs running in your job are not
+multithreaded, then you might not be able to use all those cores.
+In which case, it might be better to specify additional memory allocation with
+`--mem`, and leave the other cores to other users.
+
+However, on Alpine, if you ask for 3.74 Gb * 10 = 37.4 Gb of memory and only one
+core for computing, you will still be "charged" (i.e., you will run through
+your quota) as if you were using 10 cores!  (i.e., billing is by the core, 
+and you are charged for the number of cores that would give you a certain amount of memory).
+
+:::
+
+## What happens if we exceed our resources?
+
+R uses 8 bytes for each numeric value it stores in a vector. But it also seems
+to do some fancy stuff with delayed evaluation, etc. So it is hard to know
+exactly how much system RAM R's process will use.
+
+Nonetheless, I have found that the following R commands will exceed 4700 Mb of RAM:
+```{.r}
+x <- runif(1e9); y <- x + 1; y[1:10]
+```
+Somewhere in the `y <- x + 1` command, memory usage will exceed the default 4700 Mb (4.7 Gb)
+of RAM that SLURM allows by default (on SEDNA) or the 3.74 Gb of RAM allowed on Alpine.  
+
+So, what we are going to do here is run those commands in an `sbatch` script
+and see what happens. (You will probably exceed your allocated memory while doing bioinformatics,
+so you might as well get used to what that looks like.)
+
+Here is a listing of a shell script to run under `sbatch` to exceed our memory usage:
+```{.sh filename="Contents of scripts/r-too-much-mem.sh"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=2:00:00
+#SBATCH --output=r-too-much-mem-%j.out
+#SBATCH --error=r-too-much-mem-%j.err
+
+
+mkdir -p outputs
+EDIR=results/log/r-too-much-mem
+mkdir -p $EDIR
+
+module load R
+Rscript --vanilla -e "x <- runif(1e9); y <- x + 1; y[1:10]" > outputs/r-too-much.out 2> $EDIR/log.txt
+
+```
+
+Run it like this:
+```{.sh filename="Paste this into your shell"}
+sbatch scripts/r-too-much-mem.sh
+```
+It takes about a minute before it runs out of memory.  During the time,
+check that it is still running using `myjobs`.
+
+Once you see it is no longer running, check on the status of that job using
+`myacct 15`.  The bottom line of output should show the results for that last
+job:
+
+- The `State` column will show `OUT_OF_MEMORY`
+- The `MaxRSS` column shows how much memory it used before failing.
+In my case, that was `4805260K`.
+
+::: {.callout-tip }
+
+## Self study
+
+How would you modify the `scripts/r-too-much-mem.sh` so that it did not run out of
+memory?
+
+:::
+
+::: {.callout-tip collapse=true}
+
+## Self study answer
+
+You need to allocate more memory to the job.  You can do this by adding an
+sbatch directive line like:
+```{.sh}
+#SBATCH --mem=12G
+```
+amongst all the other sbatch directives.  I don't know if 12G of ram will be
+enough, but it might be.  You could try it.
+
+**OR** as we will see below, you could add that memory option on the
+command line.
+
+:::
+
+
+## `sbatch` options on the command line will override the `#SBATCH` directives in the file
+
+You can mix and match `sbatch` options on the command line with
+`sbatch` options in the `#SBATCH` directives in the script.
+
+**The option on the command line takes precedence over the same option in the file.**
+
+So, we could provide sufficient memory to `scripts/r-too-much-mem.sh` and at the
+same time, override the time it is allotted with this command:
+```{.sh filename="Don't paste this into your shell---it uses too much resources"}
+sbatch --mem=16G --time=01:00:00 scripts/r-too-much-mem.sh
+```
+
+If you launched that job, you could use your `myjobs` function to see that the `MIN_MEMORY` is `16G`
+and the `TIME_LIMIT` is 1 hour.
+
+When it finished you could run `myacct` to see that it successfully completed, and
+look in the output file `outputs/r-too-much.out` to see that it printed
+the first 10 of one billion random numbers with 1 added to them.
+
+## Let's run out of time
+
+We are going to rerun our `simple-15.sh` script, but only allocate
+one minute for it.  So we should see it fail after only 1 minute.
+
+::: {.callout-warning collapse=true}
+
+## Eric, why are making us run so many jobs that fail?
+
+Let's be honest, as you embark on your bioinformatic career with
+SLURM, you are going to spend a significant amount of your time dealing
+with jobs that fail.
+
+You might as well see jobs failing in several different ways so that
+you can recognize them when you see them later.
+
+:::
+
+So, try this:
+```{.sh filename="Paste this into your shell"}
+sbatch --time=00:01:00 scripts/simple-15.sh
+```
+
+That will fail in a minute, after which, use `myacct` to see what
+it says about how it failed.
+
+It will tell you that the main script hit a `TIMEOUT` and the batch job
+running in that script was `CANCELLED`
+
+## A major gotcha: Do not direct `sbatch`'s `output` or `error` to a path that does not exist
+
+::: {.callout-important}
+
+## Beware!
+
+If you try something like:
+```{.sh}
+#SBATCH output=outputs/mydir/outfile.txt
+#SBATCH error=outputs/mydir/errfile.txt
+```
+but do so without having actually made the directory `outputs/mydir`, then
+`sbatch` will fail, and it won't be able to write out why it failed.
+
+This is dynamite.  If you ever find that your `sbatch` jobs are failing
+immediately but with no reasonable error messages anywhere, check to make
+sure that you aren't sending SLURM's `output` or `error` to a directory
+that does not exist.
+
+Note that you _cannot_ make `outputs/mydir` within your script,
+because SLURM needs those directories before your script even gets
+executed.
+
+:::
+
+
+## Schedule multiple jobs with `sbatch` using a `for` loop
+
+We now consider a small job of mapping some paired end reads to the
+genome that we indexed a few steps ago.
+
+Let's review the shell code in `scripts/bwa-map.sh`:
+```{.sh filename="Contents of file scripts/bwa_map.sh"}
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=bwa_map-%j.out
+#SBATCH --error=bwa_map-%j.err
+
+# this is a little script to map a pair of fastq files
+# that are in data/fastqs.
+#
+# The first positional parameter ($1)
+# should be something like: DPCh_plate1_B10_S22
+
+# load the module that gives us the bwa software
+module load bwa
+module load samtools
+
+# make a directory for log output if it does not already exist
+LDIR=results/log/bwa_map
+ODIR=results/mapped
+
+mkdir -p $LDIR $ODIR
+
+SAMP=$1
+
+# run bwa mem on the input and pipe it to samtools to sort it
+bwa mem data/genome/genome.fasta \
+  data/fastqs/${SAMP}_R1.fq.gz \
+  data/fastqs/${SAMP}_R2.fq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
+(
+  samtools view -u - | \
+  samtools sort -o $ODIR/$SAMP.bam
+) 2> $LDIR/samtools_$SAMP.log
+
+
+```
+
+Note that we are using backslashes (`\`) at the ends of the lines
+so that we can break a long line up onto separate lines of text.
+
+Also note that grouping of commands by parentheses.
+
+This script is run by passing it `DPCh_plate1_B10_S22`, `DPCh_plate1_B11_S23`, or
+`DPCh_plate1_B12_S24`, etc., as the first
+postitional parameter.
+
+So, if we wanted to schedule three of those mapping jobs, we
+could do:
+```{.sh filename="Paste this code into your shell"}
+for S in DPCh_plate1_B10_S22 DPCh_plate1_B11_S23 DPCh_plate1_B12_S24; do sbatch scripts/bwa_map.sh $S; done
+```
+
+When that is done, check what is running with `myjobs` and `alljobs`.
+(But do it fast! Because these jobs finish very quickly).
+
+## Final thought
+
+Though multiple jobs can be submitted via `sbatch` easily using this
+sort of `for` loop construct, there is another way of launching multiple
+repetitions of the same job in SLURM: using _job arrays_
+
+We will discuss that in the next section.
+

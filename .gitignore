@@ -3,3 +3,10 @@
 .RData
 .Ruserdata
 README.html
+results
+
+/.quarto/
+
+*.err
+*.out
+

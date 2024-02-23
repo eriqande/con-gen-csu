@@ -1,0 +1,424 @@
+# A Brief `awk` Intro {#awk-intro}
+
+- `awk` is a lighweight, completely awesome, little
+  scripting language that is perfect for ripping through
+  large text files with a minimal memory footprint.
+- We will only scratch the surface of it, here, but
+  I hope it encourages `awk` newcomers to explore it more.
+- `awk` can make many tasks on the command line simple,
+  fast, and fun.
+- For a more detailed introduction, you might find
+  [this chapter](https://eriqande.github.io/eca-bioinf-handbook/sed-awk-and-regular-expressions.html) of my Bioinformatics Handbook
+  of some use. (And there are many other resources online, as well).
+
+
+## `awk`'s philosophy and basic syntax
+
+`awk` is a utility that:
+
+- Takes text input from a file or from `stdin`
+- It automatically goes line-by-line. Treating each line of text as a separate unit.
+- When it is focused on a line of text, it breaks it into _fields_ which you can
+think of as columns.
+- By default, fields, are broken up on whitespace (spaces and TABs), with multiple
+spaces or TABs being treated as a single delimiter.
+- You can specify the delimiter.
+
+Let's look through a file together.  I will do:
+```{.sh filename="You can do this if you want"}
+gzip -cd data/samtools_stats/s001_stats.tsv.gz | less -S
+```
+and we will discuss how `awk` sees such a file.
+
+### Naming fields
+
+Once `awk` has read a line of text into memory, and split it into
+fields, you can access the value of those fields with special names:
+
+- `$1` refers to the first field (column)
+- `$2` refers to the second column.
+
+If you are beyond the ninth column, the number has to be wrapped
+in parentheses:
+
+- `$(13)` refers to the thirteenth column
+
+::: {.callout-important}
+
+## Important
+
+These variables within an `awk` script are not related to
+substituted variables in bash.  They just happen to share
+a preceding `$`.  But they are being interpreted by different
+programming languages (one by `bash` the other by `awk`).
+
+:::
+
+### So what?
+
+So far, this doesn't seem very exciting, but now we learn that...
+
+- You can tell `awk` the sorts of lines you want it to pause at and then
+do some _action_ upon it.  
+- You tell `awk` which lines you want to perform an action on by matching them
+with a logical statement called a _pattern_ in `awk` parlance.
+
+This turns out to be incredibly powerful. 
+
+### `awk` syntax on the command line
+
+The syntax for running `awk` with a script on the command line is like this:
+```{.sh filename="Don't try running this. It is just for explanation."}
+awk '
+  pattern1  {action1}
+  pattern2  {action2}
+' file
+```
+
+Where file is the name of the file you want to process.
+
+Or, if you are piping text into `awk` from some command named `cmd`
+it would look like this:
+```{.sh filename="Don't try running this. It is just for explanation."}
+cmd | awk '
+  pattern1  {action1}
+  pattern2  {action2}
+'
+```
+
+Note that you can pass options (like `-v` or `-F`) to `awk`.  They go right after the
+`awk` and before the first single quotation mark.
+
+Also, the carriage returns inside the single quotation marks are only there for
+easy reading.  You could also write the last example as:
+```{.sh filename="Don't try running this. It is just for explanation."}
+cmd | awk 'pattern1  {action1} pattern2  {action2}'
+```
+...which is great if you are hacking on the command line, but once you have
+a lot of pattern-action pairs, it gets harder to read.
+
+::: {.callout-tip}
+
+## Self-study
+
+Thinking back to the previous session when we talked about the difference
+between grouping strings with `'` vs with `"`, why do you think it is important
+that the `awk` script is grouped with `'`?
+:::
+
+
+::: {.callout-tip collapse=true}
+
+## Brief answer
+
+As we saw, we will be referring to different fields like `$8` within
+the awk script.  If we used `"` to group the script, the shell might try
+to do variable substitution on any `$`'s in there.
+
+:::
+
+## Enough talking, let's start doing
+
+All of this will make more sense with a few examples.
+
+### Print all the lines in which the first field is `SN`
+
+For our first foray, let's just pick out and print a
+subset of lines from our samtools stats file:
+```{.sh filename="Paste this into your terminal"}
+gzip -cd data/samtools_stats/s001_stats.tsv.gz | awk '$1=="SN" {print}'
+```
+
+That is cool.  
+
+::: {.callout-tip}
+
+## Self-study
+
+Make sure that you can identify the _pattern_ and the _action_ in the
+above `awk` script.
+:::
+
+::: {.callout-tip collapse=true}
+
+## Answer:
+
+- The _pattern_ is `$1=="SN"`
+- The _action_ is `print`
+
+This brings up the important point that the "is equals" operator
+in `awk` is `==` (two consecutive equals signs...just like in R)
+:::
+ 
+
+### Printing the lines we are interested in
+
+How about if we wanted to pick out just a few particular lines from there?
+
+Well, we can also match lines by `regular expression` (which you can think
+of as a very fancy form of Unix word-searching.)
+
+Let's say that we want information on the total number of reads mapped, the
+number of properly paired reads, and the total number of bases mapped using
+the (cigar) criterion.
+
+We can see those lines in there. And we can target them by matching
+strings associated with them.  The awk syntax puts these regular expressions
+in the pattern between forward slashes. 
+
+So, we want to match lines that have the first field equal to `SN` and
+also match other strings.  We do that like this:
+
+```{.sh filename="Paste this into your terminal"}
+gzip -cd data/samtools_stats/s001_stats.tsv.gz | awk '
+  $1=="SN" && /reads mapped:/ {print}
+  $1=="SN" && /reads properly paired:/ {print}
+  $1=="SN" && /bases mapped \(cigar\):/ {print}
+'
+```
+
+::: {.callout-warning }
+
+## Big Note: 
+
+Regular expressions are lovely and wonderful, but occasionally
+frustrating.  In `awk`'s case, parentheses have special meanings in the
+regular expressions, so we have to precede each one in the pattern with
+a backslash.
+
+Regular expressions are a bit beyond the scope of what we will be talking about
+today (entire books are devoted to the topic) but I encourage everyone to
+learn about them.
+
+They are incredibly useful and they are used in multiple programming languages
+(R, python, perl, etc.)
+
+:::
+
+### Printing just the values we are interested in
+
+That is nice, but remember, we really just want to put
+those three values we are interested in into a table of sorts.
+
+So, how do we print just the values?  
+
+Use the fields!  Count columns for each line and then
+print just that field:
+
+```{.sh filename="Study this, then paste this into your terminal"}
+gzip -cd data/samtools_stats/s001_stats.tsv.gz | awk '
+  $1=="SN" && /reads mapped:/ {print $4}
+  $1=="SN" && /reads properly paired:/ {print $5}
+  $1=="SN" && /bases mapped \(cigar\):/ {print $5}
+'
+```
+
+
+### Use variables inside `awk`
+
+We can also assign values to variables inside `awk`.
+
+This lets us store values and then print them all on one line
+at the end.  The special pattern `END` gives us a block to put
+actions we want to do at the very end.
+
+```{.sh filename="Study this, then paste this into your terminal"}
+gzip -cd data/samtools_stats/s001_stats.tsv.gz | awk '
+  $1=="SN" && /reads mapped:/ {rm = $4}
+  $1=="SN" && /reads properly paired:/ {rpp = $5}
+  $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+  END {print rm, rpp, bmc}
+'
+```
+
+
+::: {.callout-warning}
+
+## For the programmers out there
+
+Variables in `awk` are untyped and do not be declared.  Basically
+you can put them anywhere.  If code calls for the value from a variable
+that has not has anything assigned to it yet, the variable returns a
+`0` in a numerical context, and an empty string in a string context.
+
+:::
+
+### That's great. Can we add the sample name in there?
+
+Yes! We can pass variables from the command line to
+inside `awk` with a `-v var=value` syntax.
+
+To do this, we use some shell code that we learned earlier!
+```{.sh filename="Study this, then paste this into your terminal"}
+FILE=data/samtools_stats/s001_stats.tsv.gz
+gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+  $1=="SN" && /reads mapped:/ {rm = $4}
+  $1=="SN" && /reads properly paired:/ {rpp = $5}
+  $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+  END {print samp, rm, rpp, bmc}
+'
+```
+
+
+### OMG! Do you seen where we are going with this?
+
+We can now take that whole thing and imbed it within a bash `for`
+loop cycling over values of `FILE` and get the table talked about
+wanting in our Motivating Example when we started.
+```{.sh filename="Study this, then paste this into your terminal"}
+for FILE in data/samtools_stats/*.gz; do
+  gzip -cd $FILE | awk -v samp=$(basename ${FILE/_stats.tsv.gz/}) '
+    $1=="SN" && /reads mapped:/ {rm = $4}
+    $1=="SN" && /reads properly paired:/ {rpp = $5}
+    $1=="SN" && /bases mapped \(cigar\):/ {bmc = $5}
+    END {print samp, rm, rpp, bmc}
+  '
+done
+```
+
+Yowzers! That is pretty quick, and it sure beats opening
+each file, copying the values we want, and then pasting them
+into a spreadsheet.
+
+
+## Another example: the distribution of mapping qualities
+
+Here is a fun `awk` example that just came up a couple of days ago
+for me.
+
+- A colleague was telling me that she has started filtering her
+whole-genome sequencing BAM files so that she does not use any reads that
+map with a mapping quality less than 30.
+- The hope is that this will lessen batch effects.
+- Questions: 
+    - What is the distribution of mapping quality scores in my own data
+    - If we imposed such a filter, how many reads would we discard?
+
+
+It turns out that none of the `samtools` programs `stat`, `idxstats`,
+or `flagstats` provide that distribution.  
+
+There are some other more obscure software packages that provide it,
+but also a lot of convoluted python code on the BioStars website for
+doing it.
+
+Ha!  It's quick and easy with `awk`! And a great demonstration of `awk`'s
+associative arrays.
+
+### Let's look at an example bam file
+
+We have an example bam file in the repository at `data/bam/s0001.bam`.
+
+It only has only about 25,000 read in it so that it isn't too large.
+
+Let's have a look at it with:
+```{.sh filename="Paste this into your terminal"}
+module load bio/samtools
+samtools view data/bam/s001.bam | less -S
+```
+
+The `module load bio/samtools` line gives us access to the `samtools` program,
+which we need for turning BAM files into text-based SAM files that we can use.
+Once we have given it in our shell, we have that access until
+we close the shell.  Much more on that tomorrow!
+
+::: {.callout-important collapse=true}
+
+## If that failed you might need to define your MODULEPATH
+
+Here we check to see if the bioinformatics paths on in the MODULEPATH:
+```{.sh filename="Paste this in your shell"}
+echo $MODULEPATH | grep bioinformatics
+```
+
+If that command did not return anything to `stdout`, then you need to
+add a command to your `~/.bashrc` that will add `/opt/bioinformatics/modulefiles`
+to your MODULEPATH. You can do that (as detailed in the [Sedna Google Doc](https://docs.google.com/document/d/1nn0T0OWEsQCBoCdaH6DSY69lQSbK3XnPlseyyQuU2Lc/edit#))
+like this:
+```{.sh filename="If you need to, paste this into the shell"}
+echo 'export MODULEPATH=${MODULEPATH}:/opt/bioinformatics/modulefiles' >> ~/.bashrc
+```
+And when you are done with that, reload your `.bashrc` to get the change
+to take effect:
+```{.sh filename="If you need to, paste this into the shell"}
+source ~/.bashrc
+```
+:::
+
+
+The mapping quality is in the 5th field.  It is a number that ranges from 0 to 60.
+We can count up how many times each of those numbers occurs using `awk`.
+```{.sh filename="Here it is all on one line as I wrote it"}
+samtools view data/bam/s001.bam | awk 'BEGIN {OFS="\t"; print "MAPQ", "NUM", "CUMUL";} {n[$5]++} END {for(i in n) tot+=n[i];  for(i=60;i>=0;i--) {sum+=n[i]; print i, n[i], sum/tot;}}'
+```
+
+And
+
+```{.sh filename="Here it is broken across lines. Paste that in your shell."}
+samtools view data/bam/s001.bam | awk '
+  BEGIN {OFS="\t"; print "MAPQ", "NUM", "CUMUL";} 
+  {n[$5]++} 
+  END {for(i in n) tot+=n[i];  for(i=60;i>=0;i--) {sum+=n[i]; print i,n[i],sum/tot;}}
+'
+```
+
+It's really compact and requires very little memory to do this.
+(You couldn't read a whole BAM file into R and hope to deal with it).
+
+::: {.callout-warning}
+
+### All arrays in `awk` are associative arrays
+
+If you come from an R programming background, you will typically think
+of arrays as vectors that are indexed from 1 to `n`, where `n` is the length
+of the vector. 
+
+This is not how arrays are implemented in `awk`.  Rather all arrays are
+_associative arrays_, which are also called _hash arrays_, or, in Python _dictionaries_.
+Or, if you are familiar with R, you can think of an associative array as an
+array that has elements that can only be accessed via their names attribute,
+rather than by indexing them with a number.
+
+So, in awk, if we write:
+```{.sh filename="Don't paste this anywhere! We are just talking about awk"}
+var["this"] = "Boing!"
+```
+This will create an array called `var` (if one does not already exist) and
+then it will set the value of element in `var` that is associated with the
+string `"this"` to the string `"Boing!"`.  
+
+At the same time, if you do this:
+```{.sh filename="Don't paste this anywhere! We are just talking about awk"}
+var[30] = 67
+```
+then we are not assigning the value of `67` to the 30-th element of `var`.
+Rather, we are assigning the value `67` to the element of `var` that is
+associated with the string `"30"`.  
+
+It can take a little getting used to, but it is very useful for counting things.
+
+:::
+
+## Wrap-Up
+
+That was just a brief whirlwind tour of how one can
+use bash and `awk` together to automate tasks that come up on an
+everyday basis when doing bioinformatics. 
+
+
+## Looking toward tomorrow
+
+The bulk of day #2 is going to be focused on working within a cluster
+environment, and specifically on using SLURM for launching jobs on the
+Sedna cluster.
+
+To prepare for tomorrow, please be sure to read
+[Chapter 8](https://eriqande.github.io/eca-bioinf-handbook/chap-HPCC.html)
+from beginning and up to and including section 8.2.   This is just a small
+bit to read, but it should set you up for an understanding of why and how
+computing clusters work differently than your desktop machine when it comes to
+allocating resources for computation.
+
+
+
+
