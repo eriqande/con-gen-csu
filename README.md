@@ -690,4 +690,15 @@ Dispatching jobs via slurm job arrays.
 
 ### Thursday February 21, 2024
 
-An introduction to Snakemake.
+Alignment; SAM/BAM formats; samtools
+
+#### Prep (read a couple sections)
+
+- Read (and follow along with the computer if you are inclined) the entire [Alignments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#sambamfiles)
+  section (i.e., all of section 9.4).
+- Read (and follow along with the computer if you are inclined) the entire [Processing alignment output with `samtools`](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sequence-alignment.html#samtools)
+  section (i.e., all of section 10.4).
+
+#### In class
+
+- We will be going through the readings and discussing then to cement those ideas.
