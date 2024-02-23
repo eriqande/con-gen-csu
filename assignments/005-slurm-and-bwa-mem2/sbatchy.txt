@@ -1,0 +1,29 @@
+
+# here is what I used to install bwa-mem2 into its own environment
+# (This was not required in this file, but i thought I would put it in here anyway)
+mamba create -n bwa-mem2 -c bioconda bwa-mem2
+
+
+# launch the trim job
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+
+# launch the index job
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+
+
+# launch the map job:
+# The typical way would be to do this:
+sbatch  assignments/005-slurm-and-bwa-mem2/map2.sh
+
+# but I wanted to test it with the first two array tasks first, so I did:
+sbatch --array=1,2 assignments/005-slurm-and-bwa-mem2/map2.sh
+
+# then, when I saw that those completed correctly, I did:
+sbatch --array=3-16 assignments/005-slurm-and-bwa-mem2/map2.sh
+
+
+# finally, I made the sha1 hashes:
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
+
+
