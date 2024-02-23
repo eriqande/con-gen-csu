@@ -27,3 +27,5 @@ bwa-mem2 mem \
 	samtools view -u - | \
 	samtools sort -o $ODIR/$sample.bam
 ) 2> $LDIR/samtools_$sample.log
+
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/sha1_bams.txt
