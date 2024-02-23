@@ -1,0 +1,18 @@
+# all scripts should be run from the top level of the con-gen-csu repo
+
+
+sbatch /assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+
+# this will trim the fastq files and pipe the results to results/trimmed2
+
+# then, create the reference indexes needed to map these results using bwa-mem2
+
+
+sbatch /assignments/005-slurm-and-bwa-mem2/index2.sh
+
+
+# wait for trim_all.sh and index2.sh to complete before running the following to map the reads
+
+
+sbatch /assignments/005-slurm-and-bwa-mem2/map2.sh
