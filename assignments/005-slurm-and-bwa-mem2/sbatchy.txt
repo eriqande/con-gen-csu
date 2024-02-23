@@ -1,0 +1,11 @@
+# run trim_all.sh and send trimmed files to results/trimmed2
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+# run index2.sh with input from data/genome/genome.fasta and using bwa-mem2. index files appear in genome directory
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+
+# run map2.sh and send .bam files to results/mapped2. edited .tsv file to point to trimmed2 directory
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
+
+#sha1sum bam files and send to bam_sha1s.txt
+(base) [rbortner@colostate.edu@login11 con-gen-csu]$ sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
