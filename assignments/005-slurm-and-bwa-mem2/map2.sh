@@ -4,7 +4,7 @@
 #SBATCH --time=1:00:00
 #SBATCH --output=bwa_map_array-%A_%a.out
 #SBATCH --error=bwa_map_array-%A_%a.err
-#SBATCH --array=1-16
+#SBATCH --array=1-16%5
 
 # load the module that gives us the bwa software
 source ~/.bashrc
