@@ -1,0 +1,17 @@
+index	sample	library	flowcell	platform	lane	barcode	fq1	fq2
+1	DPCh_plate1_B10_S22	plate1	HTYYCBBXX	ILLUMINA	1	GACGTCAT+TCAACTGG	results/trimmed2/DPCh_plate1_B10_S22_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_B10_S22_R2_trim.fq.gz
+2	DPCh_plate1_B11_S23	plate1	HTYYCBBXX	ILLUMINA	1	CCGCTTAA+ACGATGAC	results/trimmed2/DPCh_plate1_B11_S23_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_B11_S23_R2_trim.fq.gz
+3	DPCh_plate1_B12_S24	plate1	HTYYCBBXX	ILLUMINA	1	GACGAACT+TCGCATTG	results/trimmed2/DPCh_plate1_B12_S24_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_B12_S24_R2_trim.fq.gz
+4	DPCh_plate1_C10_S34	plate1	HTYYCBBXX	ILLUMINA	1	AGTCACAT+CCATAATG	results/trimmed2/DPCh_plate1_C10_S34_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_C10_S34_R2_trim.fq.gz
+5	DPCh_plate1_C11_S35	plate1	HTYYCBBXX	ILLUMINA	1	CCTTTCAC+AAACAAGA	results/trimmed2/DPCh_plate1_C11_S35_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_C11_S35_R2_trim.fq.gz
+6	DPCh_plate1_C12_S36	plate1	HTYYCBBXX	ILLUMINA	1	GCACACAA+TCGTCAAG	results/trimmed2/DPCh_plate1_C12_S36_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_C12_S36_R2_trim.fq.gz
+7	DPCh_plate1_D09_S45	plate1	HTYYCBBXX	ILLUMINA	1	CTTTCCCT+AGTAAGCC	results/trimmed2/DPCh_plate1_D09_S45_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_D09_S45_R2_trim.fq.gz
+8	DPCh_plate1_D11_S47	plate1	HTYYCBBXX	ILLUMINA	1	GACAATTC+CATATCGT	results/trimmed2/DPCh_plate1_D11_S47_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_D11_S47_R2_trim.fq.gz
+9	DPCh_plate1_F10_S70	plate1	HTYYCBBXX	ILLUMINA	1	ACACGACT+CTGCGGAT	results/trimmed2/DPCh_plate1_F10_S70_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_F10_S70_R2_trim.fq.gz
+10	DPCh_plate1_F11_S71	plate1	HTYYCBBXX	ILLUMINA	1	TCCACGTT+GTTCAACC	results/trimmed2/DPCh_plate1_F11_S71_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_F11_S71_R2_trim.fq.gz
+11	DPCh_plate1_F12_S72	plate1	HTYYCBBXX	ILLUMINA	1	AACCAGAG+AACCGAAG	results/trimmed2/DPCh_plate1_F12_S72_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_F12_S72_R2_trim.fq.gz
+12	DPCh_plate1_G09_S81	plate1	HTYYCBBXX	ILLUMINA	1	CGAATACG+GTCGGTAA	results/trimmed2/DPCh_plate1_G09_S81_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_G09_S81_R2_trim.fq.gz
+13	DPCh_plate1_G10_S82	plate1	HTYYCBBXX	ILLUMINA	1	CAGTGCTT+ACCTGGAA	results/trimmed2/DPCh_plate1_G10_S82_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_G10_S82_R2_trim.fq.gz
+14	DPCh_plate1_G12_S84	plate1	HTYYCBBXX	ILLUMINA	1	TCCATTGC+AGACCGTA	results/trimmed2/DPCh_plate1_G12_S84_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_G12_S84_R2_trim.fq.gz
+15	DPCh_plate1_H09_S93	plate1	HTYYCBBXX	ILLUMINA	1	GTCGATTG+ACGGTCTT	results/trimmed2/DPCh_plate1_H09_S93_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_H09_S93_R2_trim.fq.gz
+16	DPCh_plate1_H10_S94	plate1	HTYYCBBXX	ILLUMINA	1	ATAACGCC+TGAACCTG	results/trimmed2/DPCh_plate1_H10_S94_R1_trim.fq.gz	results/trimmed2/DPCh_plate1_H10_S94_R2_trim.fq.gz
