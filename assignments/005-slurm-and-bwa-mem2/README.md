@@ -15,19 +15,20 @@ again _with `bwa-mem2`_, and 3) map the trimmed reads in `results/trimmed2`to th
 You should make three different `sbatch` scripts.  Write and save them in this directory
 (`assignments/005-slurm-and-bwa-mem2`).
 
-1. `trim_all.sh` is a script very much like [this one] from exercise 004.  But prepare
+1. `trim_all.sh` is a script very much like [this one](https://github.com/eriqande/con-gen-csu/blob/main/assignments/004-iteration-and-fastp/script.sh)
+   from exercise 004.  But prepare
    it so that it can be launched with `sbatch`.  Let all the files get trimmed by this one script
    using a `for` loop within the script.  Write the trimmed fastq files to the
    directory `results/trimmed2`.
 
-2. `index2.sh`.  With this script, create the reference indexes needed to do mapping with
+3. `index2.sh`.  With this script, create the reference indexes needed to do mapping with
    [bwa-mem2](https://github.com/bwa-mem2/bwa-mem2).  This is a faster version of `bwa mem` but should
    behave just the same.  (However you can't use the indexes from `bwa index` with it!).  Get it by
    using mamba, because I don't think it is available as a module on Alpine.
    See [this](https://anaconda.org/bioconda/bwa-mem2) for info about where it lives
    on Conda.  The `index2.sh` script must also be run using sbatch.
 
-3. `map2.sh`.  In this script, use a slurm job array with the `line-assign.sh` script, and the file
+4. `map2.sh`.  In this script, use a slurm job array with the `line-assign.sh` script, and the file
    at `data/sample-array-info.tsv` to have `sbatch` launch each mapping job separately, using bwa-mem2.
    The reads that you are mapping should be the trimmed ones in the `results/trimmed2` directory, and the
    resulting mapped and sorted bam files should be placed in `results/mapped2`.  The `sbatch` script
