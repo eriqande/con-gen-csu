@@ -1,0 +1,5 @@
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
+
+#Eric, I didn't know how to do these commands so that the trim_all.sh and the index2.sh would run then the map2.sh. I tried the && at the end of the index command but didn't work when I tried it.
