@@ -1,0 +1,15 @@
+#Instructions for trimming, indexing, and mapping raw reads.
+
+#Scripts wont run without mamba init for some reason. I've never had this problem with any of my scripts in scratch.
+
+#Trim fastqs with fastp
+sbatch trim_all.sh
+
+#Index the ref genome
+sbatch index2.sh
+
+#After steps 1 & 2 finish, map the trimmed fastqs
+sbatch map2.sh
+
+#Sha1sum results
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sma1s.txt
