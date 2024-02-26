@@ -1,0 +1,7 @@
+(base) [antolin@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh
+
+(base) [antolin@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/index.sh
+
+(base) [antolin@colostate.edu@login11 con-gen-csu]$ sbatch assignments/005-slurm-and-bwa-mem2/map2.sh
+
+(base) [antolin@colostate.edu@login11 con-gen-csu]$sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt
