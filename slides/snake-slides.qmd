@@ -19,7 +19,7 @@ Eric C. Anderson
 :::
 
 ::: {style="margin-left: 260px;"}
-Conservation Genomics Workshop, Wednesday August 30, 2023
+Computational Methods for Molecular Biology, CSU
 :::
 
 ## What the Heck is Snakemake? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
@@ -43,22 +43,25 @@ Conservation Genomics Workshop, Wednesday August 30, 2023
 ::: {.column width="50%"}
 ```{mermaid}
 flowchart TD
-  A(fastq files from 3 samples: our raw data) --> B(Trim the reads: trimmomatic)
-  B --> C(Map the reads to a reference genome: bwa mem)
-  C --> D(Mark PCR and optical duplicates: MarkDuplicates)
-  D --> E(Make gVCF files for each sample: HaplotypeCaller)
-  E --> F(Load gVCFs into Genomic DB: GenomicsDBImport)
-  F --> G(Create VCFs from Genomic DB: GenotypeGVCFs)
+  A(fastq files from 3 samples: our raw data) --> B(Trim the reads: fastp)
+  B --> C(Map the reads to a reference genome: bwa-mem2)
+  C --> D(Mark PCR and optical duplicates: gatk MarkDuplicates)
+  D --> E(Make gVCF files for each sample/chromo: gatk HaplotypeCaller)
+  E --> F(Load gVCFs into Genomic DB for each chromo: gatk GenomicsDBImport)
+  F --> G(Create VCFs from Genomic DB for each chromo: gatk GenotypeGVCFs)
+  G --> H(Concatenate chromosome-vcfs into a single vcf: bcftools)
 ```
 :::
 
 ::: {.column width="50%"}
-#### A mini data set that only takes about 1.5 minutes to run through the major steps of a GATK-like variant calling workflow
+#### A mini data set that only takes about 5 minutes to run through the major steps of a GATK-like variant calling workflow
 
--   Heavily subsampled Chinook salmon reads.
--   Three paired-end fastqs, and data only from three or four chromosomes.
--   We will trim it, map it, mark duplicates, then make one gVCF file per individual.
--   Then, to save time, we call variants only on one chromosome: `CM031202.1`.
+-   Chinook salmon sequencing reads (a subset of our course example data).
+-   Three paired-end fastqs from samples `A`, `B`, and `C` and data only from four chromosomes.
+-   We will trim it, map it, mark duplicates, then make one gVCF file for each combination
+    of individual and chromosome (only two chromosomes).
+-   Then, call variants on each of two chromosomes.
+-   Then catenate the resulting VCFs into a single VCF file.
 :::
 :::
 
@@ -66,23 +69,34 @@ flowchart TD
 
 ::: columns
 ::: {.column width="40%"}
-It should be simple to set this up. The code at right does the following:
-
-* `cd` to the Snakemake-Example data directory insdie your home directory
-* Activate the `snakemake-example` conda environment.
-* Test to make sure that you have `snakemake` on your PATH
+* Sync your fork's main branch then pull updates into the main branch
+  of your local clone.
+* Then, we simply need to ensure that we have a recent version of Snakemake.
+* We will create a mamba/conda environment `snakemake-8.5.3` that
+has the latest version of snakemake as of this writing.
+* Once created, we activate that environment.
+* `cd` to the Snakemake-Example data directory inside the `con-gen-csu`
+repo.
+* On Alpine, get 4 cores on acompile. 
 :::
 
 ::: {.column width="60%"}
 ``` sh
-# From the home directory of your ConGen server
-cd ~/Snakemake-Example
+# Create snakemake env
+mamba create -n snakemake-8.5.3 -c bioconda snakemake==8.5.3
 
-conda activate snakemake-example
+# activate env
+conda activate snakemake-8.5.3
 
-# To make sure it is working, print the help information
+# To make sure snakemake is working, print the help information
 # for snakemake
 snakemake --help
+
+# change directories into Snakemake-Example
+cd Snakemake-Example/
+
+# get onto acompile for interactive work
+acompile -n 4
 ```
 :::
 :::
@@ -96,17 +110,14 @@ snakemake --help
     -   A `README.md` with installation instructions
     -   A `Snakefile`. Much more about that later.
     -   A directory `data` with three pairs of FASTQ files
-    -   A directory `env` that has information to install necessary software with conda
-    -   A directory `resources` that has two subdirectories
-        -   `adapters`: info for trimming Illumina adapters
-        -   `genome.fasta`: a FASTA file with the reference genome
+    -   A directory `envs` that has information to install necessary software with conda
+    -   A directory `resources` that has `genome.fasta`: a FASTA file with the reference genome
 :::
 
 ::: {.column width="30%"}
 ``` sh
 --% tree
 .
-├── README.md
 ├── Snakefile
 ├── data
 │   ├── A_R1.fastq.gz
@@ -115,19 +126,15 @@ snakemake --help
 │   ├── B_R2.fastq.gz
 │   ├── C_R1.fastq.gz
 │   └── C_R2.fastq.gz
-├── env
-│   └── snakemake-example.yml
+├── envs
+│   ├── bcftools.yaml
+│   ├── bwa2sam.yaml
+│   ├── fastp.yaml
+│   └── gatk.yaml
 └── resources
-    ├── adapters
-    │   ├── NexteraPE-PE.fa
-    │   ├── TruSeq2-PE.fa
-    │   ├── TruSeq2-SE.fa
-    │   ├── TruSeq3-PE-2.fa
-    │   ├── TruSeq3-PE.fa
-    │   └── TruSeq3-SE.fa
     └── genome.fasta
 
-4 directories, 16 files
+4 directories, 12 files
 ```
 :::
 :::
@@ -140,8 +147,8 @@ snakemake --help
 
 ```{mermaid}
 flowchart TD
-  H(fastq files from 3 samples: our raw data) --> I(Trim the reads: trimmomatic)
-  I --> J(Map the reads to a reference genome: bwa mem)
+  H(fastq files from 3 samples: our raw data) --> I(Trim the reads: fastp)
+  I --> J(Map the reads to a reference genome: bwa-mem2)
 ```
 :::
 
@@ -151,16 +158,15 @@ flowchart TD
 ``` sh
 # cycle over fastqs and do the trimming
 for S in A B C; do
-  trimmomatic data/${S}_R1.fastq.gz data/S{S}_R2.fastq.gz \
-    trimmed/${S}_R1.fastq.gz trimmed/${S}_R1_unpaired.fastq.gz \
-    trimmed/${S}_R2.fastq.gz trimmed/${S}_R2_unpaired.fastq.gz \
+  fastp -i data/${S}_R1.fastq.gz -I data/S{S}_R2.fastq.gz \
+    -o trimmed/${S}_R1.fastq.gz -O trimmed/${S}_R2.fastq.gz \
     other-arguments-etc...
 done 
 
 
 # cycle over trimmed fastqs and do the mapping
 for S in A B C; do
-  bwa mem resources/genome.fasta \
+  bwa-mem2 mem resources/genome.fasta \
     trimmed/${S}_R1.fastq.gz trimmed/${S}_R2.fastq.gz
 done
 ```
@@ -241,7 +247,7 @@ Some explanations:
 ```{r filename="Snakefile"}
 #| echo: true
 #| eval: false 
-#| file: ../Snakefile
+#| file: ../Snakemake-Example/Snakefile
 ```
 
 :::
@@ -253,16 +259,17 @@ Some explanations:
 
 ::: columns
 ::: {.column width="50%"}
-![](images/paste-0238E703.png)
+![](images/genome_dict.jpg)
 :::
 
 ::: {.column width="50%"}
 The rule:
 
--   *Requires* the input file `resources/genome.fasta`
--   *Produces* the output file `resources/genome.dict`
--   *Writes to* a log file in `results/logs/genome_dict.log`
--   *Uses* the shell code `samtools dict {input} > {output} 2> {log}` to get the job done
+-   **Requires** the input file `resources/genome.fasta`
+-   **Produces** the output file `resources/genome.dict`
+-   **Uses** software specified in `envs/bwa2sam.yaml`
+-   **Writes to** a log file in `results/logs/genome_dict.log`
+-   **Executes** the shell code `samtools dict {input} > {output} 2> {log}` to get the job done
 :::
 :::
 
@@ -302,38 +309,118 @@ snakemake -np resources/genome.dict
 ``` {.sh filename="What the output should look like"}
 Building DAG of jobs...
 Job stats:
-job            count    min threads    max threads
------------  -------  -------------  -------------
-genome_dict        1              1              1
-total              1              1              1
+job            count
+-----------  -------
+genome_dict        1
+total              1
 
+Execute 1 jobs...
 
-[Fri Sep  2 09:34:41 2022]
-rule genome_dict:
+[Mon Feb 26 12:01:32 2024]
+localrule genome_dict:
     input: resources/genome.fasta
     output: resources/genome.dict
     log: results/logs/genome_dict.log
     jobid: 0
-    resources: tmpdir=/var/folders/xg/mz_qt7q54yv_hwzvhskwx2c00000gp/T
+    reason: Missing output files: resources/genome.dict
+    resources: tmpdir=<TBD>
 
 samtools dict resources/genome.fasta > resources/genome.dict 2> results/logs/genome_dict.log
 Job stats:
-job            count    min threads    max threads
------------  -------  -------------  -------------
-genome_dict        1              1              1
-total              1              1              1
+job            count
+-----------  -------
+genome_dict        1
+total              1
+
+Reasons:
+    (check individual jobs above for details)
+    missing output files:
+        genome_dict
 
 This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.
 ```
 :::
 
-## Let's actually run that! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Direct snakemake to create all the conda environments to run this workflow
 
--   Remove the `-np` option and add `--cores 1` to tell snakemake to run the requested jobs on one core
+We are going to start by telling snakemake to create the conda environments
+needed to run the whole workflow:
+```{.sh filename="Paste this into your shell"}
+snakemake --conda-create-envs-only results/vcf/all.vcf.gz
+```
+The `results/vcf/all.vcf.gz` is the ultimate target of the workflow and the
+`--conda-create-envs-only` tells snakemake to do nothing more than create all the
+conda environments needed to create the output file `results/vcf/all.vcf.gz`.
+
+The output snakemake gives you should look something like this:
+```{.sh filename="Expected output of the above"}
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment envs/bwa2sam.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/bwa2sam.yaml created (location: .snakemake/conda/03ade215a4c713db728206723f154153_)
+Creating conda environment envs/gatk.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/gatk.yaml created (location: .snakemake/conda/d5b5e2cc0497b65f32514e037bc26ef9_)
+Creating conda environment envs/bcftools.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/bcftools.yaml created (location: .snakemake/conda/cbf79ac1a639509f529e96f71cf3c38b_)
+Creating conda environment envs/fastp.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/fastp.yaml created (location: .snakemake/conda/e37739b7128de56967cf47faf4c5cfef_)
+
+```
+
+Where do those environments get created?  They _do not_ go into your main
+conda library.  Rather, as the output above shows, each environment gets stored
+inside `.snakemake/conda` in the current working directory.
+
+## A note on specifying conda environments for each rule
+
+The `genome_dict` rule looks like this:
+```{.yaml filename="The genome_dict rule"}
+rule genome_dict:
+  input:
+    "resources/genome.fasta",
+  output:
+    "resources/genome.dict",
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/genome_dict.log",
+  shell:
+    "samtools dict {input} > {output} 2> {log} "
+```
+
+The `conda:` block tells it to use software defined in `envs/bwa2sam.yaml`,
+which looks like this:
+```{sh, filename="Contents of envs/bwa2sam.yaml"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/envs/bwa2sam.yaml
+
+```
+
+Before it runs the `genome_dict` rule, Snakemake will make sure that a conda
+environment with `bwa-mem2` and `samtools` is installed in the `.snakemake/conda`
+directory.  If it is not, then it installs it.
+
+Then it runs the rule.  Note that software installation happens only once.
+
+## Now, let's run the `genome_dict` rule! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Go back and do the dry-run for the `genome_dict` rule again:
+``` {.sh filename="Paste this into your shell"}
+snakemake -np resources/genome.dict
+```
+
+Now, to do a real run (not a dry run) we remove the `-n` (dry-run) option, and, because
+we are having snakemake manage the needed software using conda, we add the `--use-conda`
+option, and we tell it to use 1 core for those run: `--cores 1`.  So, our command now looks like:
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake --cores 1 resources/genome.dict
+snakemake --use-conda --cores 1 resources/genome.dict
 ```
 :::
 
@@ -351,7 +438,6 @@ tree .
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Output should look like this:"}
 .
-├── README.md
 ├── Snakefile
 ├── data
 │   ├── A_R1.fastq.gz
@@ -360,21 +446,20 @@ tree .
 │   ├── B_R2.fastq.gz
 │   ├── C_R1.fastq.gz
 │   └── C_R2.fastq.gz
-├── env
-│   └── snakemake-example.yml
+├── envs
+│   ├── bcftools.yaml
+│   ├── bwa2sam.yaml
+│   ├── fastp.yaml
+│   └── gatk.yaml
 ├── resources
-│   ├── adapters
-│   │   ├── NexteraPE-PE.fa
-│   │   ├── TruSeq2-PE.fa
-│   │   ├── TruSeq2-SE.fa
-│   │   ├── TruSeq3-PE-2.fa
-│   │   ├── TruSeq3-PE.fa
-│   │   └── TruSeq3-SE.fa
-│   ├── genome.dict           <--- THIS IS A NEW FILE!
+│   ├── genome.dict          <--- THIS IS A NEW FILE
 │   └── genome.fasta
 └── results
     └── logs
-        └── genome_dict.log   <--- THIS IS A NEW FILE!
+        └── genome_dict.log  <--- THIS IS A NEW FILE
+
+6 directories, 14 files
+
 ```
 :::
 
@@ -405,7 +490,7 @@ Nothing to be done (all requested files are present and up to date).
 
 ::: columns
 ::: {.column width="50%"}
-![](images/paste-89336B81.png)
+![](images/trim_reads.png)
 :::
 
 ::: {.column width="50%"}
@@ -443,17 +528,82 @@ snakemake -np results/trimmed/A_R1.fastq.gz results/trimmed/B_R1.fastq.gz result
 ```
 :::
 
-* Then, go ahead and run that last one, instructing Snakemake to use three cores
+* Then, go ahead and run that last one, instructing Snakemake to use three cores,
+and using conda, as well!
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake --cores 3 results/trimmed/A_R1.fastq.gz results/trimmed/B_R1.fastq.gz results/trimmed/C_R1.fastq.gz  
+snakemake --cores 3 --use-conda results/trimmed/A_R1.fastq.gz results/trimmed/B_R1.fastq.gz results/trimmed/C_R1.fastq.gz  
 ```
 :::
 
 Note that it will go ahead and start all those jobs independently, and concurrently,
 because they do not depend on one another.  This is how Snakemake manages and maximizes 
 parallelism.
+
+
+## Important Notes I: Multiple wildcards can be used together
+
+![](images/make_gvcfs_by_chrom.png)
+
+Here, `chromo` and `sample` are two different wildcards.
+
+
+## Important Notes II: `expand()`
+
+Snakemake provides some functions that are useful for creating lists of input
+or output files.  Note that, at the top of the Snakefile we define python lists
+`SAMPLES` and `CHROMOS`.  
+
+```{.python}
+# run it over 3 samples
+SAMPLES = ['A', 'B', 'C']
+
+# variant calling over two "chromosomes"
+CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14"]
+```
+
+Then, later in the Snakefile, when we say:
+```{.python}
+rule import_genomics_db_by_chromo:
+  input:
+    gvcfs=expand("results/gvcf/{{chromo}}/{s}.g.vcf.gz", s=SAMPLES)
+```
+That expands the input files needed for rule `import_genomics_db_by_chromo` into
+the python list:
+```{.python}
+['results/gvcf/{chromo}/A.g.vcf.gz', 'results/gvcf/{chromo}/B.g.vcf.gz', 'results/gvcf/{chromo}/C.g.vcf.gz']
+```
+
+Note that the `{s}` in curly braces get expanded according to `s=SAMPLES`, and the
+`{{{chromo}}}` gets turned into `{chromo}`, so that it is interpreted as a wildcard
+in that file list.  (In general you escape braces by doubling them.)
+
+
+
+## Important Notes III: `multiext()`
+
+Snakemake provides the `multiext()` function which is
+like `expand()` but for file extensions.
+
+Hence, when you see:
+```{.python}
+rule bwa_index:
+  input:
+    "resources/genome.fasta"
+  output:
+    multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+```
+This means that the output files from rule `bwa_index` are the python list:
+```{.python}
+[
+'resources/genome.fasta.0123',
+'resources/genome.fasta.amb',
+'resources/genome.fasta.ann',
+'resources/genome.fasta.bwt.2bit.64',
+'resources/genome.fasta.pac'
+]
+```
 
 
 ## Chains of file dependencies {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
@@ -470,35 +620,17 @@ requesting a single output file.
 
 ### Short Group Activity
 
-* Trace the rules needed if we request the file `results/vcf/all.vcf`. 
+* Trace the rules needed if we request the file `results/vcf/all.vcf.gz`. 
+* One person from each group, write down the rule dependencies.
 :::
 
 ::: {.column width="50%"}
 ```{r filename="Snakefile"}
 #| echo: true
 #| eval: false 
-#| file: ../Snakefile
+#| file: ../Snakemake-Example/Snakefile
 ```
 :::
-:::
-
-### Helpful notes:
-
-* `expand("results/gvcf/{s}.g.vcf.gz", s=SAMPLES)` is a list of files:
-
-::: {style="font-size: 1.7em;"}
-```{.sh}
-[results/gvcf/A.g.vcf.gz, results/gvcf/B.g.vcf.gz, results/gvcf/C.g.vcf.gz]
-```
-:::
-
-* `multiext("resources/genome.fasta", ".amb", ".ann", ".bwt", ".pac", ".sa")` is a list
-of files:
-
-::: {style="font-size: 1.7em;"}
-```{.sh .code-overflow-wrap}
-[resources/genome.fasta.amb, resources/genome.fasta.ann, resources/genome.fasta.bwt, resources/genome.fasta.pac, resources/genome.fasta.sa]
-```
 :::
 
 
@@ -509,26 +641,26 @@ of files:
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake -np results/vcf/all.vcf  
+snakemake -np results/vcf/all.vcf.gz  
 ```
 :::
 
-* After we look at that, and discuss, let's actually run it, using 2 cores:
+* After we look at that, and discuss, let's actually run it, using 4 cores:
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake -p --cores 2 results/vcf/all.vcf  
+snakemake -p --cores 4 results/vcf/all.vcf.gz  
 ```
 :::
 
-That should take a minute or two.
+That should take a minute or three.
 
 * If you try to run the workflow again, Snakemake tells you that you do not need
 to, because everything is up to date:  Try running the above line again:
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake -p --cores 2 results/vcf/all.vcf  
+snakemake -p --use-conda --cores 2 results/vcf/all.vcf.gz  
 ```
 :::
 
@@ -549,7 +681,7 @@ touch data/C_R1.fastq.gz data/C_R2.fastq.gz
 
 ::: {style="font-size: 1.7em;"}
 ``` {.sh filename="Paste this into your shell"}
-snakemake -np results/vcf/all.vcf
+snakemake -np results/vcf/all.vcf.gz
 ```
 :::
 
