@@ -1,3 +1,14 @@
+# I ran the trimming script in two ways
+
+#1 simple sbatch command
 sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sbatch
+
+#2 in a loop
+SAMPLES=$(ls results/trimmed2/* | cut -d '_' -f 3,4)
+for S in $SAMPLES; 
+do sbatch assignments/005-slurm-and-bwa-mem2/index2.sbatch results/trimmed2/DPCh_plate1_${S}_R1.fq.gz  
+done
+
+
 sbatch assignments/005-slurm-and-bwa-mem2/index2.batch
 sbatch assignments/005-slurm-and-bwa-mem2/map2.sbatch
