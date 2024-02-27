@@ -7,7 +7,7 @@ the logic of how Snakemake works.  You will mostly be doing dry-runs of
 Snakemake to ensure that you have things set up correctly.
 
 
-In this directory `assignments/006-simple-snakemake-maneuvers` (sync your fork
+In the directory `assignments/006-simple-snakemake-maneuvers` (sync your fork
 and pull main to your local clone if you don't yet see it) there is a copy
 of the Snakefile (and the associated conda environments) that we played with in
 class. I want you to modify this Snakefile to process our familiar `con-gen-csu`
@@ -61,8 +61,7 @@ NC_037124.1f8t16
 NC_037125.1f20t24
 ```
 
-When you get the dry-run to work, it should produce a Job stats summary (i.e.,
-what would happen if you really ran this---not just a dry run) that looks like
+When you get the dry-run to work, it should produce a job stats summary that looks like
 this:
 ```
 Job stats:
@@ -85,7 +84,7 @@ The only file you should need to change to make this happen is the Snakefile.
 
 When you have it working, then redirect the Snakemake output like this:
 ```sh
-snakemake -np -s assignments/006-simple-snakemake-maneuvers/Snakefile results/vcf/all.vcf.gz > 
+snakemake -np -s assignments/006-simple-snakemake-maneuvers/Snakefile results/vcf/all.vcf.gz > assignments/006-simple-snakemake-maneuvers/snake.stdout
 ```
 
 Then, create a new branch called `006-simple-snake` and push it up to a remote branch of
