@@ -18,6 +18,7 @@ book:
     - nmfs-bioinf/sequence-alignment.qmd
     - nmfs-bioinf/bioinf-formats.qmd
     - nmfs-bioinf/snake.qmd
+    - nmfs-bioinf/snakemake-relevant-python.qmd
   sidebar:
     logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
 
