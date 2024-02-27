@@ -1,0 +1,203 @@
+
+
+# run it over 3 samples
+SAMPLES = ['A', 'B', 'C']
+
+# variant calling over two "chromosomes"
+CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14"]
+
+
+rule genome_faidx:
+  input:
+    "resources/genome.fasta",
+  output:
+    "resources/genome.fasta.fai",
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/genome_faidx.log",
+  shell:
+    "samtools faidx {input} 2> {log} "
+
+
+rule genome_dict:
+  input:
+    "resources/genome.fasta",
+  output:
+    "resources/genome.dict",
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/genome_dict.log",
+  shell:
+    "samtools dict {input} > {output} 2> {log} "
+
+
+rule bwa_index:
+  input:
+    "resources/genome.fasta"
+  output:
+    multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    out="results/logs/bwa_index/bwa_index.log",
+    err="results/logs/bwa_index/bwa_index.err"
+  shell:
+    "bwa-mem2 index {input} > {log.out} 2> {log.err} "
+
+
+
+
+rule trim_reads:
+  input:
+    r1="data/{sample}_R1.fastq.gz",
+    r2="data/{sample}_R2.fastq.gz",
+  output:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    html="results/qc/fastp/{sample}.html",
+    json="results/qc/fastp/{sample}.json"
+  conda:
+    "envs/fastp.yaml"
+  log:
+    out="results/logs/trim_reads/{sample}.log",
+    err="results/logs/trim_reads/{sample}.err",
+  params:
+    as1="AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+    as2="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+    parm=" --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 "
+  shell:
+    " fastp -i {input.r1} -I {input.r2}       "
+    "       -o {output.r1} -O {output.r2}     "
+    "       -h {output.html} -j {output.json} "
+    "  --adapter_sequence={params.as1}        "
+    "  --adapter_sequence_r2={params.as2}     "
+    "  {params.parm} > {log.out} 2> {log.err}                         "
+    
+
+
+rule map_reads:
+  input:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    genome="resources/genome.fasta",
+    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+  output:
+    "results/bam/{sample}.bam"
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/map_reads/{sample}.log"
+  params:
+    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "
+  shell:
+    " (bwa-mem2 mem {params.RG} {input.genome} {input.r1} {input.r2} | "
+    " samtools view -u | "
+    " samtools sort - > {output}) 2> {log} "
+
+
+
+
+rule mark_duplicates:
+  input:
+    "results/bam/{sample}.bam"
+  output:
+    bam="results/mkdup/{sample}.bam",
+    bai="results/mkdup/{sample}.bai",
+    metrics="results/qc/mkdup_metrics/{sample}.metrics"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/mark_duplicates/{sample}.log"
+  shell:
+    " gatk MarkDuplicates  "
+    "  --CREATE_INDEX "
+    "  -I {input} "
+    "  -O {output.bam} "
+    "  -M {output.metrics} > {log} 2>&1 "
+
+
+
+
+rule make_gvcfs_by_chromo:
+  input:
+    bam="results/mkdup/{sample}.bam",
+    bai="results/mkdup/{sample}.bai",
+    ref="resources/genome.fasta",
+    idx="resources/genome.dict",
+    fai="resources/genome.fasta.fai"
+  output:
+    gvcf="results/gvcf/{chromo}/{sample}.g.vcf.gz",
+    idx="results/gvcf/{chromo}/{sample}.g.vcf.gz.tbi",
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/make_gvcfs_by_chromo/{chromo}/{sample}.log"
+  params:
+    java_opts="-Xmx4g"
+  shell:
+    " gatk --java-options \"{params.java_opts}\" HaplotypeCaller "
+    " -R {input.ref} "
+    " -I {input.bam} "
+    " -O {output.gvcf} "
+    " -L {wildcards.chromo}    "           
+    " --native-pair-hmm-threads 1 " # this is just for this small example
+    " -ERC GVCF > {log} 2> {log} "
+
+
+
+
+rule import_genomics_db_by_chromo:
+  input:
+    gvcfs=expand("results/gvcf/{{chromo}}/{s}.g.vcf.gz", s=SAMPLES)
+  output:
+    gdb=directory("results/genomics_db/{chromo}")
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/import_genomics_db_by_chromo/{chromo}.log"
+  params:
+    java_opts="-Xmx4g"
+  shell:
+    " VS=$(for i in {input.gvcfs}; do echo -V $i; done); "  # make a string like -V file1 -V file2
+    " gatk --java-options \"-Xmx4g\" GenomicsDBImport "
+    "  $VS  "
+    "  --genomicsdb-workspace-path {output.gdb} "
+    "  -L  {wildcards.chromo} 2> {log} "
+
+
+
+
+rule vcf_from_gdb_by_chromo:
+  input:
+    gdb="results/genomics_db/{chromo}",
+    ref="resources/genome.fasta",
+    fai="resources/genome.fasta.fai",
+    idx="resources/genome.dict",
+  output:
+    vcf="results/chromo_vcfs/{chromo}.vcf.gz",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi",
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/vcf_from_gdb_by_chromo/{chromo}.txt"
+  shell:
+    " gatk --java-options \"-Xmx4g\" GenotypeGVCFs "
+    "  -R {input.ref}  "
+    "  -V gendb://{input.gdb} "
+    "  -O {output.vcf} 2> {log} "
+
+
+rule concat_vcfs:
+  input:
+    vcfs=expand("results/chromo_vcfs/{c}.vcf.gz", c=CHROMOS)
+  output:
+    vcf="results/vcf/all.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/concat_vcfs/all.log"
+  shell:
+    "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
+

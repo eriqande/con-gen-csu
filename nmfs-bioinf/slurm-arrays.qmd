@@ -29,27 +29,10 @@ it runs your job 10 separate times, each time with the environment variable
 1 and 10.  
 
 Let's see a quick example, using the following script:
-```{.sh filename="Contents of scripts/array_example.sh"}
-#!/bin/bash
-#SBATCH --time=00:05:00
-#SBATCH --output=my_output_%A_%a
-#SBATCH --error=my_error_%A_%a
-#SBATCH --array=1-10
-
-ODIR=results/array_example
-mkdir -p $ODIR
-
-(
-  echo "The SLURM_ARRAY_JOB_ID is : $SLURM_ARRAY_JOB_ID"
-  echo "The SLURM_ARRAY_TASK_ID is: $SLURM_ARRAY_TASK_ID"
-  echo "The SLURM_JOB_ID is: $SLURM_JOB_ID"
-  echo
-  echo "You can refer to this individual SLURM array task as: ${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}"
-  echo
-) > $ODIR/output_$SLURM_ARRAY_TASK_ID.txt
-
-sleep 20
-
+```{r filename="Contents of scripts/array_example.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/array_example.sh
 
 ```
 
@@ -157,24 +140,11 @@ Do you ever have more than 5 jobs running?
 ### An example TAB-delimited file
 
 Let's explore the following file, which is at `data/sample-array-info.tsv`:
-```{.sh filename="Contents of inputs/fq-samples.tsv"}
-index	sample	library	flowcell	platform	lane	barcode	fq1	fq2
-1	DPCh_plate1_B10_S22	plate1	HTYYCBBXX	ILLUMINA	1	GACGTCAT+TCAACTGG	fastqs/DPCh_plate1_B10_S22_R1.fq.gz	fastqs/DPCh_plate1_B10_S22_R2.fq.gz
-2	DPCh_plate1_B11_S23	plate1	HTYYCBBXX	ILLUMINA	1	CCGCTTAA+ACGATGAC	fastqs/DPCh_plate1_B11_S23_R1.fq.gz	fastqs/DPCh_plate1_B11_S23_R2.fq.gz
-3	DPCh_plate1_B12_S24	plate1	HTYYCBBXX	ILLUMINA	1	GACGAACT+TCGCATTG	fastqs/DPCh_plate1_B12_S24_R1.fq.gz	fastqs/DPCh_plate1_B12_S24_R2.fq.gz
-4	DPCh_plate1_C10_S34	plate1	HTYYCBBXX	ILLUMINA	1	AGTCACAT+CCATAATG	fastqs/DPCh_plate1_C10_S34_R1.fq.gz	fastqs/DPCh_plate1_C10_S34_R2.fq.gz
-5	DPCh_plate1_C11_S35	plate1	HTYYCBBXX	ILLUMINA	1	CCTTTCAC+AAACAAGA	fastqs/DPCh_plate1_C11_S35_R1.fq.gz	fastqs/DPCh_plate1_C11_S35_R2.fq.gz
-6	DPCh_plate1_C12_S36	plate1	HTYYCBBXX	ILLUMINA	1	GCACACAA+TCGTCAAG	fastqs/DPCh_plate1_C12_S36_R1.fq.gz	fastqs/DPCh_plate1_C12_S36_R2.fq.gz
-7	DPCh_plate1_D09_S45	plate1	HTYYCBBXX	ILLUMINA	1	CTTTCCCT+AGTAAGCC	fastqs/DPCh_plate1_D09_S45_R1.fq.gz	fastqs/DPCh_plate1_D09_S45_R2.fq.gz
-8	DPCh_plate1_D11_S47	plate1	HTYYCBBXX	ILLUMINA	1	GACAATTC+CATATCGT	fastqs/DPCh_plate1_D11_S47_R1.fq.gz	fastqs/DPCh_plate1_D11_S47_R2.fq.gz
-9	DPCh_plate1_F10_S70	plate1	HTYYCBBXX	ILLUMINA	1	ACACGACT+CTGCGGAT	fastqs/DPCh_plate1_F10_S70_R1.fq.gz	fastqs/DPCh_plate1_F10_S70_R2.fq.gz
-10	DPCh_plate1_F11_S71	plate1	HTYYCBBXX	ILLUMINA	1	TCCACGTT+GTTCAACC	fastqs/DPCh_plate1_F11_S71_R1.fq.gz	fastqs/DPCh_plate1_F11_S71_R2.fq.gz
-11	DPCh_plate1_F12_S72	plate1	HTYYCBBXX	ILLUMINA	1	AACCAGAG+AACCGAAG	fastqs/DPCh_plate1_F12_S72_R1.fq.gz	fastqs/DPCh_plate1_F12_S72_R2.fq.gz
-12	DPCh_plate1_G09_S81	plate1	HTYYCBBXX	ILLUMINA	1	CGAATACG+GTCGGTAA	fastqs/DPCh_plate1_G09_S81_R1.fq.gz	fastqs/DPCh_plate1_G09_S81_R2.fq.gz
-13	DPCh_plate1_G10_S82	plate1	HTYYCBBXX	ILLUMINA	1	CAGTGCTT+ACCTGGAA	fastqs/DPCh_plate1_G10_S82_R1.fq.gz	fastqs/DPCh_plate1_G10_S82_R2.fq.gz
-14	DPCh_plate1_G12_S84	plate1	HTYYCBBXX	ILLUMINA	1	TCCATTGC+AGACCGTA	fastqs/DPCh_plate1_G12_S84_R1.fq.gz	fastqs/DPCh_plate1_G12_S84_R2.fq.gz
-15	DPCh_plate1_H09_S93	plate1	HTYYCBBXX	ILLUMINA	1	GTCGATTG+ACGGTCTT	fastqs/DPCh_plate1_H09_S93_R1.fq.gz	fastqs/DPCh_plate1_H09_S93_R2.fq.gz
-16	DPCh_plate1_H10_S94	plate1	HTYYCBBXX	ILLUMINA	1	ATAACGCC+TGAACCTG	fastqs/DPCh_plate1_H10_S94_R1.fq.gz	fastqs/DPCh_plate1_H10_S94_R2.fq.gz
+```{sh filename="Contents of data/sample-array-info.tsv"}
+#| eval: false
+#| echo: true
+#| file: ../data/sample-array-info.tsv
+
 ```
 
 An easier way to view this might be to look at in on GitHub at:
@@ -193,29 +163,10 @@ possible, and we have wrapped it up in the `line-assign.sh` script.
 ### The `line-assign.sh` script
 
 Within the repository is a script called `scripts/line-assign.sh`, that looks like this:
-```{.sh filename="Contents of scripts/line-assign.sh"}
-#!/bin/bash
-# simple script.  Arguments are:
-#  1. The index to pick out (like 1, or 2, or 7, etc)
-#  2. Path to a TAB delimited file with the first column named index
-#     and subsequent columns named valid shell variable names.
-#
-# This script will pick out the line that matches $1, and return a command
-# line assigning the column header names as shell variables whose values are the
-# values in each cell in the file $2.
-#
-# Note: this is not written with a whole lot of error checking or catching.
-#
-
-
-if [ $# -ne 2 ]; then
-  echo "Wrong number of arguments in $0 " > /dev/stderr
-fi
-
-awk -F"\t" -v LINE=$1 '
-  $1 == "index" {for(i=1; i<=NF; i++) vars[i]=$i; next}
-  $1 == LINE {for(i=1; i<=NF; i++) printf("%s=\"%s\"; ", vars[i], $i); printf("\n");}
-' $2
+```{sh filename="Contents of scripts/line-assign.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/line-assign.sh
 
 ```
 
@@ -261,39 +212,10 @@ variable called `SLURM_ARRAY_TASK_ID` that we can use to pick out the
 desired sample from the `data/sample-array-info.tsv` file.
 
 Here is what it looks like:
-```{.sh filename="Contents of scripts/bwa_map_array.sh"}
-#!/bin/bash
-
-#SBATCH --cpus-per-task=1
-#SBATCH --time=1:00:00
-#SBATCH --output=bwa_map_array-%A_%a.out
-#SBATCH --error=bwa_map_array-%A_%a.err
-#SBATCH --array=1-16
-
-# load the module that gives us the bwa software
-module load bwa
-module load samtools
-
-# make a directory for log output if it does not already exist
-LDIR=results/log/bwa_map_array
-ODIR=results/mapped
-
-mkdir -p $LDIR $ODIR
-
-# get shell variables for this array task:
-COMM=$(./scripts/line-assign.sh $SLURM_ARRAY_TASK_ID data/sample-array-info.tsv)
-eval $COMM
-
-
-# run bwa mem on the input and pipe it to samtools to sort it
-bwa mem \
-  -R "@RG\tID:${sample}.${library}.${flowcell}.${lane}\tSM:${sample}\tLB:${library}\tBC:${barcode}\tPU:\tID:${sample}.${library}.${flowcell}.${lane}.${barcode}\tPL:ILLUMINA" \
-  data/genome/genome.fasta \
-  $fq1 $fq2  2> $LDIR/bwa_mem_$sample.log | \
-(
-  samtools view -u - | \
-  samtools sort -o $ODIR/$sample.bam
-) 2> $LDIR/samtools_$sample.log
+```{sh filename="Contents of scripts/bwa_map_array.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/bwa_map_array.sh
 
 ```
 
