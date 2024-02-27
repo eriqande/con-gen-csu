@@ -71,13 +71,13 @@ flowchart TD
 ::: {.column width="40%"}
 * Sync your fork's main branch then pull updates into the main branch
   of your local clone.
+* On Alpine, get 4 cores on acompile.
 * Then, we simply need to ensure that we have a recent version of Snakemake.
 * We will create a mamba/conda environment `snakemake-8.5.3` that
 has the latest version of snakemake as of this writing.
 * Once created, we activate that environment.
 * `cd` to the Snakemake-Example data directory inside the `con-gen-csu`
 repo.
-* On Alpine, get 4 cores on acompile. 
 :::
 
 ::: {.column width="60%"}
