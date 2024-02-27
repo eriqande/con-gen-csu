@@ -721,3 +721,14 @@ Snakemake Concepts and Basics
 
 ### Prep (read this before---or after, since I didn't post it til late---today's session)
 
+- Read the first full section of the [snakemake overview chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snake.html)
+
+### In Class (Running through a Snakemake example)
+
+- This is all done in the form of quarto/revealjs [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
+
+### Assignment (Due Friday, March 1, 2024)
+
+Simple editing of a Snakefile.
+
+- The explanation of the assignment is in the [README]() of the assignment directory.
