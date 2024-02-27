@@ -83,27 +83,10 @@ after the shebang line that are preceded by `#SBATCH`.
 ## Storing SLURM options in your shell script
 
 Let's look at an example like one might do in an sbatch script:
-```{.sh filename="Contents of scripts/bwa_index.sh"}
-#!/bin/bash
-
-#SBATCH --cpus-per-task=1
-#SBATCH --time=2:00:00
-#SBATCH --mem=3G
-#SBATCH --output=bwa_index-%j.out
-#SBATCH --error=bwa_index-%j.err
-
-# this is a little script to index the genome given
-# by the first positional parameter ($1)
-
-# load the module that gives us the bwa software
-module load bwa
-
-# make a directory for log output if it does not already exist
-DIR=results/log/bwa_index
-mkdir -p $DIR
-
-# run bwa index on the input
-bwa index $1 > $DIR/log.txt 2>&1
+```{r filename="Contents of scripts/bwa_index.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/bwa_index.sh
 
 ```
 
@@ -261,22 +244,11 @@ that doesn't do much:
 2. It writes a message to `stderr`
 3. Then it just sits there for 15 minutes.
 
-```{.sh filename="Contents of scripts/simple-15.sh"}
-#!/bin/bash
+```{sh filename="Contents of scripts/simple-15.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/simple-15.sh
 
-
-(
-  echo "(stdout) Running with Slurm Job ID: $SLURM_JOB_ID"
-  echo "(stdout) Note that we are running this thing through"
-  echo "(stdout) the tee utility to try to unbuffer it."
-  echo
-) | tee simple-15.stdout
-
-echo "(stderr) This line is being written to stderr" > /dev/stderr
-echo "(stderr) Interestingly, stderr does not seem to get buffered." >> /dev/stderr
-
-
-sleep 900
 ```
 
 ::: {.callout-warning}
@@ -405,21 +377,10 @@ and see what happens. (You will probably exceed your allocated memory while doin
 so you might as well get used to what that looks like.)
 
 Here is a listing of a shell script to run under `sbatch` to exceed our memory usage:
-```{.sh filename="Contents of scripts/r-too-much-mem.sh"}
-#!/bin/bash
-
-#SBATCH --cpus-per-task=1
-#SBATCH --time=2:00:00
-#SBATCH --output=r-too-much-mem-%j.out
-#SBATCH --error=r-too-much-mem-%j.err
-
-
-mkdir -p outputs
-EDIR=results/log/r-too-much-mem
-mkdir -p $EDIR
-
-module load R
-Rscript --vanilla -e "x <- runif(1e9); y <- x + 1; y[1:10]" > outputs/r-too-much.out 2> $EDIR/log.txt
+```{sh filename="Contents of scripts/r-too-much-mem.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/r-too-much-mem.sh
 
 ```
 
@@ -520,7 +481,7 @@ running in that script was `CANCELLED`
 
 ## Beware!
 
-If you try something like:
+On some versions of SLURM, If you try something like:
 ```{.sh}
 #SBATCH output=outputs/mydir/outfile.txt
 #SBATCH error=outputs/mydir/errfile.txt
@@ -537,6 +498,9 @@ Note that you _cannot_ make `outputs/mydir` within your script,
 because SLURM needs those directories before your script even gets
 executed.
 
+(Also, some later versions of SLURM actually seem to make the directories, but you
+probably don't want to rely on that.  At any rate, if you have a job that fails and
+leave no error messages, check to make sure that your --output and --error paths exist!)
 :::
 
 
@@ -546,41 +510,10 @@ We now consider a small job of mapping some paired end reads to the
 genome that we indexed a few steps ago.
 
 Let's review the shell code in `scripts/bwa-map.sh`:
-```{.sh filename="Contents of file scripts/bwa_map.sh"}
-#!/bin/bash
-
-#SBATCH --cpus-per-task=1
-#SBATCH --time=1:00:00
-#SBATCH --output=bwa_map-%j.out
-#SBATCH --error=bwa_map-%j.err
-
-# this is a little script to map a pair of fastq files
-# that are in data/fastqs.
-#
-# The first positional parameter ($1)
-# should be something like: DPCh_plate1_B10_S22
-
-# load the module that gives us the bwa software
-module load bwa
-module load samtools
-
-# make a directory for log output if it does not already exist
-LDIR=results/log/bwa_map
-ODIR=results/mapped
-
-mkdir -p $LDIR $ODIR
-
-SAMP=$1
-
-# run bwa mem on the input and pipe it to samtools to sort it
-bwa mem data/genome/genome.fasta \
-  data/fastqs/${SAMP}_R1.fq.gz \
-  data/fastqs/${SAMP}_R2.fq.gz  2> $LDIR/bwa_mem_${SAMP}.log | \
-(
-  samtools view -u - | \
-  samtools sort -o $ODIR/$SAMP.bam
-) 2> $LDIR/samtools_$SAMP.log
-
+```{sh filename="Contents of file scripts/bwa_map.sh"}
+#| eval: false
+#| echo: true
+#| file: ../scripts/bwa_map.sh
 
 ```
 
