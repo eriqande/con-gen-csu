@@ -1,0 +1,3 @@
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sbatch
+sbatch assignments/005-slurm-and-bwa-mem2/index2.batch
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sbatch
