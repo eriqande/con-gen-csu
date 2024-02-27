@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -105,12 +112,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/shell-prog.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/shell-prog.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Shell Programming</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -120,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
       <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
@@ -186,8 +193,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Snakemake Tutorial Introduction</span></span></a>
+  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -198,14 +205,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -261,7 +274,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <ul>
 <li>The bash shell is actually an interpreted programming language.</li>
@@ -282,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">PHONE</span><span class="op">=</span>974-222-4444</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">PHONE</span><span class="op">=</span>974-222-4444</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this case, the digits and dashes <code>974-222-4444</code> are treated as just a string of characters and assigned to the variable <code>PHONE</code>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -300,7 +315,7 @@ Let’s make some mistakes
 <div class="code-with-filename-file">
 <pre><strong>Paste these mistakes into the shell and think about what is happening.</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">PHONE</span> = 974-222-4444</span>
+<div class="sourceCode" id="cb2" data-filename="Paste these mistakes into the shell and think about what is happening."><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">PHONE</span> = 974-222-4444</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">PHONE</span> =974-222-4444</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">PHONE</span><span class="op">=</span> <span class="ex">974-222-4444</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -325,7 +340,7 @@ Let’s make some mistakes
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> The value of PHONE is: <span class="va">$PHONE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> The value of PHONE is: <span class="va">$PHONE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Cool!</p>
 <ul>
@@ -412,7 +427,7 @@ Bonus Info:
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">Mandela_Quote</span><span class="op">=</span><span class="st">"The greatest glory in living lies not in never falling, but in rising every time we fall."</span></span>
+<div class="sourceCode" id="cb6" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">Mandela_Quote</span><span class="op">=</span><span class="st">"The greatest glory in living lies not in never falling, but in rising every time we fall."</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$Mandela_Quote</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -432,7 +447,7 @@ Bonus Info:
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DESSERT</span><span class="op">=</span><span class="st">"apple pie"</span></span>
+<div class="sourceCode" id="cb7" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DESSERT</span><span class="op">=</span><span class="st">"apple pie"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'Dessert tonight is $DESSERT'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
@@ -443,7 +458,7 @@ Bonus Info:
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">DESSERT</span><span class="op">=</span><span class="st">"apple pie"</span></span>
+<div class="sourceCode" id="cb8" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">DESSERT</span><span class="op">=</span><span class="st">"apple pie"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Dessert tonight is </span><span class="va">$DESSERT</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -461,7 +476,7 @@ Self study
 <div class="code-with-filename-file">
 <pre><strong>After assigning values to the three variables, run this command</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My name is </span><span class="va">$NAME</span><span class="st">. I like to eat </span><span class="va">$FOOD</span><span class="st">, and I enjoy </span><span class="va">$ACTIVITY</span><span class="st">."</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9" data-filename="After assigning values to the three variables, run this command"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My name is </span><span class="va">$NAME</span><span class="st">. I like to eat </span><span class="va">$FOOD</span><span class="st">, and I enjoy </span><span class="va">$ACTIVITY</span><span class="st">."</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -495,14 +510,14 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">MyComm</span><span class="op">=</span><span class="st">"gzip -cd data/samtools_stats/s001_stats.tsv.gz"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">MyComm</span><span class="op">=</span><span class="st">"gzip -cd data/samtools_stats/s001_stats.tsv.gz"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And now if you just substitute that variable onto the command line</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this at the command line</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-filename="Type this at the command line"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>the uncompressed contents of the file <code>data/samtools_stats/s001_stats.tsv.gz</code> go zooming by on your screen.</p>
 <section id="some-subtlety-about-evaluation-of-substituted-values" class="level3" data-number="2.4.1">
@@ -512,21 +527,21 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">MyComm</span><span class="op">=</span><span class="st">"gzip -cd data/samtools_stats/s001_stats.tsv.gz | less -S"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">MyComm</span><span class="op">=</span><span class="st">"gzip -cd data/samtools_stats/s001_stats.tsv.gz | less -S"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And now if you just substitute that variable onto the command line the shell gets confused, because it doesn’t recognize the pipe as a pipe!</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this at the command line</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14" data-filename="Type this at the command line"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, you can use the <code>eval</code> keyword before <code>$MyComm</code> to ensure that the shell recognizes that you intend for it to evaluate pipes, redirects, shell variable assignment, etc. in the substituted variable value as it normally would:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Type this at the command line</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15" data-filename="Type this at the command line"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="va">$MyComm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will end up using this later.</p>
 <p>Remember, you can hit <code>q</code> to get out of the <code>less</code> page viewer.</p>
@@ -568,13 +583,13 @@ More about line endings like <code>;</code>
 <div class="code-with-filename-file">
 <pre><strong>With just semicolons...Paste it into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Yawp before it fails."</span><span class="kw">;</span> <span class="fu">ls</span> <span class="at">--not-option</span> data <span class="kw">;</span> <span class="bu">echo</span> <span class="st">"Yawp after it fails."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17" data-filename="With just semicolons...Paste it into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Yawp before it fails."</span><span class="kw">;</span> <span class="fu">ls</span> <span class="at">--not-option</span> data <span class="kw">;</span> <span class="bu">echo</span> <span class="st">"Yawp after it fails."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>With the &amp;&amp;'s after each line...Paste it into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Yawp before it fails."</span> <span class="kw">&amp;&amp;</span> <span class="fu">ls</span> <span class="at">--not-option</span> data <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"Yawp after it fails."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18" data-filename="With the &amp;&amp;'s after each line...Paste it into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Yawp before it fails."</span> <span class="kw">&amp;&amp;</span> <span class="fu">ls</span> <span class="at">--not-option</span> data <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"Yawp after it fails."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -588,7 +603,7 @@ More about line endings like <code>;</code>
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your shell</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> ../<span class="pp">*</span>.qmd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19" data-filename="Paste this into your shell"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> ../<span class="pp">*</span>.qmd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is nice.</p>
 </section>
@@ -613,7 +628,7 @@ More about line endings like <code>;</code>
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> LIKE <span class="kw">in</span> trout butterflies <span class="st">"blue skies"</span> <span class="st">"mathematical notation"</span><span class="kw">;</span> <span class="cf">do</span> </span>
+<div class="sourceCode" id="cb21" data-filename="Paste this into your terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> LIKE <span class="kw">in</span> trout butterflies <span class="st">"blue skies"</span> <span class="st">"mathematical notation"</span><span class="kw">;</span> <span class="cf">do</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"I like </span><span class="va">$LIKE</span><span class="st">."</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -622,7 +637,7 @@ More about line endings like <code>;</code>
 <div class="code-with-filename-file">
 <pre><strong>This does the same as the above one</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> LIKE <span class="kw">in</span> trout butterflies <span class="st">"blue skies"</span> <span class="st">"mathematical notation"</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="st">"I like </span><span class="va">$LIKE</span><span class="st">."</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22" data-filename="This does the same as the above one"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> LIKE <span class="kw">in</span> trout butterflies <span class="st">"blue skies"</span> <span class="st">"mathematical notation"</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="st">"I like </span><span class="va">$LIKE</span><span class="st">."</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note! Don’t put a semicolon after <code>do</code>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -641,14 +656,14 @@ Self study
 <div class="code-with-filename-file">
 <pre><strong>Paste this into the terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="va">$FILE</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23" data-filename="Paste this into the terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="va">$FILE</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Task:</strong> I have added the <code>-n</code> option to the <code>echo</code> command which makes it not print a line ending. Your task is to replace YOUR_STUFF_HERE with an appropriate shell command to decompress each file and then print the number of lines, words, and characters in it:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Paste this, edit YOUR_STUFF_HERE, and run it</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="at">-n</span> <span class="va">$FILE</span><span class="kw">;</span> <span class="ex">YOUR_STUFF_HERE</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24" data-filename="Paste this, edit YOUR_STUFF_HERE, and run it"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="at">-n</span> <span class="va">$FILE</span><span class="kw">;</span> <span class="ex">YOUR_STUFF_HERE</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -678,7 +693,7 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> </span>
+<div class="sourceCode" id="cb26" data-filename="Paste this into your terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> data/samtools_stats/<span class="pp">*</span>.gz<span class="kw">;</span> <span class="cf">do</span> </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="at">-n</span> <span class="va">$FILE</span><span class="kw">;</span> <span class="fu">gzip</span> <span class="at">-cd</span> <span class="va">$FILE</span> <span class="kw">|</span> <span class="fu">wc</span><span class="kw">;</span> </span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&gt;</span> word_counts.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -695,7 +710,7 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Try these</strong></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> this_dir/that_dir/my_file3.txt</span>
+<div class="sourceCode" id="cb27" data-filename="Try these"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> this_dir/that_dir/my_file3.txt</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> ~/Documents/git-repos/CKMRpop/R/plot_conn_comps.R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -708,7 +723,7 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="va">START_TIME</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
+<div class="sourceCode" id="cb28" data-filename="Paste this into your terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="va">START_TIME</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 3</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="va">STOP_TIME</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"We started at </span><span class="va">$START_TIME</span><span class="st">, and finished at </span><span class="va">$STOP_TIME</span><span class="st">, and it is now </span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -718,7 +733,7 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="va">WCOUT</span><span class="op">=</span><span class="va">$(</span><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s016_stats.tsv.gz <span class="kw">|</span> <span class="fu">wc</span><span class="va">)</span></span>
+<div class="sourceCode" id="cb29" data-filename="Paste this into your terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="va">WCOUT</span><span class="op">=</span><span class="va">$(</span><span class="fu">gzip</span> <span class="at">-cd</span> data/samtools_stats/s016_stats.tsv.gz <span class="kw">|</span> <span class="fu">wc</span><span class="va">)</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$WCOUT</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -751,7 +766,7 @@ Unix commands we just saw:
 <div class="code-with-filename-file">
 <pre><strong>Try this</strong></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="va">sample</span><span class="op">=</span>001</span>
+<div class="sourceCode" id="cb30" data-filename="Try this"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="va">sample</span><span class="op">=</span>001</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this works:</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"The sequences are in the file called </span><span class="va">${sample}</span><span class="st">_seqs.fq.gz"</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -797,7 +812,7 @@ Self Study answer
 <div class="code-with-filename-file">
 <pre><strong>Fancy substitution fun. Paste into your terminal.</strong></pre>
 </div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="va">file</span><span class="op">=</span>myfile.eps</span>
+<div class="sourceCode" id="cb31" data-filename="Fancy substitution fun. Paste into your terminal."><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="va">file</span><span class="op">=</span>myfile.eps</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">${file</span><span class="op">/</span><span class="ss">eps</span><span class="op">/</span>pdf<span class="va">}</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or maybe you want to get the sample name, s007</span></span>
@@ -821,7 +836,7 @@ Hot tip!
 <div class="code-with-filename-file">
 <pre><strong>If we want to extract just the s001 part...</strong></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="va">STRING</span><span class="op">=</span><span class="st">"A-whole-lot-of-junk-before-then_s001_and-a-whole-lot_of-other-garbage.63713973"</span></span>
+<div class="sourceCode" id="cb32" data-filename="If we want to extract just the s001 part..."><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="va">STRING</span><span class="op">=</span><span class="st">"A-whole-lot-of-junk-before-then_s001_and-a-whole-lot_of-other-garbage.63713973"</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># remove all the garbage in the beginning</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="va">N1</span><span class="op">=</span><span class="va">${STRING</span><span class="op">/</span><span class="pp">*</span><span class="ss">then_</span><span class="op">/</span><span class="va">}</span></span>
@@ -849,7 +864,7 @@ Hot tip!
 <div class="code-with-filename-file">
 <pre><strong>Paste this into your terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<div class="sourceCode" id="cb33" data-filename="Paste this into your terminal"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"This"</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"that"</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"and the"</span></span>
@@ -874,7 +889,7 @@ Bonus Info:
 <div class="code-with-filename-file">
 <pre><strong>A stderr example</strong></pre>
 </div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">gzip</span> <span class="at">-cd</span> <span class="at">--bogus-option</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">wc</span><span class="kw">)</span> <span class="op">&gt;</span> so.txt <span class="dv">2</span><span class="op">&gt;</span>se.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34" data-filename="A stderr example"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">gzip</span> <span class="at">-cd</span> <span class="at">--bogus-option</span> data/samtools_stats/s001_stats.tsv.gz <span class="kw">|</span> <span class="fu">wc</span><span class="kw">)</span> <span class="op">&gt;</span> so.txt <span class="dv">2</span><span class="op">&gt;</span>se.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Even though the error happened with the <code>gzip</code> command, the error message gets relayed through to be redirected into <code>se.txt</code>.</p>
 </div>
@@ -972,10 +987,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -985,8 +999,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -999,6 +1022,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1042,6 +1184,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1067,6 +1210,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1128,17 +1297,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../nmfs-bioinf/quick-unix-review.html" class="pagination-link">
+      <a href="../nmfs-bioinf/quick-unix-review.html" class="pagination-link" aria-label="Quick Unix Review">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../nmfs-bioinf/awk-intro.html" class="pagination-link">
+      <a href="../nmfs-bioinf/awk-intro.html" class="pagination-link" aria-label="A Brief `awk` Intro">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
