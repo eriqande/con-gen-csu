@@ -15,9 +15,10 @@ book:
     - nmfs-bioinf/slurm.qmd
     - nmfs-bioinf/sbatch.qmd
     - nmfs-bioinf/slurm-arrays.qmd
-    - nmfs-bioinf/snake.qmd
-    - nmfs-bioinf/bioinf-formats.qmd
     - nmfs-bioinf/sequence-alignment.qmd
+    - nmfs-bioinf/bioinf-formats.qmd
+    - nmfs-bioinf/snake.qmd
+    - nmfs-bioinf/snakemake-relevant-python.qmd
   sidebar:
     logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
 
@@ -25,7 +26,6 @@ book:
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+
 
 editor: source

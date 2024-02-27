@@ -680,13 +680,18 @@ Dispatching jobs via slurm job arrays.
 
 #### In class (Slurm Job Arrays!)
 
+<details>
+  <summary>Click here for full details</summary>
 - [Slurm Job Arrays](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/slurm-arrays.html)
+</details>
 
 #### Assignment (Due Friday, Feb 23, 2024, at 5 PM)
 
+<details>
+  <summary>Click here for full details</summary>
 - We have an assignment due Friday, Feb 23, 2024. The instructions for it are [here](https://github.com/eriqande/con-gen-csu/tree/main/assignments/005-slurm-and-bwa-mem2/README.md).  The
   instructions are not super explicit. This is a chance for everyone to go from a verbal description to the finished assignment.
-
+</details>
 
 ### Thursday February 21, 2024
 
@@ -694,11 +699,36 @@ Alignment; SAM/BAM formats; samtools
 
 #### Prep (read a couple sections)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read (and follow along with the computer if you are inclined) the entire [Alignments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#sambamfiles)
   section (i.e., all of section 9.4).
 - Read (and follow along with the computer if you are inclined) the entire [Processing alignment output with `samtools`](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sequence-alignment.html#samtools)
   section (i.e., all of section 10.4).
+</details>  
 
 #### In class
 
+<details>
+  <summary>Click here for full details</summary>
 - We will be going through the readings and discussing then to cement those ideas.
+</details>
+
+
+### Tuesday, Feb 27, 2024
+
+Snakemake Concepts and Basics
+
+#### Prep (read this before---or after, since I didn't post it til late---today's session)
+
+- Read the first full section of the [snakemake overview chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snake.html)
+
+#### In Class (Running through a Snakemake example)
+
+- This is all done in the form of quarto/revealjs [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
+
+#### Assignment (Due Friday, March 1, 2024)
+
+Simple editing of a Snakefile.
+
+- The explanation of the assignment is in the [README](https://github.com/eriqande/con-gen-csu/blob/main/assignments/006-simple-snakemake-maneuvers/README.md) of the assignment directory.
