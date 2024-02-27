@@ -1,0 +1,128 @@
+# Snakemake-relevant Python for R Users
+
+Snakefiles are YAML formatted files which are interpreted by Python, and,
+as such, considerable value can be gained from knowing how to use Python
+in this context.  Many biologists I know are quite familiar with R, but
+fewer are equally well-versed in Python. So the purpose of this chapter
+is to provide a little background on Python (from the eyes of an R user)
+that is most useful for embellishing one's Snakefiles and workflows.  The key
+for this chapter are simple Python constructs that can be particularly useful
+in Snakemake, and particularly for being able to competently use several central
+Snakemake features: _config files_, _input functions_, and _pandas input_.
+
+The second main goal of this chapter is to illustrate an approach to working
+interactively with Python (the way R users might be familiar with working with
+R) within the RStudio environment.  This will allow users to run Python code
+associated with their Snakefile in the context of an interactive Python session,
+which can be considerably more illumninating---and more helpful for tracking down
+bug/errors/inconsistencies---than only getting to run that code by running
+Snakemake on your Snakefile.  Being able to work interactively with the Python code
+as Snakemake might see it is thus crucial to learning how to write workflows.
+So, for this second goal we will see a few little hacks for seeing input function
+parameters as Snakemake might see them, etc., primarily as a learning tool to aid
+in figuring out how to write Python code within Snakemake.  
+
+The order of events here are thus:
+
+1. Use the R package 'reticulate' to run python, interactively, in our
+Snakemake conda environment.
+2. Once we can work interactively in python easily, we will discuss a few of the 
+main data structures and operations in python, by comparison to their equivalents
+in R and the tidyverse.
+3. With that background we will tackle our exploration of Snakemake's use of
+  - YAML-based configuration files (i.e., config.yaml)
+  - Input functions for converting wildcard values to specialized input paths or
+    parameter values.
+  - pandas for the inclusion of tabular information into the Snakemake workflow,
+    itself.
+
+
+## Running python, interactively, in RStudio
+
+The folks at Posit (the company that started as RStudio) make a great integrated
+development environment (IDE) for working with R; however they also recognized the
+need for being a great IDE for other languages, like python and julia.  As I understand
+it, that was part of the reason that they changed their name to Posit---to be less
+tied to the R language.  At any rate, they have tools for running python code, much
+like you would run R code in RStudio. 
+
+### Get mamba and create a snakemake environment
+
+We will be doing this _on our laptops_ rather than upon the cluster.  Fortunately,
+mamba works on all platforms, and so does Snakemake.  But you might need to first install
+mamba on your laptop.  This is pretty straightforward.  If you do not already have
+mamba on your laptop, find the instructions for your platform [here](https://github.com/conda-forge/miniforge?tab=readme-ov-file#install) and follow
+them.  You should be able to just use the default location for your conda/mamba library.
+
+Once you are done with that, you will want to create a snakemake environment on your
+laptop.  Do that by following the directions that we used on our clusters,
+[here](https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces),
+without bothering to be on a compute node, of course!
+
+When both of the above are done, we can move on to working with python in RStudio.
+
+### Get the reticulate package and run python from your snakemake conda environment
+
+The reticulate package allows you to run python in a comfortable, interactive way
+within and R (and RStudio) session.  Importantly, it allows you to run the exact
+python version that Snakemake uses, by letting you load the snakemake conda environment.
+
+So, open up the RStudio project for your fork of the `con-gen-csu` repo, make sure
+you are on the main branch, and then pull, to make sure that you have all the recent
+materials from the course.
+
+
+If you do not already have 'reticulate', get it with this at the R console
+in Rstudio:
+```r
+install.packages("reticulate")
+```
+
+Then, you can load the package with:
+```r
+library(reticulate)
+```
+
+Now, we want to use python from a particular conda environment---our
+snakemake conda environment, in fact.  For that there is a reticulate
+function called `use_miniconda()`.  We can tell it which conda
+environment to use, most reliably, by passing the absolute path of the
+environment to the function.  This path will be the path to your conda library
+plus `envs` plus the name of the environment.  For example on my system that
+translates into:
+```r
+use_miniconda(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
+```
+However, on your system, your conda library will probably be in `~/miniforge`.
+At any rate, it should be easy to find using tab-completion for path names
+in your R console.
+
+Once you have successfully given the above command, you can start a python
+REPL (Read Evaluate Print and Loop) session in your R console with:
+```r
+repl_python()
+```
+After you have done that, you should see something that looks like this:
+```r
+> repl_python()
+Python 3.12.2 (/Users/eriq/mambaforge-arm64/envs/snakemake-8.5.3/bin/python)
+Reticulate 1.35.0 REPL -- A Python interpreter in R.
+Enter 'exit' or 'quit' to exit the REPL and return to R.
+>>> 
+```
+The command prompt has now changed to `>>>` and anything you type at it will
+be interpreted as python code.
+
+So, you can't just type R code into it any longer.  For example, see what happens
+if you type this in there:
+```r
+x <- 1:4
+```
+But you can type python code, for example:
+```python
+x = [1,2,3,4]
+```
+Then try:
+```python
+x
+```
