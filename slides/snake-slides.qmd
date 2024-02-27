@@ -82,6 +82,10 @@ repo.
 
 ::: {.column width="60%"}
 ``` sh
+# get onto acompile with 4 cores for interactive work
+# (Or do what it takes to get a compute node with 4 cores on your own cluster)
+acompile -n 4
+
 # Create snakemake env
 mamba create -n snakemake-8.5.3 -c conda-forge -c bioconda snakemake==8.5.3
 
@@ -98,8 +102,6 @@ mamba install anaconda::graphviz
 # change directories into Snakemake-Example
 cd Snakemake-Example/
 
-# get onto acompile for interactive work
-acompile -n 4
 ```
 :::
 :::
