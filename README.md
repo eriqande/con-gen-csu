@@ -731,4 +731,4 @@ Snakemake Concepts and Basics
 
 Simple editing of a Snakefile.
 
-- The explanation of the assignment is in the [README]() of the assignment directory.
+- The explanation of the assignment is in the [README](https://github.com/eriqande/con-gen-csu/blob/main/assignments/006-simple-snakemake-maneuvers/README.md) of the assignment directory.
