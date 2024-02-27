@@ -1,0 +1,4 @@
+.snakemake
+results
+filegraph.svg
+dag.svg
