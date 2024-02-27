@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>con-gen-csu - 10&nbsp; Snakemake Narrative and Topics</title>
+<title>con-gen-csu - 11&nbsp; Snakemake-relevant Python for R Users</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../nmfs-bioinf/snakemake-relevant-python.html" rel="next">
-<link href="../nmfs-bioinf/bioinf-formats.html" rel="prev">
+<link href="../nmfs-bioinf/snake.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/snake.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/snakemake-relevant-python.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -171,13 +204,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link active">
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="sidebar-item-text sidebar-link">
+  <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span></a>
   </div>
 </li>
@@ -191,11 +224,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#input-functions" id="toc-input-functions" class="nav-link active" data-scroll-target="#input-functions"><span class="header-section-number">10.1</span> Input Functions</a>
+  <li><a href="#running-python-interactively-in-rstudio" id="toc-running-python-interactively-in-rstudio" class="nav-link active" data-scroll-target="#running-python-interactively-in-rstudio"><span class="header-section-number">11.1</span> Running python, interactively, in RStudio</a>
   <ul class="collapse">
-  <li><a href="#input-functions-returning-dicts" id="toc-input-functions-returning-dicts" class="nav-link" data-scroll-target="#input-functions-returning-dicts"><span class="header-section-number">10.1.1</span> Input functions returning dicts</a></li>
+  <li><a href="#get-mamba-and-create-a-snakemake-environment" id="toc-get-mamba-and-create-a-snakemake-environment" class="nav-link" data-scroll-target="#get-mamba-and-create-a-snakemake-environment"><span class="header-section-number">11.1.1</span> Get mamba and create a snakemake environment</a></li>
+  <li><a href="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" id="toc-get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="nav-link" data-scroll-target="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.2</span> Get the reticulate package and run python from your snakemake conda environment</a></li>
   </ul></li>
-  <li><a href="#using-pandas" id="toc-using-pandas" class="nav-link" data-scroll-target="#using-pandas"><span class="header-section-number">10.2</span> Using Pandas</a></li>
   </ul>
 </nav>
     </div>
@@ -204,7 +237,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="snake" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></h1>
 </div>
 
 
@@ -221,33 +254,57 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>In the preceding sections we have covered a few approaches for using RStudio projects and RMarkdown to create reproducible research repositories with visually pleasing HTML outputs that can help readers quickly see what was required to generate different figures/tables/outputs. Such an approach is well suited to projects that are undertaken primarily on one’s own desktop or laptop computer, and which don’t take an inordinately long time to run. Unfortunately, that does not describe most <em>bioinformatic</em> analyses handling whole-genome sequencing or RAD sequencing data for conservation genetics. Most of those analyses will be run on a university computer cluster, and trying to manage all of that within an RMarkdown-based framework is at best rather difficult, and at worst it can become a shrieking horror.</p>
-<p>For managing these sorts of bioinformatic workflows there is a Python-based framework called <a href="https://snakemake.readthedocs.io/en/stable/">Snakemake</a> that is well-supported, flexible, and incredibly powerful. Understanding how Snakemake works and becoming familiar with its many features involves a non-trivial learning curve; however, for anyone spending a sizable chunk of their graduate career managing bioinformatic analyses, or for anyone that is a lab bioinformatician running bioinformatic workflows across many species (for example), the benefits of learning Snakemake will continue to pay dividends for years to come.</p>
-<p>Someone who has mastered all the topics in Part I of this handbook (Unix programming, working on remote computers, etc.) certainly will have the skills to write what I will call <em>input-oriented</em>, <em>forward-marching</em> workflows. I call these “forward-marching” because they start from a set of input files (for example files of sequences from a sequencer), and then the workflow is defined as a series of sequential steps, one after the other. They are “input-oriented” in the sense that such a workflow starts with a series of inputs, but the workflow itself doesn’t really know what it is trying to produce from those inputs until it has run all the way through and actually turned those inputs into outputs. For example, all the input files might get trimmed or cleaned, then they would all get mapped to a genome, and then those mapped sequences would be used to call variants, so as to find SNPs in the data, etc. If you were writing this in an input-oriented, forward-marching fashion, then, to deal with the fact that you had multiple files of DNA sequences (for example, one for each individual bird or fish that had been sampled), you might write Unix <code>for</code> loops to cycle over all the input files as in Section&nbsp;@ref(unix-for-loops), or, you could define a SLURM job array to start a separate job instance for each input file, as in Section&nbsp;@ref(slurm-job-arrays). In each case, you would have to do some extra programming to deal with the different input files, and if one of the steps of your workflow failed on just one, or a few, of the files, you might spend a large amount of time tracking those failures down and than manually re-running that small number of jobs.</p>
-<p>By contrast, Snakemake takes a different approach to managing workflows. We will call it an <em>output-oriented</em>, <em>backward-looking</em> approach. We call it that because workflows in Snakemake are defined first and foremost in terms of the <em>output files</em> that are desired, along with instructions on how to create those output files from necessary input files and bioinformatic programs. They are <em>backward-looking</em> in the sense that, once you have developed a Snakemake workflow, you get results by telling Snakemake which output files you want to create, and then it “looks backwards” through the workflow to determine which input files are needed to create the requested outputs. Sometimes it has to look backwards through several steps before it identifies all the necessary input files. Once it has found those necessary inputs, it then runs forward through the steps to create the output files. In this phase, the workflow looks like it is “forward-marching”, in the sense that outputs are being created from inputs. But, in order to get to that “forward-running” phase, Snakemake had to look backward to figure out what inputs to use.</p>
-<p>The above constitutes some subtle points, that might not be clear upon first reading, but we will try to summarize it in a few pithy phrases:</p>
-<ul>
-<li>A workflow defined as a typical Unix shell script can be thought of as a process that runs forward. You give it a lot of input files and it just cranks through a bunch of steps until the output files are made.</li>
-<li>A workflow defined with Snakemake works differently. First you define the workflow in terms of a series of “rules.” Then, when you request any given set of output files, Snakemake will look backwards through the rules of the workflow and figure out exactly which steps must be performed, on which input files, in order to create the requested output files. Once it has determined that, it runs just those necessary steps.</li>
-</ul>
-<p>There are many advantages to this output-oriented, backward-looking approach:</p>
+<p>Snakefiles are YAML formatted files which are interpreted by Python, and, as such, considerable value can be gained from knowing how to use Python in this context. Many biologists I know are quite familiar with R, but fewer are equally well-versed in Python. So the purpose of this chapter is to provide a little background on Python (from the eyes of an R user) that is most useful for embellishing one’s Snakefiles and workflows. The key for this chapter are simple Python constructs that can be particularly useful in Snakemake, and particularly for being able to competently use several central Snakemake features: <em>config files</em>, <em>input functions</em>, and <em>pandas input</em>.</p>
+<p>The second main goal of this chapter is to illustrate an approach to working interactively with Python (the way R users might be familiar with working with R) within the RStudio environment. This will allow users to run Python code associated with their Snakefile in the context of an interactive Python session, which can be considerably more illumninating—and more helpful for tracking down bug/errors/inconsistencies—than only getting to run that code by running Snakemake on your Snakefile. Being able to work interactively with the Python code as Snakemake might see it is thus crucial to learning how to write workflows. So, for this second goal we will see a few little hacks for seeing input function parameters as Snakemake might see them, etc., primarily as a learning tool to aid in figuring out how to write Python code within Snakemake.</p>
+<p>The order of events here are thus:</p>
 <ol type="1">
-<li>If your workflow has many steps, and some of them have already been run, then Snakemake automatically recognizes that, and will not re-run steps in the workflow that have already been completed. In an input-oriented system (like a traditional Unix script), you would have to spend the time to figure out which steps had already been run, and then run your script only from that point forward. Doing so can be a hassle and can also be prone to errors.</li>
-<li>A workflow defined by Snakemake, being explicit about the inputs needed for each step, naturally defines “work units” that can be run independently of one another. Accordingly, Snakemake, itself, can break a huge bioinformatic workflow into a number of small jobs that can be run in parallel, saving you, the user, from having to write scripts to launch a series of SLURM job arrays.</li>
-<li>The fact that Snakemake automatically keeps track of which inputs already exist—and which might still need to be generated—provides huge benefits when some of your jobs fail. Anyone who has used a cluster has stories about jobs that inexplicably fail. Without a workflow management system like Snakemake, you can spend almost as much of your own time managing these failed jobs as it took to launch all the jobs in the first place.</li>
+<li>Use the R package ‘reticulate’ to run python, interactively, in our Snakemake conda environment.</li>
+<li>Once we can work interactively in python easily, we will discuss a few of the main data structures and operations in python, by comparison to their equivalents in R and the tidyverse.</li>
+<li>With that background we will tackle our exploration of Snakemake’s use of</li>
 </ol>
-<p>In addition to these obvious advantages of the output-oriented approach, Snakemake also includes a number of features that make it easy to use your workflow on a variety of different platforms. It is tightly integrated with conda (Section&nbsp;@ref(miniconda)), letting the user define conda environments for each step in the workflow. This means that if you move your whole workflow to a new cluster, you don’t have to spend any time coordinating the installation of the programs you need—if you set things up properly with Snakemake and conda, that will happen automatically. If you distribute your workflows to other people to use, this is particularly helpful, since you will spend far less time assisting them in setting up their computer environment to run your workflow. Snakemake can also be customized to work in your own cluster environment. Finally, there are interfaces to allow your Snakemake workflows to run seamlessly in the cloud.</p>
-<p>Full documentation for Snakemake can be found at <a href="https://snakemake.readthedocs.io/en/stable/">https://snakemake.readthedocs.io/en/stable/</a>. This documentation is comprehensive, but can feel a little daunting at first. On the other hand, the developers of Snakemake also provide an excellent and accessible tutorial at <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html</a>.</p>
-<section id="input-functions" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="input-functions"><span class="header-section-number">10.1</span> Input Functions</h2>
-<section id="input-functions-returning-dicts" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="input-functions-returning-dicts"><span class="header-section-number">10.1.1</span> Input functions returning dicts</h3>
+<ul>
+<li>YAML-based configuration files (i.e., config.yaml)</li>
+<li>Input functions for converting wildcard values to specialized input paths or parameter values.</li>
+<li>pandas for the inclusion of tabular information into the Snakemake workflow, itself.</li>
+</ul>
+<section id="running-python-interactively-in-rstudio" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="running-python-interactively-in-rstudio"><span class="header-section-number">11.1</span> Running python, interactively, in RStudio</h2>
+<p>The folks at Posit (the company that started as RStudio) make a great integrated development environment (IDE) for working with R; however they also recognized the need for being a great IDE for other languages, like python and julia. As I understand it, that was part of the reason that they changed their name to Posit—to be less tied to the R language. At any rate, they have tools for running python code, much like you would run R code in RStudio.</p>
+<section id="get-mamba-and-create-a-snakemake-environment" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="get-mamba-and-create-a-snakemake-environment"><span class="header-section-number">11.1.1</span> Get mamba and create a snakemake environment</h3>
+<p>We will be doing this <em>on our laptops</em> rather than upon the cluster. Fortunately, mamba works on all platforms, and so does Snakemake. But you might need to first install mamba on your laptop. This is pretty straightforward. If you do not already have mamba on your laptop, find the instructions for your platform <a href="https://github.com/conda-forge/miniforge?tab=readme-ov-file#install">here</a> and follow them. You should be able to just use the default location for your conda/mamba library.</p>
+<p>Once you are done with that, you will want to create a snakemake environment on your laptop. Do that by following the directions that we used on our clusters, <a href="https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces">here</a>, without bothering to be on a compute node, of course!</p>
+<p>When both of the above are done, we can move on to working with python in RStudio.</p>
 </section>
-</section>
-<section id="using-pandas" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="using-pandas"><span class="header-section-number">10.2</span> Using Pandas</h2>
+<section id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.2</span> Get the reticulate package and run python from your snakemake conda environment</h3>
+<p>The reticulate package allows you to run python in a comfortable, interactive way within and R (and RStudio) session. Importantly, it allows you to run the exact python version that Snakemake uses, by letting you load the snakemake conda environment.</p>
+<p>So, open up the RStudio project for your fork of the <code>con-gen-csu</code> repo, make sure you are on the main branch, and then pull, to make sure that you have all the recent materials from the course.</p>
+<p>If you do not already have ‘reticulate’, get it with this at the R console in Rstudio:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, you can load the package with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_miniconda()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my system that translates into:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_miniconda</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, on your system, your conda library will probably be in <code>~/miniforge</code>. At any rate, it should be easy to find using tab-completion for path names in your R console.</p>
+<p>Once you have successfully given the above command, you can start a python REPL (Read Evaluate Print and Loop) session in your R console with:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After you have done that, you should see something that looks like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">repl_python</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">12.2</span> (<span class="sc">/</span>Users<span class="sc">/</span>eriq<span class="sc">/</span>mambaforge<span class="sc">-</span>arm64<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Reticulate <span class="dv">1</span>.<span class="fl">35.0</span> REPL <span class="sc">--</span> A Python interpreter <span class="cf">in</span> R.</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Enter <span class="st">'exit'</span> or <span class="st">'quit'</span> to exit the REPL and return to R.</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The command prompt has now changed to <code>&gt;&gt;&gt;</code> and anything you type at it will be interpreted as python code.</p>
+<p>So, you can’t just type R code into it any longer. For example, see what happens if you type this in there:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But you can type python code, for example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then try:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -640,14 +697,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../nmfs-bioinf/bioinf-formats.html" class="pagination-link" aria-label="Bioinformatic file formats">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span>
+      <a href="../nmfs-bioinf/snake.html" class="pagination-link" aria-label="Snakemake Narrative and Topics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="pagination-link" aria-label="Snakemake-relevant Python for R Users">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
