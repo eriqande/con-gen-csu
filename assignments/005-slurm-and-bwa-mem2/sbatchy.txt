@@ -1,0 +1,4 @@
+sbatch assignments/005-slurm-and-bwa-mem2/trim_all.sh                               # Can run concurrently with the below command
+sbatch assignments/005-slurm-and-bwa-mem2/index2.sh data/genome/genome.fasta        # Can run concurrently with the above command
+sbatch assignments/005-slurm-and-bwa-mem2/map2.sh                                   # Wait to run until previous two jobs are finished
+sha1sum results/mapped2/*.bam > assignments/005-slurm-and-bwa-mem2/bam_sha1s.txt    # Get sha1 values for bam file output
