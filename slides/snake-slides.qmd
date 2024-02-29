@@ -1,0 +1,1230 @@
+---
+format:
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+    slide-number: true
+    scrollable: true
+---
+
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+A Brief Introduction to Snakemake
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Eric C. Anderson
+:::
+
+::: {style="margin-left: 260px;"}
+Computational Methods for Molecular Biology, CSU
+:::
+
+## What the Heck is Snakemake? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+-   A Python-based "Workflow Management System"
+-   Allows you to define a complex (bioinformatic) workflow as a series of steps that involve input files and output files.
+-   It identifies the dependencies between the steps and then runs all the steps needed to create a *requested output file*.
+-   This greatly simplifies the orchestration of bioinformatics, and makes it much easier to find and re-run failed jobs.
+-   Incredibly valuable for reproducible research:
+    -   Not just so others can reproduce your results
+    -   Also useful for you to quickly run your workflow on different clusters, etc.
+
+### That sounds pretty jargony!
+
+-   Illustrate with an example
+-   Hope that it piques the curiosity of some
+
+## Our Small Example: GATK Best Practices "Light" {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="50%"}
+```{mermaid}
+flowchart TD
+  A(fastq files from 3 samples: our raw data) --> B(Trim the reads: fastp)
+  B --> C(Map the reads to a reference genome: bwa-mem2)
+  C --> D(Mark PCR and optical duplicates: gatk MarkDuplicates)
+  D --> E(Make gVCF files for each sample/chromo: gatk HaplotypeCaller)
+  E --> F(Load gVCFs into Genomic DB for each chromo: gatk GenomicsDBImport)
+  F --> G(Create VCFs from Genomic DB for each chromo: gatk GenotypeGVCFs)
+  G --> H(Concatenate chromosome-vcfs into a single vcf: bcftools)
+```
+:::
+
+::: {.column width="50%"}
+#### A mini data set that only takes about 5 minutes to run through the major steps of a GATK-like variant calling workflow
+
+-   Chinook salmon sequencing reads (a subset of our course example data).
+-   Three paired-end fastqs from samples `A`, `B`, and `C` and data only from four chromosomes.
+-   We will trim it, map it, mark duplicates, then make one gVCF file for each combination
+    of individual and chromosome (only two chromosomes).
+-   Then, call variants on each of two chromosomes.
+-   Then catenate the resulting VCFs into a single VCF file.
+:::
+:::
+
+## Setting up our workspaces {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="40%"}
+* Sync your fork's main branch then pull updates into the main branch
+  of your local clone.
+* On Alpine, get 4 cores on acompile.
+* Then, we simply need to ensure that we have a recent version of Snakemake.
+* We will create a mamba/conda environment `snakemake-8.5.3` that
+has the latest version of snakemake as of this writing.
+* Once created, we activate that environment.
+* `cd` to the Snakemake-Example data directory inside the `con-gen-csu`
+repo.
+:::
+
+::: {.column width="60%"}
+``` sh
+# get onto acompile with 4 cores for interactive work
+# (Or do what it takes to get a compute node with 4 cores on your own cluster)
+acompile -n 4
+
+# Create snakemake env
+mamba create -n snakemake-8.5.3 -c conda-forge -c bioconda snakemake==8.5.3
+
+# activate env
+conda activate snakemake-8.5.3
+
+# To make sure snakemake is working, print the help information
+# for snakemake
+snakemake --help
+
+# If you want to make DAGs and rulegraphs, add GraphViz to this env
+mamba install anaconda::graphviz
+
+# change directories into Snakemake-Example
+cd Snakemake-Example/
+
+```
+:::
+:::
+
+## Initial Configuration of our work directory {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="70%"}
+-   We can use the Unix `tree` utility to see what the Snakemake-Example directory contains.
+-   Within the Snakemake-Example directory, type `tree` at the command line. This shows:
+    -   A `Snakefile`. Much more about that later.
+    -   A directory `data` with three pairs of FASTQ files
+    -   A directory `envs` that has information to install necessary software with conda
+    -   A directory `resources` that has `genome.fasta`: a FASTA file with the reference genome
+:::
+
+::: {.column width="30%"}
+``` sh
+--% tree
+.
+├── Snakefile
+├── data
+│   ├── A_R1.fastq.gz
+│   ├── A_R2.fastq.gz
+│   ├── B_R1.fastq.gz
+│   ├── B_R2.fastq.gz
+│   ├── C_R1.fastq.gz
+│   └── C_R2.fastq.gz
+├── envs
+│   ├── bcftools.yaml
+│   ├── bwa2sam.yaml
+│   ├── fastp.yaml
+│   └── gatk.yaml
+└── resources
+    └── genome.fasta
+
+4 directories, 12 files
+```
+:::
+:::
+
+## How would you tackle this in a Unix way? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="45%"}
+### Consider the first two "steps"
+
+```{mermaid}
+flowchart TD
+  H(fastq files from 3 samples: our raw data) --> I(Trim the reads: fastp)
+  I --> J(Map the reads to a reference genome: bwa-mem2)
+```
+:::
+
+::: {.column width="55%"}
+### Some pseudo-shell code
+
+``` sh
+# cycle over fastqs and do the trimming
+for S in A B C; do
+  fastp -i data/${S}_R1.fastq.gz -I data/S{S}_R2.fastq.gz \
+    -o trimmed/${S}_R1.fastq.gz -O trimmed/${S}_R2.fastq.gz \
+    other-arguments-etc...
+done 
+
+
+# cycle over trimmed fastqs and do the mapping
+for S in A B C; do
+  bwa-mem2 mem resources/genome.fasta \
+    trimmed/${S}_R1.fastq.gz trimmed/${S}_R2.fastq.gz
+done
+```
+
+### What are some issues here?
+
+1.  Ah crap! I forgot to index `genome.fasta`!\
+2.  This does not run the jobs in parallel!
+
+### Possible solutions for #2?
+
+You can get things done in parallel using SLURM's `sbatch` (which you probably need to use anyway).
+:::
+:::
+
+## Going about doing this with SLURM (a sketch...) {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="45%"}
+### Consider the first two "steps"
+
+```{mermaid}
+flowchart TD
+  H(fastq files from 3 samples: our raw data) --> I(Trim the reads: trimmomatic)
+  I --> J(Map the reads to a reference genome: bwa mem)
+```
+:::
+
+::: {.column width="55%"}
+### Some pseudo-shell code
+
+``` sh
+# cycle over fastqs and dispatch each trimming job to SLURM
+for S in A B C; do
+  sbatch my-trim-script.sh $S
+done 
+
+# ONCE ALL THE TRIMMING IS DONE...
+# cycle over trimmed fastqs and dispatch each mapping job to SLURM
+for S in A B C; do
+  sbatch my-map-script $S
+done
+```
+
+### What is not-so-great about this?
+
+1.  I have to wait for all the jobs of each step to finish
+2.  I have to explicitly start each "next" step.
+3.  If some jobs of a step fail, it is a PITA to go back and figure out which ones failed.
+4.  The dependence between the outputs of the trimming step and the mapping step are implicit based on file paths buried in the scripts, rather than *explicit*.
+:::
+:::
+
+## The Advantages of Snakemake {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+-   The dependence between input and output files is *explicit*
+-   This lets snakemake identify every single job that must be run---and the order they must be run in---for the entire workflow (all the steps)
+-   This maximizes the number of jobs that can be run at once.
+-   The necessary steps are determined by starting from the ultimate outputs that are desired or requested...
+-   ...then working backward through the dependencies to identify which jobs must be run to eventually get the ultimate output.
+-   This *greatly* simplifies the problem of re-running any jobs that might have failed for reasons "known only to the cluster."
+
+## Snakemake is a program that interprets a set of rules stored in a *Snakefile* {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="50%"}
+Some explanations:
+
+-   Rule blocks: the fundamental unit
+-   Correspond to "steps" in the workflow
+-   Keyword "rule" + name + colon
+-   Indenting like Python/YAML
+-   Typically includes sub-blocks of `input`, `output`, and `shell`
+-   (Also `params`, `log`, `benchmarks`, `conda`, etc.)
+:::
+
+::: {.column width="50%"}
+```{r filename="Snakefile"}
+#| echo: true
+#| eval: false 
+#| file: ../Snakemake-Example/Snakefile
+```
+
+:::
+:::
+
+## A closer look at a simple rule {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+#### (Screen grab from Sublime Text which has great highlighting for Snakemake)
+
+::: columns
+::: {.column width="50%"}
+![](images/genome_dict.jpg)
+:::
+
+::: {.column width="50%"}
+The rule:
+
+-   **Requires** the input file `resources/genome.fasta`
+-   **Produces** the output file `resources/genome.dict`
+-   **Uses** software specified in `envs/bwa2sam.yaml`
+-   **Writes to** a log file in `results/logs/genome_dict.log`
+-   **Executes** the shell code `samtools dict {input} > {output} 2> {log}` to get the job done
+:::
+:::
+
+-   What are those purple bits? `{input}`, `{output}`, and `{log}`?! in the shell code?
+-   That is the syntax snakemake uses to substitute the values in the *output*, *input*, or *log* blocks (or other blocks...) into the Unix shell command.
+- **Big Note**: Output and log information is not written _automatically_ to the
+output file and log file, nor is input taken automatically from the input file---you
+have to dicate that behavior by what you write in the shell block!
+-   Thus, when this rule runs, the shell command executed will be:
+
+::: {style="font-size: 2em;"}
+``` sh
+samtools dict resources/genome.fasta > resources/genome.dict 2> results/logs/genome_dict.log 
+```
+:::
+
+
+## We "drive" Snakemake by requesting the creation of *output files* {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### These output files are sometimes referred to as "targets"
+
+-   `snakemake` looks for and uses the `Snakefile` in the current working directory.
+-   Option `-n` tells snakemake to do a "dry-run:" (Just say what you would do, *but don't do it!*)
+-   Option `-p` tells snakemake to print the shell commands of the rules.
+-   Those two options can be combined: `-np`
+-   And we request `resources/genome.dict` as a target by just putting it on the command line:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np resources/genome.dict
+```
+:::
+
+-   And the output you got from that should look like:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="What the output should look like"}
+Building DAG of jobs...
+Job stats:
+job            count
+-----------  -------
+genome_dict        1
+total              1
+
+Execute 1 jobs...
+
+[Mon Feb 26 12:01:32 2024]
+localrule genome_dict:
+    input: resources/genome.fasta
+    output: resources/genome.dict
+    log: results/logs/genome_dict.log
+    jobid: 0
+    reason: Missing output files: resources/genome.dict
+    resources: tmpdir=<TBD>
+
+samtools dict resources/genome.fasta > resources/genome.dict 2> results/logs/genome_dict.log
+Job stats:
+job            count
+-----------  -------
+genome_dict        1
+total              1
+
+Reasons:
+    (check individual jobs above for details)
+    missing output files:
+        genome_dict
+
+This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.
+```
+:::
+
+## Direct snakemake to create all the conda environments to run this workflow
+
+We are going to start by telling snakemake to create the conda environments
+needed to run the whole workflow:
+```{.sh filename="Paste this into your shell"}
+snakemake --conda-create-envs-only results/vcf/all.vcf.gz
+```
+The `results/vcf/all.vcf.gz` is the ultimate target of the workflow and the
+`--conda-create-envs-only` tells snakemake to do nothing more than create all the
+conda environments needed to create the output file `results/vcf/all.vcf.gz`.
+
+The output snakemake gives you should look something like this:
+```{.sh filename="Expected output of the above"}
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment envs/bwa2sam.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/bwa2sam.yaml created (location: .snakemake/conda/03ade215a4c713db728206723f154153_)
+Creating conda environment envs/gatk.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/gatk.yaml created (location: .snakemake/conda/d5b5e2cc0497b65f32514e037bc26ef9_)
+Creating conda environment envs/bcftools.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/bcftools.yaml created (location: .snakemake/conda/cbf79ac1a639509f529e96f71cf3c38b_)
+Creating conda environment envs/fastp.yaml...
+Downloading and installing remote packages.
+Environment for /Users/eriq/Documents/git-repos/con-gen-csu/Snakemake-Example/envs/fastp.yaml created (location: .snakemake/conda/e37739b7128de56967cf47faf4c5cfef_)
+
+```
+
+Where do those environments get created?  They _do not_ go into your main
+conda library.  Rather, as the output above shows, each environment gets stored
+inside `.snakemake/conda` in the current working directory.
+
+## A note on specifying conda environments for each rule
+
+The `genome_dict` rule looks like this:
+```{.yaml filename="The genome_dict rule"}
+rule genome_dict:
+  input:
+    "resources/genome.fasta",
+  output:
+    "resources/genome.dict",
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/genome_dict.log",
+  shell:
+    "samtools dict {input} > {output} 2> {log} "
+```
+
+The `conda:` block tells it to use software defined in `envs/bwa2sam.yaml`,
+which looks like this:
+```{sh, filename="Contents of envs/bwa2sam.yaml"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/envs/bwa2sam.yaml
+
+```
+
+Before it runs the `genome_dict` rule, Snakemake will make sure that a conda
+environment with `bwa-mem2` and `samtools` is installed in the `.snakemake/conda`
+directory.  If it is not, then it installs it.
+
+Then it runs the rule.  Note that software installation happens only once.
+
+## Now, let's run the `genome_dict` rule! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Go back and do the dry-run for the `genome_dict` rule again:
+``` {.sh filename="Paste this into your shell"}
+snakemake -np resources/genome.dict
+```
+
+Now, to do a real run (not a dry run) we remove the `-n` (dry-run) option, and, because
+we are having snakemake manage the needed software using conda, we add the `--use-conda`
+option, and we tell it to use 1 core for those run: `--cores 1`.  So, our command now looks like:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --use-conda --cores 1 resources/genome.dict
+```
+:::
+
+-   The output you get looks like what you saw before, but in this case the requested output file has been created.
+-   And a log capturing `stderr` (if any) was created:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell to see all the files"}
+tree .
+```
+:::
+
+### The output shows those two new files that were created
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Output should look like this:"}
+.
+├── Snakefile
+├── data
+│   ├── A_R1.fastq.gz
+│   ├── A_R2.fastq.gz
+│   ├── B_R1.fastq.gz
+│   ├── B_R2.fastq.gz
+│   ├── C_R1.fastq.gz
+│   └── C_R2.fastq.gz
+├── envs
+│   ├── bcftools.yaml
+│   ├── bwa2sam.yaml
+│   ├── fastp.yaml
+│   └── gatk.yaml
+├── resources
+│   ├── genome.dict          <--- THIS IS A NEW FILE
+│   └── genome.fasta
+└── results
+    └── logs
+        └── genome_dict.log  <--- THIS IS A NEW FILE
+
+6 directories, 14 files
+
+```
+:::
+
+## Once a target file is created or updated Snakemake knows it {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+-   If you request the file `resources/genome.dict` from Snakemake now, it tells you that the file is there *and does not need updating*.
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np resources/genome.dict
+```
+:::
+
+-   Because `resources/genome.dict` already exists (and none of its dependencies have been updated since it
+was created, _and_ the code that creates the file in the rule has not been modified) Snakemake tells you 
+this:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Expected output from Snakemake"}
+Building DAG of jobs...
+Nothing to be done (all requested files are present and up to date).
+```
+:::
+
+-   This helps you to not remake output files that don't need remaking!
+
+## Wildcards: How Snakemake manages replication {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+#### Wildcards allow running multiple instances of the same rule on different input files by simple pattern matching
+
+::: columns
+::: {.column width="50%"}
+![](images/trim_reads.png)
+:::
+
+::: {.column width="50%"}
+
+* If we request from Snakemake the file  
+`results/trimmed/A_R1.fastq.gz`,
+* then, Snakemake recognizes that this matches the _output_ of rule
+`trim_reads` with the wildcard `{sample}` replaced by `A`.
+* And Snakemake _propagates_ the value `A` of the wildcard 
+`{sample}` to the _input_ block.
+* Thus Snakemake knows that to create  
+`results/trimmed/A_R1.fastq.gz`  
+it needs the input files:
+    - `data/A_R1.fastq.gz`
+    - `data/A_R2.fastq.gz`
+:::
+:::
+
+
+## Try requesting those trimmed fastq files {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* See what snakemake would do when you ask for `results/trimmed/A_R1.fastq.gz`.
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/trimmed/A_R1.fastq.gz
+```
+:::
+
+* Note that you can request files from more than one sample:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/trimmed/A_R1.fastq.gz results/trimmed/B_R1.fastq.gz results/trimmed/C_R1.fastq.gz  
+```
+:::
+
+* Then, go ahead and run that last one, instructing Snakemake to use three cores,
+and using conda, as well!
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --cores 3 --use-conda results/trimmed/A_R1.fastq.gz results/trimmed/B_R1.fastq.gz results/trimmed/C_R1.fastq.gz  
+```
+:::
+
+Note that it will go ahead and start all those jobs independently, and concurrently,
+because they do not depend on one another.  This is how Snakemake manages and maximizes 
+parallelism.
+
+
+## Important Notes I: Multiple wildcards can be used together
+
+![](images/make_gvcfs_by_chrom.png)
+
+Here, `chromo` and `sample` are two different wildcards. And snakemake understands
+that a requested file with a path like:
+```
+results/gvcf/NC_037122.1f5t9/A.g.vcf.gz
+```
+matches the output file:
+```
+results/gvcf/{chromo}/{sample}.g.vcf.gz
+```
+with
+```
+chromo = NC_037122.1f5t9
+sample = A
+```
+
+
+## Important Notes II: `expand()`
+
+Snakemake provides some functions that are useful for creating lists of input
+or output files.  Note that, at the top of the Snakefile we define python lists
+`SAMPLES` and `CHROMOS`.  
+
+```{.python}
+# run it over 3 samples
+SAMPLES = ['A', 'B', 'C']
+
+# variant calling over two "chromosomes"
+CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14"]
+```
+
+Then, later in the Snakefile, when we say:
+```{.python}
+rule import_genomics_db_by_chromo:
+  input:
+    gvcfs=expand("results/gvcf/{{chromo}}/{s}.g.vcf.gz", s=SAMPLES)
+```
+That expands the input files needed for rule `import_genomics_db_by_chromo` into
+the python list:
+```{.python}
+['results/gvcf/{chromo}/A.g.vcf.gz', 'results/gvcf/{chromo}/B.g.vcf.gz', 'results/gvcf/{chromo}/C.g.vcf.gz']
+```
+
+Note that the `{s}` in curly braces get expanded according to `s=SAMPLES`, and the
+`{{{chromo}}}` gets turned into `{chromo}`, so that it is interpreted as a wildcard
+in that file list.  (In general you escape braces by doubling them.)
+
+
+
+## Important Notes III: `multiext()`
+
+Snakemake provides the `multiext()` function which is
+like `expand()` but for file extensions.
+
+Hence, when you see:
+```{.python}
+rule bwa_index:
+  input:
+    "resources/genome.fasta"
+  output:
+    multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+```
+This means that the output files from rule `bwa_index` are the python list:
+```{.python}
+[
+'resources/genome.fasta.0123',
+'resources/genome.fasta.amb',
+'resources/genome.fasta.ann',
+'resources/genome.fasta.bwt.2bit.64',
+'resources/genome.fasta.pac'
+]
+```
+
+
+## Chains of file dependencies {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="50%"}
+* If Snakemake does not find a required input file for a rule that provides
+a requested output, it searches through the outputs of all the other rules in the
+Snakefile to find a rule that might provide the required input file as one of
+its outputs.
+* It then schedules all the necessary rules to run.
+* This means that an entire workflow with thousands of jobs can be triggered by
+requesting a single output file.
+
+### Short Group Activity
+
+* Trace the rules needed if we request the file `results/vcf/all.vcf.gz`. 
+* One person from each group, write down the rule dependencies.
+* Do this by finding the rule that creates `results/vcf/all.vcf.gz` as output, then
+finding the rules that would create the input for that rule, and so on and so forth,
+all the way back to the original fastq files.
+:::
+
+::: {.column width="50%"}
+```{r filename="Snakefile"}
+#| echo: true
+#| eval: false 
+#| file: ../Snakemake-Example/Snakefile
+```
+:::
+:::
+
+
+
+## Let's request `results/vcf/all.vcf` from Snakemake {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Let's start with a dry run:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/vcf/all.vcf.gz  
+```
+:::
+
+* After we look at that, and discuss, let's actually run it, using 4 cores:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -p --cores 4 results/vcf/all.vcf.gz  
+```
+:::
+
+That should take a minute or three.
+
+* If you try to run the workflow again, Snakemake tells you that you do not need
+to, because everything is up to date:  Try running the above line again:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -p --use-conda --cores 2 results/vcf/all.vcf.gz  
+```
+:::
+
+
+## If any inputs change, Snakemake will re-run the rules that depend on the new input {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Imagine that the sequencing center calls us to say that there has been a terrible mistake and they are sending you new (and correct) versions of data for sample C: `C_R1.fastq.gz` and `C_R2.fastq.gz` 
+* Snakemake uses file modification dates to check if any inputs have been updated after target outputs have been created.
+* So we can simulate new fastq files for sample C by using the `touch` command to update the fastq file modification dates:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+touch data/C_R1.fastq.gz data/C_R2.fastq.gz
+```
+:::
+
+* Now, when we run Snakemake again, it tells us we have to run more jobs, _but only the ones that depend on data from sample C_.  Do a dry run to check that:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/vcf/all.vcf.gz
+```
+:::
+
+* Check that it will not re-run the trimming, mapping, and gvcf-making steps for samples
+A and B, which are already done.  
+
+
+## Snakemake makes it very easy to re-run failed jobs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Clusters and computers fail (sometimes for no apparent reason) occasionally
+* If this happens in a large, traditionally managed (Unix script) workflow, finding and
+re-running the failures can be hard.
+* Example: 7 birds out of 192 fail on HaplotypeCaller because those jobs got sent to nodes without AVX acceleration.
+* Five years ago, setting up custom scripts to re-run just those 7 birds could cost me an hour---about as much time as it takes me now to set up an entire workflow with Snakemake.
+* On the next slide we are going to create a job failure to see how easy it is to
+re-run jobs that failed with Snakemake.
+
+
+## Simulating a job failure as an example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* First, let's remove the entire `results` directory, so that we have to re-run most of
+our workflow.
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+rm -rf results
+```
+:::
+
+* Now, we are going to corrupt the read-2 fastq file for sample A (but keeping a copy
+of the original)
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+cp data/A_R2.fastq.gz data/A_R2.fastq.gz-ORIG
+echo "GARBAGE_DATA" | gzip -c > data/A_R2.fastq.gz
+```
+:::
+
+* Now, do a dry-run, requesting `results/vcf/all.vcf.gz`
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/vcf/all.vcf.gz
+```
+:::
+
+The output ends telling us that 20 jobs will be run:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="End of the expected output"}
+Job stats:
+job                             count
+----------------------------  -------
+concat_vcfs                         1
+import_genomics_db_by_chromo        2
+make_gvcfs_by_chromo                6
+map_reads                           3
+mark_duplicates                     3
+trim_reads                          3
+vcf_from_gdb_by_chromo              2
+total                              20
+```
+:::
+
+
+* Now, run it with 4 cores and give it the `--keep-going` command which means
+that even if an error occurs on one job, all the other jobs _that don't depend
+on outputs from the failed job_ will still get run.
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --cores 4 --use-conda --keep-going results/vcf/all.vcf.gz
+```
+:::
+
+* Snakemake runs as far as it can and then wraps it up, telling us that 8 of the
+14 jobs were successful but at least one job failed:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Snakemake's concluding comments:"}
+10 of 20 steps (50%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-26T161639.704830.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
+```
+:::
+
+
+  
+Here is a related, fun tip: Snakemake writes the log of every real (i.e., without the `-n` option) run into a log file in `.snakemake/log`.  Try this:
+```sh
+ls .snakemake/log
+```
+If you want to get the log from the most recent run you can throw
+down some Unix:
+```sh
+ls -l .snakemake/log/*.log | tail -n 1 | awk '{print $NF}'
+```
+You can use that to find any lines that say `Error in rule` in them (and 10 or 11 lines
+after it says "Error in rule") to tell
+you more about the job that failed.  e.g.:
+```sh
+grep "Error in rule"  -A 11 $(ls -l .snakemake/log/*.log | tail -n 1 | awk '{print $NF}')
+```
+  
+  
+  
+  
+  
+
+## Re-running failed jobs is as simple as just re-starting Snakemake {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* First off, after a failure like that, we can always immediately do a dry-run to see what Snakemake must still do to finish out the workflow:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake -np results/vcf/all.vcf.gz
+```
+:::
+
+It is only going to require 10 more jobs to produce `results/vcf/all.vcf`:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="This is the end of the dry-run output"}
+Job stats:
+job                             count
+----------------------------  -------
+concat_vcfs                         1
+import_genomics_db_by_chromo        2
+make_gvcfs_by_chromo                2
+map_reads                           1
+mark_duplicates                     1
+trim_reads                          1
+vcf_from_gdb_by_chromo              2
+total                              10
+```
+:::
+
+
+* We see that it still has to do 1 trim job, which is the one that failed.
+
+* If we noticed that `data/A_R2.fastq.gz` was corrupted, we could replace it
+with the uncorrupted version:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+cp data/A_R2.fastq.gz-ORIG data/A_R2.fastq.gz
+```
+:::
+
+
+
+* Then, start it back up with 4 cores:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --cores 4 --use-conda results/vcf/all.vcf.gz
+```
+:::
+
+Now that sample A is not corrupted, it finishes.  Yay! That was easy.
+
+
+## Snakemake encourages (requires?) that your outputs all reside in a _consistent_ directory structure {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+#### (And a side note: Snakemake automatically creates all the directories needed to store its output files)
+
+* Check out all the outputs of our workflow in an easy-to-understand directory structure within `results`:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+# only drill down three directory levels (-L 3)
+tree -L 3 results
+```
+:::
+
+Here is what the result looks like:
+
+::: {style="font-size: 1.7em;"}
+``` {.tree filename="The tree listing of the full results of the workflow"}
+results
+├── bam
+│   ├── A.bam
+│   ├── B.bam
+│   └── C.bam
+├── chromo_vcfs
+│   ├── NC_037122.1f5t9.vcf.gz
+│   ├── NC_037122.1f5t9.vcf.gz.tbi
+│   ├── NC_037123.1f10t14.vcf.gz
+│   └── NC_037123.1f10t14.vcf.gz.tbi
+├── concat_vcfs
+│   └── all.log
+├── genomics_db
+│   ├── NC_037122.1f5t9
+│   │   ├── NC_037122.1f5t9$1$4000001
+│   │   ├── __tiledb_workspace.tdb
+│   │   ├── callset.json
+│   │   ├── vcfheader.vcf
+│   │   └── vidmap.json
+│   └── NC_037123.1f10t14
+│       ├── NC_037123.1f10t14$1$4000001
+│       ├── __tiledb_workspace.tdb
+│       ├── callset.json
+│       ├── vcfheader.vcf
+│       └── vidmap.json
+├── gvcf
+│   ├── NC_037122.1f5t9
+│   │   ├── A.g.vcf.gz
+│   │   ├── A.g.vcf.gz.tbi
+│   │   ├── B.g.vcf.gz
+│   │   ├── B.g.vcf.gz.tbi
+│   │   ├── C.g.vcf.gz
+│   │   └── C.g.vcf.gz.tbi
+│   └── NC_037123.1f10t14
+│       ├── A.g.vcf.gz
+│       ├── A.g.vcf.gz.tbi
+│       ├── B.g.vcf.gz
+│       ├── B.g.vcf.gz.tbi
+│       ├── C.g.vcf.gz
+│       └── C.g.vcf.gz.tbi
+├── logs
+│   ├── import_genomics_db_by_chromo
+│   │   ├── NC_037122.1f5t9.log
+│   │   └── NC_037123.1f10t14.log
+│   ├── make_gvcfs_by_chromo
+│   │   ├── NC_037122.1f5t9
+│   │   └── NC_037123.1f10t14
+│   ├── map_reads
+│   │   ├── A.log
+│   │   ├── B.log
+│   │   └── C.log
+│   ├── mark_duplicates
+│   │   ├── A.log
+│   │   ├── B.log
+│   │   └── C.log
+│   ├── trim_reads
+│   │   ├── A.err
+│   │   ├── A.log
+│   │   ├── B.err
+│   │   ├── B.log
+│   │   ├── C.err
+│   │   └── C.log
+│   └── vcf_from_gdb_by_chromo
+│       ├── NC_037122.1f5t9.txt
+│       └── NC_037123.1f10t14.txt
+├── mkdup
+│   ├── A.bai
+│   ├── A.bam
+│   ├── B.bai
+│   ├── B.bam
+│   ├── C.bai
+│   └── C.bam
+├── qc
+│   ├── fastp
+│   │   ├── A.html
+│   │   ├── A.json
+│   │   ├── B.html
+│   │   ├── B.json
+│   │   ├── C.html
+│   │   └── C.json
+│   └── mkdup_metrics
+│       ├── A.metrics
+│       ├── B.metrics
+│       └── C.metrics
+├── trimmed
+│   ├── A_R1.fastq.gz
+│   ├── A_R2.fastq.gz
+│   ├── B_R1.fastq.gz
+│   ├── B_R2.fastq.gz
+│   ├── C_R1.fastq.gz
+│   └── C_R2.fastq.gz
+└── vcf
+    └── all.vcf.gz
+```
+:::
+
+
+## Snakemake eye-candy---visualizing the workflow dependencies {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Using the `--dag` option, like this:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --dag results/vcf/all.vcf.gz | dot -Tsvg > dag.svg
+```
+:::
+
+Makes a directed acyclic graph (DAG) of the workflow.  If you view it,
+it looks like this:
+
+<img href="file.jpg" style="width: 100%;" />
+
+![](images/dag1.svg){ width=100% }
+
+
+
+## Snakemake eye-candy---filegraphs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Using the `--filegraph` option, like this:
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Paste this into your shell"}
+snakemake --filegraph results/vcf/all.vcf.gz | dot -Tsvg > filegraph.svg
+```
+:::
+
+Makes a graph (DAG) of the files involved in the workflow.  If you view it,
+it looks like the following, which is exactly the sort of figure you would have
+created had you been extremely diligent about the tracing all the dependencies in the
+Snakefile with you team:
+
+<img href="file.jpg" style="width: 100%;" />
+
+![](images/filegraph.svg){ width=100% }
+
+
+
+## Here is a more complex workflow graph
+### The dag for a run of [mega-non-model-wgs-snakeflow](https://github.com/eriqande/mega-non-model-wgs-snakeflow) that was processed by my R package [SnakemakeDagR](https://github.com/eriqande/SnakemakeDagR)
+
+<img href="file.jpg" style="width: 100%;" />
+
+![](images/andy-condensed-dag.svg){ width=100% }
+
+
+
+
+## We've only scratched the surface {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Python code is allowed in most places in the Snakefile
+* _Input functions_ can be quite useful (or absolutely essential)
+* You can benchmark every job instance of a rule, which records the resources used (time, memory, etc.)
+
+
+## Benchmarking jobs
+
+This is super easy.  You add to each rule a path for a benchmark file. For example:
+```{.yaml}
+rule map_reads:
+  input:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    genome="resources/genome.fasta",
+    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+  output:
+    "results/bam/{sample}.bam"
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/map_reads/{sample}.log"
+  benchmark:
+    "results/benchmarks/map_reads/{sample}.bmk"
+  params:
+    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "
+  shell:
+    " (bwa-mem2 mem {params.RG} {input.genome} {input.r1} {input.r2} | "
+    " samtools view -u | "
+    " samtools sort - > {output}) 2> {log} "
+```
+
+Then, each time that rule gets run (with a different wildcard) you get a little
+file like this:
+```{.tsv}
+s	h:m:s	max_rss	max_vms	max_uss	max_pss	io_in	io_out	mean_load	cpu_time
+164.7159	0:02:44	293.05	3523.55	263.11	269.15	1740.09	0.12	76.83	127.05
+```
+
+- This tells you how many seconds it ran (`s`), the max RAM use (`max_rss`), 
+amount of data read from disk and written to disk, total
+amount of CPU time, etc.
+- Super helpful
+- Easy to extract
+
+
+## Benchmark Example
+#### Jobs processing 43 rockfish on NMFS on-premises cluster (SEDNA) vs in the cloud on Microsoft Azure (AZHOP)
+
+<img href="file.jpg" style="width: 100%;" />
+
+![](images/azhop-map-reads.png){ width=100% }
+
+
+## Benchmark Example
+#### Super easy to extract that for all the rules with a little Unix and R
+
+<img href="file.jpg" style="width: 100%;" />
+
+![](images/azhop-facets.png){ width=100% }
+
+## Where to from here? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Complete documentation for Snakemake: [https://snakemake.readthedocs.io/en/stable/](https://snakemake.readthedocs.io/en/stable/)
+* The official Snakemake tutorial: [https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html#tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html#tutorial)
+
+
+You might be interested in having a look at a workflow I wrote for whole genome sequencing
+of non-model organisms: [https://github.com/eriqande/mega-non-model-wgs-snakeflow](https://github.com/eriqande/mega-non-model-wgs-snakeflow).
+
+This provides a complete BWA-GATK workflow including an arbitrary number of "bootstrapped-BQSR" rounds (which turn out to be pretty useless...)
+
+## Letting Snakemake interface with SLURM
+
+The way to most easily allow Snakemake to dispatch jobs via the SLURM
+scheduler is by way of the Snakemake `cluster` option provided in a
+Snakemake profile.
+
+A Snakemake profile is a YAML file in which you can record command line options
+(and their arguments) for Snakemake.
+
+There is an officially supported Snakemake profile for SLURM, but I am
+partial to the Unix-based (as opposed to Python-based) approach to SLURM
+profiles for Snakemake described at: 
+[https://github.com/jdblischak/smk-simple-slurm](https://github.com/jdblischak/smk-simple-slurm).
+
+
+
+## A Snakemake profile for SLURM on `Alpine`
+#### Alpine is the new NSF-funded cluster in Colorado
+
+- A Snakemake profile is simply a collection of command line arguments
+stored in a YAML file.
+
+- The `set-resources` and `threads` blocks are specific to my lcWGS workflow
+
+```{.yaml filename="Contents of hpcc-profiles/slurm/alpine/config.yaml"}
+cluster:
+  mkdir -p results/slurm_logs/{rule} &&
+  sbatch
+    --partition=amilan,csu
+    --cpus-per-task={threads}
+    --mem={resources.mem_mb}
+    --time={resources.time}
+    --job-name=smk-{rule}-{wildcards}
+    --output=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.out
+    --error=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.err
+    --parsable
+default-resources:
+  - time="08:00:00"
+  - mem_mb=3740
+  - tmpdir="results/snake-tmp"
+restart-times: 0
+max-jobs-per-second: 10
+max-status-checks-per-second: 50
+local-cores: 1
+latency-wait: 60
+cores: 2400
+jobs: 950
+keep-going: True
+rerun-incomplete: True
+printshellcmds: True
+use-conda: True
+rerun-trigger: mtime
+cluster-status: status-sacct-robust.sh
+cluster-cancel: scancel
+cluster-cancel-nargs: 4000
+
+
+set-threads:
+  map_reads: 4
+  realigner_target_creator: 4
+  genomics_db_import_chromosomes: 2
+  genomics_db_import_scaffold_groups: 2
+  genomics_db2vcf_scattered: 2
+set-resources:
+  map_reads:
+    mem_mb: 14960
+    time: "23:59:59"
+  make_gvcf_sections:
+    mem_mb: 3600
+    time: "23:59:59"
+  genomics_db_import_chromosomes:
+    mem_mb: 7480
+    time: "23:59:59"
+  genomics_db_import_scaffold_groups:
+    mem_mb: 11000
+    time: "23:59:59"
+  genomics_db2vcf_scattered:
+    mem_mb: 11000
+    time: "23:59:59"
+  multiqc_dir:
+    mem_mb: 37000
+  bwa_index:
+    mem_mb: 37000
+  realigner_target_creator:
+    mem_mb: 14960
+```
+
+
+## Setting this up for yourself
+
+To use Snakemake on your own server/cluster/laptop you should:
+
+1. Install Mambaforge as described [here](https://mamba.readthedocs.io/en/latest/mamba-installation.html#fresh-install-recommended) 
+2. Create a new conda environment for snakemake as described [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html)
+```sh
+# i.e.:
+mamba create -c conda-forge -c bioconda -n snakemake snakemake
+```
+3. Then:
+```
+conda activate snakemake
+```
+
+Some notes: `mamba` is far faster (and better in almost all cases) than `conda`.
+It is also practically required for using snakemake conda blocks.
+
+
+
+
+## Final Thoughts {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+* Learning snakemake may require a bit of an investment, BUT...
+* For anyone doing a lot of bioinformatic processing of sequence data it is
+quite a sound investment.
+
+
+#### One final step on the command line:
+
+```{.sh}
+conda deactivate
+```
