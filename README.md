@@ -732,3 +732,13 @@ Snakemake Concepts and Basics
 Simple editing of a Snakefile.
 
 - The explanation of the assignment is in the [README](https://github.com/eriqande/con-gen-csu/blob/main/assignments/006-simple-snakemake-maneuvers/README.md) of the assignment directory.
+
+
+### Thursday, Feb 29, 2024 (woo-hoo! A leap year!)
+
+Continuring with Snakemake, and also using Open OnDemand on Alpine
+
+#### In Class (Running through a Snakemake example)
+
+- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
+- Exploring OpenOnDemand on Alpine, while also getting reticulate set up in RStudio. [This chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-relevant-python.html)
