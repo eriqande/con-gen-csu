@@ -5,9 +5,9 @@ as such, considerable value can be gained from knowing how to use Python
 in this context.  Many biologists I know are quite familiar with R, but
 fewer are equally well-versed in Python. So the purpose of this chapter
 is to provide a little background on Python (from the eyes of an R user)
-that is most useful for embellishing one's Snakefiles and workflows.  The key
-for this chapter are simple Python constructs that can be particularly useful
-in Snakemake, and particularly for being able to competently use several central
+that is most useful for embellishing one's Snakefiles and workflows.  The key goal
+for this chapter is to introduce several simple Python constructs that can be particularly useful
+in Snakemake, allowing the user to competently use several central
 Snakemake features: _config files_, _input functions_, and _pandas input_.
 
 The second main goal of this chapter is to illustrate an approach to working
@@ -15,7 +15,7 @@ interactively with Python (the way R users might be familiar with working with
 R) within the RStudio environment.  This will allow users to run Python code
 associated with their Snakefile in the context of an interactive Python session,
 which can be considerably more illumninating---and more helpful for tracking down
-bug/errors/inconsistencies---than only getting to run that code by running
+bugs/errors/inconsistencies---than only getting to run that code by running
 Snakemake on your Snakefile.  Being able to work interactively with the Python code
 as Snakemake might see it is thus crucial to learning how to write workflows.
 So, for this second goal we will see a few little hacks for seeing input function
@@ -48,7 +48,8 @@ like you would run R code in RStudio.
 
 ### Get mamba and create a snakemake environment
 
-We will be doing this _on our laptops_ rather than upon the cluster.  Fortunately,
+You can do this on your laptop, rather than upon the cluster.
+(If you have been working on Alpine, skip to the next section!) Fortunately,
 mamba works on all platforms, and so does Snakemake.  But you might need to first install
 mamba on your laptop.  This is pretty straightforward.  If you do not already have
 mamba on your laptop, find the instructions for your platform [here](https://github.com/conda-forge/miniforge?tab=readme-ov-file#install) and follow
@@ -57,22 +58,85 @@ them.  You should be able to just use the default location for your conda/mamba 
 Once you are done with that, you will want to create a snakemake environment on your
 laptop.  Do that by following the directions that we used on our clusters,
 [here](https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces),
-without bothering to be on a compute node, of course!
+without bothering to be on a compute node, of course, since you are on your laptop!
 
 When both of the above are done, we can move on to working with python in RStudio.
+
+### Open an RStudio Server session on Alpine
+
+If you have an account on Alpine, there is an ever cooler way to do this that will
+also introduce a way to interact with your files and projects on the cluster in the
+familiar RStudio framework.  (This might even prove a useful way for running your own
+R projects and handling GitHub on the cluster).  The approach uses a _browser-based_
+portal to the Alpine computing cluster that is supported by CURC and is called
+_Open OnDemand_.  As a _browser-based_ system, you will connect to Alpine via
+your web browser. Ultimately, you will be able to run a session of RStudio Server
+that runs on a compute node on Alpine, interacting with your filesystem on the cluster
+the way you would with local files using any RStudio session on your laptop.  Additionally,
+you can drive git and get a terminal shell through RStudio server as well.  It is pretty
+slick if you are comfortable in an RStudio environment.
+
+
+Full details about OpenOndemand on Alpine can be found at the CURC website
+[here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html), with a
+whole section
+about RStudio [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio).
+
+In order to establish an RStudio session container/image/overlay, the Alpine administrators
+recommend using 4 cores, because the initial setup can take a few minutes.
+After that you can re-attach to that image quickly and use just a single core if you
+would like.  Briefy instructions on how to do that are:
+
+1. In your web browser, go to [https://ondemand-rmacc.rc.colorado.edu/](https://ondemand-rmacc.rc.colorado.edu/).
+2. That should redirect you to your CSU NetID login page.  Authenticate yourself.
+3. That should drop you into the CURC OnDemand Dashboard page that looks like this:
+
+![](./images/curc-on-demand-dashboard.png)
+
+4. Choose "Interactive Apps-->RStudio Server Presets", then use the bottom toggle
+box to choose "4 cores, 4 hours", and hit "Launch".  This will start making
+you an RStudio Server container.  Again, we choose 4 cores just for the initial
+setup, but you can choose 1 core in the future.
+
+![](./images/rstudio-server-preset.png)
+
+5. Now, go to your "Interactive Sessions" and you will see messages about your
+session starting up. Once your session is ready you can connect to it by clicking
+"Connect to RStudio Server"
+
+![](./images/rstudio-interactive-sessions-tab.png)
+6. Voila!  Clicking "Connect to RStudio Server" opens a new tab with
+an RStudio window that is pretty much what you are used to.
+
+Note that you can, if you would like, open an RStudio project you have on
+Alpine by going to the "Project" tab in the upper right and navigating your
+way to the .Rproj file.   This means that you could interact with your
+con-gen-csu repo on Alpine as an Rstudio Project.  The possibilities are
+endless.
+
+We should also mention that if you go to the "Files" tab on the original
+OnDemand Dashboard page, you get a nice web-browser-based file browser of
+your files on Alpine.  This can be a good way to transfer a couple of small
+files here and there, but don't transfer too much.  For big files, or for
+transferring things to scratch, you should
+use globus, as explained [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files).
+
+Now, that this is set up (either on Alpine or on your laptop, using the
+directions above) we can proceed to learning the python we need for
+using Snakemake well.
 
 ### Get the reticulate package and run python from your snakemake conda environment
 
 The reticulate package allows you to run python in a comfortable, interactive way
-within and R (and RStudio) session.  Importantly, it allows you to run the exact
+within an R (and RStudio) session.  Importantly, it allows you to run the exact
 python version that Snakemake uses, by letting you load the snakemake conda environment.
 
-So, open up the RStudio project for your fork of the `con-gen-csu` repo, make sure
+So, Sync your fork, then open up the RStudio project for your fork of the `con-gen-csu` repo, make sure
 you are on the main branch, and then pull, to make sure that you have all the recent
 materials from the course.
 
 
-If you do not already have 'reticulate', get it with this at the R console
+If you do not already have the 'reticulate', R-package, get it with this command at the R console
 in Rstudio:
 ```r
 install.packages("reticulate")
@@ -88,14 +152,63 @@ snakemake conda environment, in fact.  For that there is a reticulate
 function called `use_miniconda()`.  We can tell it which conda
 environment to use, most reliably, by passing the absolute path of the
 environment to the function.  This path will be the path to your conda library
-plus `envs` plus the name of the environment.  For example on my system that
-translates into:
+plus `envs` plus the name of the environment.  For example on my laptop that
+would translate into:
 ```r
 use_miniconda(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
 ```
-However, on your system, your conda library will probably be in `~/miniforge`.
+However, on your system, your conda library would probably be in `~/miniforge`.
+
+While on my RStudio Server session on Alpine I would do:
+```r
+use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
+```
 At any rate, it should be easy to find using tab-completion for path names
 in your R console.
+
+You might get an error of this sort:
+```
+Error in use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3") : 
+  Miniconda is not installed.
+Use reticulate::install_miniconda() to install Miniconda.
+```
+Somehow the RStudio Server session is not picking up that we have installed mamba.
+I suspect that it is not sourcing our `~/.bashrc` on startup.  We can fix this
+by telling reticulate where to find conda, specifically.  To do this, you will need
+to find the path to your conda.  On my system it is:
+```
+"~/miniforge3/condabin/conda"
+```
+and that should be the same for most of y'all.  Since tildes might not get
+properly expanded in some contexts in R, you will want to get the absolute
+path of that for you.  That can be done with the `normalizePath()` function
+in R.  When I do it I get:
+```r
+> normalizePath("~/miniforge3/condabin/conda")
+[1] "/projects/eriq@colostate.edu/miniforge3/condabin/conda"
+```
+Now, we will set an R option that reticulate can use to find
+the conda binary like this:
+```r
+options(reticulate.conda_binary = "/projects/eriq@colostate.edu/miniforge3/condabin/conda")
+```
+Of course, you would replace that path with the one to your conda.
+
+But that does not seem to work.  Neither did:
+```r
+Sys.setenv(RETICULATE_MINICONDA_PATH = "/projects/eriq@colostate.edu/miniforge3")
+
+# that caused this:
+ use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
+Error in python_config_impl(python) : 
+  Error 1 occurred running /projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3/bin/python: 
+In addition: Warning message:
+In system2(command = python, args = shQuote(script), stdout = TRUE,  :
+  running command ''/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3/bin/python' '/projects/eriq@colostate.edu/Rstudio_libs/4.2.2/reticulate/config/config.py' 2>/dev/null' had status 1
+  
+```
+
+Well, we will have to come back to that.
 
 Once you have successfully given the above command, you can start a python
 REPL (Read Evaluate Print and Loop) session in your R console with:
@@ -126,3 +239,87 @@ Then try:
 ```python
 x
 ```
+
+## R and Python: compare and contrast
+
+You can consider this a sort of Berlitz language course for R-speakers on how to
+communicate in Python.  It assumes that y'all know something about R.
+
+### Python doesn't have native vectors
+
+In R, we are all familiar with vectors.  Each element of a vector is of the
+same _type_ (i.e., integer, numeric, or character/string., etc.) If we do:
+```{r}
+# numeric vector
+x <- 1:10
+
+# character vector
+y <- c("a", "b", "c")
+```
+One nice feature of having vectors is that we can do array processing of them---i.e.,
+many operations/functions in R are _vectorized_: they do the same thing to each element
+of the vector.  For example:
+```{r}
+x^2
+
+paste(y, "!", sep = "")
+```
+
+Vectors and vectorized operations, as such, don't exist natively in Python (some packages provide
+that type of functionality, but it is not "baked into the guts of the language" the way
+it is in R.)
+
+
+### Python's native array is like an R list (without any names)
+
+Though python does not have a native vector class, like R's, it does have something
+that is very similar to an R list, and, in fact, in python these are called lists.
+
+So, in R you could make a list, which is a special type of vector that can include
+elements of different types, like this:
+```{r}
+L_R <- list(1, 2, "R", "word", 10)
+```
+and you could find its length with:
+```{r}
+length(L_R)
+```
+
+The equivalent data structure in Python is a list and it is formed with `[ ]`:
+```{python}
+L_Py = [1, 2, "R", "word", 10]
+```
+and you can get its length with:
+```{python}
+len(L_Py)
+```
+
+You access the elements of an R list (with no names) using the `[[ ]]` operator, 
+for example:
+```{r}
+L_R[[4]]
+```
+To access elements of a python list you use `[ ]`, but **AND THIS IS EXTREMELY IMPORTANT**
+the indexes of a Python list start from 0, while the indexes of an R list start at 1.  So,
+if you want the **first* element of a python list, you subscript it with 0:
+```{python}
+L_Py[0]
+```
+While, if you wanted the 4-th element of a python list you would subscript it with 3:
+```{python}
+L_Py[3]
+```
+
+(We also note in this output that python seems to have a preference for using single quotes for
+strings in is output.)
+
+### Operating on every element of a list
+
+Since vectorized operations do not occur automatically over the elements of lists in R,
+you may be familiar with the `lapply()` function in R, which applies a function to every
+element of a list.  So, if we wanted to append " Weird!" to every element of list `L_R`, we
+could do something like this:
+```{r}
+lapply(L_R, function(x) paste(x, "Weird!"))
+```
+Here, we have, on the fly, defined a
