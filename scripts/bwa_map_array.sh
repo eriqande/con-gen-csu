@@ -7,8 +7,8 @@
 #SBATCH --array=1-16
 
 # load the module that gives us the bwa software
-module load bwa
-module load samtools
+module load aligners/bwa
+module load bio/samtools
 
 # make a directory for log output if it does not already exist
 LDIR=results/log/bwa_map_array
