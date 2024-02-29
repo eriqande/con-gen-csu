@@ -20,4 +20,4 @@ for S in $SAMPLES; do
            --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20    
 done
 
-sha1sum results/trimmed/*.gz > assignments/005-slurm-and-bwa-mem2/sha1_fastqs.txt
+sha1sum results/trimmed2/*.gz > assignments/005-slurm-and-bwa-mem2/sha1_fastqs.txt
