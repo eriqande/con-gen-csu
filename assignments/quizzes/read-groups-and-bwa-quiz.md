@@ -1,6 +1,5 @@
 # Read groups and BWA quiz
 
-
 ## 1. Select (by clicking the box) all of the following that are crucially important to identifying PCR duplicates:
 
 - [ ] The lane a sample was sequenced on.
