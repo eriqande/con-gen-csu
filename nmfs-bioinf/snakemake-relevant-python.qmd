@@ -12,23 +12,32 @@ Snakemake features: _config files_, _input functions_, and _pandas input_.
 
 The second main goal of this chapter is to illustrate an approach to working
 interactively with Python (the way R users might be familiar with working with
-R) within the RStudio environment.  This will allow users to run Python code
+R) within the RStudio environment.  As we will see in the next chapter,
+this will allow users to run Python code
 associated with their Snakefile in the context of an interactive Python session,
-which can be considerably more illumninating---and more helpful for tracking down
+which can be considerably more illuminating---and more helpful for tracking down
 bugs/errors/inconsistencies---than only getting to run that code by running
 Snakemake on your Snakefile.  Being able to work interactively with the Python code
-as Snakemake might see it is thus crucial to learning how to write workflows.
-So, for this second goal we will see a few little hacks for seeing input function
+as Snakemake might see it is very helpful to learning how to write workflows.
+The next chapter has most of the gory details for this second goal, like some
+little hacks for seeing input function
 parameters as Snakemake might see them, etc., primarily as a learning tool to aid
-in figuring out how to write Python code within Snakemake.  
+in figuring out how to write Python code within Snakemake.  In this chapter, though
+we talk about how to set up RStudio to work interactively in the python environment
+that snakemake uses. 
 
-The order of events here are thus:
+The order of events here is thus:
 
 1. Use the R package 'reticulate' to run python, interactively, in our
 Snakemake conda environment.
 2. Once we can work interactively in python easily, we will discuss a few of the 
 main data structures and operations in python, by comparison to their equivalents
-in R and the tidyverse.
+in R and the tidyverse, talk about defining functions, and take a brief
+tour of python's 'pandas' package, which is similar in its functionality to
+R's tidyverse.
+
+
+
 3. With that background we will tackle our exploration of Snakemake's use of
   - YAML-based configuration files (i.e., config.yaml)
   - Input functions for converting wildcard values to specialized input paths or
@@ -48,8 +57,13 @@ like you would run R code in RStudio.
 
 ### Get mamba and create a snakemake environment
 
-You can do this on your laptop, rather than upon the cluster.
-(If you have been working on Alpine, skip to the next section!) Fortunately,
+You can do this on your laptop, rather than upon the cluster; however,
+if you have been working on Alpine, you should skip the rest of this section and get an RStudio session
+on Alpine following the directions in @sec-ondemand.  Returning to here to get the
+reticulate package and proceed.
+
+
+If you are doing this on your laptop, fortunately,
 mamba works on all platforms, and so does Snakemake.  But you might need to first install
 mamba on your laptop.  This is pretty straightforward.  If you do not already have
 mamba on your laptop, find the instructions for your platform [here](https://github.com/conda-forge/miniforge?tab=readme-ov-file#install) and follow
@@ -62,76 +76,7 @@ without bothering to be on a compute node, of course, since you are on your lapt
 
 When both of the above are done, we can move on to working with python in RStudio.
 
-### Open an RStudio Server session on Alpine
 
-If you have an account on Alpine, there is an ever cooler way to do this that will
-also introduce a way to interact with your files and projects on the cluster in the
-familiar RStudio framework.  (This might even prove a useful way for running your own
-R projects and handling GitHub on the cluster).  The approach uses a _browser-based_
-portal to the Alpine computing cluster that is supported by CURC and is called
-_Open OnDemand_.  As a _browser-based_ system, you will connect to Alpine via
-your web browser. Ultimately, you will be able to run a session of RStudio Server
-that runs on a compute node on Alpine, interacting with your filesystem on the cluster
-the way you would with local files using any RStudio session on your laptop.  Additionally,
-you can drive git and get a terminal shell through RStudio server as well.  It is pretty
-slick if you are comfortable in an RStudio environment.
-
-
-Full details about OpenOndemand on Alpine can be found at the CURC website
-[here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html), with a
-whole section
-about RStudio [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio).
-
-In order to establish an RStudio session container/image/overlay, the Alpine administrators
-recommend using 4 cores, because the initial setup can take a few minutes.
-After that you can re-attach to that image quickly and use just a single core if you
-would like.  Briefy instructions on how to do that are:
-
-1. In your web browser, go to [https://ondemand-rmacc.rc.colorado.edu/](https://ondemand-rmacc.rc.colorado.edu/).
-1. The first time you click that, it will take you to a page where you must choose which institution's
-OpenOnDemand infrastructure you are accessing.  Choose `Colorado State University`, from
-the pop-up menu and be sure to
-select "Remember this selection" and then click "Log On".
-
-![](./images/colostate-open-ondemand.png)
-
-2. That should redirect you to your CSU NetID login page.  Authenticate yourself.
-3. That should drop you into the CURC OnDemand Dashboard page that looks like this:
-
-![](./images/curc-on-demand-dashboard.png)
-
-4. Choose "Interactive Apps-->RStudio Server Presets", then use the bottom toggle
-box to choose "4 cores, 4 hours", and hit "Launch".  This will start making
-you an RStudio Server container.  Again, we choose 4 cores just for the initial
-setup, but you can choose 1 core in the future.
-
-![](./images/rstudio-server-preset.png)
-
-5. Now, go to your "Interactive Sessions" and you will see messages about your
-session starting up. Once your session is ready you can connect to it by clicking
-"Connect to RStudio Server"
-
-![](./images/rstudio-interactive-sessions-tab.png)
-6. Voila!  Clicking "Connect to RStudio Server" opens a new tab with
-an RStudio window that is pretty much what you are used to.
-
-Note that you can, if you would like, open an RStudio project you have on
-Alpine by going to the "Project" tab in the upper right (or choosing
-`File -> Open Project...` from the main menu) and navigating your
-way to the .Rproj file.   This means that you could interact with your
-con-gen-csu repo on Alpine as an Rstudio Project.  The possibilities are
-endless.
-
-We should also mention that if you go to the "Files" tab on the original
-OnDemand Dashboard page, you get a nice web-browser-based file browser of
-your files on Alpine.  This can be a good way to transfer a couple of small
-files here and there, but don't transfer too much.  For big files, or for
-transferring things to scratch, you should
-use globus, as explained [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files).
-
-Now, that this is set up (either on Alpine or on your laptop, using the
-directions above) we can proceed to learning the python we need for
-using Snakemake well.
 
 ### Get the reticulate package and run python from your snakemake conda environment
 
@@ -510,7 +455,130 @@ letters in the string.  Thus you could make a list of the letters in a string li
 ```{python, filename="python:"}
 [x for x in "ABCDEFG"]
 ```
-Whoa, cool!
+
+In fact, you can go even for even more economy and note that `list()` in python
+applied to any iterable object, will automatically iterate over the iterable elements
+in the abject.  Hence, this does the same as the previous line:
+```{python, filename="python:"}
+list("ABCDEFG")
+```
+
+That is good to keep in mind.  If you want a list of length 1 that includes the
+string `"ABCDDEFG"`, then, rather that `list("ABCDEFG")`, you would want to do:
+```{python, filename="python:"}
+["ABCDEFG"]
+```
+
+
+### For lists, `+` in python is like `c()`---it catenates the lists
+
+In R, if you want to add one list onto the end of another, essentially catenating them,
+you would use `c()` like this:
+```{r, filename="R:"}
+c(L_R, list("add", "some", "more", 3))
+```
+
+In python, you use `+` for that type of operation:
+```{python, filename="python:"}
+L_Py + ["add", "some", "more", 3]
+```
+
+
+### Named lists in R and `dict`s in python
+
+In R, the separate elements of a list can be _named_ and we can use the names to
+access them.  For exmaple:
+```{r, filename="R:"}
+dinners <- list(
+  Monday = "Arctic char",
+  Tuesday = "Chicken soup",
+  Wednesday = "Pizza",
+  Thursday = "Stir fry",
+  Friday= "Fend for yourselves, kids!"
+)
+```
+And then we can access each element of the list by its name in two ways:
+```{r, filename="R:"}
+# either with the dollar sign
+dinners$Tuesday
+
+# or with double brackets
+dinners[["Friday"]]
+```
+
+And of course we can assign values to that list in either way:
+```{r, filename="R:"}
+# make the changes
+dinners$Friday <- "Go out to brewery"
+dinners[["Tuesday"]] <- "Burritos"
+
+# then see what that did:
+dinners
+```
+Interestingly, the elements of a named list in R can still be accessed by their index.  We could
+get "Pizza" out the `dinners` list in three different ways:
+```{r, filename="R:"}
+dinners$Wednesday
+dinners[["Wednesday"]]
+dinners[[3]]
+```
 
 
 
+Lists in python do not take names like lists in R; however, there is another data type in
+python that does behave something like a named list.  This data type is called a **dict**, which
+is, I believe, short for "dictionary."  We can make a `dict` of our dinners like this:
+```{python, filename="python:"}
+dinners = {
+  "Monday": "Arctic char",
+  "Tuesday": "Chicken soup",
+  "Wednesday": "Pizza",
+  "Thursday":  "Stir fry",
+  "Friday": "Fend for yourselves, kids!"
+}
+```
+And we can print it like this:
+```{python, filename="python:"}
+dinners
+```
+which is not much fun to look at, and gets really ugly when the dict has multiple
+nested levels (which is definitely possible, and we will see examples of that
+when we start playing with Snakemake config files).
+
+As a side note, there is a python module called `pprint` that will pretty-print
+a variety of python objects.  It can be used like this:
+```{python, filename="python:"}
+# import only needs to happen once per session
+import pprint
+
+pprint.pp(dinners)
+```
+That is way more palatable!
+
+Elements of a dictionary can be accessed much like elements of a named list in R, but
+python uses `[ ]` for that (rather than `$` or ``[[ ]]``) like this:
+```{python, filename="python:"}
+dinners["Thursday"]
+```
+
+In R, lists can be nested with multiple levels, and the same is true in python. 
+```{python, filename="python:"}
+meals = {
+  "Monday": {"breakfast": "eggs", "lunch": "salad", "dinner": "Arctic char"},
+  "Tuesday": {"breakfast": "oatmeal", "lunch": "sandwich", "dinner": "Chicken soup"}
+}
+```
+Now, each element at the top level (Monday or Tuesday) is itself a `dict` with three
+elements (breakfast, lunch, and dinner). If you want to get the value for Tuesday's
+lunch, you just drill down into the dict, much like you would in a named R list:
+```{python}
+meals["Tuesday"]["lunch"]
+```
+
+
+
+### Defining functions
+
+### R library and python modules
+
+### Tabular data: pandas
