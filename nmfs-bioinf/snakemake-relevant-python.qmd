@@ -139,8 +139,13 @@ materials from the course.
 If you do not already have the 'reticulate', R-package, get it with this command at the R console
 in Rstudio:
 ```r
-install.packages("reticulate")
+install.packages("reticulate", repos = "https://cran.rstudio.com/")
 ```
+Note that it is critical that you add the `repos = "https://cran.rstudio.com/`
+part in there.  The RStudio Server maintained by CURC in OpenOnDemand is
+configured by default to drawn its packages from a repository full of binary versions
+which end up being much older (i.e., it will give you reticulate version 1.28 instead
+of 1.35, and everything will fall...I lost the better part of a day because of that!!)
 
 Then, you can load the package with:
 ```r
@@ -155,60 +160,17 @@ environment to the function.  This path will be the path to your conda library
 plus `envs` plus the name of the environment.  For example on my laptop that
 would translate into:
 ```r
-use_miniconda(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
+use_condaenv(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
 ```
-However, on your system, your conda library would probably be in `~/miniforge`.
+However, on your system, your conda library would probably be in `/project/user@colostate.edu/miniforge`.
 
 While on my RStudio Server session on Alpine I would do:
 ```r
-use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
+use_condaenv(condaenv = "/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
 ```
 At any rate, it should be easy to find using tab-completion for path names
 in your R console.
 
-You might get an error of this sort:
-```
-Error in use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3") : 
-  Miniconda is not installed.
-Use reticulate::install_miniconda() to install Miniconda.
-```
-Somehow the RStudio Server session is not picking up that we have installed mamba.
-I suspect that it is not sourcing our `~/.bashrc` on startup.  We can fix this
-by telling reticulate where to find conda, specifically.  To do this, you will need
-to find the path to your conda.  On my system it is:
-```
-"~/miniforge3/condabin/conda"
-```
-and that should be the same for most of y'all.  Since tildes might not get
-properly expanded in some contexts in R, you will want to get the absolute
-path of that for you.  That can be done with the `normalizePath()` function
-in R.  When I do it I get:
-```r
-> normalizePath("~/miniforge3/condabin/conda")
-[1] "/projects/eriq@colostate.edu/miniforge3/condabin/conda"
-```
-Now, we will set an R option that reticulate can use to find
-the conda binary like this:
-```r
-options(reticulate.conda_binary = "/projects/eriq@colostate.edu/miniforge3/condabin/conda")
-```
-Of course, you would replace that path with the one to your conda.
-
-But that does not seem to work.  Neither did:
-```r
-Sys.setenv(RETICULATE_MINICONDA_PATH = "/projects/eriq@colostate.edu/miniforge3")
-
-# that caused this:
- use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
-Error in python_config_impl(python) : 
-  Error 1 occurred running /projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3/bin/python: 
-In addition: Warning message:
-In system2(command = python, args = shQuote(script), stdout = TRUE,  :
-  running command ''/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3/bin/python' '/projects/eriq@colostate.edu/Rstudio_libs/4.2.2/reticulate/config/config.py' 2>/dev/null' had status 1
-  
-```
-
-Well, we will have to come back to that.
 
 Once you have successfully given the above command, you can start a python
 REPL (Read Evaluate Print and Loop) session in your R console with:
