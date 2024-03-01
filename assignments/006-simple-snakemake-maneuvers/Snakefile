@@ -51,8 +51,8 @@ rule bwa_index:
 
 rule trim_reads:
   input:
-    r1="data/{sample}_R1.fq.gz",
-    r2="data/{sample}_R2.fq.gz",
+    r1="data/fastqs/{sample}_R1.fq.gz",
+    r2="data/fastqs/{sample}_R2.fq.gz",
   output:
     r1="results/trimmed/{sample}_R1.fq.gz",
     r2="results/trimmed/{sample}_R2.fq.gz",
