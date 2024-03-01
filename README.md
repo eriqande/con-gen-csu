@@ -748,7 +748,8 @@ More Snakemake
 
 #### Prep (please do this reading before class!)
 
-- For people with access to Alpine, read the [Chapter on OpenOnDemand Browser and RStudio Server Access to Alpine](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/open-on-demand-alpine.html)
+- For people with access to Alpine, read the [Chapter on OpenOnDemand Browser and RStudio Server Access to Alpine](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/open-on-demand-alpine.html),
+  and definitely do the steps in there to get onto Open OnDemand on Alpine.
   I guarantee you _this will change your life_.
 - For everyone, read [Snakemake-relevant Python for R Users](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-relevant-python.html).  This is a minimal introduction to
   python for people that speak R already.  It will help you to make the most of Snakemake when writing your own workflows. Please work through the examples in your
