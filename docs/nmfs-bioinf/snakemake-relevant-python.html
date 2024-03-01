@@ -311,54 +311,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The reticulate package allows you to run python in a comfortable, interactive way within an R (and RStudio) session. Importantly, it allows you to run the exact python version that Snakemake uses, by letting you load the snakemake conda environment.</p>
 <p>So, Sync your fork, then open up the RStudio project for your fork of the <code>con-gen-csu</code> repo, make sure you are on the main branch, and then pull, to make sure that you have all the recent materials from the course.</p>
 <p>If you do not already have the ‘reticulate’, R-package, get it with this command at the R console in Rstudio:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>, <span class="at">repos =</span> <span class="st">"https://cran.rstudio.com/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that it is critical that you add the <code>repos = "https://cran.rstudio.com/</code> part in there. The RStudio Server maintained by CURC in OpenOnDemand is configured by default to drawn its packages from a repository full of binary versions which end up being much older (i.e., it will give you reticulate version 1.28 instead of 1.35, and everything will fall…I lost the better part of a day because of that!!)</p>
 <p>Then, you can load the package with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_miniconda()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my laptop that would translate into:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_miniconda</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, on your system, your conda library would probably be in <code>~/miniforge</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, on your system, your conda library would probably be in <code>/project/user@colostate.edu/miniforge</code>.</p>
 <p>While on my RStudio Server session on Alpine I would do:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_miniconda</span>(<span class="st">"/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>At any rate, it should be easy to find using tab-completion for path names in your R console.</p>
-<p>You might get an error of this sort:</p>
-<pre><code>Error in use_miniconda("/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3") : 
-  Miniconda is not installed.
-Use reticulate::install_miniconda() to install Miniconda.</code></pre>
-<p>Somehow the RStudio Server session is not picking up that we have installed mamba. I suspect that it is not sourcing our <code>~/.bashrc</code> on startup. We can fix this by telling reticulate where to find conda, specifically. To do this, you will need to find the path to your conda. On my system it is:</p>
-<pre><code>"~/miniforge3/condabin/conda"</code></pre>
-<p>and that should be the same for most of y’all. Since tildes might not get properly expanded in some contexts in R, you will want to get the absolute path of that for you. That can be done with the <code>normalizePath()</code> function in R. When I do it I get:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">normalizePath</span>(<span class="st">"~/miniforge3/condabin/conda"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"/projects/eriq@colostate.edu/miniforge3/condabin/conda"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now, we will set an R option that reticulate can use to find the conda binary like this:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">reticulate.conda_binary =</span> <span class="st">"/projects/eriq@colostate.edu/miniforge3/condabin/conda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Of course, you would replace that path with the one to your conda.</p>
-<p>But that does not seem to work. Neither did:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">RETICULATE_MINICONDA_PATH =</span> <span class="st">"/projects/eriq@colostate.edu/miniforge3"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># that caused this:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">use_miniconda</span>(<span class="st">"/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">python_config_impl</span>(python) <span class="sc">:</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  Error <span class="dv">1</span> occurred running <span class="sc">/</span>projects<span class="sc">/</span>eriq<span class="sc">@</span>colostate.edu<span class="sc">/</span>miniforge3<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python<span class="sc">:</span> </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>In addition<span class="sc">:</span> Warning message<span class="sc">:</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>In <span class="fu">system2</span>(<span class="at">command =</span> python, <span class="at">args =</span> <span class="fu">shQuote</span>(script), <span class="at">stdout =</span> <span class="cn">TRUE</span>,  <span class="sc">:</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  running command <span class="st">''</span><span class="sc">/</span>projects<span class="sc">/</span>eriq<span class="sc">@</span>colostate.edu<span class="sc">/</span>miniforge3<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python<span class="st">' '</span><span class="sc">/</span>projects<span class="sc">/</span>eriq<span class="sc">@</span>colostate.edu<span class="sc">/</span>Rstudio_libs<span class="sc">/</span><span class="dv">4</span>.<span class="fl">2.2</span><span class="sc">/</span>reticulate<span class="sc">/</span>config<span class="sc">/</span>config.py<span class="st">' 2&gt;/dev/null'</span> had status <span class="dv">1</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Well, we will have to come back to that.</p>
 <p>Once you have successfully given the above command, you can start a python REPL (Read Evaluate Print and Loop) session in your R console with:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After you have done that, you should see something that looks like this:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">repl_python</span>()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">12.2</span> (<span class="sc">/</span>Users<span class="sc">/</span>eriq<span class="sc">/</span>mambaforge<span class="sc">-</span>arm64<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Reticulate <span class="dv">1</span>.<span class="fl">35.0</span> REPL <span class="sc">--</span> A Python interpreter <span class="cf">in</span> R.</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Enter <span class="st">'exit'</span> or <span class="st">'quit'</span> to exit the REPL and return to R.</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">repl_python</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">12.2</span> (<span class="sc">/</span>Users<span class="sc">/</span>eriq<span class="sc">/</span>mambaforge<span class="sc">-</span>arm64<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Reticulate <span class="dv">1</span>.<span class="fl">35.0</span> REPL <span class="sc">--</span> A Python interpreter <span class="cf">in</span> R.</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Enter <span class="st">'exit'</span> or <span class="st">'quit'</span> to exit the REPL and return to R.</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The command prompt has now changed to <code>&gt;&gt;&gt;</code> and anything you type at it will be interpreted as python code.</p>
 <p>So, you can’t just type R code into it any longer. For example, see what happens if you type this in there:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>But you can type python code, for example:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then try:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="r-and-python-compare-and-contrast" class="level2" data-number="11.2">
@@ -368,19 +345,19 @@ Use reticulate::install_miniconda() to install Miniconda.</code></pre>
 <h3 data-number="11.2.1" class="anchored" data-anchor-id="python-doesnt-have-native-vectors"><span class="header-section-number">11.2.1</span> Python doesn’t have native vectors</h3>
 <p>In R, we are all familiar with vectors. Each element of a vector is of the same <em>type</em> (i.e., integer, numeric, or character/string., etc.) If we do:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric vector</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric vector</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One nice feature of having vectors is that we can do array processing of them—i.e., many operations/functions in R are <em>vectorized</em>: they do the same thing to each element of the vector. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(y, <span class="st">"!"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(y, <span class="st">"!"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "a!" "b!" "c!"</code></pre>
 </div>
@@ -392,43 +369,43 @@ Use reticulate::install_miniconda() to install Miniconda.</code></pre>
 <p>Though python does not have a native vector class, like R’s, it does have something that is very similar to an R list, and, in fact, in python these are called lists.</p>
 <p>So, in R you could make a list, which is a special type of vector that can include elements of different types, like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>L_R <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>L_R <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and you could find its length with:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(L_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(L_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>The equivalent data structure in Python is a list and it is formed with <code>[ ]</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>L_Py <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>L_Py <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and you can get its length with:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5</code></pre>
 </div>
 </div>
 <p>You access the elements of an R list (with no names) using the <code>[[ ]]</code> operator, for example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "word"</code></pre>
 </div>
 </div>
 <p>To access elements of a python list you use <code>[ ]</code>, but <strong>AND THIS IS EXTREMELY IMPORTANT</strong> the indexes of a Python list start from 0, while the indexes of an R list start at 1. So, if you want the **first* element of a python list, you subscript it with 0:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1</code></pre>
 </div>
 </div>
 <p>While, if you wanted the 4-th element of a python list you would subscript it with 3:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'word'</code></pre>
 </div>
@@ -439,7 +416,7 @@ Use reticulate::install_miniconda() to install Miniconda.</code></pre>
 <h3 data-number="11.2.3" class="anchored" data-anchor-id="operating-on-every-element-of-a-list"><span class="header-section-number">11.2.3</span> Operating on every element of a list</h3>
 <p>Since vectorized operations do not occur automatically over the elements of lists in R, you may be familiar with the <code>lapply()</code> function in R, which applies a function to every element of a list. So, if we wanted to append ” Weird!” to every element of list <code>L_R</code>, we could do something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(L_R, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="st">"Weird!"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(L_R, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="st">"Weird!"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] "1 Weird!"
