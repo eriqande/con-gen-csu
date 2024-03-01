@@ -1,19 +1,19 @@
 
 
 # run it over 3 samples
-SAMPLES = ['A', 'B', 'C']
+SAMPLES = ['DPCh_plate1_B10_S22', 'DPCh_plate1_B11_S23', 'DPCh_plate1_B12_S24', 'DPCh_plate1_C10_S34', 'DPCh_plate1_C11_S35', 'DPCh_plate1_C12_S36', 'DPCh_plate1_D09_S45', 'DPCh_plate1_D11_S47', 'DPCh_plate1_F10_S70', 'DPCh_plate1_F11_S71', 'DPCh_plate1_F12_S72', 'DPCh_plate1_G09_S81', 'DPCh_plate1_G10_S82', 'DPCh_plate1_G12_S84', 'DPCh_plate1_H09_S93', 'DPCh_plate1_H10_S94']
 
 # variant calling over two "chromosomes"
-CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14"]
+CHROMOS = ["NC_037122.1f5t9", "NC_037123.1f10t14", "NC_037124.1f8t16", "NC_037125.1f20t24"]
 
 
 rule genome_faidx:
   input:
-    "resources/genome.fasta",
+    "data/genome/genome.fasta",
   output:
-    "resources/genome.fasta.fai",
+    "data/genome/genome.fasta.fai",
   conda:
-    "envs/bwa2sam.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/bwa2sam.yaml"
   log:
     "results/logs/genome_faidx.log",
   shell:
@@ -22,11 +22,11 @@ rule genome_faidx:
 
 rule genome_dict:
   input:
-    "resources/genome.fasta",
+    "data/genome/genome.fasta",
   output:
-    "resources/genome.dict",
+    "data/genome/genome.dict",
   conda:
-    "envs/bwa2sam.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/bwa2sam.yaml"
   log:
     "results/logs/genome_dict.log",
   shell:
@@ -35,11 +35,11 @@ rule genome_dict:
 
 rule bwa_index:
   input:
-    "resources/genome.fasta"
+    "data/genome/genome.fasta"
   output:
-    multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+    multiext("data/genome/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
   conda:
-    "envs/bwa2sam.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/bwa2sam.yaml"
   log:
     out="results/logs/bwa_index/bwa_index.log",
     err="results/logs/bwa_index/bwa_index.err"
@@ -51,15 +51,15 @@ rule bwa_index:
 
 rule trim_reads:
   input:
-    r1="data/{sample}_R1.fastq.gz",
-    r2="data/{sample}_R2.fastq.gz",
+    r1="data/{sample}_R1.fq.gz",
+    r2="data/{sample}_R2.fq.gz",
   output:
-    r1="results/trimmed/{sample}_R1.fastq.gz",
-    r2="results/trimmed/{sample}_R2.fastq.gz",
+    r1="results/trimmed/{sample}_R1.fq.gz",
+    r2="results/trimmed/{sample}_R2.fq.gz",
     html="results/qc/fastp/{sample}.html",
     json="results/qc/fastp/{sample}.json"
   conda:
-    "envs/fastp.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/fastp.yaml"
   log:
     out="results/logs/trim_reads/{sample}.log",
     err="results/logs/trim_reads/{sample}.err",
@@ -79,14 +79,14 @@ rule trim_reads:
 
 rule map_reads:
   input:
-    r1="results/trimmed/{sample}_R1.fastq.gz",
-    r2="results/trimmed/{sample}_R2.fastq.gz",
-    genome="resources/genome.fasta",
-    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+    r1="results/trimmed/{sample}_R1.fq.gz",
+    r2="results/trimmed/{sample}_R2.fq.gz",
+    genome="data/genome/genome.fasta",
+    idx=multiext("data/genome/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
   output:
     "results/bam/{sample}.bam"
   conda:
-    "envs/bwa2sam.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/bwa2sam.yaml"
   log:
     "results/logs/map_reads/{sample}.log"
   params:
@@ -107,7 +107,7 @@ rule mark_duplicates:
     bai="results/mkdup/{sample}.bai",
     metrics="results/qc/mkdup_metrics/{sample}.metrics"
   conda:
-    "envs/gatk.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/gatk.yaml"
   log:
     "results/logs/mark_duplicates/{sample}.log"
   shell:
@@ -124,14 +124,14 @@ rule make_gvcfs_by_chromo:
   input:
     bam="results/mkdup/{sample}.bam",
     bai="results/mkdup/{sample}.bai",
-    ref="resources/genome.fasta",
-    idx="resources/genome.dict",
-    fai="resources/genome.fasta.fai"
+    ref="data/genome/genome.fasta",
+    idx="data/genome/genome.dict",
+    fai="data/genome/genome.fasta.fai"
   output:
     gvcf="results/gvcf/{chromo}/{sample}.g.vcf.gz",
     idx="results/gvcf/{chromo}/{sample}.g.vcf.gz.tbi",
   conda:
-    "envs/gatk.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/gatk.yaml"
   log:
     "results/logs/make_gvcfs_by_chromo/{chromo}/{sample}.log"
   params:
@@ -154,7 +154,7 @@ rule import_genomics_db_by_chromo:
   output:
     gdb=directory("results/genomics_db/{chromo}")
   conda:
-    "envs/gatk.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/gatk.yaml"
   log:
     "results/logs/import_genomics_db_by_chromo/{chromo}.log"
   params:
@@ -172,14 +172,14 @@ rule import_genomics_db_by_chromo:
 rule vcf_from_gdb_by_chromo:
   input:
     gdb="results/genomics_db/{chromo}",
-    ref="resources/genome.fasta",
-    fai="resources/genome.fasta.fai",
-    idx="resources/genome.dict",
+    ref="data/genome/genome.fasta",
+    fai="data/genome/genome.fasta.fai",
+    idx="data/genome/genome.dict",
   output:
     vcf="results/chromo_vcfs/{chromo}.vcf.gz",
     idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi",
   conda:
-    "envs/gatk.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/gatk.yaml"
   log:
     "results/logs/vcf_from_gdb_by_chromo/{chromo}.txt"
   shell:
@@ -195,7 +195,7 @@ rule concat_vcfs:
   output:
     vcf="results/vcf/all.vcf.gz"
   conda:
-    "envs/bcftools.yaml"
+    "assignments/006-simple-snakemake-maneuvers/envs/bcftools.yaml"
   log:
     "results/concat_vcfs/all.log"
   shell:
