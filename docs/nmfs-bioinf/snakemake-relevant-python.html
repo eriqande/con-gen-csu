@@ -234,7 +234,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#python-doesnt-have-native-vectors" id="toc-python-doesnt-have-native-vectors" class="nav-link" data-scroll-target="#python-doesnt-have-native-vectors"><span class="header-section-number">11.2.1</span> Python doesn’t have native vectors</a></li>
   <li><a href="#pythons-native-array-is-like-an-r-list-without-any-names" id="toc-pythons-native-array-is-like-an-r-list-without-any-names" class="nav-link" data-scroll-target="#pythons-native-array-is-like-an-r-list-without-any-names"><span class="header-section-number">11.2.2</span> Python’s native array is like an R list (without any names)</a></li>
-  <li><a href="#operating-on-every-element-of-a-list" id="toc-operating-on-every-element-of-a-list" class="nav-link" data-scroll-target="#operating-on-every-element-of-a-list"><span class="header-section-number">11.2.3</span> Operating on every element of a list</a></li>
+  <li><a href="#double-or-single-quotes-in-python" id="toc-double-or-single-quotes-in-python" class="nav-link" data-scroll-target="#double-or-single-quotes-in-python"><span class="header-section-number">11.2.3</span> Double or single quotes in Python?</a></li>
+  <li><a href="#replacement-of-elements-of-a-list" id="toc-replacement-of-elements-of-a-list" class="nav-link" data-scroll-target="#replacement-of-elements-of-a-list"><span class="header-section-number">11.2.4</span> Replacement of elements of a list</a></li>
+  <li><a href="#operating-on-every-element-of-a-list" id="toc-operating-on-every-element-of-a-list" class="nav-link" data-scroll-target="#operating-on-every-element-of-a-list"><span class="header-section-number">11.2.5</span> Operating on every element of a list</a></li>
+  <li><a href="#type-conversion-is-not-automatic-in-python" id="toc-type-conversion-is-not-automatic-in-python" class="nav-link" data-scroll-target="#type-conversion-is-not-automatic-in-python"><span class="header-section-number">11.2.6</span> Type conversion is not automatic in Python</a></li>
+  <li><a href="#list-comprehension-operating-on-every-element-of-a-list-part-2" id="toc-list-comprehension-operating-on-every-element-of-a-list-part-2" class="nav-link" data-scroll-target="#list-comprehension-operating-on-every-element-of-a-list-part-2"><span class="header-section-number">11.2.7</span> List comprehension: Operating on every element of a list, Part 2</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -290,6 +294,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In order to establish an RStudio session container/image/overlay, the Alpine administrators recommend using 4 cores, because the initial setup can take a few minutes. After that you can re-attach to that image quickly and use just a single core if you would like. Briefy instructions on how to do that are:</p>
 <ol type="1">
 <li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
+<li>The first time you click that, it will take you to a page where you must choose which institution’s OpenOnDemand infrastructure you are accessing. Choose <code>Colorado State University</code>, from the pop-up menu and be sure to select “Remember this selection” and then click “Log On”.</li>
+</ol>
+<p><img src="./images/colostate-open-ondemand.png" class="img-fluid"></p>
+<ol start="2" type="1">
 <li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
 <li>That should drop you into the CURC OnDemand Dashboard page that looks like this:</li>
 </ol>
@@ -302,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”</li>
 </ol>
 <p><img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"> 6. Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</p>
-<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless.</p>
+<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless.</p>
 <p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
 <p>Now, that this is set up (either on Alpine or on your laptop, using the directions above) we can proceed to learning the python we need for using Snakemake well.</p>
 </section>
@@ -312,15 +320,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>So, Sync your fork, then open up the RStudio project for your fork of the <code>con-gen-csu</code> repo, make sure you are on the main branch, and then pull, to make sure that you have all the recent materials from the course.</p>
 <p>If you do not already have the ‘reticulate’, R-package, get it with this command at the R console in Rstudio:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>, <span class="at">repos =</span> <span class="st">"https://cran.rstudio.com/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that it is critical that you add the <code>repos = "https://cran.rstudio.com/</code> part in there. The RStudio Server maintained by CURC in OpenOnDemand is configured by default to drawn its packages from a repository full of binary versions which end up being much older (i.e., it will give you reticulate version 1.28 instead of 1.35, and everything will fall…I lost the better part of a day because of that!!)</p>
+<p>Note that, on Alpine, it is critical that you add the <code>repos = "https://cran.rstudio.com/</code> part in there. The RStudio Server maintained by CURC in OpenOnDemand is configured by default to draw its packages from a repository full of binary versions, and it may end up givng you versions of packages which are much older than the most recent versions. (At the time of this wriring, it installed ‘reticulate’ version 1.28 instead of 1.35, and all the following steps failed…I lost a good several hours because of that!!)</p>
 <p>Then, you can load the package with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_miniconda()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my laptop that would translate into:</p>
+<p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_condaenv()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my laptop that would translate into:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, on your system, your conda library would probably be in <code>/project/user@colostate.edu/miniforge</code>.</p>
+<p>However, if you are on Alpine, your conda library would probably be in <code>/project/user@colostate.edu/miniforge</code>.</p>
 <p>While on my RStudio Server session on Alpine I would do:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>At any rate, it should be easy to find using tab-completion for path names in your R console.</p>
+<p>At any rate, it should be easy to find the path to your snakemake environment using tab-completion for path names in your R console.</p>
 <p>Once you have successfully given the above command, you can start a python REPL (Read Evaluate Print and Loop) session in your R console with:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After you have done that, you should see something that looks like this:</p>
@@ -340,20 +348,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="r-and-python-compare-and-contrast" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="r-and-python-compare-and-contrast"><span class="header-section-number">11.2</span> R and Python: compare and contrast</h2>
-<p>You can consider this a sort of Berlitz language course for R-speakers on how to communicate in Python. It assumes that y’all know something about R.</p>
+<p>You can consider this a sort of Berlitz language course for R-speakers on how to communicate in Python. It assumes that y’all know something about R. This is really just scratching the surface of both langauges, but it will supply you with a few important things for working in Snakemake.</p>
 <section id="python-doesnt-have-native-vectors" class="level3" data-number="11.2.1">
 <h3 data-number="11.2.1" class="anchored" data-anchor-id="python-doesnt-have-native-vectors"><span class="header-section-number">11.2.1</span> Python doesn’t have native vectors</h3>
-<p>In R, we are all familiar with vectors. Each element of a vector is of the same <em>type</em> (i.e., integer, numeric, or character/string., etc.) If we do:</p>
+<p>In R, we are all familiar with vectors. Each element of a vector is of the same <em>type</em>, i.e., integer, numeric, or character/string, etc. Here we make a numeric vector and a character vector in R:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric vector</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
 <p>One nice feature of having vectors is that we can do array processing of them—i.e., many operations/functions in R are <em>vectorized</em>: they do the same thing to each element of the vector. For example:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
 </div>
@@ -362,61 +380,206 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "a!" "b!" "c!"</code></pre>
 </div>
 </div>
-<p>Vectors and vectorized operations, as such, don’t exist natively in Python (some packages provide that type of functionality, but it is not “baked into the guts of the language” the way it is in R.)</p>
+<p>By contrast, vectors and vectorized operations, as such, <em>do not</em> exist natively in Python. Some packages provide that type of functionality, but it is not “baked into the guts of the language” the way it is in R.</p>
 </section>
 <section id="pythons-native-array-is-like-an-r-list-without-any-names" class="level3" data-number="11.2.2">
 <h3 data-number="11.2.2" class="anchored" data-anchor-id="pythons-native-array-is-like-an-r-list-without-any-names"><span class="header-section-number">11.2.2</span> Python’s native array is like an R list (without any names)</h3>
-<p>Though python does not have a native vector class, like R’s, it does have something that is very similar to an R list, and, in fact, in python these are called lists.</p>
-<p>So, in R you could make a list, which is a special type of vector that can include elements of different types, like this:</p>
+<p>Though python does not have a native vector class, like R’s, it does have something that is very similar to an R list, and, in fact, in python these are called “lists.”</p>
+<p>In R you make a list, which is a special type of vector that can include elements of different types (i.e., one element could be an integer, another a character/string, another a numeric vector, and another a list!, etc.), like this:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>L_R <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>and you could find its length with:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(L_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>The equivalent data structure in Python is a list and it is formed with <code>[ ]</code>:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>L_Py <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>and you can get its length with:</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5</code></pre>
 </div>
 </div>
-<p>You access the elements of an R list (with no names) using the <code>[[ ]]</code> operator, for example:</p>
+<p>You can access the elements of an R list using the <code>[[ ]]</code> operator and the index of each element. In R, lists are “base-1 indexed,” which means the first element has the index 1, and the second the index 2, and so forth. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the first element of the R list L_R</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the fourth element of the R list L_R</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "word"</code></pre>
 </div>
 </div>
-<p>To access elements of a python list you use <code>[ ]</code>, but <strong>AND THIS IS EXTREMELY IMPORTANT</strong> the indexes of a Python list start from 0, while the indexes of an R list start at 1. So, if you want the **first* element of a python list, you subscript it with 0:</p>
+<p>To access elements of a python list you use <code>[ ]</code>, but <strong>(THIS IS EXTREMELY IMPORTANT!)</strong> python lists are “base-0 indexed”— the indexes of a python list start from 0, instead of 1. So, if you want the <strong>first</strong> element of a python list, you subscript it with 0:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1</code></pre>
 </div>
 </div>
 <p>While, if you wanted the 4-th element of a python list you would subscript it with 3:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'word'</code></pre>
 </div>
 </div>
-<p>(We also note in this output that python seems to have a preference for using single quotes for strings in is output.)</p>
 </section>
-<section id="operating-on-every-element-of-a-list" class="level3" data-number="11.2.3">
-<h3 data-number="11.2.3" class="anchored" data-anchor-id="operating-on-every-element-of-a-list"><span class="header-section-number">11.2.3</span> Operating on every element of a list</h3>
-<p>Since vectorized operations do not occur automatically over the elements of lists in R, you may be familiar with the <code>lapply()</code> function in R, which applies a function to every element of a list. So, if we wanted to append ” Weird!” to every element of list <code>L_R</code>, we could do something like this:</p>
+<section id="double-or-single-quotes-in-python" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="double-or-single-quotes-in-python"><span class="header-section-number">11.2.3</span> Double or single quotes in Python?</h3>
+<p>We also note in the above output that python seems to have a preference for using single quotes for strings in its output; however just as in R, you can use <code>"</code> and <code>'</code> somewhat interchangeably in Python. According to <a href="https://stackoverflow.com/questions/65758620/are-there-any-differences-in-and-in-python">StackOverflow</a>:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>In Python there <span class="kw">is</span> no difference between both quotations of a string.</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>As you have noticed both result <span class="kw">in</span> the same value stored <span class="kw">in</span> a variable.</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>There <span class="kw">is</span> an important advantage of being able to use these quotation marks</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>interchangeably <span class="op">-</span> you can include <span class="kw">in</span> the string the quotation mark that you</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>are <span class="kw">not</span> using to enquote the string, e.g.:</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>single <span class="op">=</span> <span class="st">"This string variable contains 'single' quotation marks."</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>double <span class="op">=</span> <span class="st">'This string variable contains "double" quotation marks.'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So, that is sort of like R, though R makes internal substitutions and some backslack-escaping of double quotes. Here is the R version:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(L_R, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="st">"Weird!"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>heck_double <span class="ot">&lt;-</span> <span class="st">"What the 'heck'?"</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>heck_single <span class="ot">&lt;-</span> <span class="st">'What the "heck"?'</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>heck_double</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "What the 'heck'?"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>heck_single</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "What the \"heck\"?"</code></pre>
+</div>
+</div>
+<p>Here is the Python version:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># python</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>heck_double <span class="op">=</span> <span class="st">"What the 'heck'?"</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>heck_single <span class="op">=</span> <span class="st">'What the "heck"?'</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>heck_double</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"What the 'heck'?"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>heck_single</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'What the "heck"?'</code></pre>
+</div>
+</div>
+<p>That said, every Snakefile I have seen out in the wild tends to use double quotes to enquote path names and simple command lines.</p>
+</section>
+<section id="replacement-of-elements-of-a-list" class="level3" data-number="11.2.4">
+<h3 data-number="11.2.4" class="anchored" data-anchor-id="replacement-of-elements-of-a-list"><span class="header-section-number">11.2.4</span> Replacement of elements of a list</h3>
+<p>In R, you know that you can change one element of a list with a simple assignment to that element:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">5</span>]] <span class="ot">&lt;-</span> <span class="st">"New Last Element"</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># now we print the whole list</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>L_R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] "R"
+
+[[4]]
+[1] "word"
+
+[[5]]
+[1] "New Last Element"</code></pre>
+</div>
+</div>
+<p>In python we can do exactly the same thing:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">4</span>] <span class="op">=</span> <span class="st">"New Last Element"</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># now print the whole python list</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>L_Py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1, 2, 'R', 'word', 'New Last Element']</code></pre>
+</div>
+</div>
+</section>
+<section id="operating-on-every-element-of-a-list" class="level3" data-number="11.2.5">
+<h3 data-number="11.2.5" class="anchored" data-anchor-id="operating-on-every-element-of-a-list"><span class="header-section-number">11.2.5</span> Operating on every element of a list</h3>
+<p>Since vectorized operations do not occur automatically over the elements of lists in R, you may be familiar with the <code>lapply()</code> function in R, which applies a function to every element of a list. So, if we wanted to append “Weird!” to every element of list <code>L_R</code>, we could do something like this:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(L_R, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="st">"Weird!"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] "1 Weird!"
@@ -431,10 +594,310 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [1] "word Weird!"
 
 [[5]]
-[1] "10 Weird!"</code></pre>
+[1] "New Last Element Weird!"</code></pre>
 </div>
 </div>
-<p>Here, we have, on the fly, defined a</p>
+<p>Here, we have, on the fly, defined a new function using the <code>function()</code> function in R. This is called an “anonymous” function because we do not give it a name, but it returns a function in the context where R is expecting a function (i.e., the <code>FUN</code> argument of <code>lapply()</code>). We see above that <code>lapply()</code> returns a list.</p>
+<p>In python, there is a function very similar to <code>lapply()</code> in R, and it is called <code>map</code>. Additionally, there is a notion of an “anonymous” function, but, in python, these are called “lambda” functions. The analogous syntax in python for appending “Weird!” to each element of a list would be:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="bu">str</span>(x) <span class="op">+</span> <span class="st">" Weird!"</span>, L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;map object at 0x1316138b0&gt;</code></pre>
+</div>
+</div>
+<p><code>map</code> is like <code>lapply()</code> but the order of its arguments is reversed—it takes the function first and the list second—and it doesn’t automatically return a list; rather, as you can see, it returns a <code>&lt;map object at some_location&gt;</code> where some <code>some_location</code> is the address of some computer memory, like <code>0x292826170</code>.</p>
+<p>If you want to get the actual list back from <code>map(lambda x: str(x) + " Weird!", L_Py)</code> you have to pass it into python’s <code>list()</code> function:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="bu">str</span>(x) <span class="op">+</span> <span class="st">' Weird!'</span>, L_Py))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['1 Weird!', '2 Weird!', 'R Weird!', 'word Weird!', 'New Last Element Weird!']</code></pre>
+</div>
+</div>
+</section>
+<section id="type-conversion-is-not-automatic-in-python" class="level3" data-number="11.2.6">
+<h3 data-number="11.2.6" class="anchored" data-anchor-id="type-conversion-is-not-automatic-in-python"><span class="header-section-number">11.2.6</span> Type conversion is not automatic in Python</h3>
+<p>In R, some type conversion is automatic if it goes from a more restricted to a more general type. In other words, if you are passing an integer or a numeric variable into a function or context that is expecting a string, R will happily convert the numeric variable to a string. Hence you can do:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"Pi is"</span>, <span class="fl">3.1415</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Pi is 3.1415"</code></pre>
+</div>
+</div>
+<p>In the above, <code>3.1415</code> is a numeric variable, but R is content to convert it to a string to <code>paste()</code> it to the string “Pi is”.</p>
+<p>Python does not automatically convert types to the more general type. As we saw above, to concatenate two strings in python we can use the <code>+</code> operator:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">'string1'</span> <span class="op">+</span> <span class="st">'string2'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'string1string2'</code></pre>
+</div>
+</div>
+<p>However python won’t automatically convert an numeric type, say, to a character type to get this job done. In other words, if we do this in python:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="st">"Pi is "</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">3.1415</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">+</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TypeError: can only concatenate str (not "float") to str</code></pre>
+</div>
+</div>
+<p>We get an error, rather than getting “Pi is 3.1415”.</p>
+<p>Therefore, when mixing types in an operation, but desiring a particular type as the output, you may need to <em>coerce</em> variables to that output type. For example:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">+</span> <span class="bu">str</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'Pi is 3.1415'</code></pre>
+</div>
+</div>
+<p>The five data types in python that correspond to R’s five, main, atomic data types are given in the following tables, along with the functions used for coercion to that data type.</p>
+<div id="tbl-panel" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;11.1: Five atomic data types in R and Python
+</figcaption>
+<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-first" class="quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) R Types
+</figcaption>
+<div aria-describedby="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">type</th>
+<th style="text-align: left;">coercion</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">logical</td>
+<td style="text-align: left;"><code>as.logical()</code></td>
+<td style="text-align: left;"><code>TRUE</code>, <code>FALSE</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;"><code>as.integer()</code></td>
+<td style="text-align: left;"><code>3L</code>, <code>16L</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;"><code>as.numeric()</code></td>
+<td style="text-align: left;"><code>3</code>, <code>16</code>, <code>4.2</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">complex</td>
+<td style="text-align: left;"><code>as.complex()</code></td>
+<td style="text-align: left;"><code>3.2 + 4i</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;"><code>as.character()</code></td>
+<td style="text-align: left;"><code>"foo"</code>, <code>'bar'</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-second" class="quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Python Types
+</figcaption>
+<div aria-describedby="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">type</th>
+<th style="text-align: left;">coercion</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bool</td>
+<td style="text-align: left;"><code>bool()</code></td>
+<td style="text-align: left;"><code>True</code>, <code>False</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">int</td>
+<td style="text-align: left;"><code>int()</code></td>
+<td style="text-align: left;"><code>3</code>, <code>16</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">float</td>
+<td style="text-align: left;"><code>float()</code></td>
+<td style="text-align: left;"><code>3.0</code>, <code>16.0</code>, <code>4.2</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">complex</td>
+<td style="text-align: left;"><code>complex()</code></td>
+<td style="text-align: left;"><code>3 + 4j</code>, <code>8.2 + 2.3j</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str</td>
+<td style="text-align: left;"><code>str()</code></td>
+<td style="text-align: left;"><code>"foo"</code>, <code>'bar'</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p>We emphasize a few important points here:</p>
+<ol type="1">
+<li>Python uses <code>True</code> and <code>False</code> for its Boolean types, while R uses <code>TRUE</code> and <code>FALSE</code>. The capitalization differences are very important. The variations don’t work across languages!</li>
+<li>While R has the <code>class()</code> function to tell you what class any abject is, python has the <code>type()</code> function that tells you what data type an object is. This can be quite useful for familiarizing yourself with what is going on in your own code, or someone else’s:</li>
+</ol>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>list2 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="cn">FALSE</span>, <span class="dv">3</span>L, <span class="fl">3.1415</span>, <span class="dv">3</span> <span class="sc">+</span> <span class="fl">4.2</span>i, <span class="st">"Boing!"</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list2, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "logical"
+
+[[2]]
+[1] "integer"
+
+[[3]]
+[1] "numeric"
+
+[[4]]
+[1] "complex"
+
+[[5]]
+[1] "character"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>list2 <span class="op">=</span> [<span class="va">False</span>, <span class="dv">3</span>, <span class="fl">3.1415</span>, <span class="dv">3</span> <span class="op">+</span> <span class="ot">4.2j</span>, <span class="st">"Boing!"</span>]</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="bu">list</span>(<span class="bu">map</span>(<span class="bu">type</span>, list2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[&lt;class 'bool'&gt;, &lt;class 'int'&gt;, &lt;class 'float'&gt;, &lt;class 'complex'&gt;, &lt;class 'str'&gt;]</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li><code>list</code> is itself a data type in python, and when we write <code>list(map(type, list2))</code> we are essentially coercing and object of class <code>map</code> to be a list.</li>
+</ol>
+</section>
+<section id="list-comprehension-operating-on-every-element-of-a-list-part-2" class="level3" data-number="11.2.7">
+<h3 data-number="11.2.7" class="anchored" data-anchor-id="list-comprehension-operating-on-every-element-of-a-list-part-2"><span class="header-section-number">11.2.7</span> List comprehension: Operating on every element of a list, Part 2</h3>
+<p>Previously, we saw the R <code>lapply()</code> command. We note here that you could have applied a function to every element of a list in R using a <code>for</code> loop. We could have done something like this:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>L_R2 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(L_R)) L_R2[[i]] <span class="ot">&lt;-</span> <span class="fu">paste</span>(L_R[[i]], <span class="st">"Weird!"</span>)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now print it out:</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>L_R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "1 Weird!"
+
+[[2]]
+[1] "2 Weird!"
+
+[[3]]
+[1] "R Weird!"
+
+[[4]]
+[1] "word Weird!"
+
+[[5]]
+[1] "New Last Element Weird!"</code></pre>
+</div>
+</div>
+<p>The above is not considered good R style, it is not much fun to look at and it will operate more slowly than <code>lapply()</code> in most circumstances. However, it is good to see this to motivate an approach in python for operating on every element of a list (and returning a list) that <em>is</em> considered good python style. This is called the syntax of “list comprehension”, and it looks like this:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python, but not meant to be run:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">"do something to x"</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">list</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>where “do something to x” is replaced by some operation on a variable called <code>x</code> (or whatever you might want to call it) and list is an existing list object.</p>
+<p>So, to paste “Weird!” onto the elements of the list <code>L_Py</code> via list comprehension we would do:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>[<span class="bu">str</span>(x) <span class="op">+</span> <span class="st">" Weird!"</span> <span class="cf">for</span> x <span class="kw">in</span> L_Py]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['1 Weird!', '2 Weird!', 'R Weird!', 'word Weird!', 'New Last Element Weird!']</code></pre>
+</div>
+</div>
+<p>See that it returns a list. Unlike in R, for loops, and especially those within a list comprehension, are not eschewed.</p>
+<p>There is actually a further subtlety here. The <code>for</code> in there can cycle over the elements in a list, but in fact, it is much more general. It can cycle over all the elements in any “iterable” (i.e., able to be iterated over), object. For example a single string like <code>"ABCDEFG"</code> is iterable—python will iterate over the differnt letters in the string. Thus you could make a list of the letters in a string like:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>python:</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>[x <span class="cf">for</span> x <span class="kw">in</span> <span class="st">"ABCDEFG"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['A', 'B', 'C', 'D', 'E', 'F', 'G']</code></pre>
+</div>
+</div>
+<p>Whoa, cool!</p>
 
 
 </section>

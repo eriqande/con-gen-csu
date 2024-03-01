@@ -88,6 +88,13 @@ After that you can re-attach to that image quickly and use just a single core if
 would like.  Briefy instructions on how to do that are:
 
 1. In your web browser, go to [https://ondemand-rmacc.rc.colorado.edu/](https://ondemand-rmacc.rc.colorado.edu/).
+1. The first time you click that, it will take you to a page where you must choose which institution's
+OpenOnDemand infrastructure you are accessing.  Choose `Colorado State University`, from
+the pop-up menu and be sure to
+select "Remember this selection" and then click "Log On".
+
+![](./images/colostate-open-ondemand.png)
+
 2. That should redirect you to your CSU NetID login page.  Authenticate yourself.
 3. That should drop you into the CURC OnDemand Dashboard page that looks like this:
 
@@ -109,7 +116,8 @@ session starting up. Once your session is ready you can connect to it by clickin
 an RStudio window that is pretty much what you are used to.
 
 Note that you can, if you would like, open an RStudio project you have on
-Alpine by going to the "Project" tab in the upper right and navigating your
+Alpine by going to the "Project" tab in the upper right (or choosing
+`File -> Open Project...` from the main menu) and navigating your
 way to the .Rproj file.   This means that you could interact with your
 con-gen-csu repo on Alpine as an Rstudio Project.  The possibilities are
 endless.
@@ -141,11 +149,12 @@ in Rstudio:
 ```r
 install.packages("reticulate", repos = "https://cran.rstudio.com/")
 ```
-Note that it is critical that you add the `repos = "https://cran.rstudio.com/`
+Note that, on Alpine, it is critical that you add the `repos = "https://cran.rstudio.com/`
 part in there.  The RStudio Server maintained by CURC in OpenOnDemand is
-configured by default to drawn its packages from a repository full of binary versions
-which end up being much older (i.e., it will give you reticulate version 1.28 instead
-of 1.35, and everything will fall...I lost the better part of a day because of that!!)
+configured by default to draw its packages from a repository full of binary versions, and
+it may end up givng you versions of packages which are much older than the most recent
+versions. (At the time of this wriring, it installed 'reticulate' version 1.28 instead
+of 1.35, and all the following steps failed...I lost a good several hours because of that!!)
 
 Then, you can load the package with:
 ```r
@@ -154,7 +163,7 @@ library(reticulate)
 
 Now, we want to use python from a particular conda environment---our
 snakemake conda environment, in fact.  For that there is a reticulate
-function called `use_miniconda()`.  We can tell it which conda
+function called `use_condaenv()`.  We can tell it which conda
 environment to use, most reliably, by passing the absolute path of the
 environment to the function.  This path will be the path to your conda library
 plus `envs` plus the name of the environment.  For example on my laptop that
@@ -162,14 +171,14 @@ would translate into:
 ```r
 use_condaenv(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
 ```
-However, on your system, your conda library would probably be in `/project/user@colostate.edu/miniforge`.
+However, if you are on Alpine, your conda library would probably be in `/project/user@colostate.edu/miniforge`.
 
 While on my RStudio Server session on Alpine I would do:
 ```r
 use_condaenv(condaenv = "/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")
 ```
-At any rate, it should be easy to find using tab-completion for path names
-in your R console.
+At any rate, it should be easy to find the path to your snakemake environment
+using tab-completion for path names in your R console.
 
 
 Once you have successfully given the above command, you can start a python
@@ -205,13 +214,16 @@ x
 ## R and Python: compare and contrast
 
 You can consider this a sort of Berlitz language course for R-speakers on how to
-communicate in Python.  It assumes that y'all know something about R.
+communicate in Python.  It assumes that y'all know something about R. This is
+really just scratching the surface of both langauges, but it will supply you with
+a few important things for working in Snakemake.  
 
 ### Python doesn't have native vectors
 
 In R, we are all familiar with vectors.  Each element of a vector is of the
-same _type_ (i.e., integer, numeric, or character/string., etc.) If we do:
-```{r}
+same _type_, i.e., integer, numeric, or character/string, etc.  Here we make
+a numeric vector and a character vector in R:
+```{r, filename="R:"}
 # numeric vector
 x <- 1:10
 
@@ -221,67 +233,284 @@ y <- c("a", "b", "c")
 One nice feature of having vectors is that we can do array processing of them---i.e.,
 many operations/functions in R are _vectorized_: they do the same thing to each element
 of the vector.  For example:
-```{r}
+```{r, filename="R:"}
 x^2
 
 paste(y, "!", sep = "")
 ```
 
-Vectors and vectorized operations, as such, don't exist natively in Python (some packages provide
+By contrast, vectors and vectorized operations, as such, _do not_ exist natively in Python. Some packages provide
 that type of functionality, but it is not "baked into the guts of the language" the way
-it is in R.)
+it is in R.
 
 
 ### Python's native array is like an R list (without any names)
 
 Though python does not have a native vector class, like R's, it does have something
-that is very similar to an R list, and, in fact, in python these are called lists.
+that is very similar to an R list, and, in fact, in python these are called "lists."
 
-So, in R you could make a list, which is a special type of vector that can include
-elements of different types, like this:
-```{r}
+In R you make a list, which is a special type of vector that can include
+elements of different types (i.e., one element could be an integer, another a
+character/string, another a numeric vector, and another a list!, etc.), like this:
+```{r, filename="R:"}
 L_R <- list(1, 2, "R", "word", 10)
 ```
 and you could find its length with:
-```{r}
+```{r, filename="R:"}
 length(L_R)
 ```
 
 The equivalent data structure in Python is a list and it is formed with `[ ]`:
-```{python}
+```{python, filename="python:"}
 L_Py = [1, 2, "R", "word", 10]
 ```
 and you can get its length with:
-```{python}
+```{python, filename="python:"}
 len(L_Py)
 ```
 
-You access the elements of an R list (with no names) using the `[[ ]]` operator, 
-for example:
-```{r}
+You can access the elements of an R list using the `[[ ]]` operator and the index
+of each element.  In R, lists are "base-1 indexed," which means the
+first element has the index 1, and the second the index 2, and so forth.
+For example:
+```{r, filename="R:"}
+# get the first element of the R list L_R
+L_R[[1]]
+
+# get the fourth element of the R list L_R
 L_R[[4]]
 ```
-To access elements of a python list you use `[ ]`, but **AND THIS IS EXTREMELY IMPORTANT**
-the indexes of a Python list start from 0, while the indexes of an R list start at 1.  So,
-if you want the **first* element of a python list, you subscript it with 0:
-```{python}
+To access elements of a python list you use `[ ]`, but **(THIS IS EXTREMELY IMPORTANT!)**
+python lists are "base-0 indexed"---
+the indexes of a python list start from 0, instead of 1.  So,
+if you want the **first** element of a python list, you subscript it with 0:
+```{python, filename="python:"}
 L_Py[0]
 ```
 While, if you wanted the 4-th element of a python list you would subscript it with 3:
-```{python}
+```{python, filename="python:"}
 L_Py[3]
 ```
 
-(We also note in this output that python seems to have a preference for using single quotes for
-strings in is output.)
+
+### Double or single quotes in Python?
+
+We also note in the above output that python seems to have a preference for using single quotes for
+strings in its output; however just as in R, you can use `"` and `'` somewhat interchangeably in Python.
+According to
+[StackOverflow](https://stackoverflow.com/questions/65758620/are-there-any-differences-in-and-in-python):
+```python
+In Python there is no difference between both quotations of a string.
+As you have noticed both result in the same value stored in a variable.
+
+There is an important advantage of being able to use these quotation marks
+interchangeably - you can include in the string the quotation mark that you
+are not using to enquote the string, e.g.:
+
+single = "This string variable contains 'single' quotation marks."
+double = 'This string variable contains "double" quotation marks.'
+```
+
+So, that is sort of like R, though R makes internal substitutions and
+some backslack-escaping of double quotes.  Here is the R version:
+```{r, filename="R:"}
+# R
+heck_double <- "What the 'heck'?"
+heck_single <- 'What the "heck"?'
+
+heck_double
+heck_single
+```
+
+Here is the Python version:
+```{python, filename="python:"}
+# python
+heck_double = "What the 'heck'?"
+heck_single = 'What the "heck"?'
+
+heck_double
+heck_single
+```
+
+That said, every Snakefile I have seen out in the wild tends to use double quotes to
+enquote path names and simple command lines.
+
+### Replacement of elements of a list
+
+In R, you know that you can change one element of a list with a simple assignment to that
+element:
+```{r, filename="R:"}
+L_R[[5]] <- "New Last Element"
+
+# now we print the whole list
+L_R
+```
+
+In python we can do exactly the same thing:
+```{python, filename="python:"}
+L_Py[4] = "New Last Element"
+
+# now print the whole python list
+L_Py
+```
 
 ### Operating on every element of a list
 
 Since vectorized operations do not occur automatically over the elements of lists in R,
 you may be familiar with the `lapply()` function in R, which applies a function to every
-element of a list.  So, if we wanted to append " Weird!" to every element of list `L_R`, we
+element of a list.  So, if we wanted to append "Weird!" to every element of list `L_R`, we
 could do something like this:
-```{r}
+```{r, filename="R:"}
 lapply(L_R, function(x) paste(x, "Weird!"))
 ```
-Here, we have, on the fly, defined a
+Here, we have, on the fly, defined a new function using the `function()` function in
+R.  This is called an "anonymous" function because we do not give it a name, but it returns
+a function in the context where R is expecting a function (i.e., the `FUN` argument of `lapply()`).
+We see above that `lapply()` returns a list.  
+
+In python, there is a function very similar to `lapply()` in R, and it is called `map`. Additionally,
+there is a notion of an "anonymous" function, but, in python, these are called "lambda" functions. The
+analogous syntax in python for appending "Weird!" to each element of a list would be:
+```{python, filename="python:"}
+map(lambda x: str(x) + " Weird!", L_Py)
+```
+
+`map` is like `lapply()` but the order of its arguments is reversed---it takes the function
+first and the list second---and it doesn't automatically return a list; rather, as you can see,
+it returns a `<map object at some_location>` where some `some_location` is the address of
+some computer memory, like `0x292826170`. 
+
+If you want to get the actual list back from `map(lambda x: str(x) + " Weird!", L_Py)` you have
+to pass it into python's `list()` function:
+```{python, filename="python:"}
+list(map(lambda x: str(x) + ' Weird!', L_Py))
+```
+
+
+### Type conversion is not automatic in Python
+
+In R, some type conversion is automatic if it goes from a more restricted to a more general type.
+In other words, if you are passing an integer or a numeric variable into a function or context
+that is expecting a string, R will happily convert the numeric variable to a string.  Hence you can
+do:
+```{r, filename="R:"}
+paste("Pi is", 3.1415)
+```
+In the above, `3.1415` is a numeric variable, but R is content to convert it to a string to `paste()` it
+to the string "Pi is".  
+
+Python does not automatically convert types to the more general type.  As we saw above, to concatenate
+two strings in python we can use the `+` operator:
+```{python, filename="python:"}
+'string1' + 'string2'
+```
+However python won't automatically convert an numeric type, say, to a character type to get this job
+done.  In other words, if we do this in python:
+```{python, filename="python:"}
+#| error: true
+x = "Pi is "
+y = 3.1415
+
+x + y
+```
+We get an error, rather than getting "Pi is 3.1415".
+
+Therefore, when mixing types in an operation, but desiring a particular type as the
+output, you may need to _coerce_ variables to that output type.  For example:
+```{python, filename="python:"}
+x + str(y)
+```
+
+The five data types in python that correspond to R's five, main, atomic data types are given
+in the following tables, along with the functions used for coercion to that data type.
+
+::: {#tbl-panel layout-ncol=2}
+| type    |  coercion         |  examples  |
+|---------|-------------------|--------------------|
+| logical | `as.logical()`    |  `TRUE`, `FALSE`       |
+| integer | `as.integer()`    | `3L`, `16L`            |
+| numeric | `as.numeric()`    | `3`, `16`, `4.2`       |
+| complex | `as.complex()`    | `3.2 + 4i`             |
+| character| `as.character()` | `"foo"`, `'bar'`
+
+: R Types {#tbl-first}
+
+| type    |  coercion         |  examples  |
+|---------|-------------------|----------------------|
+| bool    | `bool()`          |  `True`, `False`     |
+| int     | `int()`           | `3`, `16`            |
+| float   | `float()`         | `3.0`, `16.0`, `4.2` |
+| complex | `complex()`       | `3 + 4j`, `8.2 + 2.3j` |
+| str     | `str()`           | `"foo"`, `'bar'`
+
+: Python Types {#tbl-second}
+
+Five atomic data types in R and Python
+:::
+
+We emphasize a few important points here:
+
+1. Python uses `True` and `False` for its Boolean types, while R uses `TRUE` and `FALSE`.
+The capitalization differences are very important.  The variations don't work across
+languages!
+2. While R has the `class()` function to tell you what class any abject is,
+python has the `type()` function that tells you what data type
+an object is.  This can be quite useful for familiarizing yourself with what
+is going on in your own code, or someone else's:
+```{r, filename="R:"}
+list2 <- list(FALSE, 3L, 3.1415, 3 + 4.2i, "Boing!")
+lapply(list2, class)
+```
+
+```{python, filename="python:"}
+list2 = [False, 3, 3.1415, 3 + 4.2j, "Boing!"]
+list(map(type, list2))
+```
+
+3. `list` is itself a data type in python, and when we write `list(map(type, list2))`
+we are essentially coercing and object of class `map` to be a list.
+
+### List comprehension: Operating on every element of a list, Part 2
+
+Previously, we saw the R `lapply()` command.  We note here that you could have applied
+a function to every element of a list in R using a `for` loop. We could have done something like this:
+```{r, filename="R:"}
+L_R2 <- list()
+for(i in 1:length(L_R)) L_R2[[i]] <- paste(L_R[[i]], "Weird!")
+
+# now print it out:
+L_R2
+```
+
+The above is not considered good R style, it is not much fun to look at and it will
+operate more slowly than `lapply()` in most circumstances.  However, it is good to
+see this to motivate an approach in python for operating on every element of a list
+(and returning a list) that _is_ considered good python style.  This is called the syntax
+of "list comprehension", and it looks like this:
+```{python, filename="python, but not meant to be run:"}
+#| eval: false
+["do something to x" for x in list]
+```
+where "do something to x" is replaced by some operation on a variable called `x` (or whatever
+you might want to call it) and list is an existing list object.  
+
+So, to paste "Weird!" onto the elements of the list `L_Py` via list comprehension we
+would do:
+```{python, filename="python:"}
+[str(x) + " Weird!" for x in L_Py]
+```
+See that it returns a list.  Unlike in R, for loops, and especially those within
+a list comprehension, are not eschewed.
+
+There is actually a further subtlety here.  The `for` in there can cycle over the
+elements in a list, but in fact, it is much more general.  It can cycle over all
+the elements in any "iterable" (i.e., able to be iterated over), object.  For example
+a single string like `"ABCDEFG"` is iterable---python will iterate over the differnt
+letters in the string.  Thus you could make a list of the letters in a string like:
+```{python, filename="python:"}
+[x for x in "ABCDEFG"]
+```
+Whoa, cool!
+
+
+
