@@ -227,7 +227,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#running-python-interactively-in-rstudio" id="toc-running-python-interactively-in-rstudio" class="nav-link active" data-scroll-target="#running-python-interactively-in-rstudio"><span class="header-section-number">11.1</span> Running python, interactively, in RStudio</a>
   <ul class="collapse">
   <li><a href="#get-mamba-and-create-a-snakemake-environment" id="toc-get-mamba-and-create-a-snakemake-environment" class="nav-link" data-scroll-target="#get-mamba-and-create-a-snakemake-environment"><span class="header-section-number">11.1.1</span> Get mamba and create a snakemake environment</a></li>
-  <li><a href="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" id="toc-get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="nav-link" data-scroll-target="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.2</span> Get the reticulate package and run python from your snakemake conda environment</a></li>
+  <li><a href="#open-an-rstudio-server-session-on-alpine" id="toc-open-an-rstudio-server-session-on-alpine" class="nav-link" data-scroll-target="#open-an-rstudio-server-session-on-alpine"><span class="header-section-number">11.1.2</span> Open an RStudio Server session on Alpine</a></li>
+  <li><a href="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" id="toc-get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="nav-link" data-scroll-target="#get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.3</span> Get the reticulate package and run python from your snakemake conda environment</a></li>
+  </ul></li>
+  <li><a href="#r-and-python-compare-and-contrast" id="toc-r-and-python-compare-and-contrast" class="nav-link" data-scroll-target="#r-and-python-compare-and-contrast"><span class="header-section-number">11.2</span> R and Python: compare and contrast</a>
+  <ul class="collapse">
+  <li><a href="#python-doesnt-have-native-vectors" id="toc-python-doesnt-have-native-vectors" class="nav-link" data-scroll-target="#python-doesnt-have-native-vectors"><span class="header-section-number">11.2.1</span> Python doesn’t have native vectors</a></li>
+  <li><a href="#pythons-native-array-is-like-an-r-list-without-any-names" id="toc-pythons-native-array-is-like-an-r-list-without-any-names" class="nav-link" data-scroll-target="#pythons-native-array-is-like-an-r-list-without-any-names"><span class="header-section-number">11.2.2</span> Python’s native array is like an R list (without any names)</a></li>
+  <li><a href="#operating-on-every-element-of-a-list" id="toc-operating-on-every-element-of-a-list" class="nav-link" data-scroll-target="#operating-on-every-element-of-a-list"><span class="header-section-number">11.2.3</span> Operating on every element of a list</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -254,8 +261,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Snakefiles are YAML formatted files which are interpreted by Python, and, as such, considerable value can be gained from knowing how to use Python in this context. Many biologists I know are quite familiar with R, but fewer are equally well-versed in Python. So the purpose of this chapter is to provide a little background on Python (from the eyes of an R user) that is most useful for embellishing one’s Snakefiles and workflows. The key for this chapter are simple Python constructs that can be particularly useful in Snakemake, and particularly for being able to competently use several central Snakemake features: <em>config files</em>, <em>input functions</em>, and <em>pandas input</em>.</p>
-<p>The second main goal of this chapter is to illustrate an approach to working interactively with Python (the way R users might be familiar with working with R) within the RStudio environment. This will allow users to run Python code associated with their Snakefile in the context of an interactive Python session, which can be considerably more illumninating—and more helpful for tracking down bug/errors/inconsistencies—than only getting to run that code by running Snakemake on your Snakefile. Being able to work interactively with the Python code as Snakemake might see it is thus crucial to learning how to write workflows. So, for this second goal we will see a few little hacks for seeing input function parameters as Snakemake might see them, etc., primarily as a learning tool to aid in figuring out how to write Python code within Snakemake.</p>
+<p>Snakefiles are YAML formatted files which are interpreted by Python, and, as such, considerable value can be gained from knowing how to use Python in this context. Many biologists I know are quite familiar with R, but fewer are equally well-versed in Python. So the purpose of this chapter is to provide a little background on Python (from the eyes of an R user) that is most useful for embellishing one’s Snakefiles and workflows. The key goal for this chapter is to introduce several simple Python constructs that can be particularly useful in Snakemake, allowing the user to competently use several central Snakemake features: <em>config files</em>, <em>input functions</em>, and <em>pandas input</em>.</p>
+<p>The second main goal of this chapter is to illustrate an approach to working interactively with Python (the way R users might be familiar with working with R) within the RStudio environment. This will allow users to run Python code associated with their Snakefile in the context of an interactive Python session, which can be considerably more illumninating—and more helpful for tracking down bugs/errors/inconsistencies—than only getting to run that code by running Snakemake on your Snakefile. Being able to work interactively with the Python code as Snakemake might see it is thus crucial to learning how to write workflows. So, for this second goal we will see a few little hacks for seeing input function parameters as Snakemake might see them, etc., primarily as a learning tool to aid in figuring out how to write Python code within Snakemake.</p>
 <p>The order of events here are thus:</p>
 <ol type="1">
 <li>Use the R package ‘reticulate’ to run python, interactively, in our Snakemake conda environment.</li>
@@ -272,36 +279,162 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The folks at Posit (the company that started as RStudio) make a great integrated development environment (IDE) for working with R; however they also recognized the need for being a great IDE for other languages, like python and julia. As I understand it, that was part of the reason that they changed their name to Posit—to be less tied to the R language. At any rate, they have tools for running python code, much like you would run R code in RStudio.</p>
 <section id="get-mamba-and-create-a-snakemake-environment" class="level3" data-number="11.1.1">
 <h3 data-number="11.1.1" class="anchored" data-anchor-id="get-mamba-and-create-a-snakemake-environment"><span class="header-section-number">11.1.1</span> Get mamba and create a snakemake environment</h3>
-<p>We will be doing this <em>on our laptops</em> rather than upon the cluster. Fortunately, mamba works on all platforms, and so does Snakemake. But you might need to first install mamba on your laptop. This is pretty straightforward. If you do not already have mamba on your laptop, find the instructions for your platform <a href="https://github.com/conda-forge/miniforge?tab=readme-ov-file#install">here</a> and follow them. You should be able to just use the default location for your conda/mamba library.</p>
-<p>Once you are done with that, you will want to create a snakemake environment on your laptop. Do that by following the directions that we used on our clusters, <a href="https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces">here</a>, without bothering to be on a compute node, of course!</p>
+<p>You can do this on your laptop, rather than upon the cluster. (If you have been working on Alpine, skip to the next section!) Fortunately, mamba works on all platforms, and so does Snakemake. But you might need to first install mamba on your laptop. This is pretty straightforward. If you do not already have mamba on your laptop, find the instructions for your platform <a href="https://github.com/conda-forge/miniforge?tab=readme-ov-file#install">here</a> and follow them. You should be able to just use the default location for your conda/mamba library.</p>
+<p>Once you are done with that, you will want to create a snakemake environment on your laptop. Do that by following the directions that we used on our clusters, <a href="https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces">here</a>, without bothering to be on a compute node, of course, since you are on your laptop!</p>
 <p>When both of the above are done, we can move on to working with python in RStudio.</p>
 </section>
-<section id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="level3" data-number="11.1.2">
-<h3 data-number="11.1.2" class="anchored" data-anchor-id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.2</span> Get the reticulate package and run python from your snakemake conda environment</h3>
-<p>The reticulate package allows you to run python in a comfortable, interactive way within and R (and RStudio) session. Importantly, it allows you to run the exact python version that Snakemake uses, by letting you load the snakemake conda environment.</p>
-<p>So, open up the RStudio project for your fork of the <code>con-gen-csu</code> repo, make sure you are on the main branch, and then pull, to make sure that you have all the recent materials from the course.</p>
-<p>If you do not already have ‘reticulate’, get it with this at the R console in Rstudio:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="open-an-rstudio-server-session-on-alpine" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="open-an-rstudio-server-session-on-alpine"><span class="header-section-number">11.1.2</span> Open an RStudio Server session on Alpine</h3>
+<p>If you have an account on Alpine, there is an ever cooler way to do this that will also introduce a way to interact with your files and projects on the cluster in the familiar RStudio framework. (This might even prove a useful way for running your own R projects and handling GitHub on the cluster). The approach uses a <em>browser-based</em> portal to the Alpine computing cluster that is supported by CURC and is called <em>Open OnDemand</em>. As a <em>browser-based</em> system, you will connect to Alpine via your web browser. Ultimately, you will be able to run a session of RStudio Server that runs on a compute node on Alpine, interacting with your filesystem on the cluster the way you would with local files using any RStudio session on your laptop. Additionally, you can drive git and get a terminal shell through RStudio server as well. It is pretty slick if you are comfortable in an RStudio environment.</p>
+<p>Full details about OpenOndemand on Alpine can be found at the CURC website <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html">here</a>, with a whole section about RStudio <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio">here</a>.</p>
+<p>In order to establish an RStudio session container/image/overlay, the Alpine administrators recommend using 4 cores, because the initial setup can take a few minutes. After that you can re-attach to that image quickly and use just a single core if you would like. Briefy instructions on how to do that are:</p>
+<ol type="1">
+<li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
+<li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
+<li>That should drop you into the CURC OnDemand Dashboard page that looks like this:</li>
+</ol>
+<p><img src="./images/curc-on-demand-dashboard.png" class="img-fluid"></p>
+<ol start="4" type="1">
+<li>Choose “Interactive Apps–&gt;RStudio Server Presets”, then use the bottom toggle box to choose “4 cores, 4 hours”, and hit “Launch”. This will start making you an RStudio Server container. Again, we choose 4 cores just for the initial setup, but you can choose 1 core in the future.</li>
+</ol>
+<p><img src="./images/rstudio-server-preset.png" class="img-fluid"></p>
+<ol start="5" type="1">
+<li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”</li>
+</ol>
+<p><img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"> 6. Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</p>
+<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless.</p>
+<p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
+<p>Now, that this is set up (either on Alpine or on your laptop, using the directions above) we can proceed to learning the python we need for using Snakemake well.</p>
+</section>
+<section id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment" class="level3" data-number="11.1.3">
+<h3 data-number="11.1.3" class="anchored" data-anchor-id="get-the-reticulate-package-and-run-python-from-your-snakemake-conda-environment"><span class="header-section-number">11.1.3</span> Get the reticulate package and run python from your snakemake conda environment</h3>
+<p>The reticulate package allows you to run python in a comfortable, interactive way within an R (and RStudio) session. Importantly, it allows you to run the exact python version that Snakemake uses, by letting you load the snakemake conda environment.</p>
+<p>So, Sync your fork, then open up the RStudio project for your fork of the <code>con-gen-csu</code> repo, make sure you are on the main branch, and then pull, to make sure that you have all the recent materials from the course.</p>
+<p>If you do not already have the ‘reticulate’, R-package, get it with this command at the R console in Rstudio:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>, <span class="at">repos =</span> <span class="st">"https://cran.rstudio.com/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that it is critical that you add the <code>repos = "https://cran.rstudio.com/</code> part in there. The RStudio Server maintained by CURC in OpenOnDemand is configured by default to drawn its packages from a repository full of binary versions which end up being much older (i.e., it will give you reticulate version 1.28 instead of 1.35, and everything will fall…I lost the better part of a day because of that!!)</p>
 <p>Then, you can load the package with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_miniconda()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my system that translates into:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_miniconda</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, on your system, your conda library will probably be in <code>~/miniforge</code>. At any rate, it should be easy to find using tab-completion for path names in your R console.</p>
+<p>Now, we want to use python from a particular conda environment—our snakemake conda environment, in fact. For that there is a reticulate function called <code>use_miniconda()</code>. We can tell it which conda environment to use, most reliably, by passing the absolute path of the environment to the function. This path will be the path to your conda library plus <code>envs</code> plus the name of the environment. For example on my laptop that would translate into:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"~/mambaforge-arm64/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, on your system, your conda library would probably be in <code>/project/user@colostate.edu/miniforge</code>.</p>
+<p>While on my RStudio Server session on Alpine I would do:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="at">condaenv =</span> <span class="st">"/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At any rate, it should be easy to find using tab-completion for path names in your R console.</p>
 <p>Once you have successfully given the above command, you can start a python REPL (Read Evaluate Print and Loop) session in your R console with:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repl_python</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After you have done that, you should see something that looks like this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">repl_python</span>()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">12.2</span> (<span class="sc">/</span>Users<span class="sc">/</span>eriq<span class="sc">/</span>mambaforge<span class="sc">-</span>arm64<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Reticulate <span class="dv">1</span>.<span class="fl">35.0</span> REPL <span class="sc">--</span> A Python interpreter <span class="cf">in</span> R.</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Enter <span class="st">'exit'</span> or <span class="st">'quit'</span> to exit the REPL and return to R.</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">repl_python</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Python <span class="dv">3</span>.<span class="fl">12.2</span> (<span class="sc">/</span>Users<span class="sc">/</span>eriq<span class="sc">/</span>mambaforge<span class="sc">-</span>arm64<span class="sc">/</span>envs<span class="sc">/</span>snakemake<span class="dv">-8</span>.<span class="fl">5.3</span><span class="sc">/</span>bin<span class="sc">/</span>python)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Reticulate <span class="dv">1</span>.<span class="fl">35.0</span> REPL <span class="sc">--</span> A Python interpreter <span class="cf">in</span> R.</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Enter <span class="st">'exit'</span> or <span class="st">'quit'</span> to exit the REPL and return to R.</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The command prompt has now changed to <code>&gt;&gt;&gt;</code> and anything you type at it will be interpreted as python code.</p>
 <p>So, you can’t just type R code into it any longer. For example, see what happens if you type this in there:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>But you can type python code, for example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then try:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="r-and-python-compare-and-contrast" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="r-and-python-compare-and-contrast"><span class="header-section-number">11.2</span> R and Python: compare and contrast</h2>
+<p>You can consider this a sort of Berlitz language course for R-speakers on how to communicate in Python. It assumes that y’all know something about R.</p>
+<section id="python-doesnt-have-native-vectors" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="python-doesnt-have-native-vectors"><span class="header-section-number">11.2.1</span> Python doesn’t have native vectors</h3>
+<p>In R, we are all familiar with vectors. Each element of a vector is of the same <em>type</em> (i.e., integer, numeric, or character/string., etc.) If we do:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric vector</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>One nice feature of having vectors is that we can do array processing of them—i.e., many operations/functions in R are <em>vectorized</em>: they do the same thing to each element of the vector. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(y, <span class="st">"!"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a!" "b!" "c!"</code></pre>
+</div>
+</div>
+<p>Vectors and vectorized operations, as such, don’t exist natively in Python (some packages provide that type of functionality, but it is not “baked into the guts of the language” the way it is in R.)</p>
+</section>
+<section id="pythons-native-array-is-like-an-r-list-without-any-names" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="pythons-native-array-is-like-an-r-list-without-any-names"><span class="header-section-number">11.2.2</span> Python’s native array is like an R list (without any names)</h3>
+<p>Though python does not have a native vector class, like R’s, it does have something that is very similar to an R list, and, in fact, in python these are called lists.</p>
+<p>So, in R you could make a list, which is a special type of vector that can include elements of different types, like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>L_R <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and you could find its length with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(L_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>The equivalent data structure in Python is a list and it is formed with <code>[ ]</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>L_Py <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"R"</span>, <span class="st">"word"</span>, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and you can get its length with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5</code></pre>
+</div>
+</div>
+<p>You access the elements of an R list (with no names) using the <code>[[ ]]</code> operator, for example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>L_R[[<span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "word"</code></pre>
+</div>
+</div>
+<p>To access elements of a python list you use <code>[ ]</code>, but <strong>AND THIS IS EXTREMELY IMPORTANT</strong> the indexes of a Python list start from 0, while the indexes of an R list start at 1. So, if you want the **first* element of a python list, you subscript it with 0:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1</code></pre>
+</div>
+</div>
+<p>While, if you wanted the 4-th element of a python list you would subscript it with 3:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>L_Py[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'word'</code></pre>
+</div>
+</div>
+<p>(We also note in this output that python seems to have a preference for using single quotes for strings in is output.)</p>
+</section>
+<section id="operating-on-every-element-of-a-list" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="operating-on-every-element-of-a-list"><span class="header-section-number">11.2.3</span> Operating on every element of a list</h3>
+<p>Since vectorized operations do not occur automatically over the elements of lists in R, you may be familiar with the <code>lapply()</code> function in R, which applies a function to every element of a list. So, if we wanted to append ” Weird!” to every element of list <code>L_R</code>, we could do something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(L_R, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="st">"Weird!"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "1 Weird!"
+
+[[2]]
+[1] "2 Weird!"
+
+[[3]]
+[1] "R Weird!"
+
+[[4]]
+[1] "word Weird!"
+
+[[5]]
+[1] "10 Weird!"</code></pre>
+</div>
+</div>
+<p>Here, we have, on the fly, defined a</p>
 
 
 </section>
