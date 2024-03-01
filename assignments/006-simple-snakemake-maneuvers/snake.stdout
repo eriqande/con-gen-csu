@@ -1,0 +1,1530 @@
+Building DAG of jobs...
+Job stats:
+job                             count
+----------------------------  -------
+bwa_index                           1
+concat_vcfs                         1
+genome_dict                         1
+genome_faidx                        1
+import_genomics_db_by_chromo        4
+make_gvcfs_by_chromo               64
+map_reads                          16
+mark_duplicates                    16
+trim_reads                         16
+vcf_from_gdb_by_chromo              4
+total                             124
+
+Execute 19 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_H09_S93_R1.fq.gz, data/fastqs/DPCh_plate1_H09_S93_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz, results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz, results/qc/fastp/DPCh_plate1_H09_S93.html, results/qc/fastp/DPCh_plate1_H09_S93.json
+    log: results/logs/trim_reads/DPCh_plate1_H09_S93.log, results/logs/trim_reads/DPCh_plate1_H09_S93.err
+    jobid: 65
+    reason: Missing output files: results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz, results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz
+    wildcards: sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_H09_S93_R1.fq.gz -I data/fastqs/DPCh_plate1_H09_S93_R2.fq.gz              -o results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz -O results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_H09_S93.html -j results/qc/fastp/DPCh_plate1_H09_S93.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_H09_S93.log 2> results/logs/trim_reads/DPCh_plate1_H09_S93.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F12_S72_R1.fq.gz, data/fastqs/DPCh_plate1_F12_S72_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz, results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz, results/qc/fastp/DPCh_plate1_F12_S72.html, results/qc/fastp/DPCh_plate1_F12_S72.json
+    log: results/logs/trim_reads/DPCh_plate1_F12_S72.log, results/logs/trim_reads/DPCh_plate1_F12_S72.err
+    jobid: 49
+    reason: Missing output files: results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz, results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz
+    wildcards: sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_F12_S72_R1.fq.gz -I data/fastqs/DPCh_plate1_F12_S72_R2.fq.gz              -o results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz -O results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_F12_S72.html -j results/qc/fastp/DPCh_plate1_F12_S72.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_F12_S72.log 2> results/logs/trim_reads/DPCh_plate1_F12_S72.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_D09_S45_R1.fq.gz, data/fastqs/DPCh_plate1_D09_S45_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz, results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz, results/qc/fastp/DPCh_plate1_D09_S45.html, results/qc/fastp/DPCh_plate1_D09_S45.json
+    log: results/logs/trim_reads/DPCh_plate1_D09_S45.log, results/logs/trim_reads/DPCh_plate1_D09_S45.err
+    jobid: 33
+    reason: Missing output files: results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz, results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz
+    wildcards: sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_D09_S45_R1.fq.gz -I data/fastqs/DPCh_plate1_D09_S45_R2.fq.gz              -o results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz -O results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_D09_S45.html -j results/qc/fastp/DPCh_plate1_D09_S45.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_D09_S45.log 2> results/logs/trim_reads/DPCh_plate1_D09_S45.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G10_S82_R1.fq.gz, data/fastqs/DPCh_plate1_G10_S82_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz, results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz, results/qc/fastp/DPCh_plate1_G10_S82.html, results/qc/fastp/DPCh_plate1_G10_S82.json
+    log: results/logs/trim_reads/DPCh_plate1_G10_S82.log, results/logs/trim_reads/DPCh_plate1_G10_S82.err
+    jobid: 57
+    reason: Missing output files: results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz, results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz
+    wildcards: sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_G10_S82_R1.fq.gz -I data/fastqs/DPCh_plate1_G10_S82_R2.fq.gz              -o results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz -O results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_G10_S82.html -j results/qc/fastp/DPCh_plate1_G10_S82.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_G10_S82.log 2> results/logs/trim_reads/DPCh_plate1_G10_S82.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F10_S70_R1.fq.gz, data/fastqs/DPCh_plate1_F10_S70_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz, results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz, results/qc/fastp/DPCh_plate1_F10_S70.html, results/qc/fastp/DPCh_plate1_F10_S70.json
+    log: results/logs/trim_reads/DPCh_plate1_F10_S70.log, results/logs/trim_reads/DPCh_plate1_F10_S70.err
+    jobid: 41
+    reason: Missing output files: results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz, results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz
+    wildcards: sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_F10_S70_R1.fq.gz -I data/fastqs/DPCh_plate1_F10_S70_R2.fq.gz              -o results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz -O results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_F10_S70.html -j results/qc/fastp/DPCh_plate1_F10_S70.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_F10_S70.log 2> results/logs/trim_reads/DPCh_plate1_F10_S70.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule genome_dict:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.dict
+    log: results/logs/genome_dict.log
+    jobid: 8
+    reason: Missing output files: data/genome/genome.dict
+    resources: tmpdir=<TBD>
+
+samtools dict data/genome/genome.fasta > data/genome/genome.dict 2> results/logs/genome_dict.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B11_S23_R1.fq.gz, data/fastqs/DPCh_plate1_B11_S23_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz, results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz, results/qc/fastp/DPCh_plate1_B11_S23.html, results/qc/fastp/DPCh_plate1_B11_S23.json
+    log: results/logs/trim_reads/DPCh_plate1_B11_S23.log, results/logs/trim_reads/DPCh_plate1_B11_S23.err
+    jobid: 13
+    reason: Missing output files: results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz, results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz
+    wildcards: sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_B11_S23_R1.fq.gz -I data/fastqs/DPCh_plate1_B11_S23_R2.fq.gz              -o results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz -O results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_B11_S23.html -j results/qc/fastp/DPCh_plate1_B11_S23.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_B11_S23.log 2> results/logs/trim_reads/DPCh_plate1_B11_S23.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C10_S34_R1.fq.gz, data/fastqs/DPCh_plate1_C10_S34_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz, results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz, results/qc/fastp/DPCh_plate1_C10_S34.html, results/qc/fastp/DPCh_plate1_C10_S34.json
+    log: results/logs/trim_reads/DPCh_plate1_C10_S34.log, results/logs/trim_reads/DPCh_plate1_C10_S34.err
+    jobid: 21
+    reason: Missing output files: results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz, results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz
+    wildcards: sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_C10_S34_R1.fq.gz -I data/fastqs/DPCh_plate1_C10_S34_R2.fq.gz              -o results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz -O results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_C10_S34.html -j results/qc/fastp/DPCh_plate1_C10_S34.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_C10_S34.log 2> results/logs/trim_reads/DPCh_plate1_C10_S34.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C12_S36_R1.fq.gz, data/fastqs/DPCh_plate1_C12_S36_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz, results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz, results/qc/fastp/DPCh_plate1_C12_S36.html, results/qc/fastp/DPCh_plate1_C12_S36.json
+    log: results/logs/trim_reads/DPCh_plate1_C12_S36.log, results/logs/trim_reads/DPCh_plate1_C12_S36.err
+    jobid: 29
+    reason: Missing output files: results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz, results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz
+    wildcards: sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_C12_S36_R1.fq.gz -I data/fastqs/DPCh_plate1_C12_S36_R2.fq.gz              -o results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz -O results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_C12_S36.html -j results/qc/fastp/DPCh_plate1_C12_S36.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_C12_S36.log 2> results/logs/trim_reads/DPCh_plate1_C12_S36.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_D11_S47_R1.fq.gz, data/fastqs/DPCh_plate1_D11_S47_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz, results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz, results/qc/fastp/DPCh_plate1_D11_S47.html, results/qc/fastp/DPCh_plate1_D11_S47.json
+    log: results/logs/trim_reads/DPCh_plate1_D11_S47.log, results/logs/trim_reads/DPCh_plate1_D11_S47.err
+    jobid: 37
+    reason: Missing output files: results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz, results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz
+    wildcards: sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_D11_S47_R1.fq.gz -I data/fastqs/DPCh_plate1_D11_S47_R2.fq.gz              -o results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz -O results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_D11_S47.html -j results/qc/fastp/DPCh_plate1_D11_S47.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_D11_S47.log 2> results/logs/trim_reads/DPCh_plate1_D11_S47.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_H10_S94_R1.fq.gz, data/fastqs/DPCh_plate1_H10_S94_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz, results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz, results/qc/fastp/DPCh_plate1_H10_S94.html, results/qc/fastp/DPCh_plate1_H10_S94.json
+    log: results/logs/trim_reads/DPCh_plate1_H10_S94.log, results/logs/trim_reads/DPCh_plate1_H10_S94.err
+    jobid: 69
+    reason: Missing output files: results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz, results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz
+    wildcards: sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_H10_S94_R1.fq.gz -I data/fastqs/DPCh_plate1_H10_S94_R2.fq.gz              -o results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz -O results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_H10_S94.html -j results/qc/fastp/DPCh_plate1_H10_S94.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_H10_S94.log 2> results/logs/trim_reads/DPCh_plate1_H10_S94.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F11_S71_R1.fq.gz, data/fastqs/DPCh_plate1_F11_S71_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz, results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz, results/qc/fastp/DPCh_plate1_F11_S71.html, results/qc/fastp/DPCh_plate1_F11_S71.json
+    log: results/logs/trim_reads/DPCh_plate1_F11_S71.log, results/logs/trim_reads/DPCh_plate1_F11_S71.err
+    jobid: 45
+    reason: Missing output files: results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz, results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz
+    wildcards: sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_F11_S71_R1.fq.gz -I data/fastqs/DPCh_plate1_F11_S71_R2.fq.gz              -o results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz -O results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_F11_S71.html -j results/qc/fastp/DPCh_plate1_F11_S71.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_F11_S71.log 2> results/logs/trim_reads/DPCh_plate1_F11_S71.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G09_S81_R1.fq.gz, data/fastqs/DPCh_plate1_G09_S81_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz, results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz, results/qc/fastp/DPCh_plate1_G09_S81.html, results/qc/fastp/DPCh_plate1_G09_S81.json
+    log: results/logs/trim_reads/DPCh_plate1_G09_S81.log, results/logs/trim_reads/DPCh_plate1_G09_S81.err
+    jobid: 53
+    reason: Missing output files: results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz, results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz
+    wildcards: sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_G09_S81_R1.fq.gz -I data/fastqs/DPCh_plate1_G09_S81_R2.fq.gz              -o results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz -O results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_G09_S81.html -j results/qc/fastp/DPCh_plate1_G09_S81.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_G09_S81.log 2> results/logs/trim_reads/DPCh_plate1_G09_S81.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G12_S84_R1.fq.gz, data/fastqs/DPCh_plate1_G12_S84_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz, results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz, results/qc/fastp/DPCh_plate1_G12_S84.html, results/qc/fastp/DPCh_plate1_G12_S84.json
+    log: results/logs/trim_reads/DPCh_plate1_G12_S84.log, results/logs/trim_reads/DPCh_plate1_G12_S84.err
+    jobid: 61
+    reason: Missing output files: results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz, results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz
+    wildcards: sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_G12_S84_R1.fq.gz -I data/fastqs/DPCh_plate1_G12_S84_R2.fq.gz              -o results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz -O results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_G12_S84.html -j results/qc/fastp/DPCh_plate1_G12_S84.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_G12_S84.log 2> results/logs/trim_reads/DPCh_plate1_G12_S84.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule bwa_index:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    log: results/logs/bwa_index/bwa_index.log, results/logs/bwa_index/bwa_index.err
+    jobid: 7
+    reason: Missing output files: data/genome/genome.fasta.pac, data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64
+    resources: tmpdir=<TBD>
+
+bwa-mem2 index data/genome/genome.fasta > results/logs/bwa_index/bwa_index.log 2> results/logs/bwa_index/bwa_index.err 
+
+[Fri Mar  1 10:48:49 2024]
+localrule genome_faidx:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.fasta.fai
+    log: results/logs/genome_faidx.log
+    jobid: 9
+    reason: Missing output files: data/genome/genome.fasta.fai
+    resources: tmpdir=<TBD>
+
+samtools faidx data/genome/genome.fasta 2> results/logs/genome_faidx.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz, data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz, results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz, results/qc/fastp/DPCh_plate1_B10_S22.html, results/qc/fastp/DPCh_plate1_B10_S22.json
+    log: results/logs/trim_reads/DPCh_plate1_B10_S22.log, results/logs/trim_reads/DPCh_plate1_B10_S22.err
+    jobid: 6
+    reason: Missing output files: results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz, results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz
+    wildcards: sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz              -o results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz -O results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_B10_S22.html -j results/qc/fastp/DPCh_plate1_B10_S22.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_B10_S22.log 2> results/logs/trim_reads/DPCh_plate1_B10_S22.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B12_S24_R1.fq.gz, data/fastqs/DPCh_plate1_B12_S24_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz, results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz, results/qc/fastp/DPCh_plate1_B12_S24.html, results/qc/fastp/DPCh_plate1_B12_S24.json
+    log: results/logs/trim_reads/DPCh_plate1_B12_S24.log, results/logs/trim_reads/DPCh_plate1_B12_S24.err
+    jobid: 17
+    reason: Missing output files: results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz, results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz
+    wildcards: sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_B12_S24_R1.fq.gz -I data/fastqs/DPCh_plate1_B12_S24_R2.fq.gz              -o results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz -O results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_B12_S24.html -j results/qc/fastp/DPCh_plate1_B12_S24.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_B12_S24.log 2> results/logs/trim_reads/DPCh_plate1_B12_S24.err                         
+
+[Fri Mar  1 10:48:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C11_S35_R1.fq.gz, data/fastqs/DPCh_plate1_C11_S35_R2.fq.gz
+    output: results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz, results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz, results/qc/fastp/DPCh_plate1_C11_S35.html, results/qc/fastp/DPCh_plate1_C11_S35.json
+    log: results/logs/trim_reads/DPCh_plate1_C11_S35.log, results/logs/trim_reads/DPCh_plate1_C11_S35.err
+    jobid: 25
+    reason: Missing output files: results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz, results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz
+    wildcards: sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ fastp -i data/fastqs/DPCh_plate1_C11_S35_R1.fq.gz -I data/fastqs/DPCh_plate1_C11_S35_R2.fq.gz              -o results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz -O results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz            -h results/qc/fastp/DPCh_plate1_C11_S35.html -j results/qc/fastp/DPCh_plate1_C11_S35.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT        --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20  > results/logs/trim_reads/DPCh_plate1_C11_S35.log 2> results/logs/trim_reads/DPCh_plate1_C11_S35.err                         
+Execute 16 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz, results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_D11_S47.bam
+    log: results/logs/map_reads/DPCh_plate1_D11_S47.log
+    jobid: 36
+    reason: Missing output files: results/bam/DPCh_plate1_D11_S47.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz
+    wildcards: sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_D11_S47\tSM:DPCh_plate1_D11_S47\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_D11_S47_R1.fq.gz results/trimmed/DPCh_plate1_D11_S47_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_D11_S47.bam) 2> results/logs/map_reads/DPCh_plate1_D11_S47.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz, results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_F11_S71.bam
+    log: results/logs/map_reads/DPCh_plate1_F11_S71.log
+    jobid: 44
+    reason: Missing output files: results/bam/DPCh_plate1_F11_S71.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz
+    wildcards: sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_F11_S71\tSM:DPCh_plate1_F11_S71\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_F11_S71_R1.fq.gz results/trimmed/DPCh_plate1_F11_S71_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_F11_S71.bam) 2> results/logs/map_reads/DPCh_plate1_F11_S71.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz, results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_G09_S81.bam
+    log: results/logs/map_reads/DPCh_plate1_G09_S81.log
+    jobid: 52
+    reason: Missing output files: results/bam/DPCh_plate1_G09_S81.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz, data/genome/genome.fasta.pac
+    wildcards: sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_G09_S81\tSM:DPCh_plate1_G09_S81\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_G09_S81_R1.fq.gz results/trimmed/DPCh_plate1_G09_S81_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_G09_S81.bam) 2> results/logs/map_reads/DPCh_plate1_G09_S81.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz, results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_G12_S84.bam
+    log: results/logs/map_reads/DPCh_plate1_G12_S84.log
+    jobid: 60
+    reason: Missing output files: results/bam/DPCh_plate1_G12_S84.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz
+    wildcards: sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_G12_S84\tSM:DPCh_plate1_G12_S84\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_G12_S84_R1.fq.gz results/trimmed/DPCh_plate1_G12_S84_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_G12_S84.bam) 2> results/logs/map_reads/DPCh_plate1_G12_S84.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz, results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_H10_S94.bam
+    log: results/logs/map_reads/DPCh_plate1_H10_S94.log
+    jobid: 68
+    reason: Missing output files: results/bam/DPCh_plate1_H10_S94.bam; Input files updated by another job: data/genome/genome.fasta.ann, results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz
+    wildcards: sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_H10_S94\tSM:DPCh_plate1_H10_S94\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_H10_S94_R1.fq.gz results/trimmed/DPCh_plate1_H10_S94_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_H10_S94.bam) 2> results/logs/map_reads/DPCh_plate1_H10_S94.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz, results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_F12_S72.bam
+    log: results/logs/map_reads/DPCh_plate1_F12_S72.log
+    jobid: 48
+    reason: Missing output files: results/bam/DPCh_plate1_F12_S72.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz
+    wildcards: sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_F12_S72\tSM:DPCh_plate1_F12_S72\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_F12_S72_R1.fq.gz results/trimmed/DPCh_plate1_F12_S72_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_F12_S72.bam) 2> results/logs/map_reads/DPCh_plate1_F12_S72.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz, results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_F10_S70.bam
+    log: results/logs/map_reads/DPCh_plate1_F10_S70.log
+    jobid: 40
+    reason: Missing output files: results/bam/DPCh_plate1_F10_S70.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz
+    wildcards: sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_F10_S70\tSM:DPCh_plate1_F10_S70\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_F10_S70_R1.fq.gz results/trimmed/DPCh_plate1_F10_S70_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_F10_S70.bam) 2> results/logs/map_reads/DPCh_plate1_F10_S70.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz, results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_G10_S82.bam
+    log: results/logs/map_reads/DPCh_plate1_G10_S82.log
+    jobid: 56
+    reason: Missing output files: results/bam/DPCh_plate1_G10_S82.bam; Input files updated by another job: results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz, data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz, data/genome/genome.fasta.pac
+    wildcards: sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_G10_S82\tSM:DPCh_plate1_G10_S82\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_G10_S82_R1.fq.gz results/trimmed/DPCh_plate1_G10_S82_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_G10_S82.bam) 2> results/logs/map_reads/DPCh_plate1_G10_S82.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz, results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_H09_S93.bam
+    log: results/logs/map_reads/DPCh_plate1_H09_S93.log
+    jobid: 64
+    reason: Missing output files: results/bam/DPCh_plate1_H09_S93.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz, results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz
+    wildcards: sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_H09_S93\tSM:DPCh_plate1_H09_S93\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_H09_S93_R1.fq.gz results/trimmed/DPCh_plate1_H09_S93_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_H09_S93.bam) 2> results/logs/map_reads/DPCh_plate1_H09_S93.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz, results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_C10_S34.bam
+    log: results/logs/map_reads/DPCh_plate1_C10_S34.log
+    jobid: 20
+    reason: Missing output files: results/bam/DPCh_plate1_C10_S34.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz
+    wildcards: sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_C10_S34\tSM:DPCh_plate1_C10_S34\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_C10_S34_R1.fq.gz results/trimmed/DPCh_plate1_C10_S34_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_C10_S34.bam) 2> results/logs/map_reads/DPCh_plate1_C10_S34.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz, results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_B10_S22.bam
+    log: results/logs/map_reads/DPCh_plate1_B10_S22.log
+    jobid: 5
+    reason: Missing output files: results/bam/DPCh_plate1_B10_S22.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz
+    wildcards: sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_B10_S22\tSM:DPCh_plate1_B10_S22\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_B10_S22_R1.fq.gz results/trimmed/DPCh_plate1_B10_S22_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_B10_S22.bam) 2> results/logs/map_reads/DPCh_plate1_B10_S22.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz, results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_B11_S23.bam
+    log: results/logs/map_reads/DPCh_plate1_B11_S23.log
+    jobid: 12
+    reason: Missing output files: results/bam/DPCh_plate1_B11_S23.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz
+    wildcards: sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_B11_S23\tSM:DPCh_plate1_B11_S23\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_B11_S23_R1.fq.gz results/trimmed/DPCh_plate1_B11_S23_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_B11_S23.bam) 2> results/logs/map_reads/DPCh_plate1_B11_S23.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz, results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_C12_S36.bam
+    log: results/logs/map_reads/DPCh_plate1_C12_S36.log
+    jobid: 28
+    reason: Missing output files: results/bam/DPCh_plate1_C12_S36.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz
+    wildcards: sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_C12_S36\tSM:DPCh_plate1_C12_S36\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_C12_S36_R1.fq.gz results/trimmed/DPCh_plate1_C12_S36_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_C12_S36.bam) 2> results/logs/map_reads/DPCh_plate1_C12_S36.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz, results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_D09_S45.bam
+    log: results/logs/map_reads/DPCh_plate1_D09_S45.log
+    jobid: 32
+    reason: Missing output files: results/bam/DPCh_plate1_D09_S45.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz
+    wildcards: sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_D09_S45\tSM:DPCh_plate1_D09_S45\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_D09_S45_R1.fq.gz results/trimmed/DPCh_plate1_D09_S45_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_D09_S45.bam) 2> results/logs/map_reads/DPCh_plate1_D09_S45.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz, results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_B12_S24.bam
+    log: results/logs/map_reads/DPCh_plate1_B12_S24.log
+    jobid: 16
+    reason: Missing output files: results/bam/DPCh_plate1_B12_S24.bam; Input files updated by another job: results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz, data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    wildcards: sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_B12_S24\tSM:DPCh_plate1_B12_S24\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_B12_S24_R1.fq.gz results/trimmed/DPCh_plate1_B12_S24_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_B12_S24.bam) 2> results/logs/map_reads/DPCh_plate1_B12_S24.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule map_reads:
+    input: results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz, results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/DPCh_plate1_C11_S35.bam
+    log: results/logs/map_reads/DPCh_plate1_C11_S35.log
+    jobid: 24
+    reason: Missing output files: results/bam/DPCh_plate1_C11_S35.bam; Input files updated by another job: data/genome/genome.fasta.ann, data/genome/genome.fasta.amb, data/genome/genome.fasta.0123, data/genome/genome.fasta.bwt.2bit.64, results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz, data/genome/genome.fasta.pac, results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz
+    wildcards: sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ (bwa-mem2 mem -R '@RG\tID:DPCh_plate1_C11_S35\tSM:DPCh_plate1_C11_S35\tPL:ILLUMINA'  data/genome/genome.fasta results/trimmed/DPCh_plate1_C11_S35_R1.fq.gz results/trimmed/DPCh_plate1_C11_S35_R2.fq.gz |  samtools view -u |  samtools sort - > results/bam/DPCh_plate1_C11_S35.bam) 2> results/logs/map_reads/DPCh_plate1_C11_S35.log 
+Execute 16 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_D09_S45.bam
+    output: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai, results/qc/mkdup_metrics/DPCh_plate1_D09_S45.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_D09_S45.log
+    jobid: 31
+    reason: Missing output files: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai; Input files updated by another job: results/bam/DPCh_plate1_D09_S45.bam
+    wildcards: sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_D09_S45.bam   -O results/mkdup/DPCh_plate1_D09_S45.bam   -M results/qc/mkdup_metrics/DPCh_plate1_D09_S45.metrics > results/logs/mark_duplicates/DPCh_plate1_D09_S45.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_C12_S36.bam
+    output: results/mkdup/DPCh_plate1_C12_S36.bam, results/mkdup/DPCh_plate1_C12_S36.bai, results/qc/mkdup_metrics/DPCh_plate1_C12_S36.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_C12_S36.log
+    jobid: 27
+    reason: Missing output files: results/mkdup/DPCh_plate1_C12_S36.bai, results/mkdup/DPCh_plate1_C12_S36.bam; Input files updated by another job: results/bam/DPCh_plate1_C12_S36.bam
+    wildcards: sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_C12_S36.bam   -O results/mkdup/DPCh_plate1_C12_S36.bam   -M results/qc/mkdup_metrics/DPCh_plate1_C12_S36.metrics > results/logs/mark_duplicates/DPCh_plate1_C12_S36.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_C10_S34.bam
+    output: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai, results/qc/mkdup_metrics/DPCh_plate1_C10_S34.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_C10_S34.log
+    jobid: 19
+    reason: Missing output files: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai; Input files updated by another job: results/bam/DPCh_plate1_C10_S34.bam
+    wildcards: sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_C10_S34.bam   -O results/mkdup/DPCh_plate1_C10_S34.bam   -M results/qc/mkdup_metrics/DPCh_plate1_C10_S34.metrics > results/logs/mark_duplicates/DPCh_plate1_C10_S34.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_B11_S23.bam
+    output: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai, results/qc/mkdup_metrics/DPCh_plate1_B11_S23.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_B11_S23.log
+    jobid: 11
+    reason: Missing output files: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai; Input files updated by another job: results/bam/DPCh_plate1_B11_S23.bam
+    wildcards: sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_B11_S23.bam   -O results/mkdup/DPCh_plate1_B11_S23.bam   -M results/qc/mkdup_metrics/DPCh_plate1_B11_S23.metrics > results/logs/mark_duplicates/DPCh_plate1_B11_S23.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_B10_S22.bam
+    output: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai, results/qc/mkdup_metrics/DPCh_plate1_B10_S22.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_B10_S22.log
+    jobid: 4
+    reason: Missing output files: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai; Input files updated by another job: results/bam/DPCh_plate1_B10_S22.bam
+    wildcards: sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_B10_S22.bam   -O results/mkdup/DPCh_plate1_B10_S22.bam   -M results/qc/mkdup_metrics/DPCh_plate1_B10_S22.metrics > results/logs/mark_duplicates/DPCh_plate1_B10_S22.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_B12_S24.bam
+    output: results/mkdup/DPCh_plate1_B12_S24.bam, results/mkdup/DPCh_plate1_B12_S24.bai, results/qc/mkdup_metrics/DPCh_plate1_B12_S24.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_B12_S24.log
+    jobid: 15
+    reason: Missing output files: results/mkdup/DPCh_plate1_B12_S24.bai, results/mkdup/DPCh_plate1_B12_S24.bam; Input files updated by another job: results/bam/DPCh_plate1_B12_S24.bam
+    wildcards: sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_B12_S24.bam   -O results/mkdup/DPCh_plate1_B12_S24.bam   -M results/qc/mkdup_metrics/DPCh_plate1_B12_S24.metrics > results/logs/mark_duplicates/DPCh_plate1_B12_S24.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_C11_S35.bam
+    output: results/mkdup/DPCh_plate1_C11_S35.bam, results/mkdup/DPCh_plate1_C11_S35.bai, results/qc/mkdup_metrics/DPCh_plate1_C11_S35.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_C11_S35.log
+    jobid: 23
+    reason: Missing output files: results/mkdup/DPCh_plate1_C11_S35.bai, results/mkdup/DPCh_plate1_C11_S35.bam; Input files updated by another job: results/bam/DPCh_plate1_C11_S35.bam
+    wildcards: sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_C11_S35.bam   -O results/mkdup/DPCh_plate1_C11_S35.bam   -M results/qc/mkdup_metrics/DPCh_plate1_C11_S35.metrics > results/logs/mark_duplicates/DPCh_plate1_C11_S35.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_G12_S84.bam
+    output: results/mkdup/DPCh_plate1_G12_S84.bam, results/mkdup/DPCh_plate1_G12_S84.bai, results/qc/mkdup_metrics/DPCh_plate1_G12_S84.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_G12_S84.log
+    jobid: 59
+    reason: Missing output files: results/mkdup/DPCh_plate1_G12_S84.bai, results/mkdup/DPCh_plate1_G12_S84.bam; Input files updated by another job: results/bam/DPCh_plate1_G12_S84.bam
+    wildcards: sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_G12_S84.bam   -O results/mkdup/DPCh_plate1_G12_S84.bam   -M results/qc/mkdup_metrics/DPCh_plate1_G12_S84.metrics > results/logs/mark_duplicates/DPCh_plate1_G12_S84.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_G09_S81.bam
+    output: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai, results/qc/mkdup_metrics/DPCh_plate1_G09_S81.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_G09_S81.log
+    jobid: 51
+    reason: Missing output files: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai; Input files updated by another job: results/bam/DPCh_plate1_G09_S81.bam
+    wildcards: sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_G09_S81.bam   -O results/mkdup/DPCh_plate1_G09_S81.bam   -M results/qc/mkdup_metrics/DPCh_plate1_G09_S81.metrics > results/logs/mark_duplicates/DPCh_plate1_G09_S81.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_H10_S94.bam
+    output: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai, results/qc/mkdup_metrics/DPCh_plate1_H10_S94.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_H10_S94.log
+    jobid: 67
+    reason: Missing output files: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai; Input files updated by another job: results/bam/DPCh_plate1_H10_S94.bam
+    wildcards: sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_H10_S94.bam   -O results/mkdup/DPCh_plate1_H10_S94.bam   -M results/qc/mkdup_metrics/DPCh_plate1_H10_S94.metrics > results/logs/mark_duplicates/DPCh_plate1_H10_S94.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_D11_S47.bam
+    output: results/mkdup/DPCh_plate1_D11_S47.bam, results/mkdup/DPCh_plate1_D11_S47.bai, results/qc/mkdup_metrics/DPCh_plate1_D11_S47.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_D11_S47.log
+    jobid: 35
+    reason: Missing output files: results/mkdup/DPCh_plate1_D11_S47.bai, results/mkdup/DPCh_plate1_D11_S47.bam; Input files updated by another job: results/bam/DPCh_plate1_D11_S47.bam
+    wildcards: sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_D11_S47.bam   -O results/mkdup/DPCh_plate1_D11_S47.bam   -M results/qc/mkdup_metrics/DPCh_plate1_D11_S47.metrics > results/logs/mark_duplicates/DPCh_plate1_D11_S47.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_F11_S71.bam
+    output: results/mkdup/DPCh_plate1_F11_S71.bam, results/mkdup/DPCh_plate1_F11_S71.bai, results/qc/mkdup_metrics/DPCh_plate1_F11_S71.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_F11_S71.log
+    jobid: 43
+    reason: Missing output files: results/mkdup/DPCh_plate1_F11_S71.bai, results/mkdup/DPCh_plate1_F11_S71.bam; Input files updated by another job: results/bam/DPCh_plate1_F11_S71.bam
+    wildcards: sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_F11_S71.bam   -O results/mkdup/DPCh_plate1_F11_S71.bam   -M results/qc/mkdup_metrics/DPCh_plate1_F11_S71.metrics > results/logs/mark_duplicates/DPCh_plate1_F11_S71.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_F12_S72.bam
+    output: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai, results/qc/mkdup_metrics/DPCh_plate1_F12_S72.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_F12_S72.log
+    jobid: 47
+    reason: Missing output files: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai; Input files updated by another job: results/bam/DPCh_plate1_F12_S72.bam
+    wildcards: sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_F12_S72.bam   -O results/mkdup/DPCh_plate1_F12_S72.bam   -M results/qc/mkdup_metrics/DPCh_plate1_F12_S72.metrics > results/logs/mark_duplicates/DPCh_plate1_F12_S72.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_F10_S70.bam
+    output: results/mkdup/DPCh_plate1_F10_S70.bam, results/mkdup/DPCh_plate1_F10_S70.bai, results/qc/mkdup_metrics/DPCh_plate1_F10_S70.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_F10_S70.log
+    jobid: 39
+    reason: Missing output files: results/mkdup/DPCh_plate1_F10_S70.bai, results/mkdup/DPCh_plate1_F10_S70.bam; Input files updated by another job: results/bam/DPCh_plate1_F10_S70.bam
+    wildcards: sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_F10_S70.bam   -O results/mkdup/DPCh_plate1_F10_S70.bam   -M results/qc/mkdup_metrics/DPCh_plate1_F10_S70.metrics > results/logs/mark_duplicates/DPCh_plate1_F10_S70.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_G10_S82.bam
+    output: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai, results/qc/mkdup_metrics/DPCh_plate1_G10_S82.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_G10_S82.log
+    jobid: 55
+    reason: Missing output files: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai; Input files updated by another job: results/bam/DPCh_plate1_G10_S82.bam
+    wildcards: sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_G10_S82.bam   -O results/mkdup/DPCh_plate1_G10_S82.bam   -M results/qc/mkdup_metrics/DPCh_plate1_G10_S82.metrics > results/logs/mark_duplicates/DPCh_plate1_G10_S82.log 2>&1 
+
+[Fri Mar  1 10:48:49 2024]
+localrule mark_duplicates:
+    input: results/bam/DPCh_plate1_H09_S93.bam
+    output: results/mkdup/DPCh_plate1_H09_S93.bam, results/mkdup/DPCh_plate1_H09_S93.bai, results/qc/mkdup_metrics/DPCh_plate1_H09_S93.metrics
+    log: results/logs/mark_duplicates/DPCh_plate1_H09_S93.log
+    jobid: 63
+    reason: Missing output files: results/mkdup/DPCh_plate1_H09_S93.bai, results/mkdup/DPCh_plate1_H09_S93.bam; Input files updated by another job: results/bam/DPCh_plate1_H09_S93.bam
+    wildcards: sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ gatk MarkDuplicates    --CREATE_INDEX   -I results/bam/DPCh_plate1_H09_S93.bam   -O results/mkdup/DPCh_plate1_H09_S93.bam   -M results/qc/mkdup_metrics/DPCh_plate1_H09_S93.metrics > results/logs/mark_duplicates/DPCh_plate1_H09_S93.log 2>&1 
+Execute 64 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B12_S24.bam, results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B12_S24.log
+    jobid: 74
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B12_S24.bam, data/genome/genome.dict
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B12_S24.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B12_S24.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B12_S24.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H10_S94.log
+    jobid: 105
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H10_S94.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H10_S94.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H10_S94.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G12_S84.bam, results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G12_S84.log
+    jobid: 121
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G12_S84.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G12_S84.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G12_S84.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G12_S84.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C12_S36.bam, results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C12_S36.log
+    jobid: 113
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C12_S36.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C12_S36.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C12_S36.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C12_S36.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B10_S22.log
+    jobid: 90
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B10_S22.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_B10_S22.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B10_S22.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B10_S22.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B10_S22.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D11_S47.bam, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D11_S47.log
+    jobid: 97
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_D11_S47.bam, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.dict
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D11_S47.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D11_S47.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D11_S47.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F12_S72.log
+    jobid: 82
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F12_S72.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F12_S72.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F12_S72.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D09_S45.log
+    jobid: 114
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D09_S45.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_D09_S45.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D09_S45.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D09_S45.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D09_S45.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C10_S34.log
+    jobid: 75
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C10_S34.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C10_S34.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C10_S34.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C10_S34.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C10_S34.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B11_S23.log
+    jobid: 91
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B11_S23.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_B11_S23.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B11_S23.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B11_S23.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B11_S23.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G09_S81.log
+    jobid: 83
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G09_S81.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G09_S81.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G09_S81.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G09_S81.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G09_S81.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F10_S70.bam, results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F10_S70.log
+    jobid: 98
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F10_S70.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F10_S70.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F10_S70.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F10_S70.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H09_S93.bam, results/mkdup/DPCh_plate1_H09_S93.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H09_S93.log
+    jobid: 122
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H09_S93.bai, results/mkdup/DPCh_plate1_H09_S93.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H09_S93.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H09_S93.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H09_S93.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D09_S45.log
+    jobid: 30
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D09_S45.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_D09_S45.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D09_S45.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D09_S45.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D09_S45.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B12_S24.bam, results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B12_S24.log
+    jobid: 14
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B12_S24.bam, data/genome/genome.dict
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B12_S24.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B12_S24.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B12_S24.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B12_S24.bam, results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B12_S24.log
+    jobid: 92
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B12_S24.bam, data/genome/genome.dict
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B12_S24.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B12_S24.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_B12_S24.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C11_S35.bam, results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C11_S35.log
+    jobid: 76
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C11_S35.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C11_S35.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C11_S35.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C11_S35.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H10_S94.log
+    jobid: 123
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H10_S94.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H10_S94.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_H10_S94.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C11_S35.bam, results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C11_S35.log
+    jobid: 22
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C11_S35.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C11_S35.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C11_S35.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C11_S35.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D11_S47.bam, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D11_S47.log
+    jobid: 115
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_D11_S47.bam, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.dict
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D11_S47.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D11_S47.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_D11_S47.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F11_S71.bam, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F11_S71.log
+    jobid: 99
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F11_S71.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F11_S71.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F11_S71.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F11_S71.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G10_S82.log
+    jobid: 84
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G10_S82.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G10_S82.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G10_S82.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G10_S82.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G10_S82.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C12_S36.bam, results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C12_S36.log
+    jobid: 77
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C12_S36.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C12_S36.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C12_S36.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_C12_S36.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C10_S34.log
+    jobid: 93
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C10_S34.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C10_S34.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C10_S34.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C10_S34.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C10_S34.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B10_S22.log
+    jobid: 3
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B10_S22.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_B10_S22.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B10_S22.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B10_S22.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B10_S22.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B10_S22.log
+    jobid: 108
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B10_S22.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_B10_S22.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B10_S22.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B10_S22.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B10_S22.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G12_S84.bam, results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G12_S84.log
+    jobid: 85
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G12_S84.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G12_S84.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G12_S84.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_G12_S84.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F12_S72.log
+    jobid: 46
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F12_S72.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F12_S72.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F12_S72.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F12_S72.log
+    jobid: 100
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F12_S72.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F12_S72.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_F12_S72.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F10_S70.bam, results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F10_S70.log
+    jobid: 38
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F10_S70.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F10_S70.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F10_S70.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F10_S70.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F10_S70.bam, results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F10_S70.log
+    jobid: 116
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F10_S70.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F10_S70.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F10_S70.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F10_S70.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G10_S82.log
+    jobid: 54
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G10_S82.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G10_S82.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G10_S82.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G10_S82.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G10_S82.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H09_S93.bam, results/mkdup/DPCh_plate1_H09_S93.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H09_S93.log
+    jobid: 62
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H09_S93.bai, results/mkdup/DPCh_plate1_H09_S93.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H09_S93.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H09_S93.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H09_S93.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D09_S45.log
+    jobid: 78
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D09_S45.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_D09_S45.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D09_S45.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D09_S45.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D09_S45.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B11_S23.log
+    jobid: 109
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B11_S23.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_B11_S23.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B11_S23.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B11_S23.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B11_S23.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C11_S35.bam, results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C11_S35.log
+    jobid: 94
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C11_S35.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C11_S35.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C11_S35.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C11_S35.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G09_S81.log
+    jobid: 101
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G09_S81.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G09_S81.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G09_S81.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G09_S81.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G09_S81.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F11_S71.bam, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F11_S71.log
+    jobid: 117
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F11_S71.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F11_S71.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F11_S71.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F11_S71.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H09_S93.bam, results/mkdup/DPCh_plate1_H09_S93.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H09_S93.log
+    jobid: 86
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H09_S93.bai, results/mkdup/DPCh_plate1_H09_S93.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H09_S93.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H09_S93.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H09_S93.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C12_S36.bam, results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C12_S36.log
+    jobid: 95
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C12_S36.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C12_S36.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C12_S36.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_C12_S36.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B12_S24.bam, results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B12_S24.log
+    jobid: 110
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B12_S24.bai, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B12_S24.bam, data/genome/genome.dict
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_B12_S24
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B12_S24.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B12_S24.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_B12_S24.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H10_S94.log
+    jobid: 87
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H10_S94.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H10_S94.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_H10_S94.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D11_S47.bam, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D11_S47.log
+    jobid: 79
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_D11_S47.bam, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.dict
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D11_S47.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D11_S47.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_D11_S47.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F12_S72.log
+    jobid: 118
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F12_S72.bam, results/mkdup/DPCh_plate1_F12_S72.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_F12_S72
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F12_S72.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F12_S72.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_F12_S72.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G10_S82.log
+    jobid: 102
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G10_S82.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G10_S82.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G10_S82.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G10_S82.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G10_S82.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D09_S45.bam, results/mkdup/DPCh_plate1_D09_S45.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D09_S45.log
+    jobid: 96
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D09_S45.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_D09_S45.bai
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_D09_S45
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D09_S45.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D09_S45.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_D09_S45.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C12_S36.bam, results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C12_S36.log
+    jobid: 26
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C12_S36.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C12_S36.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_C12_S36
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C12_S36.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C12_S36.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C12_S36.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C10_S34.log
+    jobid: 18
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C10_S34.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C10_S34.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C10_S34.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C10_S34.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_C10_S34.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C10_S34.bam, results/mkdup/DPCh_plate1_C10_S34.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C10_S34.log
+    jobid: 111
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C10_S34.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C10_S34.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_C10_S34
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C10_S34.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C10_S34.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C10_S34.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B10_S22.bam, results/mkdup/DPCh_plate1_B10_S22.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B10_S22.log
+    jobid: 72
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_B10_S22.bam, data/genome/genome.dict, results/mkdup/DPCh_plate1_B10_S22.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_B10_S22
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B10_S22.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B10_S22.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B10_S22.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G12_S84.bam, results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G12_S84.log
+    jobid: 103
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G12_S84.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G12_S84.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G12_S84.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_G12_S84.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G09_S81.log
+    jobid: 119
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G09_S81.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G09_S81.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G09_S81.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G09_S81.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G09_S81.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_D11_S47.bam, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D11_S47.log
+    jobid: 34
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_D11_S47.bam, data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_D11_S47.bai, data/genome/genome.dict
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_D11_S47
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_D11_S47.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D11_S47.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_D11_S47.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F10_S70.bam, results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F10_S70.log
+    jobid: 80
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_F10_S70.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F10_S70.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_F10_S70
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F10_S70.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F10_S70.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F10_S70.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B11_S23.log
+    jobid: 10
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B11_S23.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_B11_S23.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B11_S23.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B11_S23.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_B11_S23.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_B11_S23.bam, results/mkdup/DPCh_plate1_B11_S23.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B11_S23.log
+    jobid: 73
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_B11_S23.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_B11_S23.bai
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_B11_S23
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_B11_S23.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B11_S23.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_B11_S23.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_C11_S35.bam, results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C11_S35.log
+    jobid: 112
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_C11_S35.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_C11_S35.bam
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_C11_S35
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_C11_S35.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C11_S35.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_C11_S35.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G12_S84.bam, results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G12_S84.log
+    jobid: 58
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G12_S84.bai, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G12_S84.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_G12_S84
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G12_S84.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G12_S84.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G12_S84.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G09_S81.bam, results/mkdup/DPCh_plate1_G09_S81.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G09_S81.log
+    jobid: 50
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G09_S81.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G09_S81.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_G09_S81
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G09_S81.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G09_S81.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_G09_S81.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H10_S94.log
+    jobid: 66
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H10_S94.bam, results/mkdup/DPCh_plate1_H10_S94.bai
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_H10_S94
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H10_S94.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H10_S94.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_H10_S94.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F11_S71.bam, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F11_S71.log
+    jobid: 42
+    reason: Missing output files: results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F11_S71.bam
+    wildcards: chromo=NC_037122.1f5t9, sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F11_S71.bam  -O results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz  -L NC_037122.1f5t9     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F11_S71.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/DPCh_plate1_F11_S71.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_F11_S71.bam, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F11_S71.log
+    jobid: 81
+    reason: Missing output files: results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, results/mkdup/DPCh_plate1_F11_S71.bai, data/genome/genome.dict, results/mkdup/DPCh_plate1_F11_S71.bam
+    wildcards: chromo=NC_037123.1f10t14, sample=DPCh_plate1_F11_S71
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_F11_S71.bam  -O results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz  -L NC_037123.1f10t14     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F11_S71.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/DPCh_plate1_F11_S71.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_G10_S82.bam, results/mkdup/DPCh_plate1_G10_S82.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G10_S82.log
+    jobid: 120
+    reason: Missing output files: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz; Input files updated by another job: results/mkdup/DPCh_plate1_G10_S82.bam, data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_G10_S82.bai
+    wildcards: chromo=NC_037125.1f20t24, sample=DPCh_plate1_G10_S82
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_G10_S82.bam  -O results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz  -L NC_037125.1f20t24     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G10_S82.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/DPCh_plate1_G10_S82.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/DPCh_plate1_H09_S93.bam, results/mkdup/DPCh_plate1_H09_S93.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H09_S93.log
+    jobid: 104
+    reason: Missing output files: results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/mkdup/DPCh_plate1_H09_S93.bai, results/mkdup/DPCh_plate1_H09_S93.bam
+    wildcards: chromo=NC_037124.1f8t16, sample=DPCh_plate1_H09_S93
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/DPCh_plate1_H09_S93.bam  -O results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz  -L NC_037124.1f8t16     --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H09_S93.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/DPCh_plate1_H09_S93.log 
+Execute 4 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz
+    output: results/genomics_db/NC_037122.1f5t9
+    log: results/logs/import_genomics_db_by_chromo/NC_037122.1f5t9.log
+    jobid: 2
+    reason: Missing output files: results/genomics_db/NC_037122.1f5t9; Input files updated by another job: results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=<TBD>
+
+ VS=$(for i in results/gvcf/NC_037122.1f5t9/DPCh_plate1_B10_S22.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_B11_S23.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_B12_S24.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_C10_S34.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_C11_S35.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_C12_S36.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_D09_S45.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_D11_S47.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_F10_S70.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_F11_S71.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_F12_S72.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_G09_S81.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_G10_S82.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_G12_S84.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_H09_S93.g.vcf.gz results/gvcf/NC_037122.1f5t9/DPCh_plate1_H10_S94.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037122.1f5t9   -L  NC_037122.1f5t9 2> results/logs/import_genomics_db_by_chromo/NC_037122.1f5t9.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz
+    output: results/genomics_db/NC_037123.1f10t14
+    log: results/logs/import_genomics_db_by_chromo/NC_037123.1f10t14.log
+    jobid: 71
+    reason: Missing output files: results/genomics_db/NC_037123.1f10t14; Input files updated by another job: results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=<TBD>
+
+ VS=$(for i in results/gvcf/NC_037123.1f10t14/DPCh_plate1_B10_S22.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_B11_S23.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_B12_S24.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_C10_S34.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_C11_S35.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_C12_S36.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_D09_S45.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_D11_S47.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_F10_S70.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_F11_S71.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_F12_S72.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_G09_S81.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_G10_S82.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_G12_S84.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_H09_S93.g.vcf.gz results/gvcf/NC_037123.1f10t14/DPCh_plate1_H10_S94.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037123.1f10t14   -L  NC_037123.1f10t14 2> results/logs/import_genomics_db_by_chromo/NC_037123.1f10t14.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz
+    output: results/genomics_db/NC_037124.1f8t16
+    log: results/logs/import_genomics_db_by_chromo/NC_037124.1f8t16.log
+    jobid: 89
+    reason: Missing output files: results/genomics_db/NC_037124.1f8t16; Input files updated by another job: results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=<TBD>
+
+ VS=$(for i in results/gvcf/NC_037124.1f8t16/DPCh_plate1_B10_S22.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_B11_S23.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_B12_S24.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_C10_S34.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_C11_S35.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_C12_S36.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_D09_S45.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_D11_S47.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_F10_S70.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_F11_S71.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_F12_S72.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_G09_S81.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_G10_S82.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_G12_S84.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_H09_S93.g.vcf.gz results/gvcf/NC_037124.1f8t16/DPCh_plate1_H10_S94.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037124.1f8t16   -L  NC_037124.1f8t16 2> results/logs/import_genomics_db_by_chromo/NC_037124.1f8t16.log 
+
+[Fri Mar  1 10:48:49 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz
+    output: results/genomics_db/NC_037125.1f20t24
+    log: results/logs/import_genomics_db_by_chromo/NC_037125.1f20t24.log
+    jobid: 107
+    reason: Missing output files: results/genomics_db/NC_037125.1f20t24; Input files updated by another job: results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz, results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=<TBD>
+
+ VS=$(for i in results/gvcf/NC_037125.1f20t24/DPCh_plate1_B10_S22.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_B11_S23.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_B12_S24.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_C10_S34.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_C11_S35.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_C12_S36.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_D09_S45.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_D11_S47.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_F10_S70.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_F11_S71.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_F12_S72.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_G09_S81.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_G10_S82.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_G12_S84.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_H09_S93.g.vcf.gz results/gvcf/NC_037125.1f20t24/DPCh_plate1_H10_S94.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037125.1f20t24   -L  NC_037125.1f20t24 2> results/logs/import_genomics_db_by_chromo/NC_037125.1f20t24.log 
+Execute 4 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037122.1f5t9, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz, results/chromo_vcfs/NC_037122.1f5t9.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037122.1f5t9.txt
+    jobid: 1
+    reason: Missing output files: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz; Input files updated by another job: results/genomics_db/NC_037122.1f5t9, data/genome/genome.fasta.fai, data/genome/genome.dict
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037122.1f5t9   -O results/chromo_vcfs/NC_037122.1f5t9.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037122.1f5t9.txt 
+
+[Fri Mar  1 10:48:49 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037123.1f10t14, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037123.1f10t14.vcf.gz, results/chromo_vcfs/NC_037123.1f10t14.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037123.1f10t14.txt
+    jobid: 70
+    reason: Missing output files: results/chromo_vcfs/NC_037123.1f10t14.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/genomics_db/NC_037123.1f10t14
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037123.1f10t14   -O results/chromo_vcfs/NC_037123.1f10t14.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037123.1f10t14.txt 
+
+[Fri Mar  1 10:48:49 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037125.1f20t24, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037125.1f20t24.vcf.gz, results/chromo_vcfs/NC_037125.1f20t24.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037125.1f20t24.txt
+    jobid: 106
+    reason: Missing output files: results/chromo_vcfs/NC_037125.1f20t24.vcf.gz; Input files updated by another job: results/genomics_db/NC_037125.1f20t24, data/genome/genome.fasta.fai, data/genome/genome.dict
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037125.1f20t24   -O results/chromo_vcfs/NC_037125.1f20t24.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037125.1f20t24.txt 
+
+[Fri Mar  1 10:48:49 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037124.1f8t16, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037124.1f8t16.vcf.gz, results/chromo_vcfs/NC_037124.1f8t16.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037124.1f8t16.txt
+    jobid: 88
+    reason: Missing output files: results/chromo_vcfs/NC_037124.1f8t16.vcf.gz; Input files updated by another job: data/genome/genome.fasta.fai, data/genome/genome.dict, results/genomics_db/NC_037124.1f8t16
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=<TBD>
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037124.1f8t16   -O results/chromo_vcfs/NC_037124.1f8t16.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037124.1f8t16.txt 
+Execute 1 jobs...
+
+[Fri Mar  1 10:48:49 2024]
+localrule concat_vcfs:
+    input: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz, results/chromo_vcfs/NC_037123.1f10t14.vcf.gz, results/chromo_vcfs/NC_037124.1f8t16.vcf.gz, results/chromo_vcfs/NC_037125.1f20t24.vcf.gz
+    output: results/vcf/all.vcf.gz
+    log: results/concat_vcfs/all.log
+    jobid: 0
+    reason: Missing output files: results/vcf/all.vcf.gz; Input files updated by another job: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz, results/chromo_vcfs/NC_037125.1f20t24.vcf.gz, results/chromo_vcfs/NC_037123.1f10t14.vcf.gz, results/chromo_vcfs/NC_037124.1f8t16.vcf.gz
+    resources: tmpdir=<TBD>
+
+bcftools concat -n results/chromo_vcfs/NC_037122.1f5t9.vcf.gz results/chromo_vcfs/NC_037123.1f10t14.vcf.gz results/chromo_vcfs/NC_037124.1f8t16.vcf.gz results/chromo_vcfs/NC_037125.1f20t24.vcf.gz > results/vcf/all.vcf.gz 2> results/concat_vcfs/all.log 
+Job stats:
+job                             count
+----------------------------  -------
+bwa_index                           1
+concat_vcfs                         1
+genome_dict                         1
+genome_faidx                        1
+import_genomics_db_by_chromo        4
+make_gvcfs_by_chromo               64
+map_reads                          16
+mark_duplicates                    16
+trim_reads                         16
+vcf_from_gdb_by_chromo              4
+total                             124
+
+Reasons:
+    (check individual jobs above for details)
+    input files updated by another job:
+        concat_vcfs, import_genomics_db_by_chromo, make_gvcfs_by_chromo, map_reads, mark_duplicates, vcf_from_gdb_by_chromo
+    missing output files:
+        bwa_index, concat_vcfs, genome_dict, genome_faidx, import_genomics_db_by_chromo, make_gvcfs_by_chromo, map_reads, mark_duplicates, trim_reads, vcf_from_gdb_by_chromo
+
+This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.
