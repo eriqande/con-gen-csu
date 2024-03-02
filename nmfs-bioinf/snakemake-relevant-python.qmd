@@ -156,6 +156,11 @@ Then try:
 x
 ```
 
+Note, to get out of the python REPL loop, you can type:
+```
+
+```
+
 ## R and Python: compare and contrast
 
 You can consider this a sort of Berlitz language course for R-speakers on how to
