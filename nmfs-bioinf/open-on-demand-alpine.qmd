@@ -16,7 +16,7 @@ _Open OnDemand_.  As a _browser-based_ system, you will connect to Alpine via
 your web browser. Ultimately, you will be able to run a session of RStudio Server
 that runs on a compute node on Alpine, interacting with your filesystem on the cluster
 the way you would with local files using any RStudio session on your laptop.  Additionally,
-you can drive git and get a terminal shell through RStudio server as well.  It is pretty
+you can drive git and get a terminal shell through the RStudio server as well.  It is pretty
 slick if you are comfortable in an RStudio environment.
 
 
@@ -63,10 +63,12 @@ way to the .Rproj file.   This means that you could interact with your
 con-gen-csu repo on Alpine as an Rstudio Project.  The possibilities are
 endless.  You can open as many files on the cluster as you wish in the RStudio
 source-code editor window, and edit them with RStudio, making changes directly
-to them on the cluster.  You have a graphical interface to git, that is familiar, and you
+to them on the cluster.  You have a graphical interface to git that is familiar, and you
 can also get to a shell in the "Terminal" tab.  You also have an active R session
 on the cluster in case you want to analyze any data you have on the cluster with
-R.
+R. 
+
+**a comment: I don't see the git interface buttons in the RStudio session, this might be a nice place to recap that setup if its necessary, and if its different from the previous R steps. Also I just don't remember lol and will need to go look it up. **
 
 Note that if you open up files in Rstudio on Alpine that Rstudio recognizes
 as shell script files (because they have a `.sh` extension), then choosing
@@ -90,10 +92,10 @@ files here and there, but don't transfer too much.  For big files, or for
 transferring things to scratch, you should
 use globus, as explained [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files).
 
-Finally, from you Alpine dashboard in your browser, you can even get a shell
+Finally, from your Alpine dashboard in your browser, you can even get a shell
 (in your browser) on Alpine.  Do that by selecting "`Clusters--> >_Alpine Shell`.
 It is a fully functional shell terminal in your browser.  Apparently you can even
-get to this on your phone or tablet browswer.  (Just when you thought cluster computing
+get to this on your phone or tablet browser.  (Just when you thought cluster computing
 couldn't intrude any more on your life than it currenly is---it is gonna get you via
 your phone).
 
@@ -101,5 +103,7 @@ In the shell, you can choose different color themes from the selector in the upp
 Also, you can open as many shells as you want---each one will go in a new browser tab.
 
 Enjoy!
+
+**Any disconnect instructions other than closing your browser?**
 
 
