@@ -1,0 +1,36 @@
+# Important Snakemake Embellishments
+
+Thus far we have only scratched the surface of what Snakemake can do, and it
+could take a lifetime to realize the full potential of Snakemake as a workflow
+management system.  At this point, we will point out that there is comprehensive
+documentation about how to use snakemake at 
+[https://snakemake.readthedocs.io/en/stable/](https://snakemake.readthedocs.io/en/stable/).
+It is worth giving that a good-faith read-through at some point.  However,
+it is not always clear which of the many gems in that documentation will be the
+most valuable for your bioinoformatic life.
+
+Here we present a few embellishments upon what we have already
+learned that will really let you get a lot more out of Snakemake.  There are
+three broad categories that will be discussed in different sections of this chapter.
+
+1. Embellishments critical for running Snakemake on a cluster.  This includes
+the declaration of _resources_ required for the jobs and also the use of
+_profiles_ to create a snakemake command line that can send jobs to SLURM and
+also communicate with SLURM to check up on jobs while they are running. It also
+includes telling snakemake to generate of **benchmark** information so that you can
+store how much memory and time was required for every job your workflow runs---this
+is super handy for predicting resource requirements for future data sets!
+
+2. Embellishments that make it easy to run your workflow on a different set of
+data, or a different species, or using different settings, options, or parameter
+values for some of the tasks/rules.  The main improvement here is using
+snakemake **config files**, so that all the different settings and options for your
+workflow can be specified and stored and reviewed in one place.  We will also see
+that configuration files can be very helpful for setting resource requirements for
+rules, which means that you only have to change things in one small config file to
+run your workflow on a different cluster with different partition names and machine
+capabilities, for example.
+
+3. More advanced processing of wildcards using snakemake _input functions_.  This allows
+your rules to react to the wildcard values in very general ways, rather than just by
+substituting the values into input or log file paths.  
