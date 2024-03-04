@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>con-gen-csu - 11&nbsp; Snakemake Narrative and Topics</title>
+<title>con-gen-csu - 1&nbsp; OpenOnDemand on Alpine</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../nmfs-bioinf/snakemake-relevant-python.html" rel="next">
-<link href="../nmfs-bioinf/bioinf-formats.html" rel="prev">
+<link href="../nmfs-bioinf/quick-unix-review.html" rel="next">
+<link href="../index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/snake.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/open-on-demand-alpine.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -120,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link">
+  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></a>
   </div>
 </li>
@@ -180,7 +214,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link active">
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
   </div>
 </li>
@@ -206,20 +240,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#input-functions" id="toc-input-functions" class="nav-link active" data-scroll-target="#input-functions"><span class="header-section-number">11.1</span> Input Functions</a>
+  <li><a href="#getting-onto-rstudio-server-on-alpine" id="toc-getting-onto-rstudio-server-on-alpine" class="nav-link active" data-scroll-target="#getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</a></li>
+  <li><a href="#working-in-rstudio" id="toc-working-in-rstudio" class="nav-link" data-scroll-target="#working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</a>
   <ul class="collapse">
-  <li><a href="#input-functions-returning-dicts" id="toc-input-functions-returning-dicts" class="nav-link" data-scroll-target="#input-functions-returning-dicts"><span class="header-section-number">11.1.1</span> Input functions returning dicts</a></li>
+  <li><a href="#sec-nossh" id="toc-sec-nossh" class="nav-link" data-scroll-target="#sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</a></li>
   </ul></li>
-  <li><a href="#using-pandas" id="toc-using-pandas" class="nav-link" data-scroll-target="#using-pandas"><span class="header-section-number">11.2</span> Using Pandas</a></li>
+  <li><a href="#other-places-to-go-from-the-dashboard" id="toc-other-places-to-go-from-the-dashboard" class="nav-link" data-scroll-target="#other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snake.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/open-on-demand-alpine.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="snake" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></h1>
+<h1 class="title"><span id="sec-ondemand" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></h1>
 </div>
 
 
@@ -236,31 +271,96 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>In the preceding sections we have covered a few approaches for using RStudio projects and RMarkdown to create reproducible research repositories with visually pleasing HTML outputs that can help readers quickly see what was required to generate different figures/tables/outputs. Such an approach is well suited to projects that are undertaken primarily on one’s own desktop or laptop computer, and which don’t take an inordinately long time to run. Unfortunately, that does not describe most <em>bioinformatic</em> analyses handling whole-genome sequencing or RAD sequencing data for conservation genetics. Most of those analyses will be run on a university computer cluster, and trying to manage all of that within an RMarkdown-based framework is at best rather difficult, and at worst it can become a shrieking horror.</p>
-<p>For managing these sorts of bioinformatic workflows there is a Python-based framework called <a href="https://snakemake.readthedocs.io/en/stable/">Snakemake</a> that is well-supported, flexible, and incredibly powerful. Understanding how Snakemake works and becoming familiar with its many features involves a non-trivial learning curve; however, for anyone spending a sizable chunk of their graduate career managing bioinformatic analyses, or for anyone that is a lab bioinformatician running bioinformatic workflows across many species (for example), the benefits of learning Snakemake will continue to pay dividends for years to come.</p>
-<p>Someone who has mastered all the topics in Part I of this handbook (Unix programming, working on remote computers, etc.) certainly will have the skills to write what I will call <em>input-oriented</em>, <em>forward-marching</em> workflows. I call these “forward-marching” because they start from a set of input files (for example files of sequences from a sequencer), and then the workflow is defined as a series of sequential steps, one after the other. They are “input-oriented” in the sense that such a workflow starts with a series of inputs, but the workflow itself doesn’t really know what it is trying to produce from those inputs until it has run all the way through and actually turned those inputs into outputs. For example, all the input files might get trimmed or cleaned, then they would all get mapped to a genome, and then those mapped sequences would be used to call variants, so as to find SNPs in the data, etc. If you were writing this in an input-oriented, forward-marching fashion, then, to deal with the fact that you had multiple files of DNA sequences (for example, one for each individual bird or fish that had been sampled), you might write Unix <code>for</code> loops to cycle over all the input files as in Section&nbsp;@ref(unix-for-loops), or, you could define a SLURM job array to start a separate job instance for each input file, as in Section&nbsp;@ref(slurm-job-arrays). In each case, you would have to do some extra programming to deal with the different input files, and if one of the steps of your workflow failed on just one, or a few, of the files, you might spend a large amount of time tracking those failures down and than manually re-running that small number of jobs.</p>
-<p>By contrast, Snakemake takes a different approach to managing workflows. We will call it an <em>output-oriented</em>, <em>backward-looking</em> approach. We call it that because workflows in Snakemake are defined first and foremost in terms of the <em>output files</em> that are desired, along with instructions on how to create those output files from necessary input files and bioinformatic programs. They are <em>backward-looking</em> in the sense that, once you have developed a Snakemake workflow, you get results by telling Snakemake which output files you want to create, and then it “looks backwards” through the workflow to determine which input files are needed to create the requested outputs. Sometimes it has to look backwards through several steps before it identifies all the necessary input files. Once it has found those necessary inputs, it then runs forward through the steps to create the output files. In this phase, the workflow looks like it is “forward-marching”, in the sense that outputs are being created from inputs. But, in order to get to that “forward-running” phase, Snakemake had to look backward to figure out what inputs to use.</p>
-<p>The above constitutes some subtle points, that might not be clear upon first reading, but we will try to summarize it in a few pithy phrases:</p>
-<ul>
-<li>A workflow defined as a typical Unix shell script can be thought of as a process that runs forward. You give it a lot of input files and it just cranks through a bunch of steps until the output files are made.</li>
-<li>A workflow defined with Snakemake works differently. First you define the workflow in terms of a series of “rules.” Then, when you request any given set of output files, Snakemake will look backwards through the rules of the workflow and figure out exactly which steps must be performed, on which input files, in order to create the requested output files. Once it has determined that, it runs just those necessary steps.</li>
-</ul>
-<p>There are many advantages to this output-oriented, backward-looking approach:</p>
+<p>If you have an account on Alpine, there is a cool way to connect to Alpine through a web browser. This provides a nice way to access your files and do light copying, etc. But, more importantly, this method allows you to interact with your files and projects on the cluster in the familiar RStudio framework. This also provides a useful way for running your own R projects and handling git in R projects on the cluster. Really, I suspect this will be life-changing for many folks that are very familiar with RStudio and wish that they could run analyses in R, using RStudio, on the cluster, just like they do on their laptop or desktop machines.</p>
+<p>The approach uses a <em>browser-based</em> portal to the Alpine computing cluster that is supported by CURC and is called <em>Open OnDemand</em>. As a <em>browser-based</em> system, you will connect to Alpine via your web browser. Ultimately, you will be able to run a session of RStudio Server that runs on a compute node on Alpine, interacting with your filesystem on the cluster the way you would with local files using any RStudio session on your laptop. Additionally, you can drive git and get a terminal shell through RStudio server as well. It is pretty slick if you are comfortable in an RStudio environment.</p>
+<p>Full details about OpenOndemand on Alpine can be found at the CURC website <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html">here</a>, with a whole section about RStudio <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio">here</a>.</p>
+<section id="getting-onto-rstudio-server-on-alpine" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</h2>
+<p>In order to establish an RStudio session container/image/overlay, the Alpine administrators recommend using 4 cores, because the initial setup can take a few minutes. After that you can re-attach to that image quickly and use just a single core if you would like. Briefy instructions on how to do that are:</p>
 <ol type="1">
-<li>If your workflow has many steps, and some of them have already been run, then Snakemake automatically recognizes that, and will not re-run steps in the workflow that have already been completed. In an input-oriented system (like a traditional Unix script), you would have to spend the time to figure out which steps had already been run, and then run your script only from that point forward. Doing so can be a hassle and can also be prone to errors.</li>
-<li>A workflow defined by Snakemake, being explicit about the inputs needed for each step, naturally defines “work units” that can be run independently of one another. Accordingly, Snakemake, itself, can break a huge bioinformatic workflow into a number of small jobs that can be run in parallel, saving you, the user, from having to write scripts to launch a series of SLURM job arrays.</li>
-<li>The fact that Snakemake automatically keeps track of which inputs already exist—and which might still need to be generated—provides huge benefits when some of your jobs fail. Anyone who has used a cluster has stories about jobs that inexplicably fail. Without a workflow management system like Snakemake, you can spend almost as much of your own time managing these failed jobs as it took to launch all the jobs in the first place.</li>
+<li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
+<li>The first time you click that, it will take you to a page where you must choose which institution’s OpenOnDemand infrastructure you are accessing. Choose <code>Colorado State University</code>, from the pop-up menu and be sure to select “Remember this selection” and then click “Log On”.<br>
+<img src="./images/colostate-open-ondemand.png" class="img-fluid"></li>
+<li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
+<li>That should drop you into the CURC OnDemand Dashboard page that looks like this:<br>
+<img src="./images/curc-on-demand-dashboard.png" class="img-fluid"></li>
+<li>Choose “Interactive Apps–&gt;RStudio Server Presets”, then use the bottom toggle box to choose “4 cores, 4 hours”, and hit “Launch”. This will start making you an RStudio Server container. Again, we choose 4 cores just for the initial setup, but you can choose 1 core in the future.<br>
+<img src="./images/rstudio-server-preset.png" class="img-fluid"></li>
+<li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”<br>
+<img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
+<li>Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</li>
 </ol>
-<p>In addition to these obvious advantages of the output-oriented approach, Snakemake also includes a number of features that make it easy to use your workflow on a variety of different platforms. It is tightly integrated with conda (Section&nbsp;@ref(miniconda)), letting the user define conda environments for each step in the workflow. This means that if you move your whole workflow to a new cluster, you don’t have to spend any time coordinating the installation of the programs you need—if you set things up properly with Snakemake and conda, that will happen automatically. If you distribute your workflows to other people to use, this is particularly helpful, since you will spend far less time assisting them in setting up their computer environment to run your workflow. Snakemake can also be customized to work in your own cluster environment. Finally, there are interfaces to allow your Snakemake workflows to run seamlessly in the cloud.</p>
-<p>Full documentation for Snakemake can be found at <a href="https://snakemake.readthedocs.io/en/stable/">https://snakemake.readthedocs.io/en/stable/</a>. This documentation is comprehensive, but can feel a little daunting at first. On the other hand, the developers of Snakemake also provide an excellent and accessible tutorial at <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html</a>.</p>
-<section id="input-functions" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="input-functions"><span class="header-section-number">11.1</span> Input Functions</h2>
-<section id="input-functions-returning-dicts" class="level3" data-number="11.1.1">
-<h3 data-number="11.1.1" class="anchored" data-anchor-id="input-functions-returning-dicts"><span class="header-section-number">11.1.1</span> Input functions returning dicts</h3>
+</section>
+<section id="working-in-rstudio" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</h2>
+<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git (but no ssh! see the section <a href="#sec-nossh" class="quarto-xref"><span>Section 1.2.1</span></a>, below), that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
+<p>Note that if you open up files in Rstudio on Alpine that Rstudio recognizes as shell script files (because they have a <code>.sh</code> extension), then choosing CMD-Return (on a Mac) or cntrl-Return (on a PC) will send the line that your cursor is on to the Terminal shell (in much the same way that you can evaluate R code from an R script in the R console within RStudio). This provides a very handy way to test your shell scripts line by line on the Alpine bash shell.</p>
+<p>At the time of this writing, I have not been able to load the slurm/alpine module in the RStudio Terminal to allow submission of jobs via <code>sbatch</code> in this environment, but I can keep you posted. In the meantime, you can always get a shell in your browser (see the next section).</p>
+<p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+</figure>
+</div>
+<p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
+<p>Note that if your time on the compute node runs out before you are done working on RStudio, then unsaved work and variables in your global environment will be lost and RStudio will start saying that it has lost connection (with a bunch of 503 errors).</p>
+<section id="sec-nossh" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</h3>
+<p>The program <code>git</code> works just fine in the OnDemand RStudio Server on when you are just dealing with local files. However it does not seem to have access to ssh. There is simply no <code>ssh</code> at <code>/usr/bin/ssh</code> in the shell that RStudio gets to run. This is super weird. We will have to check with the CURC admins about this.</p>
+<p>Until then, you can use RStudio to stage and commit files (and gitignore them), just like you would on Rstudio on your laptop. And you can also switch branches and create new branches. But you can’t do you git push and git pull operations, on RStudio Server on Alpine. Instead, you can use the browser-based shell (see the next section) to do your git push and git pull.</p>
+<p>Note that if you create a new branch in RStudio on Alpine, you should not click the “Sync branch with remote” button, because that operation will fail, since it requires <code>ssh</code>. However, once you have made the branch, you can go to your terminal (either in the browser or through your terminal emulator (i.e. tmux) and then cd to the repo. Check with <code>git branch</code> to make sure that you are on the new branch and then do</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin <span class="op">&lt;</span>new-branch<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where you replace <code>&lt;new-branch&gt;</code> with the actual branch name. The <code>-u</code> option tell git to create a new branch named <code>&lt;new-branch&gt;</code> on <code>origin</code> that automatically tracks <code>&lt;new-branch&gt;</code> on your local repository, so that from now on, any time you are on <code>&lt;new-branch&gt;</code>, from now on, you can just say <code>git pull</code> or <code>git push</code> without specifying anything else, and <code>git</code> will automatically know to push or pull to <code>&lt;new-branch&gt;</code> on <code>origin</code>.</p>
+<p>For example, in RStudio I created a new branch called <code>gratuitous-branch</code> and I told RStudio not to sync the branch with remote:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
+</figure>
+</div>
+<p>Then I went to my shell and did <code>git branch</code> to confirm I was on that branch:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> ~]--% cd projects/con-gen-csu/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The asterisk tells me that is the branch I am on! So now I do:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin gratuitous-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nothing got transferred because I had no changes on this new branch, but the output message from git is good to see:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'gratuitous-branch'</span> on GitHub by visiting:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>      https://github.com/eca-home/con-gen-csu/pull/new/gratuitous-branch</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github-home:eca-home/con-gen-csu.git</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      gratuitous-branch <span class="at">-</span><span class="op">&gt;</span> gratuitous-branch</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'gratuitous-branch'</span> set up to track <span class="st">'origin/gratuitous-branch'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Most importantly it tells me that <code>branch 'gratuitous-branch' set up to track 'origin/gratuitous-branch'.</code> which is what we want.</p>
+<p>We can also verify branch tracking by using <code>git branch -vv</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch <span class="at">-vv</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span>     9901ce8 <span class="pp">[</span><span class="ss">origin/005</span><span class="pp">-</span><span class="ss">trim</span><span class="pp">-</span><span class="ss">map2</span><span class="pp">]</span> answer key</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span>   67a106e <span class="pp">[</span><span class="ss">origin/fastp</span><span class="pp">-</span><span class="ss">iteration</span><span class="pp">]</span> done</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch 034d018 <span class="pp">[</span><span class="ss">origin/gratuitous</span><span class="pp">-</span><span class="ss">branch</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span>              034d018 <span class="pp">[</span><span class="ss">origin/main</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here, we see that all my local branches are set up to track a remote branch of the same name on origin. So, if I commit any changes on a branch, I can just say,</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and it will push or pull to/from the correct branch on the remote origin. Cool!</p>
 </section>
 </section>
-<section id="using-pandas" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="using-pandas"><span class="header-section-number">11.2</span> Using Pandas</h2>
+<section id="other-places-to-go-from-the-dashboard" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</h2>
+<p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
+<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting <code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currently is—it is gonna get you via your devices).</p>
+<p>In the shell, you can choose different color themes from the selector in the upper right. Also, you can open as many shells as you want—each one will go in a new browser tab.</p>
+<p>Enjoy!</p>
 
 
 </section>
@@ -655,13 +755,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../nmfs-bioinf/bioinf-formats.html" class="pagination-link" aria-label="Bioinformatic file formats">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span>
+      <a href="../index.html" class="pagination-link" aria-label="Welcome!">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome!</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="pagination-link" aria-label="Snakemake-relevant Python for R Users">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../nmfs-bioinf/quick-unix-review.html" class="pagination-link" aria-label="Quick Unix Review">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -670,4 +770,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snake.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/open-on-demand-alpine.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
