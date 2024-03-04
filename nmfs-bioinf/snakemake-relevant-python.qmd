@@ -90,16 +90,30 @@ materials from the course.
 
 
 If you do not already have the 'reticulate', R-package, get it with this command at the R console
-in Rstudio:
+in Rstudio.  If you are Alpine you must do this:
 ```r
+# first do this
+install.packages("reticulate")
+
+# then do this:
 install.packages("reticulate", repos = "https://cran.rstudio.com/")
 ```
-Note that, on Alpine, it is critical that you add the `repos = "https://cran.rstudio.com/`
+Note that, on Alpine, it is critical to use that second line where
+you add the `repos = "https://cran.rstudio.com/`
 part in there.  The RStudio Server maintained by CURC in OpenOnDemand is
 configured by default to draw its packages from a repository full of binary versions, and
 it may end up givng you versions of packages which are much older than the most recent
-versions. (At the time of this wriring, it installed 'reticulate' version 1.28 instead
+versions. (At the time of this writing, it installed 'reticulate' version 1.28 instead
 of 1.35, and all the following steps failed...I lost a good several hours because of that!!)
+We do the initial `install.packages("reticulate")` to install binary versions of some of
+the dependencies for the 'reticulate' package.
+
+If you are not on Alpine, you should be able to simply do:
+```r
+install.packages("reticulate")
+```
+to get the latest version of reticulate.
+
 
 ```{r}
 #| eval: true
