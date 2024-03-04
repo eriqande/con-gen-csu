@@ -242,7 +242,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" id="toc-running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" class="nav-link active" data-scroll-target="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks"><span class="header-section-number">13.1</span> Running Snakemake on a Cluster: resources, profiles, and benchmarks</a>
   <ul class="collapse">
   <li><a href="#specify-the-resources-required-for-each-rule" id="toc-specify-the-resources-required-for-each-rule" class="nav-link" data-scroll-target="#specify-the-resources-required-for-each-rule"><span class="header-section-number">13.1.1</span> Specify the resources required for each rule</a></li>
+  <li><a href="#snakemake-profiles" id="toc-snakemake-profiles" class="nav-link" data-scroll-target="#snakemake-profiles"><span class="header-section-number">13.1.2</span> Snakemake profiles</a></li>
+  <li><a href="#an-alpine-slurm-profile-for-snakemake" id="toc-an-alpine-slurm-profile-for-snakemake" class="nav-link" data-scroll-target="#an-alpine-slurm-profile-for-snakemake"><span class="header-section-number">13.1.3</span> An Alpine Slurm Profile for Snakemake</a></li>
+  <li><a href="#a-note-on-local-rules" id="toc-a-note-on-local-rules" class="nav-link" data-scroll-target="#a-note-on-local-rules"><span class="header-section-number">13.1.4</span> A note on local rules</a></li>
   </ul></li>
+  <li><a href="#snakemake-config-files" id="toc-snakemake-config-files" class="nav-link" data-scroll-target="#snakemake-config-files"><span class="header-section-number">13.2</span> Snakemake config files</a>
+  <ul class="collapse">
+  <li><a href="#yaml-configuration" id="toc-yaml-configuration" class="nav-link" data-scroll-target="#yaml-configuration"><span class="header-section-number">13.2.1</span> YAML configuration</a></li>
+  <li><a href="#tabular-configuration-via-pandas" id="toc-tabular-configuration-via-pandas" class="nav-link" data-scroll-target="#tabular-configuration-via-pandas"><span class="header-section-number">13.2.2</span> Tabular configuration via pandas</a></li>
+  </ul></li>
+  <li><a href="#snakemake-benchmarks" id="toc-snakemake-benchmarks" class="nav-link" data-scroll-target="#snakemake-benchmarks"><span class="header-section-number">13.3</span> Snakemake benchmarks</a></li>
+  <li><a href="#some-additional-snakemake-topics" id="toc-some-additional-snakemake-topics" class="nav-link" data-scroll-target="#some-additional-snakemake-topics"><span class="header-section-number">13.4</span> Some additional snakemake topics</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -337,10 +347,231 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools sort - &gt; {output}) 2&gt; {log} "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note we have specified 4 threads, and we also bumped up the memory, because if we are asking for 4 cores, we might as well get the default amount of memory (3.74 Gb, on Alpine) that we would get with each core.</p>
 <p>All of that is pretty straightforward; however, doing this does not automatically cause the rule to be dispatched by SLURM and granted those resources. Rather, Snakemake must be told to send jobs to SLURM and also to use the <code>resources</code> and <code>threads</code> to appropriately request the right amount of resources from SLURM. Snakemake has an “officially sanctioned/supported” way of sending jobs to SLURM that can be found <a href="https://github.com/Snakemake-Profiles/slurm">here</a>. However, that approach is quite complex—it is implemented in a bunch of python scripts that I find hard to read, and I find it difficult to understand what all these scripts are doing.</p>
-<p>By contrast, a different approach to having Snakemake send jobs to SLURM is implemented in the wonderfully readable and easy-to-understand approach taken by John D. Blischak, (find it <a href="">here</a> on GitHub) who was a postdoc with Matthew Stephens and has worked extensively in improving research reproducibility.</p>
-
-
+<p>By contrast, a different approach to having Snakemake send jobs to SLURM is implemented in the wonderfully readable and easy-to-understand approach taken by John D. Blischak, (find it <a href="">here</a> on GitHub) who was a postdoc with Matthew Stephens and has worked extensively in improving research reproducibility. This method is implemented in Snakemake almost entirely by using command line options (plus one little script to help check the status of jobs in the SLURM queue). However, to avoid having to type all these options at the command line every time you launch snakemake to use SLURM, these command line options can be saved and read from a <strong>snakemake profile</strong>. We discuss profiles in the next section and show how they can be used to allow snakemake to submit jobs to SLURM.</p>
 </section>
+<section id="snakemake-profiles" class="level3" data-number="13.1.2">
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="snakemake-profiles"><span class="header-section-number">13.1.2</span> Snakemake profiles</h3>
+<p>We begin this section by quickly perusing all the differen command line options that can be used when launching snakemake. If we type <code>snakemake --help</code> we get a listing of all the options. It starts with a synopsis of all the options, which is followed by longer explanations of each individual option. The synopsis looks like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">usage:</span> snakemake <span class="pp">[-</span><span class="ss">h</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">dry</span><span class="pp">-</span><span class="ss">run</span><span class="pp">]</span> [--profile PROFILE] [--workflow-profile WORKFLOW_PROFILE] [--cache [RULE ...]] [--snakefile FILE] [--cores N]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--jobs</span> N] [--local-cores N] [--resources NAME=INT [NAME=INT ...]] [--set-threads RULE=THREADS [RULE=THREADS ...]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--max-threads</span> MAX_THREADS] [--set-resources RULE:RESOURCE=VALUE [RULE:RESOURCE=VALUE ...]]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--set-scatter</span> NAME=SCATTERITEMS [NAME=SCATTERITEMS ...]] [--set-resource-scopes RESOURCE=[global<span class="kw">|</span><span class="ex">local]</span> [RESOURCE=[global<span class="kw">|</span><span class="ex">local]</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">...]]</span> [--default-resources [NAME=INT ...]] [--preemptible-rules [PREEMPTIBLE_RULES ...]]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--preemptible-retries</span> PREEMPTIBLE_RETRIES] [--config [KEY=VALUE ...]] [--configfile FILE [FILE ...]]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--envvars</span> VARNAME [VARNAME ...]] [--directory DIR] <span class="pp">[--</span><span class="ss">touch</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">keep</span><span class="pp">-</span><span class="ss">going</span><span class="pp">]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--rerun-triggers</span> <span class="dt">{code</span><span class="op">,</span><span class="dt">input</span><span class="op">,</span><span class="dt">mtime</span><span class="op">,</span><span class="dt">params</span><span class="op">,</span><span class="dt">software-env}</span> [<span class="dt">{code</span><span class="op">,</span><span class="dt">input</span><span class="op">,</span><span class="dt">mtime</span><span class="op">,</span><span class="dt">params</span><span class="op">,</span><span class="dt">software-env}</span> ...]] <span class="pp">[--</span><span class="ss">force</span><span class="pp">]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--executor</span> <span class="dt">{local</span><span class="op">,</span><span class="dt">dryrun</span><span class="op">,</span><span class="dt">touch}</span>] <span class="pp">[--</span><span class="ss">forceall</span><span class="pp">]</span> [--forcerun [TARGET ...]] [--prioritize TARGET [TARGET ...]]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--batch</span> RULE=BATCH/BATCHES] [--until TARGET [TARGET ...]] [--omit-from TARGET [TARGET ...]] <span class="pp">[--</span><span class="ss">rerun</span><span class="pp">-</span><span class="ss">incomplete</span><span class="pp">]</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--shadow-prefix</span> DIR] [--scheduler <span class="pp">[</span><span class="ss">{ilp,greedy}</span><span class="pp">]</span>] [--wms-monitor <span class="pp">[</span><span class="ss">WMS_MONITOR</span><span class="pp">]</span>] [--wms-monitor-arg [NAME=VALUE ...]]</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--scheduler-ilp-solver</span> <span class="dt">{PULP_CBC_CMD</span><span class="op">,</span><span class="dt">COIN_CMD}</span>] [--scheduler-solver-path SCHEDULER_SOLVER_PATH]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--conda-base-path</span> CONDA_BASE_PATH] <span class="pp">[--</span><span class="ss">no</span><span class="pp">-</span><span class="ss">subworkflows</span><span class="pp">]</span> [--precommand PRECOMMAND] [--groups GROUPS [GROUPS ...]]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--group-components</span> GROUP_COMPONENTS [GROUP_COMPONENTS ...]] [--report <span class="pp">[</span><span class="ss">FILE</span><span class="pp">]</span>] [--report-stylesheet CSSFILE] [--reporter PLUGIN]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--draft-notebook</span> TARGET] [--edit-notebook TARGET] [--notebook-listen IP:PORT] [--lint <span class="pp">[</span><span class="ss">{text,json}</span><span class="pp">]</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--generate-unit-tests</span> <span class="pp">[</span><span class="ss">TESTPATH</span><span class="pp">]</span>] <span class="pp">[--</span><span class="ss">containerize</span><span class="pp">]</span> [--export-cwl FILE] <span class="pp">[--</span><span class="ss">list</span><span class="pp">-</span><span class="ss">rules</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">list</span><span class="pp">-</span><span class="ss">target</span><span class="pp">-</span><span class="ss">rules</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">dag</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">rulegraph</span><span class="pp">]</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--filegraph]</span> <span class="pp">[--</span><span class="ss">d3dag</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">summary</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">detailed</span><span class="pp">-</span><span class="ss">summary</span><span class="pp">]</span> [--archive FILE] [--cleanup-metadata FILE [FILE ...]] <span class="pp">[--</span><span class="ss">cleanup</span><span class="pp">-</span><span class="ss">shadow</span><span class="pp">]</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--skip-script-cleanup]</span> <span class="pp">[--</span><span class="ss">unlock</span><span class="pp">]</span> [--list-changes <span class="dt">{params</span><span class="op">,</span><span class="dt">code</span><span class="op">,</span><span class="dt">input}</span>] <span class="pp">[--</span><span class="ss">list</span><span class="pp">-</span><span class="ss">input</span><span class="pp">-</span><span class="ss">changes</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">list</span><span class="pp">-</span><span class="ss">params</span><span class="pp">-</span><span class="ss">changes</span><span class="pp">]</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--list-untracked]</span> [--delete-all-output <span class="kw">|</span> <span class="ex">--delete-temp-output]</span> <span class="pp">[--</span><span class="ss">keep</span><span class="pp">-</span><span class="ss">incomplete</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">drop</span><span class="pp">-</span><span class="ss">metadata</span><span class="pp">]</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--deploy-sources</span> QUERY CHECKSUM] <span class="pp">[--</span><span class="ss">version</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">printshellcmds</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">debug</span><span class="pp">-</span><span class="ss">dag</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">nocolor</span><span class="pp">]</span> [--quiet [<span class="dt">{all</span><span class="op">,</span><span class="dt">progress</span><span class="op">,</span><span class="dt">rules}</span> ...]]</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--print-compilation]</span> <span class="pp">[--</span><span class="ss">verbose</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">force</span><span class="pp">-</span><span class="ss">use</span><span class="pp">-</span><span class="ss">threads</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">allow</span><span class="pp">-</span><span class="ss">ambiguity</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">nolock</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">ignore</span><span class="pp">-</span><span class="ss">incomplete</span><span class="pp">]</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--max-inventory-time</span> SECONDS] [--latency-wait SECONDS] [--wait-for-files [FILE ...]] [--wait-for-files-file FILE]</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--queue-input-wait-time</span> SECONDS] <span class="pp">[--</span><span class="ss">notemp</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">all</span><span class="pp">-</span><span class="ss">temp</span><span class="pp">]</span> [--unneeded-temp-files FILE [FILE ...]] <span class="pp">[--</span><span class="ss">keep</span><span class="pp">-</span><span class="ss">storage</span><span class="pp">-</span><span class="ss">local</span><span class="pp">-</span><span class="ss">copies</span><span class="pp">]</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--target-files-omit-workdir-adjustment]</span> [--allowed-rules ALLOWED_RULES [ALLOWED_RULES ...]]</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--target-jobs</span> TARGET_JOBS [TARGET_JOBS ...]] [--local-groupid LOCAL_GROUPID] [--max-jobs-per-second MAX_JOBS_PER_SECOND]</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--max-status-checks-per-second</span> MAX_STATUS_CHECKS_PER_SECOND] [--seconds-between-status-checks SECONDS_BETWEEN_STATUS_CHECKS]</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--retries</span> RETRIES] [--attempt ATTEMPT] [--wrapper-prefix WRAPPER_PREFIX] [--default-storage-provider DEFAULT_STORAGE_PROVIDER]</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--default-storage-prefix</span> DEFAULT_STORAGE_PREFIX] [--local-storage-prefix LOCAL_STORAGE_PREFIX]</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--shared-fs-usage</span> <span class="dt">{input-output</span><span class="op">,</span><span class="dt">persistence</span><span class="op">,</span><span class="dt">software-deployment</span><span class="op">,</span><span class="dt">source-cache</span><span class="op">,</span><span class="dt">sources</span><span class="op">,</span><span class="dt">storage-local-copies</span><span class="op">,</span><span class="dt">none}</span> [<span class="dt">{input-output</span><span class="op">,</span><span class="dt">persistence</span><span class="op">,</span><span class="dt">software-deployment</span><span class="op">,</span><span class="dt">source-cache</span><span class="op">,</span><span class="dt">sources</span><span class="op">,</span><span class="dt">storage-local-copies</span><span class="op">,</span><span class="dt">none}</span> ...]]</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--scheduler-greediness</span> SCHEDULER_GREEDINESS] <span class="pp">[--</span><span class="ss">no</span><span class="pp">-</span><span class="ss">hooks</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">debug</span><span class="pp">]</span> [--runtime-profile FILE] [--mode <span class="dt">{default</span><span class="op">,</span><span class="dt">remote</span><span class="op">,</span><span class="dt">subprocess}</span>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--show-failed-logs]</span> [--log-handler-script FILE] [--log-service <span class="dt">{none</span><span class="op">,</span><span class="dt">slack</span><span class="op">,</span><span class="dt">wms}</span>] <span class="pp">[--</span><span class="ss">job</span><span class="pp">-</span><span class="ss">deploy</span><span class="pp">-</span><span class="ss">sources</span><span class="pp">]</span> [--container-image IMAGE]</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--immediate-submit]</span> [--jobscript SCRIPT] [--jobname NAME] <span class="pp">[--</span><span class="ss">flux</span><span class="pp">]</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--software-deployment-method</span> <span class="dt">{apptainer</span><span class="op">,</span><span class="dt">conda</span><span class="op">,</span><span class="dt">env-modules}</span> [<span class="dt">{apptainer</span><span class="op">,</span><span class="dt">conda</span><span class="op">,</span><span class="dt">env-modules}</span> ...]] <span class="pp">[--</span><span class="ss">container</span><span class="pp">-</span><span class="ss">cleanup</span><span class="pp">-</span><span class="ss">images</span><span class="pp">]</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--use-conda]</span> <span class="pp">[--</span><span class="ss">conda</span><span class="pp">-</span><span class="ss">not</span><span class="pp">-</span><span class="ss">block</span><span class="pp">-</span><span class="ss">search</span><span class="pp">-</span><span class="ss">path</span><span class="pp">-</span><span class="ss">envvars</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">list</span><span class="pp">-</span><span class="ss">conda</span><span class="pp">-</span><span class="ss">envs</span><span class="pp">]</span> [--conda-prefix DIR] <span class="pp">[--</span><span class="ss">conda</span><span class="pp">-</span><span class="ss">cleanup</span><span class="pp">-</span><span class="ss">envs</span><span class="pp">]</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--conda-cleanup-pkgs</span> <span class="pp">[</span><span class="ss">{tarballs,cache}</span><span class="pp">]</span>] <span class="pp">[--</span><span class="ss">conda</span><span class="pp">-</span><span class="ss">create</span><span class="pp">-</span><span class="ss">envs</span><span class="pp">-</span><span class="ss">only</span><span class="pp">]</span> [--conda-frontend <span class="dt">{conda</span><span class="op">,</span><span class="dt">mamba}</span>] <span class="pp">[--</span><span class="ss">use</span><span class="pp">-</span><span class="ss">apptainer</span><span class="pp">]</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--apptainer-prefix</span> DIR] [--apptainer-args ARGS] <span class="pp">[--</span><span class="ss">use</span><span class="pp">-</span><span class="ss">envmodules</span><span class="pp">]</span> [--report-html-path VALUE]</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[--report-html-stylesheet-path</span> VALUE]</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>                 <span class="ex">[targets</span> ...]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this synopsis, command line options that are truly optional (which is basically all of them!) are wrapped in <code>[ ]</code>. You will notice that some of these options, like <code>--dry-run</code> (look at the top line of the synopsis) do not take any arguments (there is nothing after <code>--dry-run</code> in the <code>[ ]</code>), while other options, like <code>--profile</code> take an argument, in the above listed as <code>PROFILE</code>. Clearly if you use even a small fraction of these optional command-line options to snakemake, the stuff you type on the command line could grow long, typing it in on the command line could become quite ponderous, and the chance to make a mistake would grow, the longer the command line got. Not only that, but if you were just putting these options on the command line, it would be easy to forget exactly which options you used!</p>
+<p>This is where snakemake profiles come in. A snakemake profile is a collection of files in a directory, one of which is named <code>config.yaml</code>. So, if I have directory <code>./my-profile</code> and within that a file <code>./my-profile/config.yaml</code>, then, I can store the command line options I want to use in YAML format in <code>./my-profile/config.yaml</code> and those options will be added to the command line if I invoke snakemake with:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">--profile</span> ./my-profile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that it is good practice to add the <code>.</code> in front of your profile name, because otherwise Snakemake might search for system-wide or user-wide profiles</p>
+<p>So, how do you write command line options in the YAML-formatted Snakemake profile <code>config.yaml</code>? It is easy:</p>
+<ul>
+<li><p>You can specify any command line option that is preceded by two dashes, like <code>--option</code>, but you cannot specify options that you might specify with a single dash, like <code>-n</code> or <code>-p</code> (or <code>-np</code> as we often type the two together). This is OK, because every single-dash option has a two-dash name. For example:</p>
+<ul>
+<li><code>-n</code> is the same as <code>--dry-run</code></li>
+<li><code>-p</code> is the same as <code>--printshellcmds</code></li>
+<li><code>-v</code> is the same as <code>--version</code> and so forth.</li>
+</ul></li>
+<li><p>If the option <strong>does not</strong> take an argument, for example <code>--dry-run</code> or <code>--printshellcmds</code>, then you enter them into the <code>config.yaml</code> file by writing the option name, <em>without the dashes</em>, following it with a colon and then a space and then <code>True</code>, like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dry-run</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">printshellcmds</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>If the option <strong>does</strong> take an argument, for example <code>--cores 20</code> or <code>--rerun-triggers mtime</code>, then you just include the argument after the colon (and a space), like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cores</span><span class="kw">:</span><span class="at"> </span><span class="dv">20</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rerun-triggers</span><span class="kw">:</span><span class="at"> mtime</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul>
+<p>And that is all there is to it!</p>
+</section>
+<section id="an-alpine-slurm-profile-for-snakemake" class="level3" data-number="13.1.3">
+<h3 data-number="13.1.3" class="anchored" data-anchor-id="an-alpine-slurm-profile-for-snakemake"><span class="header-section-number">13.1.3</span> An Alpine Slurm Profile for Snakemake</h3>
+<p>We have a profile for sending jobs to Alpine in the directory <code>Snakemake-Example/slurm/alpine</code>. The <code>config.yaml</code> file within that looks like this:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Listing of Snakemake-Example/slurm/alpine/config.yaml</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  mkdir -p results/slurm_logs/{rule} &amp;&amp;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  sbatch</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    --partition=amilan,csu</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    --cpus-per-task={threads}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">    --mem={resources.mem_mb}</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">    --time={resources.time}</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">    --job-name=smk-{rule}-{wildcards}</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    --output=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.out</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">    --error=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.err</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">    --parsable</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">default-resources</span><span class="kw">:</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> time="08:00:00"</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> mem_mb=3740</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> tmpdir="results/snake-tmp"</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">restart-times</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">max-jobs-per-second</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">max-status-checks-per-second</span><span class="kw">:</span><span class="at"> </span><span class="dv">50</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">local-cores</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">latency-wait</span><span class="kw">:</span><span class="at"> </span><span class="dv">60</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cores</span><span class="kw">:</span><span class="at"> </span><span class="dv">2400</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span><span class="at"> </span><span class="dv">950</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">keep-going</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">rerun-incomplete</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="fu">printshellcmds</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="fu">use-conda</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="fu">rerun-trigger</span><span class="kw">:</span><span class="at"> mtime</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster-status</span><span class="kw">:</span><span class="at"> status-sacct-robust.sh</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster-cancel</span><span class="kw">:</span><span class="at"> scancel</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster-cancel-nargs</span><span class="kw">:</span><span class="at"> </span><span class="dv">4000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>We see here that the “heavy-lifting” is done by snakemake’s <code>--cluster</code> option. This option takes as an argument a command line that should be used to send off individual jobs for execution. As you can see, the command it uses does two main things:</p>
+<ol type="1">
+<li>First it creates a directory in which to place the <code>error</code> and <code>output</code> files that <code>sbatch</code> will write.</li>
+<li>If that first command is successful, it then runs <code>sbatch</code> with a variety of options.</li>
+</ol>
+<p>Various values known to snakemake can be substituted into that <code>sbatch</code> command line by enclosing them within curly braces, thereby passing them as arguments to various <code>sbatch</code> options. In particular:</p>
+<ul>
+<li><code>{rule}</code> expands into the rule name</li>
+<li><code>{threads}</code> expands into the number of threads to be used for the rule</li>
+<li><code>{wildcards}</code> expands into a comma-separate string with the values of the wildcards in effect for this job, like <code>sample=A,chromo=NC103567.1</code></li>
+<li><code>{resources.mem_mb}</code> and <code>{resources.time}</code> print the values given for <code>mem_mb</code> and <code>time</code> in the <code>resources:</code> block of the rule.</li>
+</ul>
+<p>Each of these values are used as arguments to different <code>sbatch</code> options in a plainly readable way. The last option given is <code>--parsable</code> which tells <code>sbatch</code> to return the job number of the submitted job in an easily parsable fashion.</p>
+<p>Snakemake takes this <code>sbatch</code> command and uses it to submit a job script. Snakemake itself writes that job script (and stores it in the <code>.snakemake</code> directory for as long as it is needed) according to the code that it finds in the <code>shell</code> block of the rule. This is why you never need to write another <code>sbatch</code> script in your life if you use snakemake—Snakemake writes those scripts for you and submits them via <code>sbatch</code>.</p>
+<p>You will also notice that the profile defines the <code>--default-resources</code> option that we described above. Note that the default memory is 3740, which is what you get with one core on Alpine, and the default time is 8 hours.</p>
+<p>Some of the remaining options in the profile are not really specific to SLURM, but many are. One of those,</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster-status</span><span class="kw">:</span><span class="at"> status-sacct-robust.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>gives the name of a shell script <em>in the profile directory</em> that snakemake uses to check on the status of jobs that have been submitted to the cluster. This is a script that queries SLURM using <code>sacct</code> to ask about the status of running jobs according to their job number. For each job, the script tells Snakemake either:</p>
+<ul>
+<li><code>success</code>: the job finished successfully.</li>
+<li><code>running</code>: the job is still running or waiting in the queue</li>
+<li><code>failed</code>: the job failed</li>
+</ul>
+<p>When your jobs are running, Snakemake is continually checking on their status, but won’t check more than <code>max-status-checks-per-second</code>. (In the case of this profile that is 50 checks per second.)</p>
+<p>You can unfold the following code block to see the shell code for <code>status-sacct-robust.sh</code>.</p>
+<div class="cell">
+<div class="code-with-filename">
+<details class="code-fold">
+<summary>Click the triangle to see the code</summary>
+<div class="code-with-filename-file">
+<pre><strong>Snakemake-Example/slurm/alpine/status-sacct-robust.sh</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Check status of Slurm job. More robust because runs `sacct` multiple times if</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># needed</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="va">jobid</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$jobid</span><span class="st">"</span> <span class="ot">==</span> Submitted <span class="kw">]]</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> smk-simple-slurm: Invalid job ID: <span class="st">"</span><span class="va">$jobid</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> smk-simple-slurm: Did you remember to add the flag <span class="at">--parsable</span> to your sbatch call<span class="pp">?</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> get_status()</span><span class="kw">{</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sacct</span> <span class="at">-j</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="at">--format</span> State <span class="at">--noheader</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1 <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1}'</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">20</span><span class="dt">}</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="va">output</span><span class="op">=</span><span class="kw">`</span><span class="ex">get_status</span> <span class="st">"</span><span class="va">$jobid</span><span class="st">"</span><span class="kw">`</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="ot">-z</span> <span class="va">$output</span> <span class="kw">]]</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">then</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 3</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-z</span> <span class="va">$output</span> <span class="kw">]]</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> sacct failed to return the status for jobid <span class="st">"</span><span class="va">$jobid</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> Maybe you need to use scontrol instead<span class="pp">?</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$output</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">(</span><span class="ss">COMPLETED</span><span class="op">)</span><span class="pp">.*</span> <span class="kw">]]</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> success</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="kw">[[</span> <span class="va">$output</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">(</span><span class="ss">RUNNING</span><span class="pp">|</span><span class="ss">PENDING</span><span class="pp">|</span><span class="ss">COMPLETING</span><span class="pp">|</span><span class="ss">CONFIGURING</span><span class="pp">|</span><span class="ss">SUSPENDED</span><span class="op">)</span><span class="pp">.*</span> <span class="kw">]]</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> running</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> failed</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<p>Much of the code is there to make sure the script tries at least 20 times to get the status of the job, because sometimes SLURM gets busy and fails to return a result for a job, which causes snakemake to do bad things…</p>
+<p>Other SLURM-relevant options in this profile are:</p>
+<ul>
+<li><code>--max-jobs-per-second</code>: don’t submit more than this jobs each second to SLURM</li>
+<li><code>--cluster-cancel</code>: if the Snakemake run is terminated (with <code>&lt;cntrl&gt;-c</code> for example) then kill all jobs running under SLURM using the <code>scancel</code> command.</li>
+<li><code>--cluster-cancel-nargs</code>: the maximum number of arguments to pass to <code>scancel</code> when cancelling jobs. This should be high enough to kill all jobs current running or queued up in SLURM.<br>
+</li>
+<li><code>--jobs</code>: don’t submit so many jobs that you have more than this number of jobs running or waiting in the SLURM queue. This is quite important in Alpine, because SLURM on Alpine doesn’t let you have more the 1000 jobs running or queued up.</li>
+</ul>
+<p>So, in summary, if you are using snakemake and you had the <code>alpine</code> directory containing <code>config.yaml</code> and <code>status-sacct-robust.sh</code> in the directory you were running snakemake from, you could get snakemake to submit jobs to the cluster using SLURM by doing:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span>  [some options or targets here] <span class="at">--profile</span> ./alpine  [other options or targets here]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Also, we will end this section by noting that you can override options in the profile by adding them actually on the command line, just like with <code>sbatch</code> and its <code>#SBATCH</code> directives.</p>
+</section>
+<section id="a-note-on-local-rules" class="level3" data-number="13.1.4">
+<h3 data-number="13.1.4" class="anchored" data-anchor-id="a-note-on-local-rules"><span class="header-section-number">13.1.4</span> A note on local rules</h3>
+</section>
+</section>
+<section id="snakemake-config-files" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="snakemake-config-files"><span class="header-section-number">13.2</span> Snakemake config files</h2>
+<p>We have already seen that we might add some variables to our Snakefile to run a workflow on certain samples, etc.</p>
+<section id="yaml-configuration" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="yaml-configuration"><span class="header-section-number">13.2.1</span> YAML configuration</h3>
+</section>
+<section id="tabular-configuration-via-pandas" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="tabular-configuration-via-pandas"><span class="header-section-number">13.2.2</span> Tabular configuration via pandas</h3>
+</section>
+</section>
+<section id="snakemake-benchmarks" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="snakemake-benchmarks"><span class="header-section-number">13.3</span> Snakemake benchmarks</h2>
+<p>Compared the previous two topics, this is really simple.</p>
+<p>Recommended convention, put them in:</p>
+<pre><code>results/benchmarks/&lt;rule_name&gt;/&lt;first_wildcard&gt;/.../&lt;last_wildcard&gt;.bmk</code></pre>
+</section>
+<section id="some-additional-snakemake-topics" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="some-additional-snakemake-topics"><span class="header-section-number">13.4</span> Some additional snakemake topics</h2>
+
+
 </section>
 
 </main> <!-- /main -->
