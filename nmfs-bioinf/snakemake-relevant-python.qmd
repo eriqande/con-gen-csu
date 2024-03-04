@@ -184,7 +184,7 @@ Note, to get out of the python REPL loop, you can type:
 ```
 exit
 ```
-which will drop you back into R.
+which will drop you hack into R.
 
 
 ## R and Python: compare and contrast
@@ -429,7 +429,7 @@ We emphasize a few important points here:
 1. Python uses `True` and `False` for its Boolean types, while R uses `TRUE` and `FALSE`.
 The capitalization differences are very important.  The variations don't work across
 languages!
-2. While R has the `class()` function to tell you what class any object is,
+2. While R has the `class()` function to tell you what class any abject is,
 python has the `type()` function that tells you what data type
 an object is.  This can be quite useful for familiarizing yourself with what
 is going on in your own code, or someone else's:
@@ -444,7 +444,7 @@ list(map(type, list2))
 ```
 
 3. `list` is itself a data type in python, and when we write `list(map(type, list2))`
-we are essentially coercing an object of class `map` to be a list.
+we are essentially coercing and object of class `map` to be a list.
 
 ### List comprehension: Operating on every element of a list, Part 2
 
@@ -487,9 +487,9 @@ letters in the string.  Thus you could make a list of the letters in a string li
 [x for x in "ABCDEFG"]
 ```
 
-In fact, you can go for even more economy and note that `list()` in python
+In fact, you can go even for even more economy and note that `list()` in python
 applied to any iterable object, will automatically iterate over the iterable elements
-in the object.  Hence, this does the same as the previous line:
+in the abject.  Hence, this does the same as the previous line:
 ```{python, filename="python:"}
 list("ABCDEFG")
 ```
@@ -758,7 +758,7 @@ multiext("path/dir/file", ".pdf", ".jpg")
 ```
 
 Note that this works because we are using python in the conda environment that
-includes `snakemake`.  (Remember the line like `use_condaenv(condaenv = "/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")`?)  Otherwise,
+includes `snakemake`.  (Remember the line like `use_condaenv(condaenv = "/projects/eriq@colostate.edu/mambaforge/envs/snakemake-8.5.3")`?)  Otherwise,
 python typically would not find the snakemake module.
 
 One can also import a module, but give its namespace a shorter name.
@@ -784,9 +784,7 @@ If we wanted to read it into R using the tidyverse, that would be pretty familia
 #| warning: false
 library(tidyverse)
 
-# Note! If you (the reader) want to run this from the root directory of the repo,
-# you will have to remove ../ from the beginning of the path below.
-units <- read_tsv("../data/config/units.tsv")
+units <- read_tsv("./data/config/units.tsv")
 
 # and then we print it to see the familiar tibble format
 units
@@ -800,9 +798,7 @@ if we are going to use these values in snakemake later...)
 Pandas also offers indexing of data frame for faster access, so, in this case
 we will index each row by the sample name
 ```{python, filename="python:"}
-# Note! If you (the reader) want to run this from the root directory of the repo,
-# you will have to remove ../ from the beginning of the path below.
-units = pd.read_table("../data/config/units.tsv", dtype=str).set_index(
+units = pd.read_table("./data/config/units.tsv", dtype=str).set_index(
     "sample", drop=False
 )
 
@@ -868,4 +864,4 @@ names, we use `.tolist()` on the end:
 units.loc[ units["sample"].str.contains("F"), "sample" ].tolist()
 ```
 
-Those things come in handy when writing more complex workflows.
+Those things come in handy when writing more complex workflows.  
