@@ -1,0 +1,152 @@
+# Important Snakemake Embellishments
+
+Thus far we have only scratched the surface of what Snakemake can do, and it
+could take a lifetime to realize the full potential of Snakemake as a workflow
+management system.  At this point, we will point out that there is comprehensive
+documentation about how to use snakemake at 
+[https://snakemake.readthedocs.io/en/stable/](https://snakemake.readthedocs.io/en/stable/).
+It is worth giving that a good-faith read-through at some point.  However,
+it is not always clear which of the many gems in that documentation will be the
+most valuable for your bioinoformatic life.
+
+Here we present a few embellishments upon what we have already
+learned that will really let you get a lot more out of Snakemake.  There are
+three broad categories that will be discussed in different sections of this chapter.
+
+1. Embellishments critical for **running Snakemake on a cluster**.  This includes
+the declaration of **resources** required for the jobs and also the use of
+**profiles** to create a snakemake command line that can send jobs to SLURM and
+also communicate with SLURM to check up on jobs while they are running. It also
+includes telling snakemake to generate **benchmark** information to record
+how much memory and time was required for every job in your workflow---this
+is super handy for predicting resource requirements for future data sets!
+
+2. Embellishments that make it easy to run your workflow on a different set of
+data, or a different species, or using different settings, options, or parameter
+values for some of the tasks/rules.  The main improvement here is using
+snakemake **config files**, so that all the different settings and options for your
+workflow can be specified and stored and reviewed in one place.  We will also see
+that configuration files can be very helpful for setting resource requirements for
+rules, which means that you only have to change things in one small config file to
+run your workflow on a different cluster with different partition names and machine
+capabilities, for example.
+
+3. More advanced processing of wildcards using snakemake **input functions**.  This allows
+your rules to react to the wildcard values in very general ways, rather than just by
+substituting the values into input or log file paths.  
+
+
+## Running Snakemake on a Cluster: resources, profiles, and benchmarks
+
+### Specify the resources required for each rule
+
+Recall from our discussion of SLURM that the main axes upon which you will need
+to think about allocating computing resources for your bioinformatic jobs are:
+
+- **Memory**: what is the maximum amount of RAM the job will need while running?
+- **Time**: How long must the job run?
+- **Cores**: how many CPUs do you want to allocate to the job?
+
+An additional resource that Snakemake might be concerned about is **`tmpdir`** the
+location of a directory for writing temporary files.  Typically these files
+get written to a directory called /tmp on the hard drive that is local to the node that the
+job is running on. However, at least last summer, we found that we were often exceeding
+the amount of space that we were offered in `/tmp` on Alpine, so we will show you how
+to instruct snakemake to write temporary files into a directory in the results directory
+on scratch.  
+
+Within your Snakefile, you can specify the memory, time resources for
+each rule in a `resources` block for that rule.  For example, if we wanted 6 GB of memory and 10 hours
+for our `map_reads` rule, then we would add a **resources block** so that it looks like:
+```yaml
+rule map_reads:
+  input:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    genome="resources/genome.fasta",
+    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+  output:
+    "results/bam/{sample}.bam"
+  conda:
+    "envs/bwa2sam.yaml"
+  resources:
+    mem_mb=6000,
+    time="08:00:00"
+  log:
+    "results/logs/map_reads/{sample}.log"
+  params:
+    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "
+  shell:
+    " (bwa-mem2 mem {params.RG} {input.genome} {input.r1} {input.r2} | "
+    " samtools view -u | "
+    " samtools sort - > {output}) 2> {log} "
+```
+
+Additionally, if for most of our rules we simply wanted a _default_ time of 4 hours and
+a _default_ amount of 3.74 Gb of memory, we don't have to write a resources block for
+each of those rules.  Rather, we could just specify that on the command line with the
+`--default-resources` option, like this:
+```sh
+--default-resources  mem_mb=6000  time="08:00:00"
+```
+That is handy if most of your rules require the same resources.
+
+
+We have not yet discussed how to request a certain number of cores/CPUs for each job of
+a rule.  Remember, there is no point of requesting more cores/CPUs than the number of
+threads that can be used by the programs running the job.  Consequently, you want the
+number of cores/CPUs to typically be set to the number of threads that the program(s)
+in your job are using.  As a consequence, CPUs are typically set according to the
+`threads` specifier in the Snakemake rule.  We haven't talked about this yet, but it is
+simple---you set an integer value in a `threads` block, then you can use `{threads}`
+in the shell block to tell the program how many threads to use.  
+
+We will again illustrate this with our `map_reads` rule.  `bwa-mem2 mem` uses the
+`-t` option to specify the number of threads to use, so, to make `bwa-mem2 mem` use
+4 threads we could write:
+```yaml
+rule map_reads:
+  input:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    genome="resources/genome.fasta",
+    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+  output:
+    "results/bam/{sample}.bam"
+  conda:
+    "envs/bwa2sam.yaml"
+  threads: 4
+  resources:
+    mem_mb=3740 * 4,
+    time="08:00:00"
+  log:
+    "results/logs/map_reads/{sample}.log"
+  params:
+    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "
+  shell:
+    " (bwa-mem2 mem -t {threads} {params.RG} {input.genome} {input.r1} {input.r2} | "
+    " samtools view -u | "
+    " samtools sort - > {output}) 2> {log} "
+
+```
+Note we have specified 4 threads, and we also bumped up the memory, because if we
+are asking for 4 cores, we might as well get the default amount of memory (3.74 Gb, on Alpine)
+that we would get with each core.
+
+
+All of that is pretty straightforward; however, doing this does not automatically cause the
+rule to be dispatched by SLURM and granted those resources. Rather, Snakemake must be told
+to send jobs to SLURM and also to use the `resources` and `threads` to appropriately
+request the right amount of resources from SLURM.  Snakemake has an "officially sanctioned/supported"
+way of sending jobs to SLURM that can be found [here](https://github.com/Snakemake-Profiles/slurm).
+However, that approach is quite complex---it is implemented in a bunch of python scripts that I find
+hard to read, and I find it difficult to understand what all these scripts are doing.
+
+By contrast, a different approach to having Snakemake send jobs to SLURM is implemented
+in the wonderfully readable and easy-to-understand approach taken by John D. Blischak,
+(find it [here]() on GitHub)
+who was a postdoc with Matthew Stephens and has worked extensively in improving
+research reproducibility. 
+
+
+
