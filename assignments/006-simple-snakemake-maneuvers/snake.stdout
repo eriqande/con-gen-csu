@@ -1,0 +1,8 @@
+Building DAG of jobs...
+MissingInputException in rule trim_reads in file /projects/foxhol@colostate.edu/con-gen-csu/assignments/006-simple-snakemake-maneuvers/Snakefile, line 51:
+Missing input files for rule trim_reads:
+    output: results/trimmed/A_R1.fq.gz, results/trimmed/A_R2.fq.gz, results/qc/fastp/A.html, results/qc/fastp/A.json
+    wildcards: sample=A
+    affected files:
+        data/fastqs/A_R2.fq.gz
+        data/fastqs/A_R1.fq.gz

@@ -1,10 +1,9 @@
 
-
 # run it over 3 samples
-SAMPLES = ['A', 'B', 'C']
+SAMPLES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P']
 
 # variant calling over two "chromosomes"
-CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14"]
+CHROMOS = [ "NC_037122.1f5t9", "NC_037123.1f10t14", "NC_037124.1f8t16", "NC_037125.1f20t24"]
 
 
 rule genome_faidx:
@@ -51,11 +50,11 @@ rule bwa_index:
 
 rule trim_reads:
   input:
-    r1="data/{sample}_R1.fastq.gz",
-    r2="data/{sample}_R2.fastq.gz",
+    r1="data/fastqs/{sample}_R1.fq.gz",
+    r2="data/fastqs/{sample}_R2.fq.gz",
   output:
-    r1="results/trimmed/{sample}_R1.fastq.gz",
-    r2="results/trimmed/{sample}_R2.fastq.gz",
+    r1="results/trimmed/{sample}_R1.fq.gz",
+    r2="results/trimmed/{sample}_R2.fq.gz",
     html="results/qc/fastp/{sample}.html",
     json="results/qc/fastp/{sample}.json"
   conda:
@@ -73,14 +72,14 @@ rule trim_reads:
     "       -h {output.html} -j {output.json} "
     "  --adapter_sequence={params.as1}        "
     "  --adapter_sequence_r2={params.as2}     "
-    "  {params.parm} > {log.out} 2> {log.err}                         "
+    "  {params.parm} > {log.out} 2> {log.err} "
     
 
 
 rule map_reads:
   input:
-    r1="results/trimmed/{sample}_R1.fastq.gz",
-    r2="results/trimmed/{sample}_R2.fastq.gz",
+    r1="results/trimmed/{sample}_R1.fq.gz",
+    r2="results/trimmed/{sample}_R2.fq.gz",
     genome="resources/genome.fasta",
     idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
   output:
