@@ -429,7 +429,7 @@ We emphasize a few important points here:
 1. Python uses `True` and `False` for its Boolean types, while R uses `TRUE` and `FALSE`.
 The capitalization differences are very important.  The variations don't work across
 languages!
-2. While R has the `class()` function to tell you what class any abject is,
+2. While R has the `class()` function to tell you what class any object is,
 python has the `type()` function that tells you what data type
 an object is.  This can be quite useful for familiarizing yourself with what
 is going on in your own code, or someone else's:
@@ -444,7 +444,7 @@ list(map(type, list2))
 ```
 
 3. `list` is itself a data type in python, and when we write `list(map(type, list2))`
-we are essentially coercing and object of class `map` to be a list.
+we are essentially coercing an object of class `map` to be a list.
 
 ### List comprehension: Operating on every element of a list, Part 2
 
@@ -487,9 +487,9 @@ letters in the string.  Thus you could make a list of the letters in a string li
 [x for x in "ABCDEFG"]
 ```
 
-In fact, you can go even for even more economy and note that `list()` in python
+In fact, you can go for even more economy and note that `list()` in python
 applied to any iterable object, will automatically iterate over the iterable elements
-in the abject.  Hence, this does the same as the previous line:
+in the object.  Hence, this does the same as the previous line:
 ```{python, filename="python:"}
 list("ABCDEFG")
 ```
