@@ -255,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#type-conversion-is-not-automatic-in-python" id="toc-type-conversion-is-not-automatic-in-python" class="nav-link" data-scroll-target="#type-conversion-is-not-automatic-in-python"><span class="header-section-number">12.2.6</span> Type conversion is not automatic in Python</a></li>
   <li><a href="#list-comprehension-operating-on-every-element-of-a-list-part-2" id="toc-list-comprehension-operating-on-every-element-of-a-list-part-2" class="nav-link" data-scroll-target="#list-comprehension-operating-on-every-element-of-a-list-part-2"><span class="header-section-number">12.2.7</span> List comprehension: Operating on every element of a list, Part 2</a></li>
   <li><a href="#for-lists-in-python-is-like-cit-catenates-the-lists" id="toc-for-lists-in-python-is-like-cit-catenates-the-lists" class="nav-link" data-scroll-target="#for-lists-in-python-is-like-cit-catenates-the-lists"><span class="header-section-number">12.2.8</span> For lists, <code>+</code> in python is like <code>c()</code>—it catenates the lists</a></li>
-  <li><a href="#named-lists-in-r-and-dicts-in-python" id="toc-named-lists-in-r-and-dicts-in-python" class="nav-link" data-scroll-target="#named-lists-in-r-and-dicts-in-python"><span class="header-section-number">12.2.9</span> Named lists in R and <code>dict</code>s in python</a></li>
+  <li><a href="#sec-dict" id="toc-sec-dict" class="nav-link" data-scroll-target="#sec-dict"><span class="header-section-number">12.2.9</span> Named lists in R and <code>dict</code>s in python</a></li>
   <li><a href="#classes-and-objects" id="toc-classes-and-objects" class="nav-link" data-scroll-target="#classes-and-objects"><span class="header-section-number">12.2.10</span> Classes and objects</a></li>
   <li><a href="#defining-functions" id="toc-defining-functions" class="nav-link" data-scroll-target="#defining-functions"><span class="header-section-number">12.2.11</span> Defining functions</a></li>
   <li><a href="#r-packages-and-python-modules" id="toc-r-packages-and-python-modules" class="nav-link" data-scroll-target="#r-packages-and-python-modules"><span class="header-section-number">12.2.12</span> R packages and python modules</a></li>
@@ -612,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="bu">str</span>(x) <span class="op">+</span> <span class="st">" Weird!"</span>, L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;map object at 0x120960ee0&gt;</code></pre>
+<pre><code>&lt;map object at 0x121d52770&gt;</code></pre>
 </div>
 </div>
 <p><code>map</code> is like <code>lapply()</code> but the order of its arguments is reversed—it takes the function first and the list second—and it doesn’t automatically return a list; rather, as you can see, it returns a <code>&lt;map object at some_location&gt;</code> where some <code>some_location</code> is the address of some computer memory, like <code>0x292826170</code>.</p>
@@ -979,8 +979,8 @@ Table&nbsp;12.1: Five atomic data types in R and Python
 </div>
 </div>
 </section>
-<section id="named-lists-in-r-and-dicts-in-python" class="level3" data-number="12.2.9">
-<h3 data-number="12.2.9" class="anchored" data-anchor-id="named-lists-in-r-and-dicts-in-python"><span class="header-section-number">12.2.9</span> Named lists in R and <code>dict</code>s in python</h3>
+<section id="sec-dict" class="level3" data-number="12.2.9">
+<h3 data-number="12.2.9" class="anchored" data-anchor-id="sec-dict"><span class="header-section-number">12.2.9</span> Named lists in R and <code>dict</code>s in python</h3>
 <p>In R, the separate elements of a list can be <em>named</em> and we can use the names to access them. For exmaple:</p>
 <div class="cell">
 <div class="code-with-filename">

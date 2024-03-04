@@ -81,6 +81,22 @@ module in the RStudio Terminal to allow submission of jobs via `sbatch` in this
 environment, but I can keep you posted. In the meantime, you can always get
 a shell in your browser (see the next section).
 
+As always, you should set your RStudio preferences (Tools --> Global Options)
+so that R does **not** "Restore .Rdata into workspace at startup" and that it
+Never "Saves workspace to .Rdata on exit.":
+
+![](./images/no-rdata-reload.png){width=550 fig-align="center"}
+
+When you are done using RStudio Server on Alpine, you should terminate your R session,
+with "Session --> Terminate R...":
+
+![](./images/terminate-R){width=300 fig-align="center"}
+
+And then Delete the session running on the compute node from your OnDemand Dashboard.
+
+Note that if your time on the compute node runs out before you are done working on
+RStudio, then unsaved work and variables in your global environment will be lost and
+RStudio will start saying that it has lost connection (with a bunch of 503 errors).
 
 ### Using git on Rstudio Server on Alpine OnDemand {#sec-nossh}
 
@@ -174,11 +190,11 @@ transferring things to scratch, you should
 use globus, as explained [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files).
 
 Finally, from you Alpine dashboard in your browser, you can even get a shell
-(in your browser) on Alpine.  Do that by selecting "`Clusters--> >_Alpine Shell`.
+(in your browser) on Alpine.  Do that by selecting `Clusters--> >_Alpine Shell`.
 It is a fully functional shell terminal in your browser.  Apparently you can even
 get to this on your phone or tablet browswer.  (Just when you thought cluster computing
-couldn't intrude any more on your life than it currenly is---it is gonna get you via
-your phone).
+couldn't intrude any more on your life than it currently is---it is gonna get you via
+your devices).
 
 In the shell, you can choose different color themes from the selector in the upper right.
 Also, you can open as many shells as you want---each one will go in a new browser tab.

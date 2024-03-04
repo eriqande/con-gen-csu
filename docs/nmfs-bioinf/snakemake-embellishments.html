@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -201,7 +235,16 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" id="toc-running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" class="nav-link active" data-scroll-target="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks"><span class="header-section-number">13.1</span> Running Snakemake on a Cluster: resources, profiles, and benchmarks</a>
+  <ul class="collapse">
+  <li><a href="#specify-the-resources-required-for-each-rule" id="toc-specify-the-resources-required-for-each-rule" class="nav-link" data-scroll-target="#specify-the-resources-required-for-each-rule"><span class="header-section-number">13.1.1</span> Specify the resources required for each rule</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,12 +271,77 @@ ul.task-list li input[type="checkbox"] {
 <p>Thus far we have only scratched the surface of what Snakemake can do, and it could take a lifetime to realize the full potential of Snakemake as a workflow management system. At this point, we will point out that there is comprehensive documentation about how to use snakemake at <a href="https://snakemake.readthedocs.io/en/stable/">https://snakemake.readthedocs.io/en/stable/</a>. It is worth giving that a good-faith read-through at some point. However, it is not always clear which of the many gems in that documentation will be the most valuable for your bioinoformatic life.</p>
 <p>Here we present a few embellishments upon what we have already learned that will really let you get a lot more out of Snakemake. There are three broad categories that will be discussed in different sections of this chapter.</p>
 <ol type="1">
-<li><p>Embellishments critical for running Snakemake on a cluster. This includes the declaration of <em>resources</em> required for the jobs and also the use of <em>profiles</em> to create a snakemake command line that can send jobs to SLURM and also communicate with SLURM to check up on jobs while they are running. It also includes telling snakemake to generate of <strong>benchmark</strong> information so that you can store how much memory and time was required for every job your workflow runs—this is super handy for predicting resource requirements for future data sets!</p></li>
+<li><p>Embellishments critical for <strong>running Snakemake on a cluster</strong>. This includes the declaration of <strong>resources</strong> required for the jobs and also the use of <strong>profiles</strong> to create a snakemake command line that can send jobs to SLURM and also communicate with SLURM to check up on jobs while they are running. It also includes telling snakemake to generate <strong>benchmark</strong> information to record how much memory and time was required for every job in your workflow—this is super handy for predicting resource requirements for future data sets!</p></li>
 <li><p>Embellishments that make it easy to run your workflow on a different set of data, or a different species, or using different settings, options, or parameter values for some of the tasks/rules. The main improvement here is using snakemake <strong>config files</strong>, so that all the different settings and options for your workflow can be specified and stored and reviewed in one place. We will also see that configuration files can be very helpful for setting resource requirements for rules, which means that you only have to change things in one small config file to run your workflow on a different cluster with different partition names and machine capabilities, for example.</p></li>
-<li><p>More advanced processing of wildcards using snakemake <em>input functions</em>. This allows your rules to react to the wildcard values in very general ways, rather than just by substituting the values into input or log file paths.</p></li>
+<li><p>More advanced processing of wildcards using snakemake <strong>input functions</strong>. This allows your rules to react to the wildcard values in very general ways, rather than just by substituting the values into input or log file paths.</p></li>
 </ol>
+<section id="running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="running-snakemake-on-a-cluster-resources-profiles-and-benchmarks"><span class="header-section-number">13.1</span> Running Snakemake on a Cluster: resources, profiles, and benchmarks</h2>
+<section id="specify-the-resources-required-for-each-rule" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="specify-the-resources-required-for-each-rule"><span class="header-section-number">13.1.1</span> Specify the resources required for each rule</h3>
+<p>Recall from our discussion of SLURM that the main axes upon which you will need to think about allocating computing resources for your bioinformatic jobs are:</p>
+<ul>
+<li><strong>Memory</strong>: what is the maximum amount of RAM the job will need while running?</li>
+<li><strong>Time</strong>: How long must the job run?</li>
+<li><strong>Cores</strong>: how many CPUs do you want to allocate to the job?</li>
+</ul>
+<p>An additional resource that Snakemake might be concerned about is <strong><code>tmpdir</code></strong> the location of a directory for writing temporary files. Typically these files get written to a directory called /tmp on the hard drive that is local to the node that the job is running on. However, at least last summer, we found that we were often exceeding the amount of space that we were offered in <code>/tmp</code> on Alpine, so we will show you how to instruct snakemake to write temporary files into a directory in the results directory on scratch.</p>
+<p>Within your Snakefile, you can specify the memory, time resources for each rule in a <code>resources</code> block for that rule. For example, if we wanted 6 GB of memory and 10 hours for our <code>map_reads</code> rule, then we would add a <strong>resources block</strong> so that it looks like:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rule map_reads</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">input</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    r1="results/trimmed/{sample}_R1.fastq.gz",</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    r2="results/trimmed/{sample}_R2.fastq.gz",</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    genome="resources/genome.fasta",</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/bam/{sample}.bam"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">conda</span><span class="kw">:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"envs/bwa2sam.yaml"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    mem_mb=6000,</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">    time="08:00:00"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">log</span><span class="kw">:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/logs/map_reads/{sample}.log"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">params</span><span class="kw">:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shell</span><span class="kw">:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" (bwa-mem2 mem {params.RG} {input.genome} {input.r1} {input.r2} | "</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools view -u | "</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools sort - &gt; {output}) 2&gt; {log} "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Additionally, if for most of our rules we simply wanted a <em>default</em> time of 4 hours and a <em>default</em> amount of 3.74 Gb of memory, we don’t have to write a resources block for each of those rules. Rather, we could just specify that on the command line with the <code>--default-resources</code> option, like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--default-resources</span>  mem_mb=6000  time=<span class="st">"08:00:00"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That is handy if most of your rules require the same resources.</p>
+<p>We have not yet discussed how to request a certain number of cores/CPUs for each job of a rule. Remember, there is no point of requesting more cores/CPUs than the number of threads that can be used by the programs running the job. Consequently, you want the number of cores/CPUs to typically be set to the number of threads that the program(s) in your job are using. As a consequence, CPUs are typically set according to the <code>threads</code> specifier in the Snakemake rule. We haven’t talked about this yet, but it is simple—you set an integer value in a <code>threads</code> block, then you can use <code>{threads}</code> in the shell block to tell the program how many threads to use.</p>
+<p>We will again illustrate this with our <code>map_reads</code> rule. <code>bwa-mem2 mem</code> uses the <code>-t</code> option to specify the number of threads to use, so, to make <code>bwa-mem2 mem</code> use 4 threads we could write:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rule map_reads</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">input</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    r1="results/trimmed/{sample}_R1.fastq.gz",</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    r2="results/trimmed/{sample}_R2.fastq.gz",</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    genome="resources/genome.fasta",</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/bam/{sample}.bam"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">conda</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"envs/bwa2sam.yaml"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">threads</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">    mem_mb=3740 * 4,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    time="08:00:00"</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">log</span><span class="kw">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/logs/map_reads/{sample}.log"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">params</span><span class="kw">:</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="at">    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shell</span><span class="kw">:</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" (bwa-mem2 mem -t {threads} {params.RG} {input.genome} {input.r1} {input.r2} | "</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools view -u | "</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools sort - &gt; {output}) 2&gt; {log} "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note we have specified 4 threads, and we also bumped up the memory, because if we are asking for 4 cores, we might as well get the default amount of memory (3.74 Gb, on Alpine) that we would get with each core.</p>
+<p>All of that is pretty straightforward; however, doing this does not automatically cause the rule to be dispatched by SLURM and granted those resources. Rather, Snakemake must be told to send jobs to SLURM and also to use the <code>resources</code> and <code>threads</code> to appropriately request the right amount of resources from SLURM. Snakemake has an “officially sanctioned/supported” way of sending jobs to SLURM that can be found <a href="https://github.com/Snakemake-Profiles/slurm">here</a>. However, that approach is quite complex—it is implemented in a bunch of python scripts that I find hard to read, and I find it difficult to understand what all these scripts are doing.</p>
+<p>By contrast, a different approach to having Snakemake send jobs to SLURM is implemented in the wonderfully readable and easy-to-understand approach taken by John D. Blischak, (find it <a href="">here</a> on GitHub) who was a postdoc with Matthew Stephens and has worked extensively in improving research reproducibility.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -637,4 +745,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

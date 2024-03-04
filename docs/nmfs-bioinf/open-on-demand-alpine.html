@@ -296,6 +296,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git (but no ssh! see the section <a href="#sec-nossh" class="quarto-xref"><span>Section 1.2.1</span></a>, below), that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
 <p>Note that if you open up files in Rstudio on Alpine that Rstudio recognizes as shell script files (because they have a <code>.sh</code> extension), then choosing CMD-Return (on a Mac) or cntrl-Return (on a PC) will send the line that your cursor is on to the Terminal shell (in much the same way that you can evaluate R code from an R script in the R console within RStudio). This provides a very handy way to test your shell scripts line by line on the Alpine bash shell.</p>
 <p>At the time of this writing, I have not been able to load the slurm/alpine module in the RStudio Terminal to allow submission of jobs via <code>sbatch</code> in this environment, but I can keep you posted. In the meantime, you can always get a shell in your browser (see the next section).</p>
+<p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+</figure>
+</div>
+<p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
+<p>Note that if your time on the compute node runs out before you are done working on RStudio, then unsaved work and variables in your global environment will be lost and RStudio will start saying that it has lost connection (with a bunch of 503 errors).</p>
 <section id="sec-nossh" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</h3>
 <p>The program <code>git</code> works just fine in the OnDemand RStudio Server on when you are just dealing with local files. However it does not seem to have access to ssh. There is simply no <code>ssh</code> at <code>/usr/bin/ssh</code> in the shell that RStudio gets to run. This is super weird. We will have to check with the CURC admins about this.</p>
@@ -344,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="other-places-to-go-from-the-dashboard" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</h2>
 <p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
-<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting “<code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currenly is—it is gonna get you via your phone).</p>
+<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting <code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currently is—it is gonna get you via your devices).</p>
 <p>In the shell, you can choose different color themes from the selector in the upper right. Also, you can open as many shells as you want—each one will go in a new browser tab.</p>
 <p>Enjoy!</p>
 

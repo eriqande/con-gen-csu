@@ -515,7 +515,7 @@ L_Py + ["add", "some", "more", 3]
 ```
 
 
-### Named lists in R and `dict`s in python
+### Named lists in R and `dict`s in python {#sec-dict}
 
 In R, the separate elements of a list can be _named_ and we can use the names to
 access them.  For exmaple:
