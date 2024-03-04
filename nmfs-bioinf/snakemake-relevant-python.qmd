@@ -184,7 +184,7 @@ Note, to get out of the python REPL loop, you can type:
 ```
 exit
 ```
-which will drop you hack into R.
+which will drop you back into R.
 
 
 ## R and Python: compare and contrast
@@ -784,7 +784,7 @@ If we wanted to read it into R using the tidyverse, that would be pretty familia
 #| warning: false
 library(tidyverse)
 
-units <- read_tsv("../data/config/units.tsv")
+units <- read_tsv("data/config/units.tsv")
 
 # and then we print it to see the familiar tibble format
 units
@@ -798,7 +798,7 @@ if we are going to use these values in snakemake later...)
 Pandas also offers indexing of data frame for faster access, so, in this case
 we will index each row by the sample name
 ```{python, filename="python:"}
-units = pd.read_table("../data/config/units.tsv", dtype=str).set_index(
+units = pd.read_table("data/config/units.tsv", dtype=str).set_index(
     "sample", drop=False
 )
 
