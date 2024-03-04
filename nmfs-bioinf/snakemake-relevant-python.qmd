@@ -90,16 +90,40 @@ materials from the course.
 
 
 If you do not already have the 'reticulate', R-package, get it with this command at the R console
-in Rstudio:
+in Rstudio.  If you are Alpine you must do this:
 ```r
+# first do this
+install.packages("reticulate")
+
+# then do this:
 install.packages("reticulate", repos = "https://cran.rstudio.com/")
 ```
-Note that, on Alpine, it is critical that you add the `repos = "https://cran.rstudio.com/`
+Note that, on Alpine, it is critical to use that second line where
+you add the `repos = "https://cran.rstudio.com/`
 part in there.  The RStudio Server maintained by CURC in OpenOnDemand is
 configured by default to draw its packages from a repository full of binary versions, and
 it may end up givng you versions of packages which are much older than the most recent
-versions. (At the time of this wriring, it installed 'reticulate' version 1.28 instead
+versions. (At the time of this writing, it installed 'reticulate' version 1.28 instead
 of 1.35, and all the following steps failed...I lost a good several hours because of that!!)
+We do the initial `install.packages("reticulate")` to install binary versions of some of
+the dependencies for the 'reticulate' package.
+
+If you are not on Alpine, you should be able to simply do:
+```r
+install.packages("reticulate")
+```
+to get the latest version of reticulate.
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| message: false
+#| output: false
+# This block is here to see if I can get this loaded in here
+library(reticulate)
+use_condaenv(condaenv = "~/mambaforge-arm64/envs/snakemake-8.5.3")
+```
 
 Then, you can load the package with:
 ```r
@@ -155,6 +179,13 @@ Then try:
 ```python
 x
 ```
+
+Note, to get out of the python REPL loop, you can type:
+```
+exit
+```
+which will drop you hack into R.
+
 
 ## R and Python: compare and contrast
 
@@ -484,7 +515,7 @@ L_Py + ["add", "some", "more", 3]
 ```
 
 
-### Named lists in R and `dict`s in python
+### Named lists in R and `dict`s in python {#sec-dict}
 
 In R, the separate elements of a list can be _named_ and we can use the names to
 access them.  For exmaple:
@@ -561,7 +592,8 @@ python uses `[ ]` for that (rather than `$` or ``[[ ]]``) like this:
 dinners["Thursday"]
 ```
 
-In R, lists can be nested with multiple levels, and the same is true in python. 
+In R, lists can be nested with multiple levels, and the same is true with `dicts` in python. 
+(In fact, it is true with python lists, as well...)
 ```{python, filename="python:"}
 meals = {
   "Monday": {"breakfast": "eggs", "lunch": "salad", "dinner": "Arctic char"},
@@ -575,10 +607,261 @@ lunch, you just drill down into the dict, much like you would in a named R list:
 meals["Tuesday"]["lunch"]
 ```
 
+We will come back to the `dict` data struture a lot when we talk about how Snakemake
+parses and stores the information in YAML formatted snakemake _config_ files.
+
+
+### Classes and objects
+
+R has a system called S4 that allows for very general kinds of objects to be defined.
+Most people don't fiddle with that too much, so it isn't much help by analogy.
+Python also has a mechanism to define certain _classes_ of objects that can be
+very general.  The programmer can define a class of objects, and then create an
+object which is an instance of a class.  For our purposes, working with snakemake,
+the important part is that instances of a class can hold _attributes_ that can be
+just about anything.  
+
+We are discussing this, because, Snakemake, when it is executing, carries around
+values of wildcards in these sorts of objects, and you can access the wildcard values
+as attributes of a `wildcards` object (e.g. you can get their values using, for example,
+`wildcards.sample` or `wildcards.chromo` and use those values in what are called
+_input functions_ which we will see in the next chapter.
+
+Here we just present a simple example of defining a class, creating an object that
+is an instance of that class, and then setting and accessing attribute values in it.
+```{python, filename="python:"}
+# Define class. Can be named anything. We name this Foo.
+# pass is just a placeholder.  There could/should be some code there
+# but our silly example class, here, does nothing, so we just give
+# it "pass" which is code that does nothing
+class Foo(object):
+  pass
+
+# create an instance of class Foo called myfoo
+myfoo = Foo()
+
+# assign some values to some attributes. Uses the . (dot)
+myfoo.attrib1 = "bing"
+myfoo.attrib2 = "bong"
+myfoo.hello = ["bonjour", "hola", "hallo"]
+
+# access the value of those attributes
+myfoo.attrib1
+myfoo.attrib2
+myfoo.hello
+```
+
+So, we just wanted people to see this, because it turns out it is helpful, when
+writing snakemake _input functions_ to be able to create a fake `wildcards` object
+for testing those input functions.  
 
 
 ### Defining functions
 
-### R library and python modules
+Here we will compare and contrast how functions are defined in R and python, and in the
+process we will see how blocks of code in python are defined by indentation, rather than
+by, say, curly braces, as in R.
 
-### Tabular data: pandas
+If you are familiar with R functions, then you know you can define one like this:
+```{r, filename="R:"}
+add2 <- function(x) {
+  x + 2
+}
+```
+
+That is a function that adds 2 to its argument. Like this:
+```{r, filename="R:"}
+add2(6)
+```
+
+Not very exciting, but we see that the code of the function is enclosed in curly braces, and,
+in R, the value produced by the last line of code gets returned by the function.
+
+In python, the equivalent function would be defined this way:
+```{python, filename="python:"}
+def add2(x):
+  return x + 2
+
+```
+
+And you can use it like this:
+```{python, filename="python:"}
+add2(6)
+```
+
+Instead of putting the code between curly braces, python uses _indentation_ to know
+which code belongs to the function.  Any lines indented to the same degree (here, two
+spaces) after the colon on the first line are understood to be part of the function definition. 
+Importantly, unlike R, python does not automatically return the value produced by the
+last line of code in the function.  If you want your python function to return a value,
+you must prepend the value or object that you want returned with the keyword `return`
+
+We might also point out here that anywhere you might typically use curly
+braces in R to denote a block of
+code, python accomplishes the same thing with a colon and indentation---for loops,
+if and else statements, etc.
+
+The parameters of a python function can be any valid python objects and you can have multiple parameters
+and they can have default values, if desired.  For example
+```{python, filename="python:"}
+# here is a function that adds text ("Fun!", by default) to the elements of a list
+# and returns a new list:
+def fun(list_of_things, text="Fun!"):
+  return [ x + ", " + text for x in list_of_things]
+
+```
+If we call it with no value for the `text` parameter we get the default value for `text`.
+```{python, filename="python:"}
+fun(list_of_things = ["dogs", "kittens", "frisbees"])
+```
+
+But we could add the text argument to change it:
+```{python, filename="python:"}
+fun(list_of_things = ["snakes", "lizards", "squid"], text = "Slithery!")
+```
+
+
+
+### R packages and python modules
+
+In R, when you want to include a bunch of useful functions from an R package, you can use
+the library command:
+```{r, filename="R:"}
+#| eval: false
+library(tidyverse)
+```
+
+In python, you can do something similar by _importing_ "modules."  We have already
+seen that with the `pprint` module for pretty printing things---we used:
+```{python, filename="python:"}
+import pprint
+```
+That statement imports a `pprint` object, and once that is done we can use _all_ the
+functions from the `pprint` module by naming them as
+attributes of the `pprint` object:
+```{python, filename="python:"}
+pprint.pp(meals)
+```
+
+In python, we can also be more fine-grained about what we import from different modules.
+At its most fine-grainedness, we could import just a single function from a module so that
+we can call that function by name, without calling it as an attribute of an object. 
+For example, if we wanted to play with the `multiext` function from snakemake (which
+happens to reside in a module named `snakemake.io`) we can
+import it like this:
+```{python, filename="python:"}
+from snakemake.io import multiext
+```
+Now we can use the multiext function to see how it works:
+```{python, filename="python:"}
+multiext("path/dir/file", ".pdf", ".jpg")
+```
+
+Note that this works because we are using python in the conda environment that
+includes `snakemake`.  (Remember the line like `use_condaenv(condaenv = "/projects/eriq@colostate.edu/miniforge3/envs/snakemake-8.5.3")`?)  Otherwise,
+python typically would not find the snakemake module.
+
+One can also import a module, but give its namespace a shorter name.
+For example, to prepare for the next section, we will import the 'pandas'
+module, but we will name it `pd` for brevity.
+```{python, filename="python:"}
+import pandas as pd
+```
+
+
+### Tabular data: pandas in python is sort of like dplyr in R
+
+Most R users are now familiar with the 'tidyverse' and its packages like
+'readr' and 'dplyr'.  We give an example here, reading a small tab-separated
+file with information about the samples in our example Chinook salmon data set, which is
+in the repo at: `data/config/units.tsv`.  The easiest way to peruse it is to view
+it on GitHub [here](https://github.com/eriqande/con-gen-csu/blob/main/data/config/units.tsv).
+
+If we wanted to read it into R using the tidyverse, that would be pretty familiar
+(at least if we are tidyverse aficionados):
+```{r, filename="R:"}
+#| message: false
+#| warning: false
+library(tidyverse)
+
+units <- read_tsv("../data/config/units.tsv")
+
+# and then we print it to see the familiar tibble format
+units
+```
+
+The python world has a similar package, called pandas.  We imported it above,
+using `import pandas as pd`, so now we can use it to do a comparable read operation
+on our tab-separated file using the pandas function `read_table()`.
+We will also force each column to be stored as a string, too (which is often helpful
+if we are going to use these values in snakemake later...)
+Pandas also offers indexing of data frame for faster access, so, in this case
+we will index each row by the sample name
+```{python, filename="python:"}
+units = pd.read_table("../data/config/units.tsv", dtype=str).set_index(
+    "sample", drop=False
+)
+
+# and then we can print it out:
+units
+```
+
+That looks pretty similar.   The first column in that output shows that `sample`
+is the index column (which we set with `.set_index()`, after reading it)
+of this pandas data frame.
+
+Now, in R, if we wanted to pull out the values in some of the columns that
+correspond to a particular sample, we could do like this:
+```{r, filename="R:"}
+# get fq1 value for DPCh_plate1_C12_S36
+units %>%
+  filter(sample == "DPCh_plate1_C12_S36") %>%
+  pull(fq1)
+
+# get kb2 value for DPCh_plate1_C12_S36
+units %>%
+  filter(sample == "DPCh_plate1_C12_S36") %>%
+  pull(kb2)
+```
+
+
+In pandas you can do a similar thing with the `.loc` method (short for "location") of `units`, leveraging
+the fact that we are using sample as the index.  The syntax is:
+```python
+data_frame.loc( value of index,  Column )
+```
+So, analagous to the above we could do, in python:
+```{python, filename="python:"}
+# get fq1 value for DPCh_plate1_C12_S36
+units.loc[ "DPCh_plate1_C12_S36", "fq1"]
+
+# get kb2 value for DPCh_plate1_C12_S36
+units.loc[ "DPCh_plate1_C12_S36", "kb2"]
+```
+
+Note that if you want to extract values based on multiple values (both the
+samples and unit column, for example) you could do
+```{python, filename="python:"}
+units2 = units.set_index(["sample", "unit"], drop = False) 
+
+units2.loc[ ("DPCh_plate1_C12_S36", "1"), "kb2" ]
+```
+
+These are handy ways of populating parameters of rules with values that are taken from
+tabular data, for example, getting read group information for different samples.  
+
+We should point out that we can also use the `.loc` method to test more general
+conditions in the pandas data frame.  For example, if we wanted a list of all the
+samples which have an F in their name we could put that
+condition test into place where the index went before:
+```{python, filename="python:"}
+units.loc[ units["sample"].str.contains("F"), "sample" ]
+```
+We see that this sort of construct returns the sample column in the correct rows,
+but it is still a pandas object.  If we want to just get a list of those sample
+names, we use `.tolist()` on the end:
+```{python, filename="python:"}
+units.loc[ units["sample"].str.contains("F"), "sample" ].tolist()
+```
+
+Those things come in handy when writing more complex workflows.  

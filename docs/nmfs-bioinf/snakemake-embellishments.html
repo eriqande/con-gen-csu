@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>con-gen-csu - 1&nbsp; OpenOnDemand on Alpine</title>
+<title>con-gen-csu - 13&nbsp; Important Snakemake Embellishments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../nmfs-bioinf/quick-unix-review.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../nmfs-bioinf/snakemake-relevant-python.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/open-on-demand-alpine.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/snakemake-embellishments.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -154,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link active">
+  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></a>
   </div>
 </li>
@@ -226,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snakemake-embellishments.html" class="sidebar-item-text sidebar-link">
+  <a href="../nmfs-bioinf/snakemake-embellishments.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span></a>
   </div>
 </li>
@@ -240,21 +239,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#getting-onto-rstudio-server-on-alpine" id="toc-getting-onto-rstudio-server-on-alpine" class="nav-link active" data-scroll-target="#getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</a></li>
-  <li><a href="#working-in-rstudio" id="toc-working-in-rstudio" class="nav-link" data-scroll-target="#working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</a>
+  <li><a href="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" id="toc-running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" class="nav-link active" data-scroll-target="#running-snakemake-on-a-cluster-resources-profiles-and-benchmarks"><span class="header-section-number">13.1</span> Running Snakemake on a Cluster: resources, profiles, and benchmarks</a>
   <ul class="collapse">
-  <li><a href="#sec-nossh" id="toc-sec-nossh" class="nav-link" data-scroll-target="#sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</a></li>
+  <li><a href="#specify-the-resources-required-for-each-rule" id="toc-specify-the-resources-required-for-each-rule" class="nav-link" data-scroll-target="#specify-the-resources-required-for-each-rule"><span class="header-section-number">13.1.1</span> Specify the resources required for each rule</a></li>
   </ul></li>
-  <li><a href="#other-places-to-go-from-the-dashboard" id="toc-other-places-to-go-from-the-dashboard" class="nav-link" data-scroll-target="#other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/open-on-demand-alpine.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ondemand" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></h1>
 </div>
 
 
@@ -271,98 +268,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>If you have an account on Alpine, there is a cool way to connect to Alpine through a web browser. This provides a nice way to access your files and do light copying, etc. But, more importantly, this method allows you to interact with your files and projects on the cluster in the familiar RStudio framework. This also provides a useful way for running your own R projects and handling git in R projects on the cluster. Really, I suspect this will be life-changing for many folks that are very familiar with RStudio and wish that they could run analyses in R, using RStudio, on the cluster, just like they do on their laptop or desktop machines.</p>
-<p>The approach uses a <em>browser-based</em> portal to the Alpine computing cluster that is supported by CURC and is called <em>Open OnDemand</em>. As a <em>browser-based</em> system, you will connect to Alpine via your web browser. Ultimately, you will be able to run a session of RStudio Server that runs on a compute node on Alpine, interacting with your filesystem on the cluster the way you would with local files using any RStudio session on your laptop. Additionally, you can drive git and get a terminal shell through RStudio server as well. It is pretty slick if you are comfortable in an RStudio environment.</p>
-<p>Full details about OpenOndemand on Alpine can be found at the CURC website <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html">here</a>, with a whole section about RStudio <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio">here</a>.</p>
-<section id="getting-onto-rstudio-server-on-alpine" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</h2>
-<p>In order to establish an RStudio session container/image/overlay, the Alpine administrators recommend using 4 cores, because the initial setup can take a few minutes. After that you can re-attach to that image quickly and use just a single core if you would like. Briefy instructions on how to do that are:</p>
+<p>Thus far we have only scratched the surface of what Snakemake can do, and it could take a lifetime to realize the full potential of Snakemake as a workflow management system. At this point, we will point out that there is comprehensive documentation about how to use snakemake at <a href="https://snakemake.readthedocs.io/en/stable/">https://snakemake.readthedocs.io/en/stable/</a>. It is worth giving that a good-faith read-through at some point. However, it is not always clear which of the many gems in that documentation will be the most valuable for your bioinoformatic life.</p>
+<p>Here we present a few embellishments upon what we have already learned that will really let you get a lot more out of Snakemake. There are three broad categories that will be discussed in different sections of this chapter.</p>
 <ol type="1">
-<li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
-<li>The first time you click that, it will take you to a page where you must choose which institution’s OpenOnDemand infrastructure you are accessing. Choose <code>Colorado State University</code>, from the pop-up menu and be sure to select “Remember this selection” and then click “Log On”.<br>
-<img src="./images/colostate-open-ondemand.png" class="img-fluid"></li>
-<li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
-<li>That should drop you into the CURC OnDemand Dashboard page that looks like this:<br>
-<img src="./images/curc-on-demand-dashboard.png" class="img-fluid"></li>
-<li>Choose “Interactive Apps–&gt;RStudio Server Presets”, then use the bottom toggle box to choose “4 cores, 4 hours”, and hit “Launch”. This will start making you an RStudio Server container. Again, we choose 4 cores just for the initial setup, but you can choose 1 core in the future.<br>
-<img src="./images/rstudio-server-preset.png" class="img-fluid"></li>
-<li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”<br>
-<img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
-<li>Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</li>
+<li><p>Embellishments critical for <strong>running Snakemake on a cluster</strong>. This includes the declaration of <strong>resources</strong> required for the jobs and also the use of <strong>profiles</strong> to create a snakemake command line that can send jobs to SLURM and also communicate with SLURM to check up on jobs while they are running. It also includes telling snakemake to generate <strong>benchmark</strong> information to record how much memory and time was required for every job in your workflow—this is super handy for predicting resource requirements for future data sets!</p></li>
+<li><p>Embellishments that make it easy to run your workflow on a different set of data, or a different species, or using different settings, options, or parameter values for some of the tasks/rules. The main improvement here is using snakemake <strong>config files</strong>, so that all the different settings and options for your workflow can be specified and stored and reviewed in one place. We will also see that configuration files can be very helpful for setting resource requirements for rules, which means that you only have to change things in one small config file to run your workflow on a different cluster with different partition names and machine capabilities, for example.</p></li>
+<li><p>More advanced processing of wildcards using snakemake <strong>input functions</strong>. This allows your rules to react to the wildcard values in very general ways, rather than just by substituting the values into input or log file paths.</p></li>
 </ol>
-</section>
-<section id="working-in-rstudio" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</h2>
-<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git (but no ssh! see the section <a href="#sec-nossh" class="quarto-xref"><span>Section 1.2.1</span></a>, below), that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
-<p>Note that if you open up files in Rstudio on Alpine that Rstudio recognizes as shell script files (because they have a <code>.sh</code> extension), then choosing CMD-Return (on a Mac) or cntrl-Return (on a PC) will send the line that your cursor is on to the Terminal shell (in much the same way that you can evaluate R code from an R script in the R console within RStudio). This provides a very handy way to test your shell scripts line by line on the Alpine bash shell.</p>
-<p>At the time of this writing, I have not been able to load the slurm/alpine module in the RStudio Terminal to allow submission of jobs via <code>sbatch</code> in this environment, but I can keep you posted. In the meantime, you can always get a shell in your browser (see the next section).</p>
-<p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
-</figure>
-</div>
-<p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
-</figure>
-</div>
-<p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
-<p>Note that if your time on the compute node runs out before you are done working on RStudio, then unsaved work and variables in your global environment will be lost and RStudio will start saying that it has lost connection (with a bunch of 503 errors).</p>
-<section id="sec-nossh" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</h3>
-<p>The program <code>git</code> works just fine in the OnDemand RStudio Server on when you are just dealing with local files. However it does not seem to have access to ssh. There is simply no <code>ssh</code> at <code>/usr/bin/ssh</code> in the shell that RStudio gets to run. This is super weird. We will have to check with the CURC admins about this.</p>
-<p>Until then, you can use RStudio to stage and commit files (and gitignore them), just like you would on Rstudio on your laptop. And you can also switch branches and create new branches. But you can’t do you git push and git pull operations, on RStudio Server on Alpine. Instead, you can use the browser-based shell (see the next section) to do your git push and git pull.</p>
-<p>Note that if you create a new branch in RStudio on Alpine, you should not click the “Sync branch with remote” button, because that operation will fail, since it requires <code>ssh</code>. However, once you have made the branch, you can go to your terminal (either in the browser or through your terminal emulator (i.e. tmux) and then cd to the repo. Check with <code>git branch</code> to make sure that you are on the new branch and then do</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin <span class="op">&lt;</span>new-branch<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>where you replace <code>&lt;new-branch&gt;</code> with the actual branch name. The <code>-u</code> option tell git to create a new branch named <code>&lt;new-branch&gt;</code> on <code>origin</code> that automatically tracks <code>&lt;new-branch&gt;</code> on your local repository, so that from now on, any time you are on <code>&lt;new-branch&gt;</code>, from now on, you can just say <code>git pull</code> or <code>git push</code> without specifying anything else, and <code>git</code> will automatically know to push or pull to <code>&lt;new-branch&gt;</code> on <code>origin</code>.</p>
-<p>For example, in RStudio I created a new branch called <code>gratuitous-branch</code> and I told RStudio not to sync the branch with remote:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
-</figure>
-</div>
-<p>Then I went to my shell and did <code>git branch</code> to confirm I was on that branch:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> ~]--% cd projects/con-gen-csu/</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The asterisk tells me that is the branch I am on! So now I do:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin gratuitous-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Nothing got transferred because I had no changes on this new branch, but the output message from git is good to see:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'gratuitous-branch'</span> on GitHub by visiting:</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>      https://github.com/eca-home/con-gen-csu/pull/new/gratuitous-branch</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github-home:eca-home/con-gen-csu.git</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      gratuitous-branch <span class="at">-</span><span class="op">&gt;</span> gratuitous-branch</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'gratuitous-branch'</span> set up to track <span class="st">'origin/gratuitous-branch'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Most importantly it tells me that <code>branch 'gratuitous-branch' set up to track 'origin/gratuitous-branch'.</code> which is what we want.</p>
-<p>We can also verify branch tracking by using <code>git branch -vv</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch <span class="at">-vv</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span>     9901ce8 <span class="pp">[</span><span class="ss">origin/005</span><span class="pp">-</span><span class="ss">trim</span><span class="pp">-</span><span class="ss">map2</span><span class="pp">]</span> answer key</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span>   67a106e <span class="pp">[</span><span class="ss">origin/fastp</span><span class="pp">-</span><span class="ss">iteration</span><span class="pp">]</span> done</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch 034d018 <span class="pp">[</span><span class="ss">origin/gratuitous</span><span class="pp">-</span><span class="ss">branch</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span>              034d018 <span class="pp">[</span><span class="ss">origin/main</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here, we see that all my local branches are set up to track a remote branch of the same name on origin. So, if I commit any changes on a branch, I can just say,</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>or</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>and it will push or pull to/from the correct branch on the remote origin. Cool!</p>
-</section>
-</section>
-<section id="other-places-to-go-from-the-dashboard" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</h2>
-<p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
-<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting <code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currently is—it is gonna get you via your devices).</p>
-<p>In the shell, you can choose different color themes from the selector in the upper right. Also, you can open as many shells as you want—each one will go in a new browser tab.</p>
-<p>Enjoy!</p>
+<section id="running-snakemake-on-a-cluster-resources-profiles-and-benchmarks" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="running-snakemake-on-a-cluster-resources-profiles-and-benchmarks"><span class="header-section-number">13.1</span> Running Snakemake on a Cluster: resources, profiles, and benchmarks</h2>
+<section id="specify-the-resources-required-for-each-rule" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="specify-the-resources-required-for-each-rule"><span class="header-section-number">13.1.1</span> Specify the resources required for each rule</h3>
+<p>Recall from our discussion of SLURM that the main axes upon which you will need to think about allocating computing resources for your bioinformatic jobs are:</p>
+<ul>
+<li><strong>Memory</strong>: what is the maximum amount of RAM the job will need while running?</li>
+<li><strong>Time</strong>: How long must the job run?</li>
+<li><strong>Cores</strong>: how many CPUs do you want to allocate to the job?</li>
+</ul>
+<p>An additional resource that Snakemake might be concerned about is <strong><code>tmpdir</code></strong> the location of a directory for writing temporary files. Typically these files get written to a directory called /tmp on the hard drive that is local to the node that the job is running on. However, at least last summer, we found that we were often exceeding the amount of space that we were offered in <code>/tmp</code> on Alpine, so we will show you how to instruct snakemake to write temporary files into a directory in the results directory on scratch.</p>
+<p>Within your Snakefile, you can specify the memory, time resources for each rule in a <code>resources</code> block for that rule. For example, if we wanted 6 GB of memory and 10 hours for our <code>map_reads</code> rule, then we would add a <strong>resources block</strong> so that it looks like:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rule map_reads</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">input</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    r1="results/trimmed/{sample}_R1.fastq.gz",</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    r2="results/trimmed/{sample}_R2.fastq.gz",</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    genome="resources/genome.fasta",</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/bam/{sample}.bam"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">conda</span><span class="kw">:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"envs/bwa2sam.yaml"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    mem_mb=6000,</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">    time="08:00:00"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">log</span><span class="kw">:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/logs/map_reads/{sample}.log"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">params</span><span class="kw">:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shell</span><span class="kw">:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" (bwa-mem2 mem {params.RG} {input.genome} {input.r1} {input.r2} | "</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools view -u | "</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools sort - &gt; {output}) 2&gt; {log} "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Additionally, if for most of our rules we simply wanted a <em>default</em> time of 4 hours and a <em>default</em> amount of 3.74 Gb of memory, we don’t have to write a resources block for each of those rules. Rather, we could just specify that on the command line with the <code>--default-resources</code> option, like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--default-resources</span>  mem_mb=6000  time=<span class="st">"08:00:00"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That is handy if most of your rules require the same resources.</p>
+<p>We have not yet discussed how to request a certain number of cores/CPUs for each job of a rule. Remember, there is no point of requesting more cores/CPUs than the number of threads that can be used by the programs running the job. Consequently, you want the number of cores/CPUs to typically be set to the number of threads that the program(s) in your job are using. As a consequence, CPUs are typically set according to the <code>threads</code> specifier in the Snakemake rule. We haven’t talked about this yet, but it is simple—you set an integer value in a <code>threads</code> block, then you can use <code>{threads}</code> in the shell block to tell the program how many threads to use.</p>
+<p>We will again illustrate this with our <code>map_reads</code> rule. <code>bwa-mem2 mem</code> uses the <code>-t</code> option to specify the number of threads to use, so, to make <code>bwa-mem2 mem</code> use 4 threads we could write:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rule map_reads</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">input</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    r1="results/trimmed/{sample}_R1.fastq.gz",</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    r2="results/trimmed/{sample}_R2.fastq.gz",</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    genome="resources/genome.fasta",</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    idx=multiext("resources/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/bam/{sample}.bam"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">conda</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"envs/bwa2sam.yaml"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">threads</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">    mem_mb=3740 * 4,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    time="08:00:00"</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">log</span><span class="kw">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"results/logs/map_reads/{sample}.log"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">params</span><span class="kw">:</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="at">    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shell</span><span class="kw">:</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" (bwa-mem2 mem -t {threads} {params.RG} {input.genome} {input.r1} {input.r2} | "</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools view -u | "</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">" samtools sort - &gt; {output}) 2&gt; {log} "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note we have specified 4 threads, and we also bumped up the memory, because if we are asking for 4 cores, we might as well get the default amount of memory (3.74 Gb, on Alpine) that we would get with each core.</p>
+<p>All of that is pretty straightforward; however, doing this does not automatically cause the rule to be dispatched by SLURM and granted those resources. Rather, Snakemake must be told to send jobs to SLURM and also to use the <code>resources</code> and <code>threads</code> to appropriately request the right amount of resources from SLURM. Snakemake has an “officially sanctioned/supported” way of sending jobs to SLURM that can be found <a href="https://github.com/Snakemake-Profiles/slurm">here</a>. However, that approach is quite complex—it is implemented in a bunch of python scripts that I find hard to read, and I find it difficult to understand what all these scripts are doing.</p>
+<p>By contrast, a different approach to having Snakemake send jobs to SLURM is implemented in the wonderfully readable and easy-to-understand approach taken by John D. Blischak, (find it <a href="">here</a> on GitHub) who was a postdoc with Matthew Stephens and has worked extensively in improving research reproducibility.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -755,14 +733,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="Welcome!">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome!</span>
+      <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="pagination-link" aria-label="Snakemake-relevant Python for R Users">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../nmfs-bioinf/quick-unix-review.html" class="pagination-link" aria-label="Quick Unix Review">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -770,4 +745,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/open-on-demand-alpine.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snakemake-embellishments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
