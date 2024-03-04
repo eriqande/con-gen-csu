@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -190,6 +224,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-embellishments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -201,7 +241,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#getting-onto-rstudio-server-on-alpine" id="toc-getting-onto-rstudio-server-on-alpine" class="nav-link active" data-scroll-target="#getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</a></li>
-  <li><a href="#working-in-rstudio" id="toc-working-in-rstudio" class="nav-link" data-scroll-target="#working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</a></li>
+  <li><a href="#working-in-rstudio" id="toc-working-in-rstudio" class="nav-link" data-scroll-target="#working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</a>
+  <ul class="collapse">
+  <li><a href="#sec-nossh" id="toc-sec-nossh" class="nav-link" data-scroll-target="#sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</a></li>
+  </ul></li>
   <li><a href="#other-places-to-go-from-the-dashboard" id="toc-other-places-to-go-from-the-dashboard" class="nav-link" data-scroll-target="#other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/open-on-demand-alpine.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -250,14 +293,72 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="working-in-rstudio" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</h2>
-<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git, that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
+<p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git (but no ssh! see the section <a href="#sec-nossh" class="quarto-xref"><span>Section 1.2.1</span></a>, below), that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
 <p>Note that if you open up files in Rstudio on Alpine that Rstudio recognizes as shell script files (because they have a <code>.sh</code> extension), then choosing CMD-Return (on a Mac) or cntrl-Return (on a PC) will send the line that your cursor is on to the Terminal shell (in much the same way that you can evaluate R code from an R script in the R console within RStudio). This provides a very handy way to test your shell scripts line by line on the Alpine bash shell.</p>
 <p>At the time of this writing, I have not been able to load the slurm/alpine module in the RStudio Terminal to allow submission of jobs via <code>sbatch</code> in this environment, but I can keep you posted. In the meantime, you can always get a shell in your browser (see the next section).</p>
+<p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+</figure>
+</div>
+<p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
+<p>Note that if your time on the compute node runs out before you are done working on RStudio, then unsaved work and variables in your global environment will be lost and RStudio will start saying that it has lost connection (with a bunch of 503 errors).</p>
+<section id="sec-nossh" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</h3>
+<p>The program <code>git</code> works just fine in the OnDemand RStudio Server on when you are just dealing with local files. However it does not seem to have access to ssh. There is simply no <code>ssh</code> at <code>/usr/bin/ssh</code> in the shell that RStudio gets to run. This is super weird. We will have to check with the CURC admins about this.</p>
+<p>Until then, you can use RStudio to stage and commit files (and gitignore them), just like you would on Rstudio on your laptop. And you can also switch branches and create new branches. But you can’t do you git push and git pull operations, on RStudio Server on Alpine. Instead, you can use the browser-based shell (see the next section) to do your git push and git pull.</p>
+<p>Note that if you create a new branch in RStudio on Alpine, you should not click the “Sync branch with remote” button, because that operation will fail, since it requires <code>ssh</code>. However, once you have made the branch, you can go to your terminal (either in the browser or through your terminal emulator (i.e. tmux) and then cd to the repo. Check with <code>git branch</code> to make sure that you are on the new branch and then do</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin <span class="op">&lt;</span>new-branch<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where you replace <code>&lt;new-branch&gt;</code> with the actual branch name. The <code>-u</code> option tell git to create a new branch named <code>&lt;new-branch&gt;</code> on <code>origin</code> that automatically tracks <code>&lt;new-branch&gt;</code> on your local repository, so that from now on, any time you are on <code>&lt;new-branch&gt;</code>, from now on, you can just say <code>git pull</code> or <code>git push</code> without specifying anything else, and <code>git</code> will automatically know to push or pull to <code>&lt;new-branch&gt;</code> on <code>origin</code>.</p>
+<p>For example, in RStudio I created a new branch called <code>gratuitous-branch</code> and I told RStudio not to sync the branch with remote:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
+</figure>
+</div>
+<p>Then I went to my shell and did <code>git branch</code> to confirm I was on that branch:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> ~]--% cd projects/con-gen-csu/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The asterisk tells me that is the branch I am on! So now I do:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin gratuitous-branch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nothing got transferred because I had no changes on this new branch, but the output message from git is good to see:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'gratuitous-branch'</span> on GitHub by visiting:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>      https://github.com/eca-home/con-gen-csu/pull/new/gratuitous-branch</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github-home:eca-home/con-gen-csu.git</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      gratuitous-branch <span class="at">-</span><span class="op">&gt;</span> gratuitous-branch</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'gratuitous-branch'</span> set up to track <span class="st">'origin/gratuitous-branch'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Most importantly it tells me that <code>branch 'gratuitous-branch' set up to track 'origin/gratuitous-branch'.</code> which is what we want.</p>
+<p>We can also verify branch tracking by using <code>git branch -vv</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">[login-ci1:</span> con-gen-csu]--% git branch <span class="at">-vv</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">005-trim-map2</span>     9901ce8 <span class="pp">[</span><span class="ss">origin/005</span><span class="pp">-</span><span class="ss">trim</span><span class="pp">-</span><span class="ss">map2</span><span class="pp">]</span> answer key</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp-iteration</span>   67a106e <span class="pp">[</span><span class="ss">origin/fastp</span><span class="pp">-</span><span class="ss">iteration</span><span class="pp">]</span> done</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> gratuitous-branch 034d018 <span class="pp">[</span><span class="ss">origin/gratuitous</span><span class="pp">-</span><span class="ss">branch</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span>              034d018 <span class="pp">[</span><span class="ss">origin/main</span><span class="pp">]</span> Merge branch <span class="st">'eriqande:main'</span> into main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here, we see that all my local branches are set up to track a remote branch of the same name on origin. So, if I commit any changes on a branch, I can just say,</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and it will push or pull to/from the correct branch on the remote origin. Cool!</p>
+</section>
 </section>
 <section id="other-places-to-go-from-the-dashboard" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="other-places-to-go-from-the-dashboard"><span class="header-section-number">1.3</span> Other places to go from the Dashboard</h2>
 <p>We should also mention that if you go to the “Files” tab on the original OnDemand Dashboard page, you get a nice web-browser-based file browser of your files on Alpine. This can be a good way to transfer a couple of small files here and there, but don’t transfer too much. For big files, or for transferring things to scratch, you should use globus, as explained <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files">here</a>.</p>
-<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting “<code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currenly is—it is gonna get you via your phone).</p>
+<p>Finally, from you Alpine dashboard in your browser, you can even get a shell (in your browser) on Alpine. Do that by selecting <code>Clusters--&gt; &gt;_Alpine Shell</code>. It is a fully functional shell terminal in your browser. Apparently you can even get to this on your phone or tablet browswer. (Just when you thought cluster computing couldn’t intrude any more on your life than it currently is—it is gonna get you via your devices).</p>
 <p>In the shell, you can choose different color themes from the selector in the upper right. Also, you can open as many shells as you want—each one will go in a new browser tab.</p>
 <p>Enjoy!</p>
 

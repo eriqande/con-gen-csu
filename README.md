@@ -761,3 +761,22 @@ More Snakemake
 #### In Class (Banging through our snakemake example still)
 
 - Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section)
+
+
+### Thursday, March 7, 2024
+
+More Snakemake. SLURM profiles, snakemake configuration files, and input functions
+
+#### Prep (please do this reading before class!)
+
+- The [Snakemake Embellishments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-embellishments.html) chapter.
+
+#### In class 
+
+- We will be talking a lot about making snakemake talk to SLURM.
+
+#### Assignment (due the first Tuesday after spring break at the start of class)
+
+- Not yet written, but it will be a chance to run all of our example salmon data through the workflow using SLURM.
+
+
