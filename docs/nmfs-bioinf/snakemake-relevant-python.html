@@ -348,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note, to get out of the python REPL loop, you can type:</p>
 <pre><code>exit</code></pre>
-<p>which will drop you hack into R.</p>
+<p>which will drop you back into R.</p>
 </section>
 </section>
 <section id="r-and-python-compare-and-contrast" class="level2" data-number="12.2">
@@ -612,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="bu">str</span>(x) <span class="op">+</span> <span class="st">" Weird!"</span>, L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;map object at 0x1064700a0&gt;</code></pre>
+<pre><code>&lt;map object at 0x119d4ffa0&gt;</code></pre>
 </div>
 </div>
 <p><code>map</code> is like <code>lapply()</code> but the order of its arguments is reversed—it takes the function first and the list second—and it doesn’t automatically return a list; rather, as you can see, it returns a <code>&lt;map object at some_location&gt;</code> where some <code>some_location</code> is the address of some computer memory, like <code>0x292826170</code>.</p>
@@ -793,7 +793,7 @@ Table&nbsp;12.1: Five atomic data types in R and Python
 <p>We emphasize a few important points here:</p>
 <ol type="1">
 <li>Python uses <code>True</code> and <code>False</code> for its Boolean types, while R uses <code>TRUE</code> and <code>FALSE</code>. The capitalization differences are very important. The variations don’t work across languages!</li>
-<li>While R has the <code>class()</code> function to tell you what class any abject is, python has the <code>type()</code> function that tells you what data type an object is. This can be quite useful for familiarizing yourself with what is going on in your own code, or someone else’s:</li>
+<li>While R has the <code>class()</code> function to tell you what class any object is, python has the <code>type()</code> function that tells you what data type an object is. This can be quite useful for familiarizing yourself with what is going on in your own code, or someone else’s:</li>
 </ol>
 <div class="cell">
 <div class="code-with-filename">
@@ -833,7 +833,7 @@ Table&nbsp;12.1: Five atomic data types in R and Python
 </div>
 </div>
 <ol start="3" type="1">
-<li><code>list</code> is itself a data type in python, and when we write <code>list(map(type, list2))</code> we are essentially coercing and object of class <code>map</code> to be a list.</li>
+<li><code>list</code> is itself a data type in python, and when we write <code>list(map(type, list2))</code> we are essentially coercing an object of class <code>map</code> to be a list.</li>
 </ol>
 </section>
 <section id="list-comprehension-operating-on-every-element-of-a-list-part-2" class="level3" data-number="12.2.7">
@@ -902,7 +902,7 @@ Table&nbsp;12.1: Five atomic data types in R and Python
 <pre><code>['A', 'B', 'C', 'D', 'E', 'F', 'G']</code></pre>
 </div>
 </div>
-<p>In fact, you can go even for even more economy and note that <code>list()</code> in python applied to any iterable object, will automatically iterate over the iterable elements in the abject. Hence, this does the same as the previous line:</p>
+<p>In fact, you can go for even more economy and note that <code>list()</code> in python applied to any iterable object, will automatically iterate over the iterable elements in the object. Hence, this does the same as the previous line:</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1353,10 +1353,12 @@ $Friday
 </div>
 <div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>units <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"../data/config/units.tsv"</span>)</span>
-<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a><span class="co"># and then we print it to see the familiar tibble format</span></span>
-<span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a>units</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note! If you (the reader) want to run this from the root directory of the repo,</span></span>
+<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a><span class="co"># you will have to remove ../ from the beginning of the path below.</span></span>
+<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>units <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"../data/config/units.tsv"</span>)</span>
+<span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-7"><a href="#cb125-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and then we print it to see the familiar tibble format</span></span>
+<span id="cb125-8"><a href="#cb125-8" aria-hidden="true" tabindex="-1"></a>units</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 16 × 12
@@ -1387,12 +1389,14 @@ $Friday
 <div class="code-with-filename-file">
 <pre><strong>python:</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> pd.read_table(<span class="st">"../data/config/units.tsv"</span>, dtype<span class="op">=</span><span class="bu">str</span>).set_index(</span>
-<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample"</span>, drop<span class="op">=</span><span class="va">False</span></span>
-<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="co"># and then we can print it out:</span></span>
-<span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a>units</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note! If you (the reader) want to run this from the root directory of the repo,</span></span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="co"># you will have to remove ../ from the beginning of the path below.</span></span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> pd.read_table(<span class="st">"../data/config/units.tsv"</span>, dtype<span class="op">=</span><span class="bu">str</span>).set_index(</span>
+<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample"</span>, drop<span class="op">=</span><span class="va">False</span></span>
+<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-7"><a href="#cb127-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and then we can print it out:</span></span>
+<span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a>units</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                  sample unit  ...        kb1        kb2
