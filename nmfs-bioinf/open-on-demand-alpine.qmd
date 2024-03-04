@@ -16,7 +16,7 @@ _Open OnDemand_.  As a _browser-based_ system, you will connect to Alpine via
 your web browser. Ultimately, you will be able to run a session of RStudio Server
 that runs on a compute node on Alpine, interacting with your filesystem on the cluster
 the way you would with local files using any RStudio session on your laptop.  Additionally,
-you can drive git and get a terminal shell through RStudio server as well.  It is pretty
+you can drive git and get a terminal shell through the RStudio server as well.  It is pretty
 slick if you are comfortable in an RStudio environment.
 
 
@@ -67,7 +67,12 @@ to them on the cluster.  You have a graphical interface to git (but no ssh! see
 the section @sec-nossh, below), that is familiar, and you
 can also get to a shell in the "Terminal" tab.  You also have an active R session
 on the cluster in case you want to analyze any data you have on the cluster with
-R.
+R. 
+
+Just as a reminder, the git interface in RStudio can be found on the "git" tab in the
+upper right panel (typically).  You might have to extend the right panel to the left (make
+it larger) in order to see all the elements of the interface (like push and pull
+arrows and commit buttons, etc.)
 
 Note that if you open up files in Rstudio on Alpine that Rstudio recognizes
 as shell script files (because they have a `.sh` extension), then choosing
@@ -189,6 +194,7 @@ files here and there, but don't transfer too much.  For big files, or for
 transferring things to scratch, you should
 use globus, as explained [here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#files).
 
+
 Finally, from you Alpine dashboard in your browser, you can even get a shell
 (in your browser) on Alpine.  Do that by selecting `Clusters--> >_Alpine Shell`.
 It is a fully functional shell terminal in your browser.  Apparently you can even
@@ -200,5 +206,7 @@ In the shell, you can choose different color themes from the selector in the upp
 Also, you can open as many shells as you want---each one will go in a new browser tab.
 
 Enjoy!
+
+
 
 
