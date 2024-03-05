@@ -112,7 +112,7 @@ run.  This is super weird.  We will have to check with the CURC admins about thi
 
 Until then, you can use RStudio to stage and commit files (and gitignore them), just
 like you would on Rstudio on your laptop.  And you can also switch branches and create
-new branches.  But you can't do you git push and git
+new branches.  But you can't do git push and git
 pull operations, on RStudio Server on Alpine.  Instead, you can use the browser-based
 shell (see the next section) to do your git push and git pull.
 
