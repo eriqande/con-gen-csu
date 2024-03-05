@@ -127,7 +127,7 @@ as duplicates, and one of them will be identified as an "original."
 #| message: false
 #| label: fig-pcr-duplicates
 #| fig-cap: 'An example of PCR duplicates.  Note that in paired end data, duplicates are identified by the lengths of both reads as well as the insert length.  This figure represents a simplified, toy, situation, showing just single-end data.'
-knitr::include_graphics("figs/pcr-duplicates.svg", auto_pdf = TRUE)
+knitr::include_graphics("./nmfs-bioinf/figs/pcr-duplicates.svg", auto_pdf = TRUE)
 ```
 
 PCR duplicates occur during the library prep stage, and also are only possible for

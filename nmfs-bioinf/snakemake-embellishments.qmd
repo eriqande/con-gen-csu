@@ -255,7 +255,7 @@ And that is all there is to it!
 We have a profile for sending jobs to Alpine in the directory `Snakemake-Example/slurm/alpine`.  The
 `config.yaml` file within that looks like this:
 ```{yaml, filename="Listing of Snakemake-Example/slurm/alpine/config.yaml" }
-#| file: ../Snakemake-Example/slurm/alpine/config.yaml
+#| file: ./Snakemake-Example/slurm/alpine/config.yaml
 ```
 
 We see here that the "heavy-lifting" is done by snakemake's `--cluster` option.  This option
@@ -312,7 +312,7 @@ profile that is 50 checks per second.)
 You can unfold the following code block to see the shell code for `status-sacct-robust.sh`.
 ```{sh filename="Snakemake-Example/slurm/alpine/status-sacct-robust.sh"}
 #| eval: false
-#| file: ../Snakemake-Example/slurm/alpine/status-sacct-robust.sh
+#| file: ./Snakemake-Example/slurm/alpine/status-sacct-robust.sh
 #| code-fold: true
 #| code-summary: "Click the triangle to see the code"
 ```

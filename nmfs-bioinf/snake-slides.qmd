@@ -320,7 +320,7 @@ Some explanations:
 
 ::: columns
 ::: {.column width="50%"}
-![](images/genome_dict_subl.png)
+![](./nmfs-bioinf/images/genome_dict_subl.png)
 :::
 
 ::: {.column width="50%"}
@@ -474,7 +474,7 @@ Nothing to be done (all requested files are present and up to date).
 
 ::: columns
 ::: {.column width="50%"}
-![](images/paste-89336B81.png)
+![](./nmfs-bioinf/images/paste-89336B81.png)
 :::
 
 ::: {.column width="50%"}
@@ -884,7 +884,7 @@ it looks like this:
 
 <img href="file.jpg" style="width: 100%;" />
 
-![](images/dag.svg){ width=100% }
+![](./nmfs-bioinf/images/dag.svg){ width=100% }
 
 
 
@@ -903,7 +903,7 @@ it looks like this:
 
 <img href="file.jpg" style="width: 100%;" />
 
-![](images/filegraph.svg){ width=100% }
+![](./nmfs-bioinf/images/filegraph.svg){ width=100% }
 
 ## Letting Snakemake interface with SLURM
 
