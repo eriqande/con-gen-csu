@@ -18,11 +18,11 @@ associated with their Snakefile in the context of an interactive Python session,
 which can be considerably more illuminating---and more helpful for tracking down
 bugs/errors/inconsistencies---than only getting to run that code by running
 Snakemake on your Snakefile.  Being able to work interactively with the Python code
-as Snakemake might see it is very helpful to learning how to write workflows.
+as Snakemake might see it is very helpful for learning how to write workflows.
 The next chapter has most of the gory details for this second goal, like some
 little hacks for seeing input function
 parameters as Snakemake might see them, etc., primarily as a learning tool to aid
-in figuring out how to write Python code within Snakemake.  In this chapter, though
+in figuring out how to write Python code within Snakemake.  In this chapter
 we talk about how to set up RStudio to work interactively in the python environment
 that snakemake uses. 
 
@@ -31,7 +31,7 @@ The order of events here is thus:
 1. Use the R package 'reticulate' to run python, interactively, in our
 Snakemake conda environment.
 2. Once we can work interactively in python easily, we will discuss a few of the 
-main data structures and operations in python, by comparison to their equivalents
+main data structures and operations in python by comparing to their equivalents
 in R and the tidyverse, talk about defining functions, and take a brief
 tour of python's 'pandas' package, which is similar in its functionality to
 R's tidyverse.
@@ -82,7 +82,7 @@ When both of the above are done, we can move on to working with python in RStudi
 
 The reticulate package allows you to run python in a comfortable, interactive way
 within an R (and RStudio) session.  Importantly, it allows you to run the exact
-python version that Snakemake uses, by letting you load the snakemake conda environment.
+python version that Snakemake uses by letting you load the snakemake conda environment.
 
 So, Sync your fork, then open up the RStudio project for your fork of the `con-gen-csu` repo, make sure
 you are on the main branch, and then pull, to make sure that you have all the recent
@@ -133,7 +133,7 @@ library(reticulate)
 Now, we want to use python from a particular conda environment---our
 snakemake conda environment, in fact.  For that there is a reticulate
 function called `use_condaenv()`.  We can tell it which conda
-environment to use, most reliably, by passing the absolute path of the
+environment to use most reliably by passing the absolute path of the
 environment to the function.  This path will be the path to your conda library
 plus `envs` plus the name of the environment.  For example on my laptop that
 would translate into:
@@ -184,7 +184,7 @@ Note, to get out of the python REPL loop, you can type:
 ```
 exit
 ```
-which will drop you hack into R.
+which will drop you back into R.
 
 
 ## R and Python: compare and contrast
@@ -288,7 +288,7 @@ double = 'This string variable contains "double" quotation marks.'
 ```
 
 So, that is sort of like R, though R makes internal substitutions and
-some backslack-escaping of double quotes.  Here is the R version:
+some backslash-escaping of double quotes.  Here is the R version:
 ```{r, filename="R:"}
 # R
 heck_double <- "What the 'heck'?"
@@ -429,7 +429,7 @@ We emphasize a few important points here:
 1. Python uses `True` and `False` for its Boolean types, while R uses `TRUE` and `FALSE`.
 The capitalization differences are very important.  The variations don't work across
 languages!
-2. While R has the `class()` function to tell you what class any abject is,
+2. While R has the `class()` function to tell you what class any object is,
 python has the `type()` function that tells you what data type
 an object is.  This can be quite useful for familiarizing yourself with what
 is going on in your own code, or someone else's:
@@ -444,7 +444,7 @@ list(map(type, list2))
 ```
 
 3. `list` is itself a data type in python, and when we write `list(map(type, list2))`
-we are essentially coercing and object of class `map` to be a list.
+we are essentially coercing an object of class `map` to be a list.
 
 ### List comprehension: Operating on every element of a list, Part 2
 
@@ -481,15 +481,15 @@ a list comprehension, are not eschewed.
 There is actually a further subtlety here.  The `for` in there can cycle over the
 elements in a list, but in fact, it is much more general.  It can cycle over all
 the elements in any "iterable" (i.e., able to be iterated over), object.  For example
-a single string like `"ABCDEFG"` is iterable---python will iterate over the differnt
+a single string like `"ABCDEFG"` is iterable---python will iterate over the different
 letters in the string.  Thus you could make a list of the letters in a string like:
 ```{python, filename="python:"}
 [x for x in "ABCDEFG"]
 ```
 
-In fact, you can go even for even more economy and note that `list()` in python
+In fact, you can go for even more economy and note that `list()` in python
 applied to any iterable object, will automatically iterate over the iterable elements
-in the abject.  Hence, this does the same as the previous line:
+in the object.  Hence, this does the same as the previous line:
 ```{python, filename="python:"}
 list("ABCDEFG")
 ```
@@ -547,7 +547,7 @@ dinners[["Tuesday"]] <- "Burritos"
 dinners
 ```
 Interestingly, the elements of a named list in R can still be accessed by their index.  We could
-get "Pizza" out the `dinners` list in three different ways:
+get "Pizza" out of the `dinners` list in three different ways:
 ```{r, filename="R:"}
 dinners$Wednesday
 dinners[["Wednesday"]]
@@ -617,14 +617,14 @@ R has a system called S4 that allows for very general kinds of objects to be def
 Most people don't fiddle with that too much, so it isn't much help by analogy.
 Python also has a mechanism to define certain _classes_ of objects that can be
 very general.  The programmer can define a class of objects, and then create an
-object which is an instance of a class.  For our purposes, working with snakemake,
+object which is an instance of a class.  For our purposes working with snakemake,
 the important part is that instances of a class can hold _attributes_ that can be
 just about anything.  
 
-We are discussing this, because, Snakemake, when it is executing, carries around
+We are discussing this because Snakemake, when it is executing, carries around
 values of wildcards in these sorts of objects, and you can access the wildcard values
-as attributes of a `wildcards` object (e.g. you can get their values using, for example,
-`wildcards.sample` or `wildcards.chromo` and use those values in what are called
+as attributes of a `wildcards` object (e.g. you can get their values using
+`wildcards.sample` or `wildcards.chromo`) and use those values in what are called
 _input functions_ which we will see in the next chapter.
 
 Here we just present a simple example of defining a class, creating an object that
@@ -651,7 +651,7 @@ myfoo.attrib2
 myfoo.hello
 ```
 
-So, we just wanted people to see this, because it turns out it is helpful, when
+So, we just wanted people to see this because it turns out it is helpful when
 writing snakemake _input functions_ to be able to create a fake `wildcards` object
 for testing those input functions.  
 
@@ -784,6 +784,8 @@ If we wanted to read it into R using the tidyverse, that would be pretty familia
 #| warning: false
 library(tidyverse)
 
+# Note! If you (the reader) want to run this from the root directory of the repo,
+# you will have to remove ../ from the beginning of the path below.
 units <- read_tsv("../data/config/units.tsv")
 
 # and then we print it to see the familiar tibble format
@@ -798,6 +800,8 @@ if we are going to use these values in snakemake later...)
 Pandas also offers indexing of data frame for faster access, so, in this case
 we will index each row by the sample name
 ```{python, filename="python:"}
+# Note! If you (the reader) want to run this from the root directory of the repo,
+# you will have to remove ../ from the beginning of the path below.
 units = pd.read_table("../data/config/units.tsv", dtype=str).set_index(
     "sample", drop=False
 )
@@ -864,4 +868,4 @@ names, we use `.tolist()` on the end:
 units.loc[ units["sample"].str.contains("F"), "sample" ].tolist()
 ```
 
-Those things come in handy when writing more complex workflows.  
+Those things come in handy when writing more complex workflows.

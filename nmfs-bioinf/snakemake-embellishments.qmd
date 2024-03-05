@@ -1,3 +1,7 @@
+---
+engine: knitr
+---
+
 # Important Snakemake Embellishments
 
 Thus far we have only scratched the surface of what Snakemake can do, and it
@@ -146,7 +150,229 @@ By contrast, a different approach to having Snakemake send jobs to SLURM is impl
 in the wonderfully readable and easy-to-understand approach taken by John D. Blischak,
 (find it [here]() on GitHub)
 who was a postdoc with Matthew Stephens and has worked extensively in improving
-research reproducibility. 
+research reproducibility. This method is implemented in Snakemake almost entirely
+by using command line options (plus one little script to help check the status
+of jobs in the SLURM queue).  However, to avoid having to type all these options at
+the command line every time you launch snakemake to use SLURM, these command line options
+can be saved and read from a **snakemake profile**.  We discuss profiles in the next section
+and show how they can be used to allow snakemake to submit jobs to SLURM.
+
+
+### Snakemake profiles
+
+We begin this section by quickly perusing all the differen command line options that can
+be used when launching snakemake.  If we type `snakemake --help` we get a listing of
+all the options.  It starts with a synopsis of all the options, which is followed by
+longer explanations of each individual option.  The synopsis looks like this:
+```sh
+usage: snakemake [-h] [--dry-run] [--profile PROFILE] [--workflow-profile WORKFLOW_PROFILE] [--cache [RULE ...]] [--snakefile FILE] [--cores N]
+                 [--jobs N] [--local-cores N] [--resources NAME=INT [NAME=INT ...]] [--set-threads RULE=THREADS [RULE=THREADS ...]]
+                 [--max-threads MAX_THREADS] [--set-resources RULE:RESOURCE=VALUE [RULE:RESOURCE=VALUE ...]]
+                 [--set-scatter NAME=SCATTERITEMS [NAME=SCATTERITEMS ...]] [--set-resource-scopes RESOURCE=[global|local] [RESOURCE=[global|local]
+                 ...]] [--default-resources [NAME=INT ...]] [--preemptible-rules [PREEMPTIBLE_RULES ...]]
+                 [--preemptible-retries PREEMPTIBLE_RETRIES] [--config [KEY=VALUE ...]] [--configfile FILE [FILE ...]]
+                 [--envvars VARNAME [VARNAME ...]] [--directory DIR] [--touch] [--keep-going]
+                 [--rerun-triggers {code,input,mtime,params,software-env} [{code,input,mtime,params,software-env} ...]] [--force]
+                 [--executor {local,dryrun,touch}] [--forceall] [--forcerun [TARGET ...]] [--prioritize TARGET [TARGET ...]]
+                 [--batch RULE=BATCH/BATCHES] [--until TARGET [TARGET ...]] [--omit-from TARGET [TARGET ...]] [--rerun-incomplete]
+                 [--shadow-prefix DIR] [--scheduler [{ilp,greedy}]] [--wms-monitor [WMS_MONITOR]] [--wms-monitor-arg [NAME=VALUE ...]]
+                 [--scheduler-ilp-solver {PULP_CBC_CMD,COIN_CMD}] [--scheduler-solver-path SCHEDULER_SOLVER_PATH]
+                 [--conda-base-path CONDA_BASE_PATH] [--no-subworkflows] [--precommand PRECOMMAND] [--groups GROUPS [GROUPS ...]]
+                 [--group-components GROUP_COMPONENTS [GROUP_COMPONENTS ...]] [--report [FILE]] [--report-stylesheet CSSFILE] [--reporter PLUGIN]
+                 [--draft-notebook TARGET] [--edit-notebook TARGET] [--notebook-listen IP:PORT] [--lint [{text,json}]]
+                 [--generate-unit-tests [TESTPATH]] [--containerize] [--export-cwl FILE] [--list-rules] [--list-target-rules] [--dag] [--rulegraph]
+                 [--filegraph] [--d3dag] [--summary] [--detailed-summary] [--archive FILE] [--cleanup-metadata FILE [FILE ...]] [--cleanup-shadow]
+                 [--skip-script-cleanup] [--unlock] [--list-changes {params,code,input}] [--list-input-changes] [--list-params-changes]
+                 [--list-untracked] [--delete-all-output | --delete-temp-output] [--keep-incomplete] [--drop-metadata]
+                 [--deploy-sources QUERY CHECKSUM] [--version] [--printshellcmds] [--debug-dag] [--nocolor] [--quiet [{all,progress,rules} ...]]
+                 [--print-compilation] [--verbose] [--force-use-threads] [--allow-ambiguity] [--nolock] [--ignore-incomplete]
+                 [--max-inventory-time SECONDS] [--latency-wait SECONDS] [--wait-for-files [FILE ...]] [--wait-for-files-file FILE]
+                 [--queue-input-wait-time SECONDS] [--notemp] [--all-temp] [--unneeded-temp-files FILE [FILE ...]] [--keep-storage-local-copies]
+                 [--target-files-omit-workdir-adjustment] [--allowed-rules ALLOWED_RULES [ALLOWED_RULES ...]]
+                 [--target-jobs TARGET_JOBS [TARGET_JOBS ...]] [--local-groupid LOCAL_GROUPID] [--max-jobs-per-second MAX_JOBS_PER_SECOND]
+                 [--max-status-checks-per-second MAX_STATUS_CHECKS_PER_SECOND] [--seconds-between-status-checks SECONDS_BETWEEN_STATUS_CHECKS]
+                 [--retries RETRIES] [--attempt ATTEMPT] [--wrapper-prefix WRAPPER_PREFIX] [--default-storage-provider DEFAULT_STORAGE_PROVIDER]
+                 [--default-storage-prefix DEFAULT_STORAGE_PREFIX] [--local-storage-prefix LOCAL_STORAGE_PREFIX]
+                 [--shared-fs-usage {input-output,persistence,software-deployment,source-cache,sources,storage-local-copies,none} [{input-output,persistence,software-deployment,source-cache,sources,storage-local-copies,none} ...]]
+                 [--scheduler-greediness SCHEDULER_GREEDINESS] [--no-hooks] [--debug] [--runtime-profile FILE] [--mode {default,remote,subprocess}]
+                 [--show-failed-logs] [--log-handler-script FILE] [--log-service {none,slack,wms}] [--job-deploy-sources] [--container-image IMAGE]
+                 [--immediate-submit] [--jobscript SCRIPT] [--jobname NAME] [--flux]
+                 [--software-deployment-method {apptainer,conda,env-modules} [{apptainer,conda,env-modules} ...]] [--container-cleanup-images]
+                 [--use-conda] [--conda-not-block-search-path-envvars] [--list-conda-envs] [--conda-prefix DIR] [--conda-cleanup-envs]
+                 [--conda-cleanup-pkgs [{tarballs,cache}]] [--conda-create-envs-only] [--conda-frontend {conda,mamba}] [--use-apptainer]
+                 [--apptainer-prefix DIR] [--apptainer-args ARGS] [--use-envmodules] [--report-html-path VALUE]
+                 [--report-html-stylesheet-path VALUE]
+                 [targets ...]
+```
+In this synopsis, command line options that are truly optional (which is basically all of them!)
+are wrapped in `[ ]`.  You will notice that
+some of these options, like `--dry-run` (look at the top line of the synopsis) do not take any arguments (there is nothing 
+after `--dry-run` in the `[ ]`), while other options, like `--profile` take an argument, in the above listed
+as `PROFILE`.  Clearly if you use even a small fraction of these optional command-line options to snakemake, the stuff
+you type on the command line could grow long, typing it in on the command line could become quite ponderous,
+and the chance to make a mistake would grow, the longer the command line got.  Not only that, but if you
+were just putting these options on the command line, it would be easy to forget exactly which options you used!
+
+This is where snakemake profiles come in.  A snakemake profile is a collection of files in a directory, one of which
+is named `config.yaml`.  So, if I have directory `./my-profile` and within that a file `./my-profile/config.yaml`,
+then, I can store the command line options I want to use in YAML format in `./my-profile/config.yaml` and those
+options will be added to the command line if I invoke snakemake with:
+```sh
+snakemake --profile ./my-profile
+```
+Note that it is good practice to add the `.` in front of your profile name, because otherwise
+Snakemake might search for system-wide or user-wide profiles
+
+So, how do you write command line options in the YAML-formatted Snakemake profile `config.yaml`? It is
+easy:
+
+- You can specify any command line option that is preceded by two dashes, like `--option`, but
+  you cannot specify options that you might specify with a single dash, like `-n` or `-p` (or `-np` as we
+  often type the two together).  This is OK, because every single-dash option has a two-dash name. For example:
+    * `-n` is the same as `--dry-run`
+    * `-p` is the same as `--printshellcmds`
+    * `-v` is the same as `--version` 
+  and so forth.
+-   If the option **does not** take an argument, for example `--dry-run` or `--printshellcmds`, then you enter
+    them into the `config.yaml` file by writing the option name, _without the dashes_, following it with a colon
+    and then a space and then `True`, like:
+    ```{yaml}
+    #| eval: false
+    dry-run: True
+    printshellcmds: True
+    ```
+-   If the option **does** take an argument, for example `--cores 20` or `--rerun-triggers mtime`, then you
+    just include the argument after the colon (and a space), like:
+    ```{yaml}
+    #| eval: false
+    cores: 20
+    rerun-triggers: mtime
+    ```
+And that is all there is to it!  
+
+### An Alpine Slurm Profile for Snakemake
+
+We have a profile for sending jobs to Alpine in the directory `Snakemake-Example/slurm/alpine`.  The
+`config.yaml` file within that looks like this:
+```{yaml, filename="Listing of Snakemake-Example/slurm/alpine/config.yaml" }
+#| file: ../Snakemake-Example/slurm/alpine/config.yaml
+```
+
+We see here that the "heavy-lifting" is done by snakemake's `--cluster` option.  This option
+takes as an argument a command line that should be used to send off individual jobs for
+execution.  As you can see, the command it uses does two main things:
+
+1.  First it creates a directory in which to place the `error` and `output` files
+that `sbatch` will write.
+2. If that first command is successful, it then runs `sbatch` with a variety of options.
+
+Various values known to snakemake can be substituted
+into that `sbatch` command line by enclosing them within curly braces, thereby
+passing them as arguments to various `sbatch` options.  In particular:
+
+- `{rule}` expands into the rule name
+- `{threads}` expands into the number of threads to be used for the rule
+- `{wildcards}` expands into a comma-separate string with the values of the wildcards in
+    effect for this job, like `sample=A,chromo=NC103567.1`
+- `{resources.mem_mb}` and `{resources.time}` print the values given for `mem_mb` and `time` in
+    the `resources:` block of the rule.
+    
+Each of these values are used as arguments to different `sbatch` options in a
+plainly readable way.   The last option given is `--parsable` which tells `sbatch` to
+return the job number of the submitted job in an easily parsable fashion.  
+
+Snakemake takes this `sbatch` command and uses it to submit a job script.  Snakemake
+itself writes that job script (and stores it in the `.snakemake` directory for as long as
+it is needed) according to the code that it finds in the `shell` block of the rule.  This is
+why you never need to write another `sbatch` script in your life if you use snakemake---Snakemake
+writes those scripts for you and submits them via `sbatch`.  
+
+You will also notice that the profile defines the `--default-resources` option that
+we described above.  Note that the default memory is 3740, which is what you get with
+one core on Alpine, and the default time is 8 hours.
+
+Some of the remaining options in the profile are not really
+specific to SLURM, but many are.  One of those,
+```yaml
+cluster-status: status-sacct-robust.sh
+```
+gives the name of a shell script _in the profile directory_ that snakemake uses to
+check on the status of jobs that have been submitted to the cluster.  This is a script
+that queries SLURM using `sacct` to ask about the status of running jobs according to
+their job number. For each job, the script tells Snakemake either:
+
+- `success`: the job finished successfully.
+- `running`: the job is still running or waiting in the queue
+- `failed`: the job failed
+
+When your jobs are running, Snakemake is continually checking on their status,
+but won't check more than `max-status-checks-per-second`. (In the case of this
+profile that is 50 checks per second.)
+
+You can unfold the following code block to see the shell code for `status-sacct-robust.sh`.
+```{sh filename="Snakemake-Example/slurm/alpine/status-sacct-robust.sh"}
+#| eval: false
+#| file: ../Snakemake-Example/slurm/alpine/status-sacct-robust.sh
+#| code-fold: true
+#| code-summary: "Click the triangle to see the code"
+```
+Much of the code is there to make sure the script tries at least 20 times to get the
+status of the job, because sometimes SLURM gets busy and fails to return a result
+for a job, which causes snakemake to do bad things...
+
+Other SLURM-relevant options in this profile are:
+
+- `--max-jobs-per-second`: don't submit more than this jobs each second to SLURM
+- `--cluster-cancel`: if the Snakemake run is terminated (with `<cntrl>-c` for example)
+    then kill all jobs running under SLURM using the `scancel` command.
+- `--cluster-cancel-nargs`: the maximum number of arguments to pass to `scancel` when
+    cancelling jobs.  This should be high enough to kill all jobs current running or
+    queued up in SLURM.  
+- `--jobs`: don't submit so many jobs that you have more than this number of jobs running or
+    waiting in the SLURM queue.  This is quite
+    important in Alpine, because SLURM on Alpine doesn't let you have more the 1000 jobs
+    running or queued up.  
 
 
 
+So, in summary, if you are using snakemake and you had the `alpine` directory
+containing `config.yaml` and `status-sacct-robust.sh`
+in the directory you were running snakemake from, you could get snakemake to submit jobs
+to the cluster using SLURM by doing:
+```sh
+snakemake  [some options or targets here] --profile ./alpine  [other options or targets here]
+```
+
+Also, we will end this section by noting that you can override options in the profile
+by adding them actually on the command line, just like with `sbatch` and its
+`#SBATCH` directives.  
+
+### A note on local rules
+
+
+## Snakemake config files
+
+We have already seen that we might add some variables to our Snakefile to run
+a workflow on certain samples, etc.  
+
+### YAML configuration
+
+### Tabular configuration via pandas
+
+
+## Snakemake benchmarks
+
+Compared the previous two topics, this is really simple.
+
+Recommended convention, put them in:
+```
+results/benchmarks/<rule_name>/<first_wildcard>/.../<last_wildcard>.bmk
+```
+
+
+## Some additional snakemake topics
+
+
+
+
+    
