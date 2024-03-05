@@ -740,5 +740,43 @@ Continuring with Snakemake, and also using Open OnDemand on Alpine
 
 #### In Class (Running through a Snakemake example)
 
-- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
-- Exploring OpenOnDemand on Alpine, while also getting reticulate set up in RStudio. [This chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-relevant-python.html)
+- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section). 
+
+### Tuesday, March 5, 2024
+
+More Snakemake
+
+#### Prep (please do this reading before class!)
+
+- For people with access to Alpine, read the [Chapter on OpenOnDemand Browser and RStudio Server Access to Alpine](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/open-on-demand-alpine.html),
+  and definitely do the steps in there to get onto Open OnDemand on Alpine.
+  I guarantee you _this will change your life_.
+- For everyone, read [Snakemake-relevant Python for R Users](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-relevant-python.html).  This is a minimal introduction to
+  python for people that speak R already.  It will help you to make the most of Snakemake when writing your own workflows. Please work through the examples in your
+  RStudio python REPL and get familiar with python if you have not yet used it much.
+- Note that these are fairly newly-written sections.  Please help me out by sending me a pull request to fix any typos/errors/illogical things.  You can do this by
+  clicking the GitHub "Edit this page" link at the bottom of the right column of the page.  That will let you edit the page on your fork of the repo and then send a
+  pull request for the edits.  Special bonus points and recognition to whomever makes the most corrections.
+
+#### In Class (Banging through our snakemake example still)
+
+- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section)
+
+
+### Thursday, March 7, 2024
+
+More Snakemake. SLURM profiles, snakemake configuration files, and input functions
+
+#### Prep (please do this reading before class!)
+
+- The [Snakemake Embellishments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-embellishments.html) chapter.
+
+#### In class 
+
+- We will be talking a lot about making snakemake talk to SLURM.
+
+#### Assignment (due the first Tuesday after spring break at the start of class)
+
+- Not yet written, but it will be a chance to run all of our example salmon data through the workflow using SLURM.
+
+
