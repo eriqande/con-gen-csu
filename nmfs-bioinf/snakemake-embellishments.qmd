@@ -141,7 +141,7 @@ that we would get with each core.
 All of that is pretty straightforward; however, doing this does not automatically cause the
 rule to be dispatched by SLURM and granted those resources. Rather, Snakemake must be told
 to send jobs to SLURM and also to use the `resources` and `threads` to appropriately
-request the right amount of resources from SLURM.  Snakemake has an "officially sanctioned/supported"
+request the right amount of resources from SLURM.  Snakemake versions < 8.0 had an older "officially sanctioned/supported"
 way of sending jobs to SLURM that can be found [here](https://github.com/Snakemake-Profiles/slurm).
 However, that approach is quite complex---it is implemented in a bunch of python scripts that I find
 hard to read, and I find it difficult to understand what all these scripts are doing.
@@ -155,7 +155,18 @@ by using command line options (plus one little script to help check the status
 of jobs in the SLURM queue).  However, to avoid having to type all these options at
 the command line every time you launch snakemake to use SLURM, these command line options
 can be saved and read from a **snakemake profile**.  We discuss profiles in the next section
-and show how they can be used to allow snakemake to submit jobs to SLURM.
+and show how they can be used to allow snakemake to submit jobs to SLURM.  This works just
+fine on Snakemake versions < 8.0.
+
+Snakemake version 8.0 brought big changes, including an `--executor` option that
+uses _snakemake-executor-plugins_.  There is a relatively painless way of running
+Snakemake with SLURM, but it isn't perfect.  The job names are completely meaningless, for
+example
+
+Will we be able to resurrect JD Blischak's genius approach in Snakemake 8.0?  Stay tuned.
+
+
+
 
 
 ### Snakemake profiles
@@ -250,7 +261,7 @@ easy:
     ```
 And that is all there is to it!  
 
-### An Alpine Slurm Profile for Snakemake
+### An Alpine Slurm Profile for Snakemake for Snakemake versions < 8.0
 
 We have a profile for sending jobs to Alpine in the directory `Snakemake-Example/slurm/alpine`.  The
 `config.yaml` file within that looks like this:
@@ -346,6 +357,39 @@ snakemake  [some options or targets here] --profile ./alpine  [other options or 
 Also, we will end this section by noting that you can override options in the profile
 by adding them actually on the command line, just like with `sbatch` and its
 `#SBATCH` directives.  
+
+### The officially supported slurm executor approach for Snakemake >= 8.0
+
+One must first download a snakemake-executor-plugin like this:
+```sh
+pip install snakemake-executor-plugin-slurm
+```
+
+After that, you can use a profile that looks like this:
+```yaml
+executor: slurm
+default-resources:
+  - runtime=20
+  - mem_mb=3740
+  - tmpdir="results/snake-tmp"
+restart-times: 0
+max-jobs-per-second: 10
+max-status-checks-per-second: 50
+local-cores: 1
+latency-wait: 60
+cores: 2400
+jobs: 950
+keep-going: True
+rerun-incomplete: True
+printshellcmds: True
+use-conda: True
+rerun-trigger: mtime
+```
+
+
+### Can we get JDB's appraoch to work, using the generic cluster executor?
+
+
 
 ### A note on local rules
 
