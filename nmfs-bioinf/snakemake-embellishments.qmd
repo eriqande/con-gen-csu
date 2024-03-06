@@ -357,6 +357,11 @@ a workflow on certain samples, etc.
 
 ### YAML configuration
 
+Helpful snippet for testing:
+```python
+from snakemake.common.configfile import _load_configfile
+```
+
 ### Tabular configuration via pandas
 
 
