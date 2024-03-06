@@ -10,3 +10,4 @@ results
 *.err
 *.out
 
+.snakemake
