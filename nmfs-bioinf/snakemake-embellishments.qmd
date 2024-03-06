@@ -389,7 +389,10 @@ rerun-trigger: mtime
 
 ### Can we get JDB's appraoch to work, using the generic cluster executor?
 
-
+Start with:
+```sh
+pip install snakemake-executor-plugin-cluster-generic
+```
 
 ### A note on local rules
 
