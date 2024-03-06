@@ -148,7 +148,7 @@ hard to read, and I find it difficult to understand what all these scripts are d
 
 By contrast, a different approach to having Snakemake send jobs to SLURM is implemented
 in the wonderfully readable and easy-to-understand approach taken by John D. Blischak,
-(find it [here]() on GitHub)
+(find it [here](https://github.com/jdblischak/smk-simple-slurm) on GitHub)
 who was a postdoc with Matthew Stephens and has worked extensively in improving
 research reproducibility. This method is implemented in Snakemake almost entirely
 by using command line options (plus one little script to help check the status
@@ -337,7 +337,7 @@ Other SLURM-relevant options in this profile are:
 - `--cluster-cancel`: if the Snakemake run is terminated (with `<cntrl>-c` for example)
     then kill all jobs running under SLURM using the `scancel` command.
 - `--cluster-cancel-nargs`: the maximum number of arguments to pass to `scancel` when
-    cancelling jobs.  This should be high enough to kill all jobs current running or
+    cancelling jobs.  This should be high enough to kill all jobs currently running or
     queued up in SLURM.  
 - `--jobs`: don't submit so many jobs that you have more than this number of jobs running or
     waiting in the SLURM queue.  This is quite
