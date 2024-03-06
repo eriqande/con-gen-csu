@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>If you have an account on Alpine, there is a cool way to connect to Alpine through a web browser. This provides a nice way to access your files and do light copying, etc. But, more importantly, this method allows you to interact with your files and projects on the cluster in the familiar RStudio framework. This also provides a useful way for running your own R projects and handling git in R projects on the cluster. Really, I suspect this will be life-changing for many folks that are very familiar with RStudio and wish that they could run analyses in R, using RStudio, on the cluster, just like they do on their laptop or desktop machines.</p>
-<p>The approach uses a <em>browser-based</em> portal to the Alpine computing cluster that is supported by CURC and is called <em>Open OnDemand</em>. As a <em>browser-based</em> system, you will connect to Alpine via your web browser. Ultimately, you will be able to run a session of RStudio Server that runs on a compute node on Alpine, interacting with your filesystem on the cluster the way you would with local files using any RStudio session on your laptop. Additionally, you can drive git and get a terminal shell through RStudio server as well. It is pretty slick if you are comfortable in an RStudio environment.</p>
+<p>The approach uses a <em>browser-based</em> portal to the Alpine computing cluster that is supported by CURC and is called <em>Open OnDemand</em>. As a <em>browser-based</em> system, you will connect to Alpine via your web browser. Ultimately, you will be able to run a session of RStudio Server that runs on a compute node on Alpine, interacting with your filesystem on the cluster the way you would with local files using any RStudio session on your laptop. Additionally, you can drive git and get a terminal shell through the RStudio server as well. It is pretty slick if you are comfortable in an RStudio environment.</p>
 <p>Full details about OpenOndemand on Alpine can be found at the CURC website <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html">here</a>, with a whole section about RStudio <a href="https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#rstudio">here</a>.</p>
 <section id="getting-onto-rstudio-server-on-alpine" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="getting-onto-rstudio-server-on-alpine"><span class="header-section-number">1.1</span> Getting onto RStudio Server on Alpine</h2>
@@ -280,32 +280,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
 <li>The first time you click that, it will take you to a page where you must choose which institution’s OpenOnDemand infrastructure you are accessing. Choose <code>Colorado State University</code>, from the pop-up menu and be sure to select “Remember this selection” and then click “Log On”.<br>
-<img src="./images/colostate-open-ondemand.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/colostate-open-ondemand.png" class="img-fluid"></li>
 <li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
 <li>That should drop you into the CURC OnDemand Dashboard page that looks like this:<br>
-<img src="./images/curc-on-demand-dashboard.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/curc-on-demand-dashboard.png" class="img-fluid"></li>
 <li>Choose “Interactive Apps–&gt;RStudio Server Presets”, then use the bottom toggle box to choose “4 cores, 4 hours”, and hit “Launch”. This will start making you an RStudio Server container. Again, we choose 4 cores just for the initial setup, but you can choose 1 core in the future.<br>
-<img src="./images/rstudio-server-preset.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/rstudio-server-preset.png" class="img-fluid"></li>
 <li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”<br>
-<img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
 <li>Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</li>
 </ol>
 </section>
 <section id="working-in-rstudio" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="working-in-rstudio"><span class="header-section-number">1.2</span> Working in RStudio</h2>
 <p>Note that you can, if you would like, open an RStudio project you have on Alpine by going to the “Project” tab in the upper right (or choosing <code>File -&gt; Open Project...</code> from the main menu) and navigating your way to the .Rproj file. This means that you could interact with your con-gen-csu repo on Alpine as an Rstudio Project. The possibilities are endless. You can open as many files on the cluster as you wish in the RStudio source-code editor window, and edit them with RStudio, making changes directly to them on the cluster. You have a graphical interface to git (but no ssh! see the section <a href="#sec-nossh" class="quarto-xref"><span>Section 1.2.1</span></a>, below), that is familiar, and you can also get to a shell in the “Terminal” tab. You also have an active R session on the cluster in case you want to analyze any data you have on the cluster with R.</p>
+<p>Just as a reminder, the git interface in RStudio can be found on the “git” tab in the upper right panel (typically). You might have to extend the right panel to the left (make it larger) in order to see all the elements of the interface (like push and pull arrows and commit buttons, etc.)</p>
 <p>Note that if you open up files in Rstudio on Alpine that Rstudio recognizes as shell script files (because they have a <code>.sh</code> extension), then choosing CMD-Return (on a Mac) or cntrl-Return (on a PC) will send the line that your cursor is on to the Terminal shell (in much the same way that you can evaluate R code from an R script in the R console within RStudio). This provides a very handy way to test your shell scripts line by line on the Alpine bash shell.</p>
 <p>At the time of this writing, I have not been able to load the slurm/alpine module in the RStudio Terminal to allow submission of jobs via <code>sbatch</code> in this environment, but I can keep you posted. In the meantime, you can always get a shell in your browser (see the next section).</p>
 <p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+<p><img src="./nmfs-bioinf/images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
 </figure>
 </div>
 <p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+<p><img src="./nmfs-bioinf/images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
 </figure>
 </div>
 <p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
@@ -313,14 +314,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sec-nossh" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-nossh"><span class="header-section-number">1.2.1</span> Using git on Rstudio Server on Alpine OnDemand</h3>
 <p>The program <code>git</code> works just fine in the OnDemand RStudio Server on when you are just dealing with local files. However it does not seem to have access to ssh. There is simply no <code>ssh</code> at <code>/usr/bin/ssh</code> in the shell that RStudio gets to run. This is super weird. We will have to check with the CURC admins about this.</p>
-<p>Until then, you can use RStudio to stage and commit files (and gitignore them), just like you would on Rstudio on your laptop. And you can also switch branches and create new branches. But you can’t do you git push and git pull operations, on RStudio Server on Alpine. Instead, you can use the browser-based shell (see the next section) to do your git push and git pull.</p>
+<p>Until then, you can use RStudio to stage and commit files (and gitignore them), just like you would on Rstudio on your laptop. And you can also switch branches and create new branches. But you can’t do git push and git pull operations, on RStudio Server on Alpine. Instead, you can use the browser-based shell (see the next section) to do your git push and git pull.</p>
 <p>Note that if you create a new branch in RStudio on Alpine, you should not click the “Sync branch with remote” button, because that operation will fail, since it requires <code>ssh</code>. However, once you have made the branch, you can go to your terminal (either in the browser or through your terminal emulator (i.e. tmux) and then cd to the repo. Check with <code>git branch</code> to make sure that you are on the new branch and then do</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin <span class="op">&lt;</span>new-branch<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>where you replace <code>&lt;new-branch&gt;</code> with the actual branch name. The <code>-u</code> option tell git to create a new branch named <code>&lt;new-branch&gt;</code> on <code>origin</code> that automatically tracks <code>&lt;new-branch&gt;</code> on your local repository, so that from now on, any time you are on <code>&lt;new-branch&gt;</code>, from now on, you can just say <code>git pull</code> or <code>git push</code> without specifying anything else, and <code>git</code> will automatically know to push or pull to <code>&lt;new-branch&gt;</code> on <code>origin</code>.</p>
 <p>For example, in RStudio I created a new branch called <code>gratuitous-branch</code> and I told RStudio not to sync the branch with remote:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
+<p><img src="./nmfs-bioinf/images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
 </figure>
 </div>
 <p>Then I went to my shell and did <code>git branch</code> to confirm I was on that branch:</p>

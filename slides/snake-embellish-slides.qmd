@@ -1,0 +1,138 @@
+---
+format:
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+    slide-number: true
+    scrollable: true
+---
+
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+More Snakemake: SLURM, Configs, Input Functions, Benchmarks 
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Eric C. Anderson
+:::
+
+::: {style="margin-left: 260px;"}
+Computational Methods for Molecular Biology, SWFSC/CSU
+:::
+
+## What are we doing here? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+This is hands-on section that goes with the narrative chapter, [Important Snakemake Embellishments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-embellishments.html)
+
+Topics:
+
+- Resources for Rules
+- Profiles and `--cluster` for submitting to SLURM
+- YAML Configuration and python dicts
+- Tabular configuration and pandas
+- Input functions
+
+We show all of these in an embellished example Snakefile called
+`Snakefile2` in the `Snakemake-Example` directory.  This Snakefile
+will process all 16 Chinook at 4 Chromosomes from our example data set.
+
+## Our Chinook Example: GATK Best Practices "Light" {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="50%"}
+```{mermaid}
+flowchart TD
+  A(fastq files from 16 samples: our raw data) --> B(Trim the reads: fastp)
+  B --> C(Map the reads to a reference genome: bwa-mem2)
+  C --> D(Mark PCR and optical duplicates: gatk MarkDuplicates)
+  D --> E(Make gVCF files for each sample/chromo: gatk HaplotypeCaller)
+  E --> F(Load gVCFs into Genomic DB for each chromo: gatk GenomicsDBImport)
+  F --> G(Create VCFs from Genomic DB for each chromo: gatk GenotypeGVCFs)
+  G --> H(Concatenate chromosome-vcfs into a single vcf: bcftools)
+```
+:::
+
+::: {.column width="50%"}
+#### A mini data set that only takes about 25 minutes to run through the major steps of a GATK-like variant calling workflow
+
+-   Chinook salmon sequencing reads (a subset of our course example data).
+-   Three paired-end fastqs from samples `A`, `B`, and `C` and data only from four chromosomes.
+-   We will trim it, map it, mark duplicates, then make one gVCF file for each combination
+    of individual and chromosome (only two chromosomes).
+-   Then, call variants on each of two chromosomes.
+-   Then catenate the resulting VCFs into a single VCF file.
+:::
+:::
+
+## Setting up our workspaces {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="40%"}
+* Sync your fork's main branch then pull updates into the main branch
+  of your local clone.
+* We will just be working on a login node, since we will be submitting
+jobs via Snakemake to SLURM.
+* Note, to allow Snakemake to keep running on the login node _after logging off_
+you need to be using `tmux` or `screen`. 
+* You should already have a snakemake environment set up, according to the
+directions [here](https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces)
+* Activate that environment.
+* We do this from the top level of the repo
+:::
+
+::: {.column width="60%"}
+``` sh
+# activate env
+conda activate snakemake-8.5.3
+
+# To make sure snakemake is working, print the help information
+# for snakemake
+snakemake --help
+
+# make sure that you are in the top level of the
+# con-gen-csu repo:
+pwd
+
+```
+:::
+:::
+
+## Updated Snakefile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="70%"}
+-   We can use the Unix `tree` utility to see what the Snakemake-Example directory contains.
+-   Within the Snakemake-Example directory, type `tree` at the command line. This shows:
+    -   A `Snakefile`. Much more about that later.
+    -   A directory `data` with three pairs of FASTQ files
+    -   A directory `envs` that has information to install necessary software with conda
+    -   A directory `resources` that has `genome.fasta`: a FASTA file with the reference genome
+:::
+
+::: {.column width="30%"}
+``` sh
+--% tree
+.
+├── Snakefile
+├── data
+│   ├── A_R1.fastq.gz
+│   ├── A_R2.fastq.gz
+│   ├── B_R1.fastq.gz
+│   ├── B_R2.fastq.gz
+│   ├── C_R1.fastq.gz
+│   └── C_R2.fastq.gz
+├── envs
+│   ├── bcftools.yaml
+│   ├── bwa2sam.yaml
+│   ├── fastp.yaml
+│   └── gatk.yaml
+└── resources
+    └── genome.fasta
+
+4 directories, 12 files
+```
+:::
+:::
+

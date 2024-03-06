@@ -32,7 +32,7 @@ Let's see a quick example, using the following script:
 ```{r filename="Contents of scripts/array_example.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/array_example.sh
+#| file: ./scripts/array_example.sh
 
 ```
 
@@ -143,7 +143,7 @@ Let's explore the following file, which is at `data/sample-array-info.tsv`:
 ```{sh filename="Contents of data/sample-array-info.tsv"}
 #| eval: false
 #| echo: true
-#| file: ../data/sample-array-info.tsv
+#| file: ./data/sample-array-info.tsv
 
 ```
 
@@ -166,7 +166,7 @@ Within the repository is a script called `scripts/line-assign.sh`, that looks li
 ```{sh filename="Contents of scripts/line-assign.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/line-assign.sh
+#| file: ./scripts/line-assign.sh
 
 ```
 
@@ -215,7 +215,7 @@ Here is what it looks like:
 ```{sh filename="Contents of scripts/bwa_map_array.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/bwa_map_array.sh
+#| file: ./scripts/bwa_map_array.sh
 
 ```
 
