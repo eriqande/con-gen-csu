@@ -8,12 +8,14 @@ cluster-generic-submit-cmd:
     --mem={resources.mem_mb}
     --time={resources.time}
     --job-name=smk-{rule}-{wildcards}
-    --output=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.out
-    --error=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.err
+    --output=results/slurm_logs/{rule}/{rule}-%j-{wildcards}.out
+    --error=results/slurm_logs/{rule}/{rule}-%j-{wildcards}.err
     --parsable
 cluster-generic-status-cmd: status-sacct-robust.sh
 cluster-generic-cancel-cmd: scancel
-cluster-generic-cancel-nargs: 4000
+cluster-generic-cancel-nargs: 400
+# warning, time here is very small.  It works for the small
+# example data set, but should be increased for production jobs
 default-resources:
   - time="00:30:00"
   - mem_mb=3740
@@ -28,6 +30,6 @@ jobs: 950
 keep-going: True
 rerun-incomplete: True
 printshellcmds: True
-use-conda: True
+software-deployment-method: conda
 rerun-trigger: mtime
 

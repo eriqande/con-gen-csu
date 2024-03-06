@@ -1,9 +1,10 @@
 
 executor: slurm
 default-resources:
-  - runtime=20
-  - mem_mb=3740
+  - runtime=480   # must be specified in minutes
+  - mem_mb=4800
   - tmpdir="results/snake-tmp"
+  - slurm_partition=standard
 restart-times: 0
 max-jobs-per-second: 10
 max-status-checks-per-second: 50

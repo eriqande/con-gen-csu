@@ -4,10 +4,8 @@
 .Ruserdata
 README.html
 results
-
 /.quarto/
-
 *.err
 *.out
-
 .snakemake
+.DS_Store
