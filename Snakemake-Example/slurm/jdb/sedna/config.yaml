@@ -25,5 +25,5 @@ jobs: 950
 keep-going: True
 rerun-incomplete: True
 printshellcmds: True
-software-deployment-method: conda
+use-conda: True
 rerun-trigger: mtime

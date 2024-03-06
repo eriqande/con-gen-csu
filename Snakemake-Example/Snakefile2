@@ -1,23 +1,41 @@
+# start with some stuff to get the Snakemake version
+from snakemake import __version__ as snakemake_version
+smk_major_version = int(snakemake_version[0])
+
+
+
+# import modules as needed. Also import the snakemake
+# internal command to load a config file into a dict
 import pandas as pd
-from snakemake.common.configfile import _load_configfile
+
+if smk_major_version >= 8:
+  from snakemake.common.configfile import _load_configfile
+else:
+  from snakemake.io import _load_configfile
 
 
-localrules: all, \
-  genome_faidx, \
-  genome_dict
+
+# define rules that don't need to be run on a compute node.
+# i.e. those that can be run locally.
+localrules: all, genome_faidx, genome_dict
 
 
-# read the following path into the variable config
+
+### Get a dict named config from Snakemake-Example/config.yaml
 configfile: "Snakemake-Example/config.yaml"
 
-# read the samples file into a pandas object
+
+
+
+### Get the sample info table read into a pandas data frame
 sample_table=pd.read_table(config["sample_info"], dtype="str").set_index(
     "sample", drop=False
 )
 
 
 
-
+### Transfer values from the yaml and tabular config to
+### our familiar lists, SAMPLES and CHROMOS
 # Populate our SAMPLES list from the sample_table using a little
 # pandas syntax
 SAMPLES=sample_table["sample"].unique().tolist()
@@ -26,13 +44,14 @@ SAMPLES=sample_table["sample"].unique().tolist()
 CHROMOS=config["chromos"]
 
 
+
+### Input Functins that use the tabular sample_info
 # define a function to get the fastq path from the sample_table. This
 # returns it as a dict, so we need to unpack it in the rule
 def get_fastqs(wildcards):
   fq1=sample_table.loc[ wildcards.sample, "fq1" ]
   fq2=sample_table.loc[ wildcards.sample, "fq2" ]
   return {"r1": fq1, "r2": fq2 }
-
 
 # define a function for getting the read group information
 # from the sample table for each particular sample (according
@@ -50,6 +69,9 @@ def get_read_group(wildcards):
     )
 
 
+
+
+### Specify rule "all"
 # By default, Snakemake tries to create the input files needed
 # for the first rule in the Snakefile, so we define the first
 # rule to ask for results/vcf/all.vcf.gz
