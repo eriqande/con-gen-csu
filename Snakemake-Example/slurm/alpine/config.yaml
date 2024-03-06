@@ -1,4 +1,6 @@
-cluster:
+
+executor: cluster-generic
+cluster-generic-submit-cmd:
   mkdir -p results/slurm_logs/{rule} &&
   sbatch
     --partition=amilan,csu
@@ -9,6 +11,9 @@ cluster:
     --output=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.out
     --error=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.err
     --parsable
+cluster-generic-status-cmd: status-sacct-robust.sh
+cluster-generic-cancel-cmd: scancel
+cluster-generic-cancel-nargs: 4000
 default-resources:
   - time="08:00:00"
   - mem_mb=3740
@@ -25,7 +30,4 @@ rerun-incomplete: True
 printshellcmds: True
 use-conda: True
 rerun-trigger: mtime
-cluster-status: status-sacct-robust.sh
-cluster-cancel: scancel
-cluster-cancel-nargs: 4000
 

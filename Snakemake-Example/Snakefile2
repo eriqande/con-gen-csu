@@ -1,4 +1,11 @@
 import pandas as pd
+from snakemake.common.configfile import _load_configfile
+
+
+localrules: all, \
+  genome_faidx, \
+  genome_dict
+
 
 # read the following path into the variable config
 configfile: "Snakemake-Example/config.yaml"
@@ -7,6 +14,8 @@ configfile: "Snakemake-Example/config.yaml"
 sample_table=pd.read_table(config["sample_info"], dtype="str").set_index(
     "sample", drop=False
 )
+
+
 
 
 # Populate our SAMPLES list from the sample_table using a little
@@ -28,7 +37,17 @@ def get_fastqs(wildcards):
 # define a function for getting the read group information
 # from the sample table for each particular sample (according
 # to the wildcard value)
-
+def get_read_group(wildcards):
+    """Denote sample name and platform in read group."""
+    return r"-R '@RG\tID:{sample}_{sample_id}_{library}_{flowcell}_{lane}_{barcode}\tSM:{sample_id}\tPL:{platform}\tLB:{library}\tPU:{flowcell}.{lane}.{barcode}'".format(
+        sample=wildcards.sample,
+        sample_id=sample_table.loc[(wildcards.sample), "sample_id"],
+        platform=sample_table.loc[(wildcards.sample), "platform"],
+        library=sample_table.loc[(wildcards.sample), "library"],
+        flowcell=sample_table.loc[(wildcards.sample), "flowcell"],
+        lane=sample_table.loc[(wildcards.sample), "lane"],
+        barcode=sample_table.loc[(wildcards.sample), "barcode"],
+    )
 
 
 # By default, Snakemake tries to create the input files needed
@@ -128,7 +147,7 @@ rule map_reads:
     mem_mb=7480,
     time="01:00:00"
   params:
-    RG="-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA' "
+    RG=get_read_group
   shell:
     " (bwa-mem2 mem -t {threads} {params.RG} {input.genome} {input.r1} {input.r2} | "
     " samtools view -u | "
