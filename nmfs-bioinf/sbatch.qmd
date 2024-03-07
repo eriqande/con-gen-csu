@@ -86,7 +86,7 @@ Let's look at an example like one might do in an sbatch script:
 ```{r filename="Contents of scripts/bwa_index.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/bwa_index.sh
+#| file: ./scripts/bwa_index.sh
 
 ```
 
@@ -247,7 +247,7 @@ that doesn't do much:
 ```{sh filename="Contents of scripts/simple-15.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/simple-15.sh
+#| file: ./scripts/simple-15.sh
 
 ```
 
@@ -380,7 +380,7 @@ Here is a listing of a shell script to run under `sbatch` to exceed our memory u
 ```{sh filename="Contents of scripts/r-too-much-mem.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/r-too-much-mem.sh
+#| file: ./scripts/r-too-much-mem.sh
 
 ```
 
@@ -513,7 +513,7 @@ Let's review the shell code in `scripts/bwa-map.sh`:
 ```{sh filename="Contents of file scripts/bwa_map.sh"}
 #| eval: false
 #| echo: true
-#| file: ../scripts/bwa_map.sh
+#| file: ./scripts/bwa_map.sh
 
 ```
 
