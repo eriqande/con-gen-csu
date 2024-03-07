@@ -6,7 +6,7 @@ README.html
 .DS_Store
 results
 /.quarto/
-
 *.err
 *.out
-
+.snakemake
+.DS_Store
