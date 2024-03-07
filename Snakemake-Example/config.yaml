@@ -1,5 +1,5 @@
 
-# path to the genome
+# path to the genome (not used in workflow, but we could have...)
 genome_path: "data/genome/genome.fasta"
 
 # path to file with information about samples
