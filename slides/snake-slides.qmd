@@ -19,7 +19,7 @@ Eric C. Anderson
 :::
 
 ::: {style="margin-left: 260px;"}
-Computational Methods for Molecular Biology, CSU
+Computational Methods for Molecular Biology, SWFSC/CSU
 :::
 
 ## What the Heck is Snakemake? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
