@@ -280,14 +280,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>In your web browser, go to <a href="https://ondemand-rmacc.rc.colorado.edu/">https://ondemand-rmacc.rc.colorado.edu/</a>.</li>
 <li>The first time you click that, it will take you to a page where you must choose which institution’s OpenOnDemand infrastructure you are accessing. Choose <code>Colorado State University</code>, from the pop-up menu and be sure to select “Remember this selection” and then click “Log On”.<br>
-<img src="./images/colostate-open-ondemand.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/colostate-open-ondemand.png" class="img-fluid"></li>
 <li>That should redirect you to your CSU NetID login page. Authenticate yourself.</li>
 <li>That should drop you into the CURC OnDemand Dashboard page that looks like this:<br>
-<img src="./images/curc-on-demand-dashboard.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/curc-on-demand-dashboard.png" class="img-fluid"></li>
 <li>Choose “Interactive Apps–&gt;RStudio Server Presets”, then use the bottom toggle box to choose “4 cores, 4 hours”, and hit “Launch”. This will start making you an RStudio Server container. Again, we choose 4 cores just for the initial setup, but you can choose 1 core in the future.<br>
-<img src="./images/rstudio-server-preset.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/rstudio-server-preset.png" class="img-fluid"></li>
 <li>Now, go to your “Interactive Sessions” and you will see messages about your session starting up. Once your session is ready you can connect to it by clicking “Connect to RStudio Server”<br>
-<img src="./images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
+<img src="./nmfs-bioinf/images/rstudio-interactive-sessions-tab.png" class="img-fluid"></li>
 <li>Voila! Clicking “Connect to RStudio Server” opens a new tab with an RStudio window that is pretty much what you are used to.</li>
 </ol>
 </section>
@@ -300,13 +300,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As always, you should set your RStudio preferences (Tools –&gt; Global Options) so that R does <strong>not</strong> “Restore .Rdata into workspace at startup” and that it Never “Saves workspace to .Rdata on exit.”:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+<p><img src="./nmfs-bioinf/images/no-rdata-reload.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
 </figure>
 </div>
 <p>When you are done using RStudio Server on Alpine, you should terminate your R session, with “Session –&gt; Terminate R…”:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+<p><img src="./nmfs-bioinf/images/terminate-R.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
 </figure>
 </div>
 <p>And then Delete the session running on the compute node from your OnDemand Dashboard.</p>
@@ -321,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example, in RStudio I created a new branch called <code>gratuitous-branch</code> and I told RStudio not to sync the branch with remote:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
+<p><img src="./nmfs-bioinf/images/gratuitous-branch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
 </figure>
 </div>
 <p>Then I went to my shell and did <code>git branch</code> to confirm I was on that branch:</p>

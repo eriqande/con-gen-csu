@@ -38,19 +38,19 @@ would like.  Briefy instructions on how to do that are:
 OpenOnDemand infrastructure you are accessing.  Choose `Colorado State University`, from
 the pop-up menu and be sure to
 select "Remember this selection" and then click "Log On".  
-![](./images/colostate-open-ondemand.png)
+![](./nmfs-bioinf/images/colostate-open-ondemand.png)
 2. That should redirect you to your CSU NetID login page.  Authenticate yourself.
 3. That should drop you into the CURC OnDemand Dashboard page that looks like this:  
-![](./images/curc-on-demand-dashboard.png)
+![](./nmfs-bioinf/images/curc-on-demand-dashboard.png)
 4. Choose "Interactive Apps-->RStudio Server Presets", then use the bottom toggle
 box to choose "4 cores, 4 hours", and hit "Launch".  This will start making
 you an RStudio Server container.  Again, we choose 4 cores just for the initial
 setup, but you can choose 1 core in the future.  
-![](./images/rstudio-server-preset.png)
+![](./nmfs-bioinf/images/rstudio-server-preset.png)
 5. Now, go to your "Interactive Sessions" and you will see messages about your
 session starting up. Once your session is ready you can connect to it by clicking
 "Connect to RStudio Server"  
-![](./images/rstudio-interactive-sessions-tab.png)
+![](./nmfs-bioinf/images/rstudio-interactive-sessions-tab.png)
 6. Voila!  Clicking "Connect to RStudio Server" opens a new tab with
 an RStudio window that is pretty much what you are used to.
 
@@ -90,12 +90,12 @@ As always, you should set your RStudio preferences (Tools --> Global Options)
 so that R does **not** "Restore .Rdata into workspace at startup" and that it
 Never "Saves workspace to .Rdata on exit.":
 
-![](./images/no-rdata-reload.png){width=550 fig-align="center"}
+![](./nmfs-bioinf/images/no-rdata-reload.png){width=550 fig-align="center"}
 
 When you are done using RStudio Server on Alpine, you should terminate your R session,
 with "Session --> Terminate R...":
 
-![](./images/terminate-R){width=300 fig-align="center"}
+![](./nmfs-bioinf/images/terminate-R){width=300 fig-align="center"}
 
 And then Delete the session running on the compute node from your OnDemand Dashboard.
 
@@ -134,7 +134,7 @@ automatically know to push or pull to `<new-branch>` on `origin`.
 For example, in RStudio I created a new branch called `gratuitous-branch` and I told
 RStudio not to sync the branch with remote:
 
-![](images/gratuitous-branch.png){width=250 fig-align="center"}
+![](./nmfs-bioinf/images/gratuitous-branch.png){width=250 fig-align="center"}
 
 Then I went to my shell and did `git branch` to confirm I was on that branch:
 ```sh
