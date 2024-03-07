@@ -4,7 +4,7 @@ format:
     theme: [default, ./quarto-static/eric-noaa.scss]
     self-contained: true
     slide-number: true
-    scrollable: true
+    code-block-height: 625px
 ---
 
 
@@ -29,7 +29,7 @@ This is hands-on section that goes with the narrative chapter, [Important Snakem
 Topics:
 
 - Resources for Rules
-- Profiles and `--cluster` for submitting to SLURM
+- Profiles for submitting to SLURM
 - YAML Configuration and python dicts
 - Tabular configuration and pandas
 - Input functions
@@ -74,12 +74,12 @@ flowchart TD
   of your local clone.
 * We will just be working on a login node, since we will be submitting
 jobs via Snakemake to SLURM.
-* Note, to allow Snakemake to keep running on the login node _after logging off_
-you need to be using `tmux` or `screen`. 
+* Note, to allow Snakemake to keep running on the login node _after disconnecting_
+you need to be using `tmux` or `screen` (or maybe run it with `nohup`). 
 * You should already have a snakemake environment set up, according to the
 directions [here](https://eriqande.github.io/con-gen-csu/snake-slides.html#/setting-up-our-workspaces)
 * Activate that environment.
-* We do this from the top level of the repo
+* We do all activities today this from the _top level_ of the repo
 :::
 
 ::: {.column width="60%"}
@@ -95,27 +95,41 @@ snakemake --help
 # con-gen-csu repo:
 pwd
 
+
+# In case we don't have conda environments built here for the
+# workflow, do this in the start of class and let it run
+snakemake  --conda-create-envs-only  -s Snakemake-Example/Snakefile2
 ```
+
+* Note: If you are using a version of Snakemake < 8.0 (like some of the
+folks at NMFS) things should all work out, but the actual profiles are
+a little different.
+
 :::
 :::
 
-## Updated Snakefile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Updated Snakefile and associated files {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 ::: columns
-::: {.column width="70%"}
+::: {.column width="60%"}
 -   We can use the Unix `tree` utility to see what the Snakemake-Example directory contains.
--   Within the Snakemake-Example directory, type `tree` at the command line. This shows:
-    -   A `Snakefile`. Much more about that later.
-    -   A directory `data` with three pairs of FASTQ files
-    -   A directory `envs` that has information to install necessary software with conda
-    -   A directory `resources` that has `genome.fasta`: a FASTA file with the reference genome
+-   Within the Snakemake-Example directory, type `tree` at the command line. The new files here are:
+    -   `Snakefile2`. Much more about that later.
+    -   A new file named `config.yaml`
+    -   A new file called `sample-info.tsv`
+    -   A directory `slurm` with some profiles
+-   The `smk` directory has profiles using Snakemakes officially supported
+    SLURM executor.
+-   The `jdb` directory has profiles for running SLURM with John D. Blischak's
+    [simple-slurm-smk](https://github.com/jdblischak/smk-simple-slurm) approach.
 :::
 
-::: {.column width="30%"}
-``` sh
---% tree
-.
+::: {.column width="40%"}
+``` {.sh code-line-numbers="3|4|19|20-34"}
+Snakemake-Example/
 ├── Snakefile
+├── Snakefile2
+├── config.yaml
 ├── data
 │   ├── A_R1.fastq.gz
 │   ├── A_R2.fastq.gz
@@ -128,11 +142,343 @@ pwd
 │   ├── bwa2sam.yaml
 │   ├── fastp.yaml
 │   └── gatk.yaml
-└── resources
-    └── genome.fasta
+├── resources
+│   └── genome.fasta
+├── sample-info.tsv
+└── slurm
+    ├── jdb
+    │   ├── alpine
+    │   │   ├── config.v8+.yaml
+    │   │   ├── config.yaml
+    │   │   └── status-sacct-robust.sh
+    │   └── sedna
+    │       ├── config.v8+.yaml
+    │       ├── config.yaml
+    │       └── status-sacct-robust.sh
+    └── smk
+        ├── alpine
+        │   └── config.v8+.yaml
+        └── sedna
+            └── config.v8+.yaml
+```
+:::
 
-4 directories, 12 files
+:::
+
+
+
+## Eric Demonstrates a Run on SLURM {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+**Students don't do this yet!**
+
+We tell Snakemake to submit jobs via SLURM by including a profile:
+
+Demonstrate first running it on SEDNA. Dry-run:
+```sh
+snakemake  -np -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/sedna
+```
+- That dry run shows all rules as "localrules" (seems to be a limitation of the dry-run)
+
+Do the actual run:
+```sh
+snakemake  -p -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/sedna
+```
+
+- Note that this submits jobs via SLURM
+- Check it with myjobs.
+
+-   If I need to cancel the run, `<cntrl>-c` once will tell Snakemake to start killing
+    all the jobs using `scancel`.  Be patient and let it do its work.
+    
+-   When we start it back up, Snakemake knows which files need to be regenerated,
+    even if they were already partially made.
+
+
+## What is this profile? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="42%"}
+- A profile is a _directory_ that contains a file `config.yaml` inside it, and possibly other
+files.
+- The `config.yaml` could be a `config.v8+.yaml` which is used preferentially by Snakemake
+    versions >= 8.0.
+-   This yaml file stores _command line options_:
+    + `--option arg` becomes  
+    `option: arg`
+    + Options with no arguments use: `option: True`
+- These options get put on the command line.
+:::
+::: {.column width="58%"}
+```{yaml, filename="Contents of Snakemake-Example/slurm/jdb/alpine/config.v8+.yaml"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/slurm/jdb/alpine/config.v8+.yaml
+
 ```
 :::
 :::
+
+
+
+## The "SLURM" parts of the profile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="42%"}
+- `executor:` use the generic cluster snakemake executor plugin.
+- `cluster-generic-submit-cmd:` use this command to submit jobs the cluster. (Note the 
+`{resources.time}`, etc.)
+- `cluster-generic-status-cmd:` command snakemake can use to check status of jobs
+- `cluster-generic-cancel-cmd:` command to use to kill running jobs if we terminate
+Snakemake (i.e., do `<cntrl>-c`).
+-   `default-resources:` Unless otherwise noted (in the rule) use these as the
+    compute resources for each job. Note the memory here is customized for Alpine.
+    (The SEDNA profile is customized for SEDNA).
+:::
+::: {.column width="58%"}
+```{yaml, filename="Contents of Snakemake-Example/slurm/jdb/alpine/config.v8+.yaml"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/slurm/jdb/alpine/config.v8+.yaml
+
+```
+:::
+:::
+
+
+## JDB's cluster status command {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: columns
+::: {.column width="42%"}
+- The standard Snakemake profile for SLURM uses a python script to
+check cluster status, and this seems to take much more time to invoke
+than just running JDB's shell script.
+- Main purpose: return `running`, `success`, or `failed` for any SLURM job number.
+- Much of the code here is in place to give SLURM many chances to tell us
+how the job is doing. (In case SLURM is busy-ish...)
+- You don't need to ever edit this, most likely, but you probably should make sure it is
+executable if you add it to an update profile.
+:::
+::: {.column width="58%"}
+```{sh, filename="Contents of Snakemake-Example/slurm/jdb/alpine/status-sacct-robust.sh"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/slurm/jdb/alpine/status-sacct-robust.sh
+
+```
+:::
+:::
+
+
+## Now, you try it on Alpine (or SEDNA) {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- This will submit a lot of jobs to the cluster, (and we will see if that is a problem---especially
+if Snakemake is checking job statuses often).
+- Do this on a login node.
+- On Snakemake version >= 8.0 you have to get the snakemake executor plugin for a generic cluster.
+**Don't** do this for Snakemake < 8.0:
+
+    ```sh
+    # your snakemake environment must be activated for this to work
+    pip install snakemake-executor-plugin-cluster-generic
+    ```
+
+### On Alpine
+
+```sh
+# do a dry run:
+snakemake  -np -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/alpine
+
+# do a real run:
+snakemake  -p -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/alpine
+```
+
+
+### On SEDNA
+
+```sh
+# do a dry run:
+snakemake  -np -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/sedna
+
+# do a real run:
+snakemake  -p -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/jdb/sedna
+```
+
+
+## When the job is running {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Check your queued and running jobs with `myjobs` or `myjobs 40` to see 40 characters
+of the job name.
+
+- See that the job names actually make sense.  (This is _not_ the case with the official
+Snakemake slurm executor)
+
+- Check the slurm logs that are written in `results/slurm_logs` with reasonable names.
+
+## Eric shows the official snakemake slurm executor {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+This would only work on Version >= 8.0
+
+I will run this on SEDNA:
+```sh
+# before running this, it is necessary to do this (once) while
+# the snakemake environment is active:
+pip install snakemake-executor-plugin-slurm
+
+# now, I call it with the profile that uses the official
+# snakemake slurm plugin.
+
+# Dry run:
+snakemake  -np -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/smk/sedna
+ 
+# Real Run:
+snakemake  -p -s Snakemake-Example/Snakefile2 --profile Snakemake-Example/slurm/smk/sedna
+```
+- Check it with `myjobs 50`.  Wow! Those are some Fugly and useless job names:
+```{.sh}
+      JOBID PARTITION                                               NAME       USER ST            TIME  NODES   NODELIST(REASON)  CPUS   MIN_MEMORY   TIME_LIMIT    TIME_LEFT PRIORITY
+      867355  standard               f8b21817-fa1d-4a40-905d-2e9028d14c03  eanderson PD            0:00      1         (Priority)     1        4800M      8:00:00      8:00:00 0.99990073288789
+      867356  standard               f8b21817-fa1d-4a40-905d-2e9028d14c03  eanderson PD            0:00      1         (Priority)     1        4800M      8:00:00      8:00:00 0.99990073265506
+      867357  standard               f8b21817-fa1d-4a40-905d-2e9028d14c03  eanderson PD            0:00      1         (Priority)     1        4800M      8:00:00      8:00:00 0.99990073242222
+      867358  standard               f8b21817-fa1d-4a40-905d-2e9028d14c03  eanderson PD            0:00      1         (Priority)     1        4800M      8:00:00      8:00:00 0.99990073218939
+      867359  standard               f8b21817-fa1d-4a40-905d-2e9028d14c03  eanderson PD            0:00      1         (Priority)     1        4800M      8:00:00      8:00:00 0.99990073195656
+```
+
+
+## A First High-level View of Snakefile2 {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+```{r, filename="Contents of Snakemake-Example/Snakefile2"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/Snakefile2
+```
+
+
+## Setting Resources and Threads in Rules {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+```{.python code-line-numbers="13-16|20"}
+rule map_reads:
+  input:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    genome="data/genome/genome.fasta",
+    idx=multiext("data/genome/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
+  output:
+    "results/bam/{sample}.bam"
+  conda:
+    "envs/bwa2sam.yaml"
+  log:
+    "results/logs/map_reads/{sample}.log"
+  threads: 2
+  resources:
+    mem_mb=7480,
+    time="01:00:00"
+  params:
+    RG=get_read_group
+  shell:
+    " (bwa-mem2 mem -t {threads} {params.RG} {input.genome} {input.r1} {input.r2} | "
+    " samtools view -u | "
+    " samtools sort - > {output}) 2> {log} "
+
+```
+
+
+# YAML based configuration of workflows {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+## Loading a config file within the Snakefile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+```{.python}
+### Get a dict named config from Snakemake-Example/config.yaml
+configfile: "Snakemake-Example/config.yaml"
+
+```
+
+- This loads values from a YAML file into a `dict` variable named `config`.
+
+- Note that this `config.yaml` is completely different from the `config.yaml` in
+the SLURM profile we just looked at.
+
+## What does this config.yaml have in it? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+```{yaml filename="Contents of Snakemake-Example/config.yaml"}
+#| eval: false
+#| echo: true
+#| file: ../Snakemake-Example/config.yaml
+```
+
+## Config file variables used in Snakefile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Get the chromosome names out of the config:
+```python
+# Define CHROMOS from the values in the config file
+CHROMOS=config["chromos"]
+
+
+```
+
+## Config file variables used in Snakefile {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+```{.python code-line-numbers="15-18"}
+rule trim_reads:
+  input:
+    unpack(get_fastqs) # unpack creates named inputs from the dict that
+                       # get_fastqs returns
+  output:
+    r1="results/trimmed/{sample}_R1.fastq.gz",
+    r2="results/trimmed/{sample}_R2.fastq.gz",
+    html="results/qc/fastp/{sample}.html",
+    json="results/qc/fastp/{sample}.json"
+  conda:
+    "envs/fastp.yaml"
+  log:
+    out="results/logs/trim_reads/{sample}.log",
+    err="results/logs/trim_reads/{sample}.err",
+  params:
+    as1=config["params"]["fastp"]["adapter_sequence1"],
+    as2=config["params"]["fastp"]["adapter_sequence2"],
+    parm=config["params"]["fastp"]["other_options"]
+  shell:
+    " fastp -i {input.r1} -I {input.r2}       "
+    "       -o {output.r1} -O {output.r2}     "
+    "       -h {output.html} -j {output.json} "
+    "  --adapter_sequence={params.as1}        "
+    "  --adapter_sequence_r2={params.as2}     "
+    "  {params.parm} > {log.out} 2> {log.err}                         "
+    
+```
+
+You can grab values from the `config` dict variable in the input, output, or params, etc. blocks.
+
+
+## Tabular Configuration in a Snakefile: {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+In the config:
+```yaml
+# path to file with information about samples
+sample_info: "Snakemake-Example/sample-info.tsv"
+```
+
+- Click [here](https://github.com/eriqande/con-gen-csu/blob/main/Snakemake-Example/sample-info.tsv) to see what that tabular file looks like:
+
+- Note, we are using actual sample IDs from our lab for these instead of the `DPCh_plate1_F10_S70`
+sorts of sample names.  
+- But now, how do we find the right fastq files?
+
+Read it in the snakefile:
+```python
+### Get the sample info table read into a pandas data frame
+sample_table=pd.read_table(config["sample_info"], dtype="str").set_index(
+    "sample", drop=False
+)
+
+
+
+### Transfer values from the yaml and tabular config to
+### our familiar lists, SAMPLES and CHROMOS
+# Populate our SAMPLES list from the sample_table using a little
+# pandas syntax
+SAMPLES=sample_table["sample"].unique().tolist()
+```
+
+
+## Input Functions
 
