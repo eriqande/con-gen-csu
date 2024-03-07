@@ -773,7 +773,7 @@ More Snakemake. SLURM profiles, snakemake configuration files, and input functio
 
 #### In class 
 
-- We will be talking a lot about making snakemake talk to SLURM.
+- We will be talking a lot about making snakemake talk to SLURM. Here are the [slides](https://eriqande.github.io/con-gen-csu/snake-embellish-slides.html#/section)
 
 #### Assignment (due the first Tuesday after spring break at the start of class)
 
