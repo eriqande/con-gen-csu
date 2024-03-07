@@ -10,7 +10,7 @@ echo
 echo "RENDERING SLIDES AND COPYING TO DOCS"
 echo
 
-SLIDES="snake-slides"
+SLIDES="snake-slides snake-embellish-slides"
 
 for i in $SLIDES; do
   quarto render slides/$i.qmd;
