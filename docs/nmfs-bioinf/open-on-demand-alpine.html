@@ -337,9 +337,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div></li>
 <li><p>Once you are on the compute node “modify the overlay by launching the overlay using fakeroot” with the following command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> shell <span class="at">--fakeroot</span> <span class="at">--bind</span> /projects,/scratch/alpine,<span class="va">$CURC_CONTAINER_DIR_OOD</span> <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--overlay</span> /projects/<span class="va">$USER</span>/.rstudioserver/rstudio-server-4.2.2_overlay.img  <span class="dt">\</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$CURC_CONTAINER_DIR_OOD</span>/rstudio-server-4.2.2.sif</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> shell <span class="at">--fakeroot</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--bind</span> /projects,/scratch/alpine,<span class="va">$CURC_CONTAINER_DIR_OOD</span> <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--overlay</span> /projects/<span class="va">$USER</span>/.rstudioserver/rstudio-server-4.2.2_overlay.img  <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$CURC_CONTAINER_DIR_OOD</span>/rstudio-server-4.2.2.sif</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You might want to check this in the future to make sure that the rstudio server version numbers in the command correspond to what you are using on Open OnDemand.</p></li>
 <li><p>When the last command returns, you should get a command prompt of <code>Apptainer&gt;</code>. At this prompt you can give any commands like you would as a root user on a Linux system to install necessary software packages. In this case, to install <code>ssh</code> do:</p>
