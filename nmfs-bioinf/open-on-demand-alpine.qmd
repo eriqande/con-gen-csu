@@ -145,7 +145,8 @@ The CURC pages have a section on installing software on your OpenDemand overlay
     with the following command:
     ```{sh}
     #| eval: false
-    apptainer shell --fakeroot --bind /projects,/scratch/alpine,$CURC_CONTAINER_DIR_OOD \
+    apptainer shell --fakeroot \
+        --bind /projects,/scratch/alpine,$CURC_CONTAINER_DIR_OOD \
         --overlay /projects/$USER/.rstudioserver/rstudio-server-4.2.2_overlay.img  \
         $CURC_CONTAINER_DIR_OOD/rstudio-server-4.2.2.sif
     ```
