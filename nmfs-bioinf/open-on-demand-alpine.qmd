@@ -110,7 +110,66 @@ are just dealing with local files.  However it does not seem to have access to s
 There is simply no `ssh` at `/usr/bin/ssh` in the shell that RStudio gets to
 run.  This is super weird.  We will have to check with the CURC admins about this.
 
-Until then, you can use RStudio to stage and commit files (and gitignore them), just
+Update! I spoke with the CURC folks.  There are two ways you can deal with it. 
+Method 1 is to install ssh via fakeroot on an apptainer, and Method 2 is to just do
+it all on the command line.
+
+## Method 1: Install ssh and use RStudio as usual 
+
+The CURC pages have a section on installing software on your OpenDemand overlay
+[here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#installing-dependencies-for-rstudio-currently-available-only-on-alpine).  In synopsis, here is what you need to do:
+
+1.  Export a `USER2` variable in your `~/.bashrc`.  This is necessary because the
+    `@` in your username on Alpine flummoxes the system, otherwise.  Add this
+    line to your `~/.bashrc`, before the conda block:
+    ```sh
+    export USER2=$(echo $USER |  awk -F@ '{print "."$2"/"$1}')
+    ```
+2.  Once you have done that, on your shell on Alpine, source your `~/.bashrc` to
+    make sure that USER2 is in effect:
+    ```sh
+    source ~/.bashrc
+    ```
+3.  Get on a compute node with the following command:
+    ```sh
+    acompile --ntasks=4
+    ```
+4.  Once you are on the compute node "modify the overlay by launching the overlay using fakeroot"
+    with the following command:
+    ```sh
+    apptainer shell --fakeroot --bind /projects,/scratch/alpine,$CURC_CONTAINER_DIR_OOD --overlay /projects/$USER/.rstudioserver/rstudio-server-4.2.2_overlay.img $CURC_CONTAINER_DIR_OOD/rstudio-server-4.2.2.sif
+    ```
+    You might want to check this in the future to make sure that the rstudio server version
+    numbers in the command correspond to what you are using on Open OnDemand.
+5.  When the last command returns, you should get a command prompt of `Apptainer>`.  At this
+    prompt you can give any commands like you would as a root user on a Linux system
+    to install necessary software packages.  In this case, to install `ssh` do:
+    ```sh
+    apt-get update
+    ```
+    Once that is done, you can do:
+    ```sh
+    apt install ssh
+    ```
+    That takes a while to chug through, but it will finish eventually.
+6.  Once the above command has finished, you can get out of the Apptainer and
+    off of the acompile node with:
+    ```sh
+    exit
+    exit
+    ```
+
+
+Now, when you restart an RStudio server session, you will have access to SSH and the 
+git push and pull buttons will work as expected for branches that are tracking
+upstream.  So, when you make new branches in RStudio, you should click
+`Sync branch with remote`.  
+
+
+## Method 2: Just use the command line
+
+If you don't want to hassle with all of Method 1 (although it really isn't a hassle at all!)
+you can use RStudio to stage and commit files (and gitignore them), just
 like you would on Rstudio on your laptop.  And you can also switch branches and create
 new branches.  But you can't do git push and git
 pull operations, on RStudio Server on Alpine.  Instead, you can use the browser-based
