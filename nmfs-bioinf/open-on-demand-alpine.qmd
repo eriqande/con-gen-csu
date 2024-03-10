@@ -1,3 +1,7 @@
+---
+engine: knitr
+---
+
 # OpenOnDemand on Alpine {#sec-ondemand}
 
 If you have an account on Alpine, there is a cool way to connect to Alpine through
@@ -38,19 +42,19 @@ would like.  Briefy instructions on how to do that are:
 OpenOnDemand infrastructure you are accessing.  Choose `Colorado State University`, from
 the pop-up menu and be sure to
 select "Remember this selection" and then click "Log On".  
-![](./nmfs-bioinf/images/colostate-open-ondemand.png)
+![](./images/colostate-open-ondemand.png)
 2. That should redirect you to your CSU NetID login page.  Authenticate yourself.
 3. That should drop you into the CURC OnDemand Dashboard page that looks like this:  
-![](./nmfs-bioinf/images/curc-on-demand-dashboard.png)
+![](./images/curc-on-demand-dashboard.png)
 4. Choose "Interactive Apps-->RStudio Server Presets", then use the bottom toggle
 box to choose "4 cores, 4 hours", and hit "Launch".  This will start making
 you an RStudio Server container.  Again, we choose 4 cores just for the initial
 setup, but you can choose 1 core in the future.  
-![](./nmfs-bioinf/images/rstudio-server-preset.png)
+![](./images/rstudio-server-preset.png)
 5. Now, go to your "Interactive Sessions" and you will see messages about your
 session starting up. Once your session is ready you can connect to it by clicking
 "Connect to RStudio Server"  
-![](./nmfs-bioinf/images/rstudio-interactive-sessions-tab.png)
+![](./images/rstudio-interactive-sessions-tab.png)
 6. Voila!  Clicking "Connect to RStudio Server" opens a new tab with
 an RStudio window that is pretty much what you are used to.
 
@@ -90,12 +94,12 @@ As always, you should set your RStudio preferences (Tools --> Global Options)
 so that R does **not** "Restore .Rdata into workspace at startup" and that it
 Never "Saves workspace to .Rdata on exit.":
 
-![](./nmfs-bioinf/images/no-rdata-reload.png){width=550 fig-align="center"}
+![](./images/no-rdata-reload.png){width=550 fig-align="center"}
 
 When you are done using RStudio Server on Alpine, you should terminate your R session,
 with "Session --> Terminate R...":
 
-![](./nmfs-bioinf/images/terminate-R){width=300 fig-align="center"}
+![](./images/terminate-R){width=300 fig-align="center"}
 
 And then Delete the session running on the compute node from your OnDemand Dashboard.
 
@@ -110,7 +114,76 @@ are just dealing with local files.  However it does not seem to have access to s
 There is simply no `ssh` at `/usr/bin/ssh` in the shell that RStudio gets to
 run.  This is super weird.  We will have to check with the CURC admins about this.
 
-Until then, you can use RStudio to stage and commit files (and gitignore them), just
+Update! I spoke with the CURC folks.  There are two ways you can deal with it. 
+Method 1 is to install ssh via fakeroot on an apptainer, and Method 2 is to just do
+it all on the command line.
+
+## Method 1: Install ssh and use RStudio as usual 
+
+The CURC pages have a section on installing software on your OpenDemand overlay
+[here](https://curc.readthedocs.io/en/latest/gateways/OnDemand.html#installing-dependencies-for-rstudio-currently-available-only-on-alpine).  In synopsis, here is what you need to do:
+
+1.  Export a `USER2` variable in your `~/.bashrc`.  This is necessary because the
+    `@` in your username on Alpine flummoxes the system, otherwise.  Add this
+    line to your `~/.bashrc`, before the conda block:
+    ```{sh}
+    #| eval: false
+    export USER2=$(echo $USER |  awk -F@ '{print "."$2"/"$1}')
+    ```
+2.  Once you have done that, on your shell on Alpine, source your `~/.bashrc` to
+    make sure that USER2 is in effect:
+    ```{sh}
+    #| eval: false
+    source ~/.bashrc
+    ```
+3.  Get on a compute node with the following command:
+    ```{sh}
+    #| eval: false
+    acompile --ntasks=4
+    ```
+4.  Once you are on the compute node "modify the overlay by launching the overlay using fakeroot"
+    with the following command:
+    ```{sh}
+    #| eval: false
+    apptainer shell --fakeroot \
+        --bind /projects,/scratch/alpine,$CURC_CONTAINER_DIR_OOD \
+        --overlay /projects/$USER/.rstudioserver/rstudio-server-4.2.2_overlay.img  \
+        $CURC_CONTAINER_DIR_OOD/rstudio-server-4.2.2.sif
+    ```
+    You might want to check this in the future to make sure that the rstudio server version
+    numbers in the command correspond to what you are using on Open OnDemand.
+5.  When the last command returns, you should get a command prompt of `Apptainer>`.  At this
+    prompt you can give any commands like you would as a root user on a Linux system
+    to install necessary software packages.  In this case, to install `ssh` do:
+    ```{sh}
+    #| eval: false
+    apt-get update
+    ```
+    Once that is done, you can do:
+    ```{sh}
+    #| eval: false
+    apt install ssh
+    ```
+    That takes a while to chug through, but it will finish eventually.
+6.  Once the above command has finished, you can get out of the Apptainer and
+    off of the acompile node with:
+    ```{sh}
+    #| eval: false
+    exit
+    exit
+    ```
+
+
+Now, when you restart an RStudio server session, you will have access to SSH and the 
+git push and pull buttons will work as expected for branches that are tracking
+upstream.  So, when you make new branches in RStudio, you should click
+`Sync branch with remote`.  
+
+
+## Method 2: Just use the command line
+
+If you don't want to hassle with all of Method 1 (although it really isn't a hassle at all!)
+you can use RStudio to stage and commit files (and gitignore them), just
 like you would on Rstudio on your laptop.  And you can also switch branches and create
 new branches.  But you can't do git push and git
 pull operations, on RStudio Server on Alpine.  Instead, you can use the browser-based
@@ -134,7 +207,7 @@ automatically know to push or pull to `<new-branch>` on `origin`.
 For example, in RStudio I created a new branch called `gratuitous-branch` and I told
 RStudio not to sync the branch with remote:
 
-![](./nmfs-bioinf/images/gratuitous-branch.png){width=250 fig-align="center"}
+![](./images/gratuitous-branch.png){width=250 fig-align="center"}
 
 Then I went to my shell and did `git branch` to confirm I was on that branch:
 ```sh
