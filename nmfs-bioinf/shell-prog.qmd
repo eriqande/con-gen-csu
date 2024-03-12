@@ -301,7 +301,7 @@ For example, to see how many lines, words, and characters are in each Quarto
 can use `wc` on all the files with a `.qmd` extension that are one directory
 level above where we are currently:
 ```{.sh filename="Paste this into your shell"}
-wc ../*.qmd
+wc ./nmfs-bioinf/*.qmd
 ```
 
 This is nice.

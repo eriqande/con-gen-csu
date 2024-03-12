@@ -1,0 +1,13 @@
+
+
+
+
+parameters:
+  trim_reads:
+    adapter1: "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"
+    adapter2: "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+    options:
+      - "--detect_adapter_for_pe"
+      - "--cut_right"
+      - "--cut_right_window_size 4"
+      - "--cut_right_mean_quality 20"

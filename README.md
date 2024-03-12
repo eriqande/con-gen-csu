@@ -721,18 +721,24 @@ Snakemake Concepts and Basics
 
 #### Prep (read this before---or after, since I didn't post it til late---today's session)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read the first full section of the [snakemake overview chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snake.html)
+</details>
 
 #### In Class (Running through a Snakemake example)
 
+<details>
+  <summary>Click here for full details</summary>
 - This is all done in the form of quarto/revealjs [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
+</details>  
 
-#### Assignment (Due Friday, March 1, 2024)
+#### Assignment (Due Friday, March 1, 2024)  Simple editing of a Snakefile.
 
-Simple editing of a Snakefile.
-
+<details>
+  <summary>Click here for full details</summary>
 - The explanation of the assignment is in the [README](https://github.com/eriqande/con-gen-csu/blob/main/assignments/006-simple-snakemake-maneuvers/README.md) of the assignment directory.
-
+</details>
 
 ### Thursday, Feb 29, 2024 (woo-hoo! A leap year!)
 
@@ -740,14 +746,20 @@ Continuring with Snakemake, and also using Open OnDemand on Alpine
 
 #### In Class (Running through a Snakemake example)
 
+<details>
+  <summary>Click here for full details</summary>
 - Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section). 
+</details>
 
 ### Tuesday, March 5, 2024
 
 More Snakemake
 
+
 #### Prep (please do this reading before class!)
 
+<details>
+  <summary>Click here for full details</summary>
 - For people with access to Alpine, read the [Chapter on OpenOnDemand Browser and RStudio Server Access to Alpine](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/open-on-demand-alpine.html),
   and definitely do the steps in there to get onto Open OnDemand on Alpine.
   I guarantee you _this will change your life_.
@@ -757,7 +769,39 @@ More Snakemake
 - Note that these are fairly newly-written sections.  Please help me out by sending me a pull request to fix any typos/errors/illogical things.  You can do this by
   clicking the GitHub "Edit this page" link at the bottom of the right column of the page.  That will let you edit the page on your fork of the repo and then send a
   pull request for the edits.  Special bonus points and recognition to whomever makes the most corrections.
+</details>
 
 #### In Class (Banging through our snakemake example still)
 
+<details>
+  <summary>Click here for full details</summary>
 - Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section)
+</details>
+
+### Thursday, March 7, 2024
+
+More Snakemake. SLURM profiles, snakemake configuration files, and input functions
+
+#### Prep (please do this reading before class!)
+
+<details>
+  <summary>Click here for full details</summary>
+- The [Snakemake Embellishments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-embellishments.html) chapter.
+</details>
+
+
+#### In class (working through another set of lecture slides)
+
+<details>
+  <summary>Click here for full details</summary>
+- We will be talking a lot about making snakemake talk to SLURM, and also a bit about YAML and tabular configuration of
+  Snakemake workflows. Here are the [slides](https://eriqande.github.io/con-gen-csu/snake-embellish-slides.html#/section)
+</details>
+
+#### Assignment (due the first Tuesday after spring break at the start of class---a reading and voting assignment)
+
+- First, read [this excellent, and very thorough paper](https://raw.githubusercontent.com/eriqande/con-gen-csu/main/extras/leopard-paper-and-supplements.pdf).  The citation is: Pečnerová, P., Garcia-Erill, G., Liu, X., Nursyifa, C., Waples, R. K., Santander, C. G., ... & Hanghøj, K. (2021). High genetic diversity and low differentiation reflect the ecological versatility of the African leopard. _Current Biology_, 31(9), 1862-1871.  The link will download the paper and the supplements, all in one document.  Be sure to read through the supplement, and **especially read through the STAR*Methods section**.
+- Once you have read through the paper, marvel at how thorough the authors were, and then think about which parts of the STAR*Methods were most interesting to you or most relevant to your own work.
+- Sync your fork and then go to [`assignments/007-vote-for-topics`](https://github.com/eriqande/con-gen-csu/tree/main/assignments/007-vote-for-topics) and follow the directions in the README there.
+
+

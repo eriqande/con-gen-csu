@@ -1,0 +1,29 @@
+
+# path to the genome (not used in workflow, but we could have...)
+genome_path: "data/genome/genome.fasta"
+
+# path to file with information about samples
+sample_info: "Snakemake-Example/sample-info.tsv"
+
+# Put the list of chromosomes we want to do here
+chromos: 
+  - "NC_037122.1f5t9"
+  - "NC_037123.1f10t14"
+  - "NC_037124.1f8t16"
+  - "NC_037125.1f20t24"
+
+# parameters to be used for different rules/programs
+params:
+  fastp:
+    adapter_sequence1: "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"
+    adapter_sequence2: "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+    other_options:
+      - "--detect_adapter_for_pe"
+      - "--cut_right" 
+      - "--cut_right_window_size 4"
+      - "--cut_right_mean_quality 20"
+  gatk:
+    HaplotypeCaller:
+      hmm_threads: 1
+
+    
