@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 README.html
+.DS_Store
 results
 /.quarto/
 *.err
