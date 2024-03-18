@@ -1,7 +1,7 @@
 rank,topic
-0,The Coalescent and the site-frequency spectrum
-0,Estimating the SFS with lcWGS
-0,Application of SFS: Fst in sliding windows
-0,PCA with lcWGS; PCAngsd
-0,Genome wide association studies
-0,Inbreeding; runs of homozygosity
+6,The Coalescent and the site-frequency spectrum
+5,Estimating the SFS with lcWGS
+4,Application of SFS: Fst in sliding windows
+3,PCA with lcWGS; PCAngsd
+1,Genome wide association studies
+2,Inbreeding; runs of homozygosity
