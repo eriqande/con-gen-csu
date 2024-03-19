@@ -14,7 +14,7 @@ or processors.
 
 ## HPCC Architecture in a Nutshell
 
-![](images/hpcc-diagram.jpg)
+![](./nmfs-bioinf/images/hpcc-diagram.jpg)
 
 - **Nodes**: the closest thing to what you think of as a computer. ("Pizza-boxes" with no displays).
     - Each node is attached via a fast connection to centralized attached storage (A big set of hard drives

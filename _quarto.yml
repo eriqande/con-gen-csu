@@ -1,6 +1,7 @@
 project:
   type: book
   output-dir: docs
+  execute-dir: project
 
 book:
   title: "con-gen-csu"
@@ -21,6 +22,7 @@ book:
     - nmfs-bioinf/snake.qmd
     - nmfs-bioinf/snakemake-relevant-python.qmd
     - nmfs-bioinf/snakemake-embellishments.qmd
+    - nmfs-bioinf/variant-calling.qmd
   sidebar:
     logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
   repo-url: https://github.com/eriqande/con-gen-csu
