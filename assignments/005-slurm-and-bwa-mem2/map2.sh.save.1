@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1:00:00
+#SBATCH --output=bwa_map_array-%A_%a.out
+#SBATCH --error=bwa_map_array-%A_%a.err
+#SBATCH --array=data/sample-array-info.tsv
+
+
+# directories
+LDIR=results/log/bwa_map2_array
+ODIR=results/mapped2
+
+mkdir -p $LDIR $ODIR
+
+# get shell variables for this array task:
+COMM=$(./scripts/line-assign.sh $SLURM_ARRAY_TASK_ID data/sample-array-info.tsv)
+eval $COMM
+
+
+line-assign.sh
+sata/sample-array-info.tsv
+
+bwa-mem2
+
+
+# run bwa mem on the input and pipe it to samtools to sort it
+bwa mem2 \
+  -R "@RG\tID:${sample}.${library}.${flowcell}.${lane}\tSM:${sample}\tLB:${library}\tBC:${barcode}\tPU:\tID:${sample}.${library}.${flowcell}.${lane}.${barcode}\tPL:ILLUMINA" \
+  results/trimmed2/${sample}_R1.fq.gz results/trimmed2/${sample}_R2.fq.gz $LDIR/bwa_mem2_$sample.log | \
+(
+  samtools view -u - | \
+  samtools sort -o $ODIR/$sample.bam
+) 2> $LDIR/samtools_$sample.log
+
+
+(
+echo "The SLURM_ARRAY_JOB_ID is : $SLURM_ARRAY_JOB_ID"
+echo "The SLURM_ARRAY_TASK_ID is : $SLURM_ARRAY_TASK_ID"
+echo "The SLURM_JOB_ID is : $SLURM_JOB_ID"
+echo
+echo "You can refer to this individual SLURM array task as: ${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}" 
+) > $ODIR/output_$SLURM_ARRAY_TASK_ID.txt
+
+
