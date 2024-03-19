@@ -824,16 +824,33 @@ Variant Calling
 
 Hard filtering of GATK-produced VCF files; the disastrous decision by GATK's developer to violate the VCF specification
 
-#### Prep (please do this reading before class!)
+#### Prep (Reading and some hands-on exercise to do before class!)
 
-
+**Reading**
 - The standard [GATK recommendations for Hard filtering](https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2)
 - The saga of GATK versions calling missing data as reference homozygotes:
     * Start with some messages I sent them: [start here and read a few exchanges](https://gatk.broadinstitute.org/hc/en-us/community/posts/4476803114779/comments/5934732890651)
     * The above apparently inspired a GATK [blog post](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531-GenotypeGVCFs-and-the-death-of-the-dot) 
     * Then not much happened apparently until people started upgrading their GATK versions and found many of their pipelines were broken.  For that start reading the 
       [comments to the blog post that started coming in around summer of 2023 and Feb of 2024](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531/comments/17128642713499)
+      
+**Hands On Learning**
+The materials for the hands-on can be obtained in RStudio with the following steps:
+```r
+if(!("usethis" %in% rownames(installed.packages()))) {
+  install.packages("usethis")
+}
+usethis::use_course("eriqande/ngs-genotype-models")
+```
 
+- You will need to answer the “Yes” response to a few questions. This will download an RStudio project and open it.
+- From this RStudio project’s file browser, you can open the RMarkdown files, like: `001-allele-freq-estimation.Rmd`.
+- If the message at the top of the file says you need some new packages, click the install option.
+- Then Click the “Run Document” button at the top middle of the source code file.  This runs an interactive shiny program
+
+**Read and do the activities in the Shiny Notebooks:  `001-allele-freq-estimation.Rmd` and `002-genotype-likelihoods-from-reads.Rmd`**
+
+There is nothing to turn in, but please read through these and play with them for a couple hours.
 
 #### In class
 
@@ -841,6 +858,6 @@ Hard filtering of GATK-produced VCF files; the disastrous decision by GATK's dev
 - Working on hard filtering of our example data.
 
 
-#### Assignment (due the first Tuesday after spring break at the start of class---a reading and voting assignment)
+#### Assignment (due the next Tuesday. More details to follow)
 
 - We will be applying hard filtering to our example Snakemake workflow.
