@@ -802,6 +802,6 @@ More Snakemake. SLURM profiles, snakemake configuration files, and input functio
 
 - First, read [this excellent, and very thorough paper](https://raw.githubusercontent.com/eriqande/con-gen-csu/main/extras/leopard-paper-and-supplements.pdf).  The citation is: Pečnerová, P., Garcia-Erill, G., Liu, X., Nursyifa, C., Waples, R. K., Santander, C. G., ... & Hanghøj, K. (2021). High genetic diversity and low differentiation reflect the ecological versatility of the African leopard. _Current Biology_, 31(9), 1862-1871.  The link will download the paper and the supplements, all in one document.  Be sure to read through the supplement, and **especially read through the STAR*Methods section**.
 - Once you have read through the paper, marvel at how thorough the authors were, and then think about which parts of the STAR*Methods were most interesting to you or most relevant to your own work.
-- Sync your fork and then go to `assignments/007-vote-for-topics` and follow the directions in the README there.
+- Sync your fork and then go to [`assignments/007-vote-for-topics`](https://github.com/eriqande/con-gen-csu/tree/main/assignments/007-vote-for-topics) and follow the directions in the README there.
 
 
