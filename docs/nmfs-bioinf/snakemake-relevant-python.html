@@ -230,6 +230,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -612,7 +618,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="bu">str</span>(x) <span class="op">+</span> <span class="st">" Weird!"</span>, L_Py)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;map object at 0x120a78c10&gt;</code></pre>
+<pre><code>&lt;map object at 0x11a9fa8f0&gt;</code></pre>
 </div>
 </div>
 <p><code>map</code> is like <code>lapply()</code> but the order of its arguments is reversed—it takes the function first and the list second—and it doesn’t automatically return a list; rather, as you can see, it returns a <code>&lt;map object at some_location&gt;</code> where some <code>some_location</code> is the address of some computer memory, like <code>0x292826170</code>.</p>
