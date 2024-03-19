@@ -4,11 +4,14 @@ library(glue)
 
 # here are the GitHub Handles
 GH <- c(
+  "EllenMCampbell",
   "Rhayania",
+  "abeulke",
   "bwavila",
   "ccolumbu",
   "ecnrobertson",
   "foxholden",
+  "hmoyle",
   "isabelra1",
   "katstroh",
   "leezhimeimaria",
@@ -19,7 +22,8 @@ GH <- c(
   "noelmclark",
   "rbortner",
   "shanellewiks",
-  "swrosenbaum"
+  "swrosenbaum",
+  "wcfunk"
 )
 
 
@@ -76,3 +80,5 @@ syl_ranks <- votes_tib %>%
 syl_ranks
 
 write_csv(syl_ranks, file = "instructor/syllabus-ranks.csv")
+
+votes_tib
