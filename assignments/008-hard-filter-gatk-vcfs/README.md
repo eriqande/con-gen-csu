@@ -1,4 +1,4 @@
-# Simple Snakemake Maneuvers Homework
+# GATK Hard Filtering and Miss-Marking with Snakemake
 
 This homework should not be terribly difficult and it should not require
 any hefty computation, so long as you have the `results` from your previous
