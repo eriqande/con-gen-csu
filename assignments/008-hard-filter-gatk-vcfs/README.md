@@ -89,5 +89,6 @@ rule all:
     - `assignments/008-hard-filter-gatk-vcfs/Snakefile`
     - `assignments/008-hard-filter-gatk-vcfs/config.yaml`
     - `assignments/008-hard-filter-gatk-vcfs/all.vcf.stats`
+    
     to the `008-more-snake` branch, push those commits up to your fork and send me a pull request.
 
