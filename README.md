@@ -855,6 +855,8 @@ There is nothing to turn in, but please read through these and play with them fo
 #### In class
 
 - Summarizing everyone's votes on topics for the rest of the semester.
+    + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
+      and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
 - Working on hard filtering of our example data.
 
 
