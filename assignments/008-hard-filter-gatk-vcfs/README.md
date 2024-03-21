@@ -1,4 +1,4 @@
-# Simple Snakemake Maneuvers Homework
+# GATK Hard Filtering and Miss-Marking with Snakemake
 
 This homework should not be terribly difficult and it should not require
 any hefty computation, so long as you have the `results` from your previous
@@ -89,5 +89,6 @@ rule all:
     - `assignments/008-hard-filter-gatk-vcfs/Snakefile`
     - `assignments/008-hard-filter-gatk-vcfs/config.yaml`
     - `assignments/008-hard-filter-gatk-vcfs/all.vcf.stats`
+    
     to the `008-more-snake` branch, push those commits up to your fork and send me a pull request.
 
