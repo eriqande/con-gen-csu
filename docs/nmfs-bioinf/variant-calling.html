@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>con-gen-csu - 14&nbsp; Variant calling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../nmfs-bioinf/snakemake-embellishments.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/variant-calling.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">con-gen-csu</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/eriqande/con-gen-csu" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/quick-unix-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/shell-prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Shell Programming</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/awk-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/scripts-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bash scripts and functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Sedna and SLURM intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sbatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm-arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/bioinf-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-embellishments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/variant-calling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#genotype-likelihoods" id="toc-genotype-likelihoods" class="nav-link active" data-scroll-target="#genotype-likelihoods"><span class="header-section-number">14.1</span> Genotype Likelihoods</a>
+  <ul class="collapse">
+  <li><a href="#basic-sketch-of-genotype-likelihood-calculations" id="toc-basic-sketch-of-genotype-likelihood-calculations" class="nav-link" data-scroll-target="#basic-sketch-of-genotype-likelihood-calculations"><span class="header-section-number">14.1.1</span> Basic Sketch of Genotype Likelihood Calculations</a></li>
+  <li><a href="#specifics-of-different-genotype-likelihoods" id="toc-specifics-of-different-genotype-likelihoods" class="nav-link" data-scroll-target="#specifics-of-different-genotype-likelihoods"><span class="header-section-number">14.1.2</span> Specifics of different genotype likelihoods</a></li>
+  <li><a href="#a-directed-acyclic-graph-for-genotype-likelihoods" id="toc-a-directed-acyclic-graph-for-genotype-likelihoods" class="nav-link" data-scroll-target="#a-directed-acyclic-graph-for-genotype-likelihoods"><span class="header-section-number">14.1.3</span> A Directed Acyclic Graph For Genotype Likelihoods</a></li>
+  </ul></li>
+  <li><a href="#gatks-gvcf-workflow" id="toc-gatks-gvcf-workflow" class="nav-link" data-scroll-target="#gatks-gvcf-workflow"><span class="header-section-number">14.2</span> GATK’s gVCF Workflow</a>
+  <ul class="collapse">
+  <li><a href="#step-1.-running-haplotypecaller-and-getting-one-gvcf-for-each-sample" id="toc-step-1.-running-haplotypecaller-and-getting-one-gvcf-for-each-sample" class="nav-link" data-scroll-target="#step-1.-running-haplotypecaller-and-getting-one-gvcf-for-each-sample"><span class="header-section-number">14.2.1</span> Step 1. Running HaplotypeCaller and getting one gVCF for each sample</a></li>
+  <li><a href="#gvcf-format" id="toc-gvcf-format" class="nav-link" data-scroll-target="#gvcf-format"><span class="header-section-number">14.2.2</span> gVCF files</a></li>
+  <li><a href="#genomics-db" id="toc-genomics-db" class="nav-link" data-scroll-target="#genomics-db"><span class="header-section-number">14.2.3</span> The Genomics Data Base</a></li>
+  <li><a href="#gdb-update" id="toc-gdb-update" class="nav-link" data-scroll-target="#gdb-update"><span class="header-section-number">14.2.4</span> Updating the GenomicsDatabase</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/variant-calling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Using aligned sequencing data to identify positions in the genome at which polymorphism is segregating in your sample—and identifying the genotypes of your sampled individuals at each of those variable positions—is a crucial step in conservation genomics. This is the step where sequence data are finally converted into genotypes for individuals, and it is information about these genotypes that will get used in downstream analyses to answer the questions that you actually want to answer as a conservation geneticist: How much genetic variation remains in this small population? What does the population structure of this species look like across North America? Can I find evidence that this animal is using migratory corridors through wetlands? Is this rare species at risk due to hybridization with a more abundant introduced species? etc. All of these questions make use of variant data, because there is not much to be gleaned by looking only at portions of the genome that are identical between all individuals.</p>
+<p>At the same time, this variant-calling and genotyping step is the place in the next-generation sequencing bioinformatic workflow when you will be most aggressively confronted with issues of statistical inference. It becomes important to have at least a rudimentary understanding of the process of inference and the difference between likelihoods and posterior probabilities, so we will touch on such themes in this chapter.</p>
+<p>We start with a sketch of the models used to compute <em>genotype likelihoods</em> and describe what those quantities are. All of the models in use derive from a simple conceptual model in which we are trying to learn about the sequence at a genomic position on the two homologous chromosomes within a diploid individual by drawing samples from them—those samples are the sequencing reads. We then proceed to three different programs/workflows that compute such genotype likelihoods: two of them—<code>angsd</code> and <code>bcftools mpileup</code> operate directly on the aligned positions in BAM files, while the third, <code>GATK HaplotypeCaller</code> takes the aligned reads in a BAM as a starting point to do another round of local realignment/assembly of the reads.</p>
+<p>After discussion of these methods for calculating <em>genotype likelihoods</em> we will consider some of the sources of uncertainty/variability in their calculation. One of the main themes is their rather strong dependence on the estimated base quality scores, and we will touch briefly upon the idea of <em>base quality score recalibration</em>.</p>
+<p>Finally, we will consider the issue that many procedures in which we would like to use our data require <em>genotypes</em> as input, rather than <em>genotype likelihoods</em>. As a consequence, we can either convert our genotype likelihoods into called genotypes, or we can make use of methods that can take genotype likelihoods as input. The former can be problematic because it does not allow uncertainty about the genotypes to be propagated to the result, and can lead to systematic biases in genotype data sets. We will look at some of that from early RAD sequencing data. For many analyses, however, a version that relies on genotype likelihoods rather than genotypes might not be available.</p>
+<section id="genotype-likelihoods" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="genotype-likelihoods"><span class="header-section-number">14.1</span> Genotype Likelihoods</h2>
+<section id="basic-sketch-of-genotype-likelihood-calculations" class="level3" data-number="14.1.1">
+<h3 data-number="14.1.1" class="anchored" data-anchor-id="basic-sketch-of-genotype-likelihood-calculations"><span class="header-section-number">14.1.1</span> Basic Sketch of Genotype Likelihood Calculations</h3>
+<p>There are several genotype likelihood models in use, but they all share a number of properties and assumptions. Perhaps the easiest way to come to understand how genotype likelihoods are calculated is to work through a simple example, like that show in Figure @ref(fig:genolike).</p>
+<p><img src="./figs/genotypes_and_reads.svg" class="img-fluid"></p>
+<p>The figure shows a situation where we know that there is variation (a SNP that has two possible alleles: T and C) at a certain position along a given chromosome. A diploid individual is represented by the two homologous chromosomes that s/he carries, and the alleles carried on those chromosomes are represented by <code>?</code>’s because we don’t know (without collecting and analyzing data) what the genotype of that individual is.</p>
+<p>The <em>data</em> that we will use to determine the genotype of this individual are the 4 reads from the individual that cover the position we are interested in. Specifically, from each read we observe:</p>
+<ul>
+<li>The reported base at the position</li>
+<li>The reported <em>base quality score</em> at the position. Recall from Section @ref(bqscores) that the Phred-scaled base quality score is interpreted as <span class="math inline">\(\lfloor -10\log_{10}\epsilon\rfloor\)</span>, where <span class="math inline">\(\epsilon\)</span> is the estimated probability that the reported base at the position is incorrect.</li>
+</ul>
+<p>We can condense the data down to the base calls, <span class="math inline">\(B\)</span>, and <span class="math inline">\(\epsilon\)</span>’s at each of the four reads. To do so we convert the Phred score <span class="math inline">\(Q\)</span> to <span class="math inline">\(\epsilon\)</span> using <span class="math inline">\(\epsilon = 10^{-Q/10}\)</span></p>
+<ol type="1">
+<li><span class="math inline">\(B_1 = C\)</span> and <span class="math inline">\(\epsilon_1 = 10^{-32/10} = 0.00063\)</span></li>
+<li><span class="math inline">\(B_2 = C\)</span> and <span class="math inline">\(\epsilon_2 = 10^{-37/10} = 0.00019\)</span></li>
+<li><span class="math inline">\(B_3 = T\)</span> and <span class="math inline">\(\epsilon_3 = 10^{-35/10} = 0.00031\)</span></li>
+<li><span class="math inline">\(B_4 = C\)</span> and <span class="math inline">\(\epsilon_4 = 10^{-33/10} = 0.00050\)</span></li>
+</ol>
+<p>Those are the raw data that go into our calculations of how likely it is that the true genotype of the individual is either a homozygote, <span class="math inline">\(CC\)</span>, or a homozygote, <span class="math inline">\(TT\)</span>, or a heterozygote, <span class="math inline">\(CT\)</span> or <span class="math inline">\(TC\)</span> (referred to simply as <span class="math inline">\(CT\)</span> from now on).</p>
+<p>There are a few different ways that one might go about this task. One of the simplest would be the “method of the eyeball,” by which you would just look at the reads and say, “That individual is probably a heterozygote, <span class="math inline">\(CT\)</span>.” This is actually a reasonable assessment in this situation; however it is not highly principled and it is hard to instruct a computer to employ the “method of the eyeball.”</p>
+<p>By contrast, the <em>method of likelihood</em> provides a principled approach to evaluating how much evidence a <em>given set of data</em>, <span class="math inline">\(D\)</span>, provides to distinguish between several different hypotheses. In our case, the three different hypotheses are that the true, underlying genotype, <span class="math inline">\(G\)</span> is either <span class="math inline">\(CC\)</span>, <span class="math inline">\(CT\)</span>, or <span class="math inline">\(TT\)</span>. It is also relatively easy to tell a computer how to compute it.</p>
+<p>Let’s be explicit about our terms. We have three different hypotheses:</p>
+<ul>
+<li><span class="math inline">\(H_1:~~~G = CC\)</span></li>
+<li><span class="math inline">\(H_2:~~~G = CT\)</span></li>
+<li><span class="math inline">\(H_3:~~~G = TT\)</span></li>
+</ul>
+<p>In our situation, as we have defined it, those are the three possibilities. And we want to calculate the evidence in our data <span class="math inline">\(D\)</span> (which in this case is <span class="math inline">\(B_i\)</span> and <span class="math inline">\(\epsilon_i\)</span>, for <span class="math inline">\(i = 1,2,3,4\)</span>) in support of those different hypotheses.</p>
+<p>The method of likelihood states that the evidence in the data <span class="math inline">\(D\)</span> supporting a hypothesis <span class="math inline">\(H_i\)</span>, can be quantified as being proportional to the probability of the data given the hypothesis. Hence we write: <span class="math display">\[
+L(H_i~|~D) \propto P(D~|~H)
+\]</span> Thus, to compute <span class="math inline">\(L(H_1~|~D) = L(G = CC~|~D)\)</span> we must calculate the probability of observing the four reads, C, C, T, C, given that the true, underlying genotype is <span class="math inline">\(CC\)</span>. To do so requires a conceptual model of how reads arrive to us from the different chromosomes in an organism. Forming such a model requires that we make some assumption. Two assumptions that are shared by most genotyping likelihood models are:</p>
+<ol type="1">
+<li>Reads are sampled independently from the two homologous chromosomes in an individual, each with probability <span class="math inline">\(1/2\)</span>.</li>
+<li>Given the true sequence on the chromosome from which the read is a sample, the base at each position is recorded as the true base on the chromosome with probability <span class="math inline">\(1 - \epsilon\)</span>, and, with probability <span class="math inline">\(\epsilon\)</span> the base is recorded incorrectly.</li>
+</ol>
+<p>With these two assumptions, it is straightforward to calculate the probability of the observed base on a single read given each of the three different possible true genotypes. Let’s do that with the first read, which has <span class="math inline">\(B_1 = C\)</span> and <span class="math inline">\(\epsilon_1 = 0.00063\)</span>,for the three different possible true genotypes:</p>
+<ul>
+<li>If <span class="math inline">\(G=CC\)</span> then, with probability <span class="math inline">\(1/2\)</span> the read is from the first chromosome or with probability <span class="math inline">\(1/2\)</span> the read is from the second chromosome; however, in either case that read is from a chromosome that carries a <span class="math inline">\(C\)</span>. So with probability 1 the read is from a chromosome with a <span class="math inline">\(C\)</span>. Hence with probability <span class="math inline">\(1-\epsilon_1\)</span> the read carries a <span class="math inline">\(C\)</span>. So, <span class="math display">\[
+P(B_1=C~|~G=CC, \epsilon_1) = 1 - \epsilon_1
+\]</span></li>
+<li>If <span class="math inline">\(G=CT\)</span> then, with probability <span class="math inline">\(1/2\)</span>, the read is from the chromosome with a <span class="math inline">\(C\)</span>, in which case the probability of observing a <span class="math inline">\(C\)</span> on the read is <span class="math inline">\(1 - \epsilon\)</span>. On the other hand, with probability <span class="math inline">\(1/2\)</span> the read is from the chromosome carrying a <span class="math inline">\(T\)</span>, in which case, recording a <span class="math inline">\(C\)</span> requires that a sequencing error occurred. Therefore: <span class="math display">\[
+P(B_1=C~|~G=CT, \epsilon_1) = \frac{1}{2}(1 - \epsilon) + \frac{1}{2}\epsilon_1 = \frac{1}{2}
+\]</span> Notice that this is less than <span class="math inline">\(P(B_1=C~|~G=CC, \epsilon_1)\)</span> by a factor of about 2.</li>
+<li>Finally, if <span class="math inline">\(G=TT\)</span>, then, with probability 1, the read will come from a chromosome carrying a <span class="math inline">\(T\)</span>, and in that case, the only way that we could have recorded a <span class="math inline">\(C\)</span> from the read would be if a sequencing error occurred. Hence: <span class="math display">\[
+P(B_1=C~|~G=TT, \epsilon_1) = \epsilon_1
+\]</span> So, summarizing the information from the first read we have: <span class="math display">\[
+\begin{aligned}
+L(G=CC | B_1 = C) &amp;=   P(B_1 = C| G=CC, \epsilon_1) &amp;  &amp;=  1 - \epsilon_1 &amp; &amp;= 0.99937 \\
+L(G=CT | B_1 = C) &amp;=   P(B_1 = C| G=CT, \epsilon_1) &amp; &amp;=  \frac{1}{2} &amp; &amp;= 0.5 \\
+L(G=TT | B_1 = C) &amp;=   P(B_1 = C| G=TT, \epsilon_1) &amp; &amp;=  \epsilon_1 &amp; &amp;= 0.00063
+\end{aligned}
+\]</span> A higher likelihood implies more support for a hypothesis. So, with that one read we have good evidence that the true genotype is not <span class="math inline">\(G=TT\)</span>, and twice the likelihood that <span class="math inline">\(G=CC\)</span> compared to <span class="math inline">\(G=CT\)</span>.</li>
+</ul>
+<p>Now, more quickly, we can consider how much evidence <strong>read 3</strong>, <span class="math inline">\(B_3 = T\)</span> with <span class="math inline">\(\epsilon_3 = 0.00031\)</span> offers: <span class="math display">\[
+\begin{aligned}
+L(G=CC | B_3 = T) &amp;=   P(B_3 = T| G=CC, \epsilon_3) &amp;  &amp;=  \epsilon_3 &amp; &amp;= 0.00031 \\
+L(G=CT | B_3 = T) &amp;=   P(B_3 = T| G=CT, \epsilon_3) &amp; &amp;=  \frac{1}{2} &amp; &amp;= 0.5 \\
+L(G=TT | B_3 = T) &amp;=   P(B_3 = T| G=TT, \epsilon_3) &amp; &amp;=  1 - \epsilon_3 &amp; &amp;= 0.99969
+\end{aligned}
+\]</span> OK, that tells us there is very little support for <span class="math inline">\(G=CC\)</span>, and twice as much support for <span class="math inline">\(G=TT\)</span> as there is for <span class="math inline">\(G=CT\)</span>.</p>
+<p>How do we combine the likelihoods from the different reads? Well, we compute the probability of observing both of those reads. Since we assumed that reads are sampled independently from the pair of homologous chromosomes, the joint probability of both reads is merely the product of probabilities for each read. So, we have: <span class="math display">\[
+\small
+\begin{aligned}
+L(G=CC | B_1 = C, B_3 = T) &amp;=   P(B_1 = C| G=CC, \epsilon_1) \times P(B_3 = T| G=CC, \epsilon_3) &amp; &amp;= 0.99937 \times 0.00031\\
+L(G=CT | B_1 = C, B_3 = T) &amp;=   P(B_1 = C| G=CT, \epsilon_1) \times P(B_3 = T| G=CT, \epsilon_3) &amp; &amp;=  0.5 \times 0.5 \\
+L(G=TT | B_1 = C, B_3 = T) &amp;=  P(B_1 = C| G=CT, \epsilon_1) \times P(B_3 = T| G=TT, \epsilon_3) &amp; &amp;=  0.00063 \times 0.99969
+\end{aligned}
+\]</span> I couldn’t fit the actual products of each of those up above, so we put them down here: <span class="math display">\[
+\begin{aligned}
+L(G=CC | B_1 = C, B_3 = T)  &amp;= 0.00031\\
+L(G=CT | B_1 = C, B_3 = T)  &amp;= 0.25\\
+L(G=TT | B_1 = C, B_3 = T)  &amp;= 0.00063
+\end{aligned}
+\]</span> So, with only two reads, one of each allele, the likelihood of a heterozygote can be quite high.</p>
+<p>Adding the data from the two remaining reads does not change the likelihood much, apart from factors of 1/2 on the heterozygote category.</p>
+<p>What have we learned from this exercise? I’d say there are two very important take-home messages:</p>
+<ol type="1">
+<li>If you have only a single read, the likelihood that the genotype is a homozygote is always higher than the likelihood that it is a heterozygote.</li>
+<li>If you only see reads of a single allele, the likelihood that the genotype is a heterozygote drops by a factor of two for each new read. (And the likelihood that the genotype is homozygous for the allele you have not seen drops by a factor of the estimated genotyping error each time).</li>
+<li>The values of the likelihoods for the homozygous hypotheses are highly dependent on the base quality scores but not so much for the likelihood of the heterozygous hypothesis.</li>
+</ol>
+<p>Before we leave this section, we want to stress to the reader that genotype likelihoods are only half of the equation when it comes to determining what an individuals genotype is. We will talk about that more in the section on posterior probabilities. Suffice it to say, at this point, that assigning genotypes according to the maximum likelihood (which is common in programs like GATK) is a terrible idea with low read-depth data, because individuals that are truly heterozygotes will never be called as heterozygotes, unless both alleles have been observed in the read data.</p>
+</section>
+<section id="specifics-of-different-genotype-likelihoods" class="level3" data-number="14.1.2">
+<h3 data-number="14.1.2" class="anchored" data-anchor-id="specifics-of-different-genotype-likelihoods"><span class="header-section-number">14.1.2</span> Specifics of different genotype likelihoods</h3>
+<p>Will (eventually) write out the exact details of samtools’s old and GATK old likelihoods. Also bcftools new likelihood and SOAP.</p>
+</section>
+<section id="a-directed-acyclic-graph-for-genotype-likelihoods" class="level3" data-number="14.1.3">
+<h3 data-number="14.1.3" class="anchored" data-anchor-id="a-directed-acyclic-graph-for-genotype-likelihoods"><span class="header-section-number">14.1.3</span> A Directed Acyclic Graph For Genotype Likelihoods</h3>
+<p>The assumptions about independence between reads and the formulation of the genotype likelihood model can be captured in an <em>acyclic directed graph</em> (called a DAG, for short) like that in Figure @ref(fig:single-geno-like-dag). We expand the notation established above, but subscript each variable by an additional <span class="math inline">\(i\)</span> to indicate the data are from the <span class="math inline">\(i\)</span>-th individual, and, rather than referring to the genotype as <span class="math inline">\(G\)</span> we specifically indicate the allelic type of each gene copy within individual <span class="math inline">\(i\)</span> with the variable <span class="math inline">\(Y\)</span>.<br>
+Thus, <span class="math inline">\(B_{i,1}\)</span> is the base covering the SNP at the first read from indivdiual <span class="math inline">\(i\)</span>, <span class="math inline">\(\epsilon_{i,1}\)</span> is the base quality score (as a probability of a sequencing error) at that SNP on the first read from individual <span class="math inline">\(i\)</span>, and <span class="math inline">\(Y_{i,1} = C\)</span> and <span class="math inline">\(Y_{i,2} = T\)</span> denote that the genotype of individual <span class="math inline">\(i\)</span> is heterozygous, <span class="math inline">\(CT\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/single-geno-like.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Of course, we may will typically have sequencing data from multiple individuals. So let us imagine that we have data from <span class="math inline">\(N\)</span> individuals (<span class="math inline">\(i=1,\ldots, N\)</span>). Additionally, each individual will have a variable number of reads covering the SNP we are focused on. We denote that number of reads by <span class="math inline">\(R_i\)</span> for the <span class="math inline">\(i\)</span>-th individual, and subscript each read by <span class="math inline">\(j\)</span>. Hence, in the <span class="math inline">\(i\)</span>-th individual, <span class="math inline">\(j=1,\ldots,R_i\)</span>. Then, our DAG can be expanded to what we find in Figure @ref(fig:plated-single-geno-like).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/plated-single-geno-like.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Acyclic directed graphs can be very useful for gleaning the underlying structure of statistical models and also for developing intuition for what is involved in the process of <em>inference</em>.</p>
+<p>I haven’t quite figured out how/where to incorporate a discussion of these topics into this handbook, but in the meantime I want to cherry-pick a few topics about probability and statistics from: <a href="https://eriqande.github.io/con-gen-2018/bayes-mcmc-gtyperr-narrative.nb.html">https://eriqande.github.io/con-gen-2018/bayes-mcmc-gtyperr-narrative.nb.html</a></p>
+<p>There, we will discuss <em>inference</em> and directed acyclic graphs from the perspective of inferring allele frequencies from genotype data. After that discussion, we will understand that inference is the process of learning about unobserved “parent” nodes in a DAG from the data that has been observed in the daughter nodes of such a DAG.</p>
+<p>Knowing that, we can go back to @ref(fig:plated-single-geno-like) to see that making inference about the actual alleles carried in each individual’s genotype requires some sort of “prior” for those genotypes. Such a model is, graphically, what we were just talking about in terms of estimating allele frequencies. Which leads us to a full DAG for making inference about genotypes within individuals (Figure @ref(fig:full-geno-like-dag))</p>
+<p><img src="./figs/full-geno-like-dag.svg" class="img-fluid"></p>
+<p>This is really how genotype inference should be done! And, it is <em>extremely important</em> to understand that many genotype callers provide a “called genotype” in a VCF file that <em>do not infer genotypes using this sort of model</em>. Rather, they may often simply report the genotype with the highest <em>likelihood</em> (but not necessarily the highest posterior probability.)</p>
+<p>As a consequence, especially with low coverage sequencing data, these genotypes provided by default in a VCF will have far fewer heterozygotes than there should be.</p>
+<p>Now we will jump to some slides from a talk I gave a couple years ago about this topic as it relates to RADseq data: <a href="./downloads/gbs-miscall.pdf">gbs-miscall.pdf</a></p>
+<p>And, point out that the very same problem occurs in low-coverage whole genome sequencing data if you just try to use the genotypes reported in a VCF like that produced by GATK.</p>
+<p>For an illustration of that, here is a VCF file with 5.16 Mb of Chromosome 28 from 48 fall/late-fall-run Chinook salmon from the Central Valley of California. These fish are from different populations, but the populations are so similar, genetically, that you don’t expect a Wahlund effect by mixing them into a single sample.</p>
+<p><a href="https://www.dropbox.com/s/5sb7ygwmpgsz09p/raw-fall-late-fall-geno-calls.vcf.gz?dl=1">raw-fall-late-fall-geno-calls.vcf.gz</a>.</p>
+<p>Download that to your laptop, then use R within RStudio to get the ‘whoa’ package from CRAN and then make a plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"whoa"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(whoa)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcfR)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># you might have to change the file location, depending on where</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># files get downloaded to on your laptop</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">read.vcfR</span>(<span class="st">"~/Downloads/raw-fall-late-fall-geno-calls.vcf.gz"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>gfreqs <span class="ot">&lt;-</span> <span class="fu">exp_and_obs_geno_freqs</span>(v)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">geno_freqs_scatter</span>(gfreqs, <span class="at">alpha =</span> <span class="fl">0.04</span>, <span class="at">max_plot_loci =</span> <span class="fl">1e15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Whoa!</p>
+</section>
+</section>
+<section id="gatks-gvcf-workflow" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="gatks-gvcf-workflow"><span class="header-section-number">14.2</span> GATK’s gVCF Workflow</h2>
+<p>The Genome Analysis Toolkit, or GATK, includes a program called HaplotypeCaller which is well respected for calling variants and computing genotype likelihoods from alignments (i.e., from BAM files).</p>
+<p>A key feature of HaplotypeCaller is a <em>local reassembly</em> step in which all the reads in a small “active” region of the genome are inspected and reassembled amongst themselves in a way that can provide a clearer picture of the presence of short structural variations like insertions and deletions (collectively called “indels,” for short). This local reassembly step helps to improve the HaplotypeCaller’s accuracy when calling indels.</p>
+<p>Here is a reminder of what insertions and deletions look like.</p>
+<pre><code>AGTGGACCTGACTA  &lt;- Reference Genome
+AGTGG--CTGACTA  &lt;- Aligned read with a deletion
+
+AGTGGAC---CTGACTA  &lt;- Reference Genome expanded to show insertion site
+AGTGGACAAGCTGACTA  &lt;- Aligned read with an insertion
+</code></pre>
+<p>Because HaplotypeCaller has good performance for small structural variants, and because GATK tools are quite well supported (the Broad Institute has an active team of representatives and developers that reply to user issues quite quickly when there is a problem with their software), HaplotypeCaller, and other associated GATK tools, are frequently used in bioinformatics.</p>
+<p>When HaplotypeCaller first became available, a standard analysis with it involved running it with all the samples you had, together at the same time, so that variant calling could be done <em>jointly</em>, directly producing a VCF file for all the individuals. In other words, it was important to have all of your samples in a single run so that if HaplotypeCaller found a variant in one individual it could score that variant in all the other individuals of the sample. We will call this the “direct-to-VCF” mode of operation for HaplotypeCaller. In the early 2000s, when sequencing was considerably more costly than it is today, this was a reasonable strategy, because data sets at the time didn’t include a whole lot of individual samples. However, today, when hundreds of individuals can be sequenced throughout their genomes for only a few thousand dollars, the limitations of the direct-to-VCF approach have become more apparent.</p>
+<p>The first problem is that run times for HaplotypeCaller in direct-to-VCF mode do not scale linearly with the number of samples. In other words, if instead of a sample of size 50 birds, you run HaplotypeCaller in direct-to-VCF mode on a sample of 200 birds, the program will not simply require 4 times more computation. Rather, it might require 8 times more computing time. As an example of this, I performed a small experiment with alignments from 240 Chinook salmon. I randomly sampled (without replacement) a subsample of size 4, 8, 16, 24, 36, 48, 72,…, 240 fish and ran a 100 Kb section of their alignments though HaplotypeCaller in direct-to-VCF mode using 4 cores. I repeated this with 10 different random subsamples for each of the sample sizes, and recorded how much CPU time HaplotypeCaller used in each case. The results are plotted in the figure below.</p>
+<p><img src="./figs/haplotype-caller-run-times.svg" class="img-fluid"></p>
+<p>The blue line shows the average CPU time for the 10 replicates at each value of sample size. The blue dots show the CPU time for each individual replicate, and the dashed black line shows what we would expect the times to be—based on the time for 48 samples—if HaplotypeCaller’s run time increased linearly with the number of samples. The blue line clearly looks like a parabola, which means that as your sample sizes get larger and larger, the penalty that you pay having to load all of your samples into HaplotypeCaller at the same time increases faster than the number of samples—it looks like it increases quadratically.</p>
+<p>The second problem with having to run HaplotypeCaller on all of your samples at the same time is encountered when you want to add more samples. If you started your sequencing project with 120 fish, and then after you had created a VCF file using HaplotypeCaller in direct-to-VCF mode, one of your collaborators surprises you with 20 more samples to add to the study, you would have to run all 140 fish, total, through HaplotypeCaller in direct-to-VCF mode, which is somewhat redundant, since you had already run 120 of them through it just a little while before. This problem is called the <span class="math inline">\(N+1\)</span> problem by the GATK developers, presumably because it irked them to no end that they had to run HaplotypeCaller on <span class="math inline">\(N+1\)</span> samples, just to add one more sample to a VCF file that already had <span class="math inline">\(N\)</span> samples in it.</p>
+<p>To solve both the quadratic HaplotypeCaller runtime problem and the <span class="math inline">\(N+1\)</span> problem, the scientists and the developers at the Broad Institute developed what is called the “gVCF workflow.” Although there are several different flavors of this workflow, we will be covering the latest flavor (at the time of writing) which proceeds in these three steps:</p>
+<ol type="1">
+<li><p><code>HaplotypeCaller</code> is run, individually, on each single sample, creating a special type of VCF file called a gVCF file—one gVCF file for each individual sample. This gVCF file encodes information not just about sites that are clearly variable in the individual, but it <em>also</em> records how much evidence there is for the individual having a variable site in between the clearly variable sites.</p></li>
+<li><p>The GATK tool <code>GenomicsDBImport</code> loads the gVCF files from all individuals into a special type of “genomics data base” that is optimized for retrieval of information across individuals at each possible location on each chromosome (or on a collection of scaffolds).</p></li>
+<li><p>The GATK tool <code>GenotypeGVCFs</code> is then used to extract information from the genomics data base about all the individuals, at each position on a chromosome (or in a group of scaffolds), and this is used to jointly call the variants and genotypes of all the individuals, producing, in the end, a proper VCF file for each chromosome (or group of scaffolds).</p></li>
+</ol>
+<p>Having these multiple steps involved in the process of creating a VCF allows for some flexibility in optimizing the desired properties of the workflow. Namely, in step 1, <code>HaplotypeCaller</code> is still used to do a local reassembly of all the reads within a single individual, enhancing the identification of indels, but, since that local realignment is not done over all individuals at once, it doesn’t suffer quadratic scaling with number of samples. Further, Step 3 still gets to use information from all the individuals jointly when calling variants, but it is done within the context of an efficient data base structure that allows that joint process to scale linearly in the number of samples. The hope is that this gVCF workflow provides the same accuracy as joint calling all samples simultaneously in a single run of HaplotypeCaller, while being much faster for larger numbers of samples. Details can be found in <span class="citation" data-cites="poplin2017scaling">@poplin2017scaling</span>.</p>
+<p>Additionally, by saving the gVCF files produced for each individual, or, even better, the genomic databases including all the individuals, adding additional samples can be done relatively quickly by updating the genomic database with information from the new individuals. Thus, this workflow improves upon the <span class="math inline">\(N+1\)</span> problem, being able to use many of the previously computed results (the gVCF files or the genomic data base) from the first <span class="math inline">\(N\)</span> individuals.</p>
+<p>Here, it is worthwhile to reflect upon how this gVCF workflow allows the end goal of obtaining a single VCF file with all your variants and all your samples to be broken down into separate, independent tasks (as this is a huge theme in bioinformatics). The direct-to-VCF workflow could be parallelized by breaking the genome into a lot of small regions and then running HaplotypeCaller on all the samples across just one small region at a time. The gVCF workflow, on the other hand, lends itself to parallelizing over individuals in step 1 (the HaplotypeCaller step) and then parallelizing steps 2 and 3 (genomics data base importing and genotyping) over regions of the genome. The regions focused upon for the genomics data base importing step are typically chromosomes, but you can also, as we shall see, combine many small scaffolds together into a single genomics data base. Step 3 can be further broken down over sub-regions of chromosomes, if desired.</p>
+<section id="step-1.-running-haplotypecaller-and-getting-one-gvcf-for-each-sample" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="step-1.-running-haplotypecaller-and-getting-one-gvcf-for-each-sample"><span class="header-section-number">14.2.1</span> Step 1. Running HaplotypeCaller and getting one gVCF for each sample</h3>
+<p>We will discuss this in the context or our example workflow in Section @ref(make-gvcfs).</p>
+</section>
+<section id="gvcf-format" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="gvcf-format"><span class="header-section-number">14.2.2</span> gVCF files</h3>
+<p>So, you may be wondering what the difference between a VCF file a gVCF file is. It turns out that a gVCF is a special type of VCF file. (One of the nice things about the way VCF files [and SAM files, for that matter], is that the definition of various fields in the file can be made in the header, or in the FORMAT column, which makes it fairly easy to extend the files to novel situations in a format-compliant way.)</p>
+<p>A comprehensive overview of gVCF files can be found at <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format">here</a>, and it is recommended reading. In this section we just summarize the information in that document.</p>
+<p>Let’s start by looking at the first few lines for a chromosome at an individual with low fairly low read depth. We see a lot of lines that look like this:</p>
+<pre><code>#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  s001
+CM031199.1      1       .       A       &lt;NON_REF&gt;       .       .       END=71  GT:DP:GQ:MIN_DP:PL      0/0:1:3:1:0,3,15
+CM031199.1      72      .       T       &lt;NON_REF&gt;       .       .       END=72  GT:DP:GQ:MIN_DP:PL      0/0:1:0:1:0,0,0
+CM031199.1      73      .       A       &lt;NON_REF&gt;       .       .       END=110 GT:DP:GQ:MIN_DP:PL      0/0:1:3:1:0,3,15
+CM031199.1      111     .       C       &lt;NON_REF&gt;       .       .       END=138 GT:DP:GQ:MIN_DP:PL      0/0:1:0:1:0,0,0
+CM031199.1      139     .       T       &lt;NON_REF&gt;       .       .       END=139 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45
+CM031199.1      140     .       A       &lt;NON_REF&gt;       .       .       END=141 GT:DP:GQ:MIN_DP:PL      0/0:2:0:2:0,0,0
+CM031199.1      142     .       T       &lt;NON_REF&gt;       .       .       END=144 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45
+CM031199.1      145     .       A       &lt;NON_REF&gt;       .       .       END=146 GT:DP:GQ:MIN_DP:PL      0/0:2:0:2:0,0,0
+CM031199.1      147     .       G       &lt;NON_REF&gt;       .       .       END=147 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45
+CM031199.1      148     .       G       &lt;NON_REF&gt;       .       .       END=149 GT:DP:GQ:MIN_DP:PL      0/0:2:0:2:0,0,0
+CM031199.1      150     .       A       &lt;NON_REF&gt;       .       .       END=151 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45
+CM031199.1      152     .       A       &lt;NON_REF&gt;       .       .       END=155 GT:DP:GQ:MIN_DP:PL      0/0:2:0:2:0,0,0
+CM031199.1      156     .       A       &lt;NON_REF&gt;       .       .       END=156 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45
+CM031199.1      157     .       G       &lt;NON_REF&gt;       .       .       END=159 GT:DP:GQ:MIN_DP:PL      0/0:2:0:2:0,0,0
+CM031199.1      160     .       G       &lt;NON_REF&gt;       .       .       END=160 GT:DP:GQ:MIN_DP:PL      0/0:2:3:2:0,3,45</code></pre>
+<p>Aha! This is interesting. The gVCF file has records for sites that are not confident variants. Interesting. Each of the rows here gives an indication of how much information the reads from the individual give us about whether there <em>might</em> be a variant site at the individual.</p>
+<p>Breaking it down, starting with the first row, we see that the ALT allele is listed as <code>&lt;NON_REF&gt;</code>. This is simply a code that means “Not the reference allele.” In other words, it is saying, “There might be a variant here, and if there is, then the alternate allele would be something that is not the reference allele.”</p>
+<p>The other interesting thing on that line is the <code>END=71</code> in the INFO field. That is telling us that all of the sites from position 1 (the value in the POS field) to position 71 are described by this single row. Using this type of mechanism, it is possible to describe every position in the genome without having a single row for each position. In other words, this system provides some compression.</p>
+<p>If we look at the genotype column in the first row, we see <code>0/0:1:3:1:0,3,15</code>. The fields between the colons in that are described by the value in the FORMAT column: <code>GT:DP:GQ:MIN_DP:PL</code>. The <code>GQ</code> field (the third one) is 3. That is a Phred scaled probability that the genotype call (<code>0/0</code> or “reference homozygous”) is incorrect in this case. So, this is saying there is a <span class="math inline">\(1 / 10^{3/10} \approx 0.5\)</span> chance that this individual is not homozygous for the reference allele at these sites (from POS = 1 to 71). This is not terribly surprising, since the read depth (in the DP field) at these sites is 1.</p>
+<p>If we go deeper in the file, we find sites with higher read depth, and hence more confidence that the individual is homozygous for the reference allele. For example:</p>
+<pre><code>CM031199.1      1951    .       C       &lt;NON_REF&gt;       .       .       END=1964        GT:DP:GQ:MIN_DP:PL      0/0:8:21:7:0,21,224</code></pre>
+<p>Here, the sites from 1951 to 1964 all have a genotype quality of 21, indicating a chance of <span class="math inline">\(1/10^{21/10} \approx 0.0079\)</span> that the individual is not homozygous for the reference allele at these sites.</p>
+<p>On the other hand, when we come to a site where it is pretty clear from the information in a single individual that there is a variant, like:</p>
+<pre><code>CM031199.1      1903    .       G       T,&lt;NON_REF&gt;     210.02  .       DP=7;ExcessHet=0.0000;MLEAC=2,0;MLEAF=1.00,0.00;RAW_MQandDP=25200,7     GT:AD:DP:GQ:PL:SB   1/1:0,7,0:7:21:224,21,0,224,21,224:0,0,4,3</code></pre>
+<p>that information is recorded. At the site above (POS = 1903), this is saying that there is at least one alternate allele, which is a T, and the gVCF format leaves open the possibility that there is another alternate allele (coded as <code>&lt;NON_REF&gt;</code>) so that the possibility of that can also be computed and recorded. In this case, the individual has 7 reads total, and they are all for the T allele, which leaves us with a high genotype quality (21). The genotype likelihoods for all the different possible genotypes, ordered as:</p>
+<pre><code>GG,GT,TT,GN,TN,NN</code></pre>
+<p>where N means <code>&lt;NON_REF&gt;</code> are also recorded in the PL field that looks like:</p>
+<pre><code>21:224,21,0,224,21,224</code></pre>
+<p>This turns out to be all the information needed to eventually come back to this information in light of what was found at all the other individuals, and then <em>jointly</em> call variants using information from all the individuals.</p>
+</section>
+<section id="genomics-db" class="level3" data-number="14.2.3">
+<h3 data-number="14.2.3" class="anchored" data-anchor-id="genomics-db"><span class="header-section-number">14.2.3</span> The Genomics Data Base</h3>
+<p>The use of a genomics data base in order to speed up joint calling of variants and genotypes across all samples is still fairly new and seems to still be evolving, somewhat, as a part of the GATK ecosystem.</p>
+<p>One thing that is worth understanding is “Why do we have to load all this stuff into a database? Why can’t we just zip through all the gVCF files to do joint variant calling?” The answer to that question is that it is fairly inefficient to have a program open multiple files (for example 100s of gVCF files) and then inch one’s way through each of them, constantly stopping and circling back when a variant position is found in one of the files which must be inspected in all the other files.</p>
+<p>The old way of solving this problem was to combine all the gVCF files (one for each sample) into a single gVCF file that included all the individuals—one column for each. This can be done with GATK’s CombineGVCFs tool. That tool still sees some use in situations where you might only want to focus on a few intervals on different chromosomes that you know of ahead of time. However, when you want to call variants across the whole genome, it is preferable to load the information in the gVCFs into a specialized data base that makes it quick and efficient to garner information at a single position in the genome across all the individuals.</p>
+<p>This is achieved in GATK by using a specialized variant of the TileDB system. TileDB is a data base that was designed to work well with sparse data—meaning that there are lots of possible values that the data can be associated with, but only a small number of those values have different values for the data. In this case, those values are the base positions in the genome, and the data are information from the different individuals (available in the gVCFs for each sample) about whether there is a variant at that position or not. One of the nice features of the TileDB system is that it is computationally economical to update the data base with new information, even if it is necessary to assign new information to a base position that is between two base positions that already have information, and that information can still be accessed quickly. This structure, once it is set up, makes it efficient to work one’s way through the genome base by base and combine information about possible variation from all the individuals, without having to laboriously go through each separate file.</p>
+<p>The drawback of using this genomics data base is that it is something of a black box: it’s a little mysterious and it is hard to look at anything inside of it unless you are a computer scientist that specializes in these types of data bases—in fact, the GenomicsDB format and associated tools are the product of a collaboration between the computer scientists at Intel and the bioinformaticians at the Broad Institute.</p>
+<p>As of this writing, there are two important documents on the GATK website for understanding how to use the GenomicsDBImport tool to import gVCF files into this genomics data base. The first is <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360057439331-GenomicsDBImport">here</a> and the second one, that goes more into performance considerations is <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360056138571-GenomicsDBImport-usage-and-performance-guidelines">here</a>.</p>
+<p>From the perspective of conservations genomicists who are working on non-model organisms, the most important thing to understand is that GenomicsDBImport is designed parallelize well by working on a single chromosome at a time—so you would typically launch multiple jobs, one for each chromosome, specified with the <code>--interval</code> option. For example using <code>--interval CM031199.1</code> would make <code>GenomicsDBImport</code> create a data base that included only the chromosome <code>CM031199.1</code>. In the end, after doing that you get a completely separate data base (that occupies its own separate directory) for each chromosome. This is all fine and well if you are using a well-assembled human genome with all the DNA in chromosomes. However, in non-model organisms, an appreciable fraction of the reference genome might be recorded in thousands of short scaffolds. There is so much overhead involved in setting up these genomic data bases, that it does not make sense to set up a separate data base for each of the thousands of scaffolds that might only be 5 to 10 kb long (or even shorter!). Fortunately, there is an option to mash all these short scaffolds together into a single data base that treats all these scaffolds catenated together as if they were a single chromosome. This uses the <code>--merge-contigs-into-num-partitions</code> option.</p>
+<p>My approach to using the <code>--merge-contigs-into-num-partitions</code> is to break the scaffolds down into <em>scaffold_groups</em> such that each of those scaffold groups has total length (the sum of the lengths of the scaffolds) is about 1/3 to 1/2 the average length of a chromosome. Then each separate scaffold group can be fed into GenomicsDBImport as a separate job, using <code>--merge-contigs-into-num-partitions 1</code> to make sure that all of those scaffolds get merged into a single “pseudo-chromosome”. After these data bases are made, when you use them to call variants and create VCF files, they will produce a sinble VCF file that properly indicates which scaffold each variant was from—it doesn’t rename the scaffolds with some sort of pseudo-chromosome name.</p>
+<p>The other particularly germane option to <code>GenomicsDBImport</code> is <code>--genomicsdb-shared-posixfs-optimizations</code>. This is recommended any time that your computer uses a shared POSIX filesystem, which, I believe, is going to almost always be the case when you are using an HPCC. So, if you are working on a cluster, you should always use this option.</p>
+<p>If you have hundreds of samples, <code>GenomicsDBImport</code> can start to bog down if it opens connections to hundreds of gVCF files at the same time. In this case it is recommended that you tell <code>GenomicsDBImport</code> to import the gVCF files in batches of 50 using the option <code>--batch-size 50</code>. This imports the first 50 samples, then closes all their files, and then updates the data base by importing the next 50, and so on.</p>
+<p>The program <code>GenomicsDBImport</code> can use multiple threads while reading the files; however, in my experience, there is little advantage above two threads. So, it can be useful to set the option <code>--reader-threads 2</code>.</p>
+<p>By default, <code>GenomicsDBImport</code> will</p>
+<p>Finally, since this is a GATK program written in Java, we can allocate memory to the Java Virtual Machine. However, with <code>GenomicsDBImport</code> we have to be a little careful, because much of the work in loading the data base is done using calls to compiled C++ libraries from the Java program. These libraries, themselves, can consume memory as well. So, you want to be careful not to give more than 80% or so of the available memory (i.e., the memory that you reqested from SLURM) to the Java Virtual Machine.</p>
+<p>We can bring all of these together by running GenomicsDBImport in our example workflow. See Section @ref(use-genomicsdbimport).</p>
+</section>
+<section id="gdb-update" class="level3" data-number="14.2.4">
+<h3 data-number="14.2.4" class="anchored" data-anchor-id="gdb-update"><span class="header-section-number">14.2.4</span> Updating the GenomicsDatabase</h3>
+<p>One of the advantages of using a sparse data base format like TileDB is that it is possible to expand the data base without completely rearranging the existing content and without creating a new data base in which access to all the elements has been slowed considerably.</p>
+<p>In fact, this is one of the big selling points of the GenomicsDB approach, especially as concerns the “<span class="math inline">\(N+1\)</span>” problem: if you have kept your genomics data bases, then adding one or a few individuals to them can be quite quick. Of course, as we will see, the following step of creating a VCF file from the genomics data base still has to be done, and that can take a long time; however, at least when everything is stored in the genomics data base, that step should scale almost linearly with the number of samples, rather than quadratically (as we say above with the “direct-to-vcf” approach).</p>
+<p>In principle, updating a GenomicsDB by adding information from new samples should be as easy as running GenomicsDBImport with a <code>--genomicsdb-update-workspace-path path_to_dir</code> option rather than the <code>--genomicsdb-workspace-path path_do_dir</code> option (where <code>path_to_dir</code> is simply the path to the existing genomics database directory, in the first case, and it is the path where you want the genomics database directory to be created, in the second case). Interestingly, when you run GenomicsDBImport to update an existing data base, you don’t supply the “–intervals` option, because the program will simply use the contents of the existing data base (that is being updated) to figure out which genomic intervals (i.e., which chromosome or which scaffold group) to import. This makes sense: you wouldn’t want to import the new samples at a different interval within the genomics data base—that simply wouldn’t work.</p>
+<p>One thing that is important to note about GenomicsDBImport, as it stands today, is that you can only ever import a sample into it once. Thus, if, after creating a genomics data base with data from 50 individuals, you decide to do more sequencing on 10 of those individuals that didn’t have enough sequence depth, then you can’t just make new VCFs for those 10 individuals from the new sequencing and add it into the data base. Rather, you would have to merge the new data at the BAM file stage and then make new gVCFs and then import those 10 new gVCFs and the 40 existing ones into a new genomics data base.</p>
+<p>Finally, a word of caution: the documentation for GenomicsDBImport is replete with warnings about how you should backup your genomics data bases before trying to update them. Apparently there is a good chance that any little glitch during the updating process could corrupt the entire data base and render it useless. Joy!</p>
+<p>With that as a preamble, it does seem that we should try creating some data bases and then adding samples to them.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../nmfs-bioinf/snakemake-embellishments.html" class="pagination-link" aria-label="Important Snakemake Embellishments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/variant-calling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
