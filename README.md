@@ -805,3 +805,100 @@ More Snakemake. SLURM profiles, snakemake configuration files, and input functio
 - Sync your fork and then go to [`assignments/007-vote-for-topics`](https://github.com/eriqande/con-gen-csu/tree/main/assignments/007-vote-for-topics) and follow the directions in the README there.
 
 
+
+
+
+
+### Tuesday, March 19, 2024
+
+Variant Calling
+
+
+#### In Class (Going over some basic likelihood and probability things)
+
+
+- We will just be working through select sections of [this variant calling section](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/variant-calling.html)
+
+
+### Thursday, March 21, 2024
+
+Hard filtering of GATK-produced VCF files; the disastrous decision by GATK's developer to violate the VCF specification
+
+#### Prep (Reading and some hands-on exercise to do before class!)
+
+**Reading**
+- The standard [GATK recommendations for Hard filtering](https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2)
+- The saga of GATK versions calling missing data as reference homozygotes:
+    * Start with some messages I sent them: [start here and read a few exchanges](https://gatk.broadinstitute.org/hc/en-us/community/posts/4476803114779/comments/5934732890651)
+    * The above apparently inspired a GATK [blog post](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531-GenotypeGVCFs-and-the-death-of-the-dot) 
+    * Then not much happened apparently until people started upgrading their GATK versions and found many of their pipelines were broken.  For that start reading the 
+      [comments to the blog post that started coming in around summer of 2023 and Feb of 2024](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531/comments/17128642713499)
+      
+**Hands On Learning**
+The materials for the hands-on can be obtained in RStudio with the following steps:
+```r
+if(!("usethis" %in% rownames(installed.packages()))) {
+  install.packages("usethis")
+}
+usethis::use_course("eriqande/ngs-genotype-models")
+```
+
+- You will need to answer the “Yes” response to a few questions. This will download an RStudio project and open it.
+- From this RStudio project’s file browser, you can open the RMarkdown files, like: `001-allele-freq-estimation.Rmd`.
+- If the message at the top of the file says you need some new packages, click the install option.
+- Then Click the “Run Document” button at the top middle of the source code file.  This runs an interactive shiny program
+
+**Read and do the activities in the Shiny Notebooks:  `001-allele-freq-estimation.Rmd` and `002-genotype-likelihoods-from-reads.Rmd`**
+
+There is nothing to turn in, but please read through these and play with them for a couple hours.
+
+#### In class
+
+- Summarizing everyone's votes on topics for the rest of the semester.
+    + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
+      and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
+- Learning about VCF files and the format:
+    + Reading through  [this](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#variants)
+    + Playing around with and looking at:  `data/vcf/all.vcf.gz`  (i.e., `bcftools view data/vcf/all.vcf.gz | less -S`
+- Working on hard filtering of our example data.
+
+
+#### Assignment (Due by the start of class on Tuesday, March 26)
+
+- We will be applying hard filtering to our example Snakemake workflow. Click [here](https://github.com/eriqande/con-gen-csu/blob/main/assignments/008-hard-filter-gatk-vcfs/README.md) for full details
+
+
+## Tuesday, March 26. 2024  Handling VCF Files, etc.
+
+### Read
+  - Read [this](https://eriqande.github.io/eca-bioinf-handbook/handle-vcf.html) from the handbook. I am going to port that to quarto, so some things
+    will change over the weekend.
+
+
+
+## Thursday, March 28, 2024.  This class will be remote for CSU students and in person for NMFS folks!
+
+- I am traveling to Santa Cruz.  Hopefully I can reserve the fishbowl.  Colorado (and Montana), use the google video links at the top of this README.
+- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT**
+
+## Tuesday  April 2, 2024
+
+- We will talk about projects.
+- I will give everyone some reading on our analysis topics
+
+
+## Thursday, April 4, 2024.  NO CLASS!
+
+- Work on your projects.
+- Eric will post some readings.
+- Eric is figure skating in front of a panel of judges.
+
+## Tuesday, April 9, 2024.  NO CLASS!
+
+- Work on your projects.
+- Eric will post some readings.
+- Eric is a scientist-in-residence at the mobile High Altitude Venue for Ecological Analysis, Genetics, and Statistics,
+  mHAVEAGAS, working on parentage in admixed populations.
+
+  
+
