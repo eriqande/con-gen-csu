@@ -893,7 +893,7 @@ There is nothing to turn in, but please read through these and play with them fo
 - Eric will post some readings.
 - Eric is figure skating in front of a panel of judges.
 
-## Tuesday, April 8, 2024.  NO CLASS!
+## Tuesday, April 9, 2024.  NO CLASS!
 
 - Work on your projects.
 - Eric will post some readings.
