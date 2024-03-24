@@ -2,7 +2,7 @@
 from snakemake import __version__ as snakemake_version
 smk_major_version = int(snakemake_version[0])
 
-edit?
+# This is the good file!
 
 # import modules as needed. Also import the snakemake
 # internal command to load a config file into a dict
@@ -74,10 +74,10 @@ def get_read_group(wildcards):
 ### Specify rule "all"
 # By default, Snakemake tries to create the input files needed
 # for the first rule in the Snakefile, so we define the first
-# rule to ask for "results/vcf_stats/all.vcf.stats"
+# rule to ask for results/vcf/all.vcf.gz
 rule all:
   input: 
-    expand("results/vcf_stats/all.vcf.stats/{chromo}.vcf.gz", chromo=CHROMOS)
+    vcf="results/vcf_stats/all.vcf.stats"
 
 
 
@@ -149,7 +149,7 @@ rule trim_reads:
     "       -h {output.html} -j {output.json} "
     "  --adapter_sequence={params.as1}        "
     "  --adapter_sequence_r2={params.as2}     "
-    "  {params.parm} > {log.out} 2> {log.err} "
+    "  {params.parm} > {log.out} 2> {log.err}                         "
     
 
 
@@ -289,6 +289,7 @@ rule select_indels:
     " -O {output} > {log} 2>&1 " 
 
 
+
 # break out just the SNPs
 rule select_SNPs:
   input:
@@ -304,7 +305,7 @@ rule select_SNPs:
     "gatk SelectVariants "
     " -V {input.vcf} "
     " -select-type SNP "
-    " -O {output} > {log} 2>&1 " 
+    " -O {output} > {log} 2>&1 "
 
 
 
@@ -326,9 +327,8 @@ rule hard_filter_indels:
     " -V {input.vcf} "
     " {params.filters}      "
     " -O {output} > {log} 2>&1 "
-
-
-
+    
+    
 # filter the SNPs according to the recommendations at:
 # https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2
 rule hard_filter_SNPs:
@@ -347,13 +347,14 @@ rule hard_filter_SNPs:
     " -V {input.vcf} "
     " {params.filters}      "
     " -O {output} > {log} 2>&1 "
-
-
-
+    
+    
+    
 # merge the indels and SNPs variants
 rule merge_variants:
   input:
-    vcf="results/hard_filtering/indels-filtered/{chromo}.vcf.gz, results/hard_filtering/SNPs-filtered/{chromo}.vcf.gz"
+    vcf1="results/hard_filtering/SNPs-filtered/{chromo}.vcf.gz", 
+    vcf2="results/hard_filtering/indels-filtered/{chromo}.vcf.gz"
   output:
     vcf="results/hard_filtering/merged/{chromo}.vcf.gz"
   conda:
@@ -363,9 +364,11 @@ rule merge_variants:
   benchmark:
     "results/benchmarks/merged_variants/{chromo}.bmk"
   shell:
-    "gatk MergVcfs "
-    " -V {input.vcf} "
-    " -O {output} > {log} 2>&1 "
+    "gatk MergeVcfs "
+    " -I {input.vcf1} "
+    " -I {input.vcf2}"
+    " -O {output} > {log} 2>&1 "    
+
 
 
 # change 0/0 to ./. with bcftools
@@ -373,11 +376,11 @@ rule missing_corrected:
   input:
     vcf="results/hard_filtering/merged/{chromo}.vcf.gz"
   output:
-    vcf="results/missing-corrected/{chromo}.vcf.gz"
+    vcf="results/missing_corrected/{chromo}.vcf.gz"
   conda:
     "envs/bcftools.yaml"
   log:
-    "results/logs/missing-corrected/{chromo}.log"
+    "results/logs/missing_corrected/{chromo}.log"
   shell:
     " (bcftools +setGT {input} -- -t q -n . -i 'FMT/DP=0 | (FMT/PL[:0]=0 & FMT/PL[:1]=0 & FMT/PL[:2]=0)' | "
     " bcftools +fill-tags - -- -t 'NMISS=N_MISSING' | "
@@ -385,9 +388,10 @@ rule missing_corrected:
     " bcftools index -t {output}) 2> {log} "
 
 
+
 rule concat_vcfs:
   input:
-    vcfs=expand("results/missing-corrected/{c}.vcf.gz", c=CHROMOS)
+    vcfs=expand("results/missing_corrected/{c}.vcf.gz", c=CHROMOS)
   output:
     vcf="results/vcf/all.vcf.gz"
   conda:
@@ -396,9 +400,9 @@ rule concat_vcfs:
     "results/concat_vcfs/all.log"
   shell:
     "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
-
-
-
+    
+    
+    
 rule vcf_stats:
   input:
     vcf="results/vcf/all.vcf.gz"
@@ -409,4 +413,8 @@ rule vcf_stats:
   log:
     "results/vcf_stats/all.log"
   shell:
-    "bcftools stats {input.vcfs} > {output.vcf} 2> {log} "
+    "bcftools stats {input.vcf} > {output.vcf} 2> {log} "
+    
+    
+    
+
