@@ -190,13 +190,10 @@ single characters represents a quality score---a number between 0 and 40, inclus
 
 The values that have been used are the _decimal representations of ASCII text characters_ minus 33.  
 The decimal representation or each character can be found in @fig-ascii.
-```{r}
-#| echo: false
-#| message: false
-#| label: fig-ascii
-#| fig-cap: 'This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom.  Table produced from TeX code written and developed by Victor Eijkhout available at [https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex](https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex)'
-knitr::include_graphics("figs/ascii-crop.png", auto_pdf = TRUE)
-```
+
+![This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom.  Table produced from TeX code written and developed by Victor Eijkhout available at [https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex](https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex)](./figs/ascii-crop.png){#fig-ascii}
+
+
 The decimal representation is in the upper left of each character's rectangle.  
 
 Find the characters corresponding to base quality scores of 0, 10, 20, 30, and 40.  Remember that the
@@ -309,9 +306,9 @@ the base-1 coordinate system counts "beads" that are the actual base pairs,
 while the base-0 system counts "fences" that separate the beads.  In the following picture,
 the fences and their corresponding numbers are red, while the beads and their corresponding
 numbers are black.
-```{r, echo=FALSE}
-knitr::include_graphics("figs/base-0-and-1-cropped.svg")
-```
+
+![Base-0 vs Base-1 coordinate systems in terms of fences and beads](./figs/base-0-and-1-cropped.svg)
+
 From this picture, it is pretty clear that if you have a base-1
 range from $x$ to $y$ (with $x \leq y$), then you could refer to that
 by the base-0 range from $x-1$ to $y$ (those are the "fences" that contain the
@@ -600,7 +597,7 @@ benefit from further explanation as given in the subsections below.
 #| message: false
 #| label: tbl-sam-cols
 #| tbl-cap: "Brief description of the 11 required columns in a SAM file."
-tab <- readr::read_delim("table_inputs/sam-columns-table.txt", delim = "&", trim_ws = TRUE)
+tab <- readr::read_delim("./nmfs-bioinf/table_inputs/sam-columns-table.txt", delim = "&", trim_ws = TRUE)
 pander::pander(
   tab,
   booktabs = TRUE,
@@ -649,7 +646,7 @@ which also lists the meaning of each bit.
 #| label: tbl-sam-flags
 #| tbl-cap: 'SAM flag bits in a nutshell.  The description of these in the SAM specification is more general, but if we restrict ourselves to paired-end Illumina data, each bit can be interpreted by the meanings shown here. The "bit-grams" show a visual representation of each bit with open circles meaning 0 or False and filled circles denoting 1 or True.  The bit grams are broken into three groups of four, which show the values that correspond to different place-columns in the hexadecimal representation of the bit masks.'
 
-tab <- readr::read_delim("table_inputs/sam-flag-table.txt", delim = "&", trim_ws = TRUE)
+tab <- readr::read_delim("./nmfs-bioinf/table_inputs/sam-flag-table.txt", delim = "&", trim_ws = TRUE)
 pander::pander(
   tab,
   booktabs = TRUE,

@@ -1,0 +1,437 @@
+# Basic Handling of VCF files {#handle-vcf}
+
+As we saw in the section on bioinformatic formats, VCF files can be
+large and unwieldy.  The format specification is also such that fields
+might have different numbers of subfields, depending, for example, on the
+number of alleles found at a variant.  Both of these features make it
+hard to directly read a VCF file into, say, R, or some other program
+that may wish to treat it purely as tabular data.  
+
+This is not to say that you couldn't just read a VCF file into R directly
+as a TAB delimited text file, and then start splitting fields up on it.
+However, there are specialized tools for doing operations on VCF files,
+and becoming familiar with them can relieve a lot
+of the pain of dealing with VCF files.
+
+To have an example VCF file to play with, the course repository contains
+a `vcf.gz` file at `data/vcf/all.vcf.gz`  you can
+download one to your Unix workstation with the following commands.
+You should put these files in your `scratch` directory somewhere, perhaps
+creating a directory called `bcftools-play` to put them into.  All the following
+commands assume that the two example files are in the current working directory.
+
+First we download the `vcf.gz` version of the VCF file, called `all.vcf.gz`.  This 
+is the unfiltered VCF file created by our example WGS workflow in Section \@ref(example-wgs-flow):
+```sh
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1zgFyYbfWU85O4JzmOX7-MOKQs4oXv4fm' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1zgFyYbfWU85O4JzmOX7-MOKQs4oXv4fm" -O all.vcf.gz && rm -rf /tmp/cookies.txt
+
+```
+
+After that, we also download the BCF version of the same file, just so that everyone
+gets familiar with the fact that BCF files can be treated equivalently
+to VCF files with `bcftools`.
+```sh
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1iUP_UstnmuLSGuBIfb0EYXs1Gw1z-z0o' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1iUP_UstnmuLSGuBIfb0EYXs1Gw1z-z0o" -O all.bcf && rm -rf /tmp/cookies.txt
+
+```
+
+To repeat, BCF and vcf.gz are two formats serving similar purposes.  I will be using both
+`all.bcf` and `all.vcf.gz` interchangeably in the following examples.
+
+There are two main, well-known programs for handling VCF files: `vcftools` and `bcftools`.  Both
+of these grew out of the 1000 Genomes effort starting about a decade ago. It seems
+that `vcftools` may have been developed first, but, currently, `bcftools` is being
+more actively developed, with new versions and new features being added to it
+regularly.  `vcftools` provides some very specific commands for particular analyses
+or operations, some of which are not available from `bcftools`.  On the other hand,
+`bcftools` provides a more general interface for operations on VCF files. By this
+interface, a great number of the operations done in `vcftools` are available, but
+a little extra knowledge is required to implement them.  That said, the range of
+possible operations seems much larger in `bcftools` than in `vcftools`.
+
+Further, `bcftools` behaves like a typical Unix utility, allowing data to be streamed
+to stdout, and data can be streamed _into_ `bcftools` (by using the `-` as the
+input file name) from stdin.  This lets you pipe output into it the way you
+can with most Unix tools.  This makes it far more versatile than `vcftools`.
+
+
+## bcftools
+
+If you don't already have `bcftools`, you can use `mamba` to create a conda
+environment called `bcftools` that has it:
+```sh
+mamba create -n bcftools -c conda-forge -c bioconda bcftools=1.15.1
+conda activate bcftools
+```
+(Note the use of `-c conda-forge` in the above.  This is present because
+some of the dependencies for `bcftools` are not found on the bioconda channel.
+Rather they are on the conda-forge channel.  If you conda/mamba environment is not
+set up to search conda-forge by default, then the `-c conda-forge` is required to 
+get all the dependencies.)
+
+
+Here, we just want to give everyone the chance to run through a few
+operations with `bcftools`, to start to get familiar with its interface.
+The first thing to note is that, like `samtools` (which is maintained by
+the same group of people), `bcftools` possesses a number of different
+_subcommands_.  So, the syntax is always like:
+
+* `bcftools` _subcommand_ options file(s)
+
+Also like `samtools`, `bcftools` will take input from _stdin_ rather than
+from a file---you just pass it `-` instead of a file name.
+
+The full documentation/manual for `bcftools` is maintained at:
+[http://samtools.github.io/bcftools/bcftools.html](http://samtools.github.io/bcftools/bcftools.html).  It is well worth reading through this whole documentation, though it
+can be quite terse and intimidating.  A friendlier "tutorial" introduction to the
+software can be found at [https://samtools.github.io/bcftools/howtos/index.html](https://samtools.github.io/bcftools/howtos/index.html).
+
+
+Here we are going to get our feet with with a few operations.
+
+First, we will look at the "onboard" documentation.  By just entering `bcftools` you get a
+list of all the subcommands that are available:
+```sh
+bcftools
+```
+
+If you want the onboard documentation for any of the particular subcommands, you can
+just give a naked `bctools subcommand` command, like:
+```sh
+bcftools index
+```
+or, for a more daunting set of documentation:
+```sh
+bcftools roh
+```
+
+### Index my VCF file!
+
+The first thing we are going to do is index our VCF files.
+We create the default index, a _coordinate sorted index_ which
+has the `.csi` extension.  If your VCF file is not in coordinate-sorted
+order, you might have to sort it before you do this.  However,
+`all.vcf.gz` and `all.bcf` are already sorted. So:
+```sh
+bcftools index all.vcf.gz
+bcftools index all.bcf
+```
+Use `ls` to see the new files created by that operation.
+
+The index allows for rapid access to different parts of the files that
+correspond to specific locations in the genome.
+
+
+
+### Tell me about my VCF file!
+
+VCF files are a little daunting.  Especially when they are gzipped
+(or are BCF files!) they
+can seem particularly opaque---learning anything about them in the traditional
+manner of uncompressing them and then searching for lines within them
+or counting up the number of records can be time consuming.  Here are some
+`bcftools` solutions to a few different questions you might have.
+
+**Who is in this file?** You can always try to find the last header line
+in a VCF file using grep or awk and parse the individuals out yourself, but
+it turns out to be faster and safer to use the `query` subcommand from `bcftools`
+with the `-l` option. Do it here:
+```sh
+bcftools query -l all.vcf.gz
+
+# And, of course, you can do the same with the BCF file
+bcftools query -l all.bcf
+```
+Then read about it on the manual page.  Find the part that describes it.
+
+
+**How many variants are in this file?** This question can be answered quickly with
+`bcftools stats`, which also returns to you a plethora of information about the variants.
+```sh
+bcftools stats all.vcf.gz | less
+```
+The top part of the output tells you how many SNPs and indels (and other types
+of variants) there are. Then it tells you about Ts/Tv ratios, then it essentially
+gives histogram summaries for allele frequencies,
+variant quality scores (QUAL), insertion-deletion sizes, substitution types, read depths, etc.
+
+**Where are these variants?**  There are several ways to answer this question.
+One might be simply to print the CHROM and the POS for each row in the VCF file:
+```sh
+bcftools query -f '%CHROM\t%POS\n' all.vcf.gz
+```
+If you want to see where it starts and where it finishes you can do:
+```sh
+bcftools query -f '%CHROM\t%POS\n' all.vcf.gz | head 
+bcftools query -f '%CHROM\t%POS\n' all.vcf.gz | tail
+```
+
+If we wanted to quickly see how many variants were on each of the
+chromosomes/scaffolds, sorted by number of variants, we could do:
+```sh
+bcftools query -f '%CHROM\t%POS\n' all.vcf.gz | awk '{n[$1]++} END {for(i in n) print i, n[i]}' | sort -nbr -k 2 | less
+```
+This shows one use of the subcommand `query`, which is quite useful.
+Even though it is named `query` its main purpose is simply extracting fields
+of information from a VCF file and spitting them out in a new, user-specified,
+typically tabular format.
+
+**Give me a glimpse of the file**  You can use `bcftools view` for a number
+of things, but at its simplest, you can merely look at the file in VCF format.
+(In this manner, it behaves much like `samtools view` for VCF files).
+```sh
+# show the whole file from the top
+bcftools view all.bcf | less
+
+# of course, this works with either bcf or vcf or vcf.gz
+bcftools view all.vcf.gz | less
+
+# show just the header with -h.  Here we look at just the last 10 lines of the header
+bcftools view -h all.bcf  | tail
+
+# show the variants themselves (no header) with -H
+bcftools view -H all.vcf.gz | head
+```
+
+Just like you can with `samtools view` you can convert formats with `bcftools view`.
+Pipe a VCF into it and then use the `-O` (Big-O, not a zero) option:
+
+- `-O z`: bgzipped VCF (vcf.gz)
+- `-O v`: uncompressed VCF (the default)
+- `-O u`: uncompressed BCF
+- `-O b`: compressed BCF
+
+
+
+### Rename the samples/individuals in the file
+
+We saw above that the names of the samples in the file are like `s001`, `s002`.
+This was not actually what I had intended! The names in here are set by the
+`SM` field of the read groups in the BAM files from which variants are called.
+In Section \@ref(map-with-array), where those BAM files were made, I
+screwed up and used the wrong column from the `numbered-units.tsv` file to
+set the `SM` value in the read groups.  I wanted to use `sample_id` not `sample`.
+However, all is not lost.  We don't have to go all the way back to the beginning
+and remap everything and call variants.  We simply rename the samples in the file.
+For this we can use `bcftools reheader`.  First, look at the documentation for that,
+both on the web, and with:
+```sh
+bcftools reheader
+```
+Aha! we see that the web-based documentation is a little more complete, and it tells
+us what format to use for a sample-renaming file for the `-s` option.
+Copy the following contents (using `nano`, for example) into a file called `sample-renames.txt`
+
+```
+s001	T199967
+s002	T199968
+s003	T199969
+s004	T199970
+s005	T199971
+s006	T199972
+s007	T199973
+s008	T199974
+```
+
+Then we can make a renamed `bcf` file with:
+```sh
+bcftools reheader -s sample-renames.txt all.bcf  > renamed-all.bcf
+```
+and a renamed `vcf.gz` file with:
+```sh
+bcftools reheader -s sample-renames.txt all.vcf.gz  > renamed-all.vcf.gz
+```
+In this case, the type of output file (bcf or vcf.gz) is the same
+as the type of the input file.
+
+**Exercise** Use `bcftools view` and `tail` to see that the names have really been
+changed. Then use `bcftools query` to do the same.
+
+### Get fragments/parts of my VCF file
+
+There are lots of ways to extract desired bits of information
+from a VCF file into a more manageable format.
+
+**Extract keyed values from the INFO field**  When we did this:
+```sh
+bcftools view -H | less
+```
+we saw that there is a lot of information in the INFO
+field.  What if we wanted to extract that?  It looks like it could be
+hard to parse because the fields are in semi-colon-separated
+key-value pairs.  
+
+This is another job for `bcftools query`.
+You pass a _format string_ to the `-f` option that tells the program which fields you want
+to extract and how you want to format it.  In general, the values are preceded by
+a `%` and subfields of the INFO column can be named described
+like `%INFO/SUBFIELD`.  You can ask for TABs between fields with
+`\t` and for line endings with `\n`.  In general you need to wrap all of these format
+specifications in single quotes so that the shell does not get confused by them.
+
+Check out some examples:
+```sh
+# extract CHROM POS and BaseQRankSum, separated by TABs
+bcftools query -f '%CHROM\t%POS\t%INFO/BaseQRankSum\n' all.vcf.gz | less
+
+# extract CHROM POS and total read depth DP
+bcftools query -f '%CHROM\t%POS\t%INFO/DP\n' all.bcf | less
+```
+
+You can even extract information from each of the genotype columns.  If you want to print
+CHROM and POS and then all of the PHRED-scaled genotype likelihoods for all the samples, separated
+by TABs, you can do:
+```sh
+bcftools query -f '%CHROM\t%POS\t[%PL\t]\n' all.bcf | less
+```
+Note that FORMAT values (i.e., those in the genotype columns) must be wrapped in
+`[ ]` to get all the values to be printed out.
+
+**EXERCISE** Extract the CHROM, POS, Maximum Likelihood-estimated Allele Frequency (MLEAF in the INFO
+column) for each variant, along with the allele depths (AD) of each individual, all TAB separated, from the
+file `all.vcf.gz`.
+
+
+
+**View data from specified regions**
+
+What if we want to look at variants only in two 10 Kb regions, like
+`CM031199.1:1-10000` and `CM031200.1:1000000-1005000`?  Pass those,
+separated by commas, to the `-r` option (which is an option that applies to many
+of the subcommands):
+```sh
+bcftools view -H -r CM031199.1:1-10000,CM031200.1:1000000-1005000 all.vcf.gz | less
+```
+You can also specify those regions in a file with the `-R` option.
+
+
+**View data from specified individuals**
+
+You can give the sample names (comma separated) to the `-s` option:
+```sh
+bcftools view -H -s s001,s002,s003 all.vcf.gz | less
+```
+Or, if you wanted to view all _but_ those two individuals, precede them with a `^`:
+```sh
+bcftools view -H -s ^s001,s002,s003 all.vcf.gz | less
+```
+You can also supply a text file with sample names (one-per-line) to the capital letter `-S` option.
+
+You can combine options, like `-r` and `-s`, as well.
+
+### Combine VCF files in various ways
+
+**Catenate VCF files**
+
+If you have VCF files called from the same reference genome filled with
+the same samples, it is easy to catenate them together with `bcftools concat`:
+```sh
+# make two files from different regions
+bcftools view -O z -r CM031199.1:1-10000 all.vcf.gz  > A.vcf.gz
+bcftools view -O z -r CM031200.1:1000000-1005000 all.vcf.gz  > B.vcf.gz
+
+# how many variants in each of those?
+bcftools stats A.vcf.gz | awk '/^SN/'
+bcftools stats B.vcf.gz | awk '/^SN/'
+
+# catenate the back together
+bcftools concat -Oz  A.vcf.gz B.vcf.gz > CAT.vcf.gz
+
+# how many variants in that?
+bcftools stats CAT.vcf.gz | awk '/^SN/'
+```
+Note that when using the `-O` (capital "o") option to specify the output
+type: `v` = VCF, `b` = BCF, `u` = uncompressed BCF, `z` = bgzipped VCF, you
+don't need a space after the `-O`.
+
+**Merge VCF files**
+
+If you have files with different samples in them you
+can easily combine them:
+```sh
+# make file with first three samples
+bcftools view -Oz -s s001,s002,s003 all.vcf.gz > first3.vcf.gz
+
+# make another with the last three samples
+bcftools view -Oz -s s006,s007,s008 all.bcf > last3.vcf.gz
+
+# merging requires that the files be indexed
+bcftools index first3.vcf.gz
+bcftools index last3.vcf.gz
+
+# merge those into a file with 6 samples
+bcftools merge -Oz first3.vcf.gz last3.vcf.gz > 6-samples.vcf.gz
+
+```
+
+### Filter out variants for a variety of reasons
+
+There are a lot of ways to filter out variants.  `bcftools` leaves things
+very general here, and so just about anything is possible.  Some simple ones appear below.
+Remember, we are piping the result to `bcftools stats` just so that we can
+see the result.  If you really wanted to make a filtered file, you would typically
+just redirect it to a file.
+
+**Just the biallelic SNPs please**  Get things with no more than 2 alleles and
+no fewer than two alleles, and of a type = SNP:
+```sh
+# do it and summarize the result to look at it, all in one line:
+bcftools view -Ou -m 2 -M 2 --types=snps all.bcf | bcftools stats - | awk '/^SN/'
+```
+
+**Just the biallelic indels please**
+```sh
+# do it and see the result all in one line:
+bcftools view -Ou -m 2 -M 2 --types=indels all.vcf.gz | bcftools stats - | awk '/^SN/'
+```
+
+Note the use of `-Ou` in order to pipe uncompressed BCF output directly into
+`bcftools stats` using the `-` for a filename.
+
+**Fraction of missing sites less than X**
+
+If you want to make sure that 60% of your individuals have at least
+one read at the genotype, you can do this:
+```sh
+bcftools view -i 'F_MISSING < 0.4' all.vcf.gz | bcftools stats - | awk '/^SN/'
+```
+Play with setting the `F_MISSING` to different values and see how that affects
+the number of variants retained.  (Not much with this example data set, it turns
+out, because there is not much missing data.
+
+**Exclude based on various features of the data**
+
+You can use the `-e` option to `bcftools view` or `bcftools filter` to _exclude_ sites that
+meet certain criteria. (You can use `-i` to _include_ those sites and no others).
+
+For a terrifyingly terse and dense description of what sorts of expressions can be used to
+describe the criteria, see the web manual section on expressions: [http://samtools.github.io/bcftools/bcftools.html#expressions](http://samtools.github.io/bcftools/bcftools.html#expressions).
+
+For example, to only keep things with a maximum-likelihood-estimated allele frequency between 0.4 and 0.6:
+```sh
+bcftools view -i 'INFO/MLEAF >= 0.4 && INFO/MLEAF <= 0.6' all.bcf | bcftools query -f '%INFO/MLEAF\n' | less
+```
+
+Note we are piping the result to `bcftools query` in order to see what the actual MLEAFs are
+after filtering.  For the most part, this has worked, except for cases in which there are more than
+two allele freqencies.  If we wanted to filter those out, we could filter to only biallelic sites,
+or, for the sake of illustration, we could retain only those sites at which the MLEAF value for the
+_first_ alternate allele is between 0.4 and 0.6:
+```sh
+bcftools view -i 'INFO/MLEAF[0] >= 0.4 && INFO/MLEAF[0] <= 0.6' all.bcf | bcftools query -f '%INFO/MLEAF\n' | less
+```
+Cool!
+
+
+How about excluding those sites in which any individual had a DP less than 5.  We can
+test each of the DP columns in the FORMAT columns.  We name these `FMT/DP`.
+Note that each test (from each sample)
+is combined with an OR by default, so:
+```sh
+bcftools view -H -e 'FMT/DP < 5' all.bcf | less
+```
+
+To make it easier to see what the DPs are there, let's print them:
+```sh
+bcftools view -e 'FMT/DP < 5' all.bcf | bcftools query -f '%CHROM\t%POS\t[%DP\t]\n' | less
+```

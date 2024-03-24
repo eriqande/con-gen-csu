@@ -721,14 +721,184 @@ Snakemake Concepts and Basics
 
 #### Prep (read this before---or after, since I didn't post it til late---today's session)
 
+<details>
+  <summary>Click here for full details</summary>
 - Read the first full section of the [snakemake overview chapter](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snake.html)
+</details>
 
 #### In Class (Running through a Snakemake example)
 
+<details>
+  <summary>Click here for full details</summary>
 - This is all done in the form of quarto/revealjs [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section).
+</details>  
 
-#### Assignment (Due Friday, March 1, 2024)
+#### Assignment (Due Friday, March 1, 2024)  Simple editing of a Snakefile.
 
-Simple editing of a Snakefile.
+<details>
+  <summary>Click here for full details</summary>
+- The explanation of the assignment is in the [README](https://github.com/eriqande/con-gen-csu/blob/main/assignments/006-simple-snakemake-maneuvers/README.md) of the assignment directory.
+</details>
 
-- The explanation of the assignment is in the [README]() of the assignment directory.
+### Thursday, Feb 29, 2024 (woo-hoo! A leap year!)
+
+Continuring with Snakemake, and also using Open OnDemand on Alpine
+
+#### In Class (Running through a Snakemake example)
+
+<details>
+  <summary>Click here for full details</summary>
+- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section). 
+</details>
+
+### Tuesday, March 5, 2024
+
+More Snakemake
+
+
+#### Prep (please do this reading before class!)
+
+<details>
+  <summary>Click here for full details</summary>
+- For people with access to Alpine, read the [Chapter on OpenOnDemand Browser and RStudio Server Access to Alpine](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/open-on-demand-alpine.html),
+  and definitely do the steps in there to get onto Open OnDemand on Alpine.
+  I guarantee you _this will change your life_.
+- For everyone, read [Snakemake-relevant Python for R Users](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-relevant-python.html).  This is a minimal introduction to
+  python for people that speak R already.  It will help you to make the most of Snakemake when writing your own workflows. Please work through the examples in your
+  RStudio python REPL and get familiar with python if you have not yet used it much.
+- Note that these are fairly newly-written sections.  Please help me out by sending me a pull request to fix any typos/errors/illogical things.  You can do this by
+  clicking the GitHub "Edit this page" link at the bottom of the right column of the page.  That will let you edit the page on your fork of the repo and then send a
+  pull request for the edits.  Special bonus points and recognition to whomever makes the most corrections.
+</details>
+
+#### In Class (Banging through our snakemake example still)
+
+<details>
+  <summary>Click here for full details</summary>
+- Continuing through these: [slides](https://eriqande.github.io/con-gen-csu/snake-slides.html#/section)
+</details>
+
+### Thursday, March 7, 2024
+
+More Snakemake. SLURM profiles, snakemake configuration files, and input functions
+
+#### Prep (please do this reading before class!)
+
+<details>
+  <summary>Click here for full details</summary>
+- The [Snakemake Embellishments](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/snakemake-embellishments.html) chapter.
+</details>
+
+
+#### In class (working through another set of lecture slides)
+
+<details>
+  <summary>Click here for full details</summary>
+- We will be talking a lot about making snakemake talk to SLURM, and also a bit about YAML and tabular configuration of
+  Snakemake workflows. Here are the [slides](https://eriqande.github.io/con-gen-csu/snake-embellish-slides.html#/section)
+</details>
+
+#### Assignment (due the first Tuesday after spring break at the start of class---a reading and voting assignment)
+
+- First, read [this excellent, and very thorough paper](https://raw.githubusercontent.com/eriqande/con-gen-csu/main/extras/leopard-paper-and-supplements.pdf).  The citation is: Pečnerová, P., Garcia-Erill, G., Liu, X., Nursyifa, C., Waples, R. K., Santander, C. G., ... & Hanghøj, K. (2021). High genetic diversity and low differentiation reflect the ecological versatility of the African leopard. _Current Biology_, 31(9), 1862-1871.  The link will download the paper and the supplements, all in one document.  Be sure to read through the supplement, and **especially read through the STAR*Methods section**.
+- Once you have read through the paper, marvel at how thorough the authors were, and then think about which parts of the STAR*Methods were most interesting to you or most relevant to your own work.
+- Sync your fork and then go to [`assignments/007-vote-for-topics`](https://github.com/eriqande/con-gen-csu/tree/main/assignments/007-vote-for-topics) and follow the directions in the README there.
+
+
+
+
+
+
+### Tuesday, March 19, 2024
+
+Variant Calling
+
+
+#### In Class (Going over some basic likelihood and probability things)
+
+
+- We will just be working through select sections of [this variant calling section](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/variant-calling.html)
+
+
+### Thursday, March 21, 2024
+
+Hard filtering of GATK-produced VCF files; the disastrous decision by GATK's developer to violate the VCF specification
+
+#### Prep (Reading and some hands-on exercise to do before class!)
+
+**Reading**
+- The standard [GATK recommendations for Hard filtering](https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2)
+- The saga of GATK versions calling missing data as reference homozygotes:
+    * Start with some messages I sent them: [start here and read a few exchanges](https://gatk.broadinstitute.org/hc/en-us/community/posts/4476803114779/comments/5934732890651)
+    * The above apparently inspired a GATK [blog post](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531-GenotypeGVCFs-and-the-death-of-the-dot) 
+    * Then not much happened apparently until people started upgrading their GATK versions and found many of their pipelines were broken.  For that start reading the 
+      [comments to the blog post that started coming in around summer of 2023 and Feb of 2024](https://gatk.broadinstitute.org/hc/en-us/articles/6012243429531/comments/17128642713499)
+      
+**Hands On Learning**
+The materials for the hands-on can be obtained in RStudio with the following steps:
+```r
+if(!("usethis" %in% rownames(installed.packages()))) {
+  install.packages("usethis")
+}
+usethis::use_course("eriqande/ngs-genotype-models")
+```
+
+- You will need to answer the “Yes” response to a few questions. This will download an RStudio project and open it.
+- From this RStudio project’s file browser, you can open the RMarkdown files, like: `001-allele-freq-estimation.Rmd`.
+- If the message at the top of the file says you need some new packages, click the install option.
+- Then Click the “Run Document” button at the top middle of the source code file.  This runs an interactive shiny program
+
+**Read and do the activities in the Shiny Notebooks:  `001-allele-freq-estimation.Rmd` and `002-genotype-likelihoods-from-reads.Rmd`**
+
+There is nothing to turn in, but please read through these and play with them for a couple hours.
+
+#### In class
+
+- Summarizing everyone's votes on topics for the rest of the semester.
+    + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
+      and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
+- Learning about VCF files and the format:
+    + Reading through  [this](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#variants)
+    + Playing around with and looking at:  `data/vcf/all.vcf.gz`  (i.e., `bcftools view data/vcf/all.vcf.gz | less -S`
+- Working on hard filtering of our example data.
+
+
+#### Assignment (Due by the start of class on Tuesday, March 26)
+
+- We will be applying hard filtering to our example Snakemake workflow. Click [here](https://github.com/eriqande/con-gen-csu/blob/main/assignments/008-hard-filter-gatk-vcfs/README.md) for full details
+
+
+## Tuesday, March 26. 2024  Handling VCF Files, etc.
+
+### Read
+  - Read [this](https://eriqande.github.io/eca-bioinf-handbook/handle-vcf.html) from the handbook. I am going to port that to quarto, so some things
+    will change over the weekend.
+
+
+
+## Thursday, March 28, 2024.  This class will be remote for CSU students and in person for NMFS folks!
+
+- I am traveling to Santa Cruz.  Hopefully I can reserve the fishbowl.  Colorado (and Montana), use the google video links at the top of this README.
+- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT**
+
+## Tuesday  April 2, 2024
+
+- We will talk about projects.
+- I will give everyone some reading on our analysis topics
+
+
+## Thursday, April 4, 2024.  NO CLASS!
+
+- Work on your projects.
+- Eric will post some readings.
+- Eric is figure skating in front of a panel of judges.
+
+## Tuesday, April 9, 2024.  NO CLASS!
+
+- Work on your projects.
+- Eric will post some readings.
+- Eric is a scientist-in-residence at the mobile High Altitude Venue for Ecological Analysis, Genetics, and Statistics,
+  mHAVEAGAS, working on parentage in admixed populations.
+
+  
+
