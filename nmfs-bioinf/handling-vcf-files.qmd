@@ -13,7 +13,8 @@ However, there are specialized tools for doing operations on VCF files,
 and becoming familiar with them can relieve a lot
 of the pain of dealing with VCF files.
 
-To have an example VCF file to play with, you can
+To have an example VCF file to play with, the course repository contains
+a `vcf.gz` file at `data/vcf/all.vcf.gz`  you can
 download one to your Unix workstation with the following commands.
 You should put these files in your `scratch` directory somewhere, perhaps
 creating a directory called `bcftools-play` to put them into.  All the following
