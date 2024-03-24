@@ -271,6 +271,20 @@ rule vcf_from_gdb_by_chromo:
 
 
 
+rule concat_unfiltered_vcfs:
+  input:
+    vcfs=expand("results/chromo_vcfs/{c}.vcf.gz", c=CHROMOS)
+  output:
+    vcf="results/vcf/all-unfiltered.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/concat_unfiltered_vcfs/all.log"
+  shell:
+    "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
+
+
+
 # break out just the indels
 rule select_indels:
   input:
