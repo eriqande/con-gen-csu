@@ -858,7 +858,7 @@ There is nothing to turn in, but please read through these and play with them fo
     + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
       and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
 - Learning about VCF files and the format:
-    + Reading through  [this](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#variants)
+    + Reading through  [this](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#variants)
     + Playing around with and looking at:  `data/vcf/all.vcf.gz`  (i.e., `bcftools view data/vcf/all.vcf.gz | less -S`
 - Working on hard filtering of our example data.
 
