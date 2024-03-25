@@ -871,8 +871,8 @@ There is nothing to turn in, but please read through these and play with them fo
 ## Tuesday, March 26. 2024  Handling VCF Files, etc.
 
 ### Read
-  - Read [this](https://eriqande.github.io/eca-bioinf-handbook/handle-vcf.html) from the handbook. I am going to port that to quarto, so some things
-    will change over the weekend.
+  - Read [the chapter on bcftools](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/handling-vcf-files.html). You can also
+    run through the examples if you would like.  We will be going over this and discussing it in class.
 
 
 
