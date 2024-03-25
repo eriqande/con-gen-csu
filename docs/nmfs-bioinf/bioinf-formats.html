@@ -265,6 +265,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/handling-vcf-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Basic Handling of VCF files</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -412,19 +418,15 @@ p = \frac{1}{10^{Q/10}}
 <p>All this is fine and well, but when we look at the quality score line above we see something like <code>7JJJF-&lt;JAFJJ&lt;F&lt;AJAJJF</code>. What gives? Well, from a file storage and parsing perspective, it makes sense to only use a single character to store the quality score for every base. So, that is what has been done: each of those single characters represents a quality score—a number between 0 and 40, inclusive.</p>
 <p>The values that have been used are the <em>decimal representations of ASCII text characters</em> minus 33.<br>
 The decimal representation or each character can be found in <a href="#fig-ascii" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>.</p>
-<div class="cell">
-<div class="cell-output-display">
 <div id="fig-ascii" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ascii-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./nmfs-bioinf/figs/ascii-crop.png" class="img-fluid figure-img">
+<img src="./figs/ascii-crop.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ascii-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;10.1: This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom. Table produced from TeX code written and developed by Victor Eijkhout available at <a href="https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex">https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex</a>
 </figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>The decimal representation is in the upper left of each character’s rectangle.</p>
 <p>Find the characters corresponding to base quality scores of 0, 10, 20, 30, and 40. Remember that the base quality score is the character’s decimal representation <em>minus 33</em>.</p>
@@ -461,14 +463,11 @@ GACCTATAGGTTACCATGCTTCCTCTCTACAGGGCCTATAGGTTACCATGCTTCCTCTCTACAGGACCTGTAGGTTACCA
 <p>denotes the 1 Kb chunk of DNA starting from position 1000001 and proceeding to (and including!) position 1001000. Such nomenclature is often referred to as the <em>genomic coordinates</em> of a segment.</p>
 <p>In most applications we will encounter, the first position in a chromosome is labeled 1. This is called a <em>base 1 coordinate system</em>. In some genomic applications, a <em>base 0 coordinate system</em> is employed; however, for the most part such a system is only employed internally in the guts of code of software that we will use, while the user interface of the software consistently uses a base 1 coordinate system.</p>
 <p>Sometimes you will have to convert between base 0 and base1 coordinate systems. Thinking about how to do this is easy if you keep a simple picture in your head—I like to think of it as, the base-1 coordinate system counts “beads” that are the actual base pairs, while the base-0 system counts “fences” that separate the beads. In the following picture, the fences and their corresponding numbers are red, while the beads and their corresponding numbers are black.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./nmfs-bioinf/figs/base-0-and-1-cropped.svg" class="img-fluid figure-img"></p>
+<p><img src="./figs/base-0-and-1-cropped.svg" class="img-fluid figure-img"></p>
+<figcaption>Base-0 vs Base-1 coordinate systems in terms of fences and beads</figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>From this picture, it is pretty clear that if you have a base-1 range from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> (with <span class="math inline">\(x \leq y\)</span>), then you could refer to that by the base-0 range from <span class="math inline">\(x-1\)</span> to <span class="math inline">\(y\)</span> (those are the “fences” that contain the beads). Likewise, if you have a base-0 range from <span class="math inline">\(v\)</span> to <span class="math inline">\(w\)</span> (with <span class="math inline">\(v&lt;w\)</span>), then the corresponding base-1 range would be from <span class="math inline">\(v+1\)</span> to <span class="math inline">\(w\)</span>, as those are the beads that are contained by the fences at <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>.</p>
 </section>
