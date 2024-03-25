@@ -2,7 +2,7 @@
 from snakemake import __version__ as snakemake_version
 smk_major_version = int(snakemake_version[0])
 
-# This is the good file!
+
 
 # import modules as needed. Also import the snakemake
 # internal command to load a config file into a dict
