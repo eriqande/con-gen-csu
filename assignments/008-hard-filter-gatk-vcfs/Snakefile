@@ -76,8 +76,7 @@ def get_read_group(wildcards):
 # for the first rule in the Snakefile, so we define the first
 # rule to ask for results/vcf/all.vcf.gz
 rule all:
-  input:
-    expand("results/vcf/all.vcf.gz", chromo=CHROMOS)
+  input:"results/vcf-stats/all.vcf.stats"
 
 
 
@@ -392,3 +391,15 @@ rule concat_vcfs:
     "results/concat_vcfs/all.log"
   shell:
     "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
+
+rule vcf_stats:
+  input: 
+    "results/vcf/all.vcf.gz"
+  output:
+    "results/vcf-stats/all.vcf.stats"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/logs/vcf-stats/vcf_stats.log"
+  shell:
+    "bcftools stats {input} > {output} 2>{log}"
