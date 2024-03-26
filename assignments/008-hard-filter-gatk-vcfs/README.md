@@ -30,7 +30,7 @@ be described in more detail below).
 
 As it stands now, you will see if you do:
 ```sh
-snakemake -p --use-conda  --rerun-triggers mtime -s assignments/008-hard-filter-gatk-vcfs/Snakefile
+snakemake -np --use-conda  --rerun-triggers mtime -s assignments/008-hard-filter-gatk-vcfs/Snakefile
 ```
 that snakemake will try to make four hard-filtered files of indels, because of how rule `all` is defined:
 ```python
