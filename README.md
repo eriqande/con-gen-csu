@@ -858,7 +858,7 @@ There is nothing to turn in, but please read through these and play with them fo
     + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
       and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
 - Learning about VCF files and the format:
-    + Reading through  [this](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#variants)
+    + Reading through  [this](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#variants)
     + Playing around with and looking at:  `data/vcf/all.vcf.gz`  (i.e., `bcftools view data/vcf/all.vcf.gz | less -S`
 - Working on hard filtering of our example data.
 
@@ -871,8 +871,8 @@ There is nothing to turn in, but please read through these and play with them fo
 ## Tuesday, March 26. 2024  Handling VCF Files, etc.
 
 ### Read
-  - Read [this](https://eriqande.github.io/eca-bioinf-handbook/handle-vcf.html) from the handbook. I am going to port that to quarto, so some things
-    will change over the weekend.
+  - Read [the chapter on bcftools](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/handling-vcf-files.html). You can also
+    run through the examples if you would like.  We will be going over this and discussing it in class.
 
 
 
@@ -893,7 +893,7 @@ There is nothing to turn in, but please read through these and play with them fo
 - Eric will post some readings.
 - Eric is figure skating in front of a panel of judges.
 
-## Tuesday, April 8, 2024.  NO CLASS!
+## Tuesday, April 9, 2024.  NO CLASS!
 
 - Work on your projects.
 - Eric will post some readings.
