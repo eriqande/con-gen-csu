@@ -76,8 +76,7 @@ def get_read_group(wildcards):
 # for the first rule in the Snakefile, so we define the first
 # rule to ask for results/vcf/all.vcf.gz
 rule all:
-  input: 
-    expand("results/hard_filtering/indels-filtered/{chromo}.vcf.gz", chromo=CHROMOS)
+  input:"results/vcf-stats/all.vcf.stats"
 
 
 
@@ -149,8 +148,8 @@ rule trim_reads:
     "       -h {output.html} -j {output.json} "
     "  --adapter_sequence={params.as1}        "
     "  --adapter_sequence_r2={params.as2}     "
-    "  {params.parm} > {log.out} 2> {log.err}                         "
-    
+    "  {params.parm} > {log.out} 2> {log.err}"
+
 
 
 rule map_reads:
@@ -199,7 +198,6 @@ rule mark_duplicates:
 
 
 
-
 rule make_gvcfs_by_chromo:
   input:
     bam="results/mkdup/{sample}.bam",
@@ -222,10 +220,9 @@ rule make_gvcfs_by_chromo:
     " -R {input.ref} "
     " -I {input.bam} "
     " -O {output.gvcf} "
-    " -L {wildcards.chromo}    "           
-    " --native-pair-hmm-threads {params.hmt} " 
+    " -L {wildcards.chromo}    "
+    " --native-pair-hmm-threads {params.hmt} "
     " -ERC GVCF > {log} 2> {log} "
-
 
 
 
@@ -286,7 +283,7 @@ rule select_indels:
     "gatk SelectVariants "
     " -V {input.vcf} "
     " -select-type INDEL "
-    " -O {output} > {log} 2>&1 " 
+    " -O {output} > {log} 2>&1 "
 
 
 
@@ -311,9 +308,81 @@ rule hard_filter_indels:
 
 
 
+# break out just the snps
+rule select_snps:
+  input:
+    vcf="results/chromo_vcfs/{chromo}.vcf.gz",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi"
+  output:
+    "results/hard_filtering/snps/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/select_snps/{chromo}.log"
+  shell:
+    "gatk SelectVariants "
+    " -V {input.vcf} "
+    " -select-type SNP "
+    " -O {output} > {log} 2>&1 "
+
+
+# hard filtering the snps
+rule hard_filter_snps:
+  input:
+    vcf="results/hard_filtering/snps/{chromo}.vcf.gz"
+  output:
+      vcf="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/hard_filter_snps/{chromo}.log"
+  params:
+    filters=config["params"]["gatk"]["VariantFiltration"]["snps"]
+  shell:
+    "gatk VariantFiltration "
+    " -V {input.vcf} "
+    " {params.filters}      "
+    " -O {output} > {log} 2>&1 "
+
+
+
+rule merge_indels_snps:
+  input:
+    indels="results/hard_filtering/indels-filtered/{chromo}.vcf.gz",
+    snps="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  output:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/merge_indels_snps/{chromo}.log"
+  shell:
+    "gatk MergeVcfs "
+    "-I {input.indels}"
+    "-I {input.snps}"
+    "-O {output} > {log} 2>&1 "
+
+
+rule bcf_missing_corrected:
+  input:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  output:
+    "results/missing-corrected/{chromo}.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/logs/missing-corrected/{chromo}.log"
+  shell:
+    "(bcftools +setGT {input} -- -t q -n . -i 'FMT/DP=0 | "
+    "(FMT/PL[:0]=0 & FMT/PL[:1]=0 & FMT/PL[:2]=0)' | "
+    " bcftools +fill-tags - -- -t 'NMISS=N_MISSING' | "
+    " bcftools view -Oz - > {output};"
+    " bcftools index -t {output}) 2> {log}"
+
+
 rule concat_vcfs:
   input:
-    vcfs=expand("results/chromo_vcfs/{c}.vcf.gz", c=CHROMOS)
+    vcfs=expand("results/missing-corrected/{c}.vcf.gz", c=CHROMOS)
   output:
     vcf="results/vcf/all.vcf.gz"
   conda:
@@ -323,3 +392,14 @@ rule concat_vcfs:
   shell:
     "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
 
+rule vcf_stats:
+  input: 
+    "results/vcf/all.vcf.gz"
+  output:
+    "results/vcf-stats/all.vcf.stats"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/logs/vcf-stats/vcf_stats.log"
+  shell:
+    "bcftools stats {input} > {output} 2>{log}"
