@@ -16,5 +16,4 @@ keep-going: True
 rerun-incomplete: True
 printshellcmds: True
 use-conda: True
-rerun-trigger: mtime
 
