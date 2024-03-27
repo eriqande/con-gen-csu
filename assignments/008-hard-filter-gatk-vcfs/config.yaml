@@ -31,5 +31,9 @@ params:
         - ' -filter "QUAL < 30.0" --filter-name "QUAL30" '
         - ' -filter "FS > 200.0" --filter-name "FS200" '
         - ' -filter "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20" '
-
+      snps:
+        - ' -filter "QD < 2.0" --filter-name "QD2" '
+        - ' -filter "QUAL < 30.0" --filter-name "QUAL30" '
+        - ' -filter "FS > 60.0" --filter-name "FS60" '
+        - ' -filter "ReadPosRankSum < -8.0" --filter-name "ReadPosRankSum-8" '
     
