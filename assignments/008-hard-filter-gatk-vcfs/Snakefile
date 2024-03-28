@@ -323,3 +323,62 @@ rule concat_vcfs:
   shell:
     "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
 
+-----------------------------------------------------------------
+
+#follows "Break out just the indels"
+
+rule select_indels:
+  input:
+    vcf="results/chromo_vcfs/{chromo}.vcf.gz",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi"
+  output:
+    "results/hard_filtering/snps/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/select_snps/{chromo}.log"
+  shell:
+    "gatk SelectVariants "
+    " -V {input.vcf} "
+    " -select-type SNP "
+    " -O {output} > {log} 2>&1 "
+
+
+#Follows "filter the indels"
+rule hard_filter_snp:
+  input:
+    vcf="results/hard_filtering/snps/{chromo}.vcf.gz"
+  output:
+    vcf="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/hard_filter_snps/{chromo}.log"
+  params:
+    filters=config["params"]["gatk"]["VariantFiltration"]["snps"]
+  shell:
+    "gatk VariantFiltration "
+    " -V {input.vcf} "
+    " {params.filters}      "
+    " -O {output} > {log} 2>&1 "
+
+------------------------------------------------------------------
+
+#merge variants 
+
+rule merge_variants:
+  input:
+    indels="results/hard_filtering/indels-filtered/{chromo}.vcf.gz"
+    snps="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  output:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/hard_filtering/merged/{chromo}.log"
+  shell:
+    "gatk MergeVcfs "
+    " -I {indels} "
+    " -I {snps} "
+    " -O {output} > {log} 2>&1 "
+
