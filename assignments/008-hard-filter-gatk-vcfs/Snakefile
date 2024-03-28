@@ -305,20 +305,6 @@ rule hard_filter_indels:
     " {params.filters}      "
     " -O {output} > {log} 2>&1 "
 
-
-
-rule concat_vcfs:
-  input:
-    vcfs=expand("results/missing-corrected/{chromo}.vcf.gz")
-  output:
-    vcf="results/vcf/all.vcf.gz"
-  conda:
-    "envs/bcftools.yaml"
-  log:
-    "results/concat_vcfs/all.log"
-  shell:
-    "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
-    
     
 ## add ur rules here
 # break out just the snps
@@ -365,13 +351,11 @@ rule merge_filtered_variants:
     indels="results/hard_filtering/indels-filtered/{chromo}.vcf.gz",
     snps="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
   output:
-    "results/hard_filtering/merged/{chromo}.vcf.gz"
+    merged="results/hard_filtering/merged/{chromo}.vcf.gz"
   conda:
     "envs/gatk.yaml"
   log:
     "results/logs/merge_filtered_variants/{chromo}.log"
-  benchmark:
-    "results/benchmark/merge_filtered_variants/{chromo}.txt"
   shell:
     "gatk MergeVcfs "
     " -I {input.indels} "
@@ -394,6 +378,18 @@ rule correct_missing_data:
     bcftools +fill-tags - -- -t 'NMISS=N_MISSING' | \
     bcftools view -Oz - > {output}; \
     bcftools index -t {output}) 2> {log}"
+
+rule concat_vcfs:
+  input:
+    vcfs=expand("results/missing-corrected/{c}.vcf.gz", c=CHROMOS)
+  output:
+    vcf="results/vcf/all.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/concat_vcfs/all.log"
+  shell:
+    "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
 
 
 # generate statistics for the combined VCF file
