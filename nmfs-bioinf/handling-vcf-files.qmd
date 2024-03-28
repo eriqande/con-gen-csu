@@ -550,4 +550,72 @@ as well as the [filtering tutorial](https://samtools.github.io/bcftools/howtos/f
 
 ## Make an "beagle" file for input to ANGSD from a VCF file
 
-We can use `bcftools query` and `awk` to get this done well.
+We can use `bcftools query` and `awk` to get this done well. The first step is to get the
+header line:
+```{sh}
+#| eval: false
+bcftools query -l data/vcf/all-hard-filtered-miss-marked.bcf | awk '
+  BEGIN {printf("marker\tallele1\tallele2");} 
+  {printf("\t%s\t%s\t%s", $1, $1, $1);} 
+  END {printf("\n");}
+'
+```
+Then, after that, for the data, we can use `bcftools view` to restrict ourselves to
+biallelic SNPs (as required for ANGSD) and pipe the result to `bcftools query` to print the CHROM,
+POS, REF and ALT and the
+Phred scaled likelihoods.  We pipe that to `less -S` to see what we get:
+```{sh}
+#| eval: false
+ bcftools view  -m 2 -M 2 --types=snps data/vcf/all-hard-filtered-miss-marked.bcf | bcftools query -f '%CHROM:%POS\t%REF\t%ALT\t[%PL\t]\n' -  | less -S
+```
+
+Now we just need to pass that stream into an awk script that computes the raw
+genotype likelihoods from the Phred scaled ones and formats the chromosome and
+position appropriately.  Here is an awk script that does that:
+```{.awk}
+# this is a simple script that takes lines that are have comma-separated
+# Phred-scaled genotype liklelihoods starting in column three, like:
+#
+# CHROMPOS	REF	ALT	0,12,34	0,3,16
+#
+# (i.e., the CHROM and POS are smooshed into a single column.)
+#
+# and it turns each of those comma-containing columns into three columns
+# of genotype likelihoods scaled to sum to one.
+
+BEGIN {
+	IFS="\t"
+	base2int["A"] = 0
+	base2int["C"] = 1
+	base2int["G"] = 2
+	base2int["T"] = 3
+}
+
+{
+	chrompos=$1
+	gsub(/_/, "-", chrompos)
+	gsub(/:/, "_", chrompos)
+	printf("%s\t%s\t%s", chrompos, base2int[$2], base2int[$3]);
+	for(i=4;i<=NF;i++) {
+		if($i == ".") {  # deal with old VCFs that use a single dot here
+			printf("\t%.6f\t%.6f\t%.6f", 1.0/3.0, 1.0/3.0, 1.0/3.0);
+		}
+		else {
+			n=split($i,a,/,/);
+			if(n!=3) {
+				print "Not 3 GL values at ", $1  > "/dev/stderr";
+				exit;
+			}
+			x=10^(-a[1]/10);
+			y=10^(-a[2]/10);
+			z=10^(-a[3]/10);
+			sum=x+y+z;
+			printf("\t%.6f\t%.6f\t%.6f",x/sum, y/sum,z/sum);
+		}
+	}
+	printf("\n");
+}
+```
+
+So, if we wanted to put that all together we could make wrap it all up in a script...
+
