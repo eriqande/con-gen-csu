@@ -23,6 +23,7 @@ book:
     - nmfs-bioinf/snakemake-relevant-python.qmd
     - nmfs-bioinf/snakemake-embellishments.qmd
     - nmfs-bioinf/variant-calling.qmd
+    - nmfs-bioinf/handling-vcf-files.qmd
   sidebar:
     logo: nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png
   repo-url: https://github.com/eriqande/con-gen-csu
