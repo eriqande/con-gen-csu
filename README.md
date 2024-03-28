@@ -879,7 +879,11 @@ There is nothing to turn in, but please read through these and play with them fo
 ## Thursday, March 28, 2024.  This class will be remote for CSU students and in person for NMFS folks!
 
 - I am traveling to Santa Cruz.  Hopefully I can reserve the fishbowl.  Colorado (and Montana), use the google video links at the top of this README.
-- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT**
+- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT** This doesn't have to be more than a couple of paragraphs, but you can also go
+  into more detail if you want.  Turn it in by emailing me at `eriq@rams.colostate.edu`.
+- In class:
+    + [The chapter on bcftools](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/handling-vcf-files.html)
+    + [Section on vcf to beagle conversion](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#beagle-format-for-genotype-likelihoods) 
 
 ## Tuesday  April 2, 2024
 

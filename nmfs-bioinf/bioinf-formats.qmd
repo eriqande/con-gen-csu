@@ -1381,6 +1381,55 @@ can be somewhat more error prone.
 Let's just get in there and take a look at it.
 
 
+### "beagle" format for genotype likelihoods
+
+There is an outstanding program called BEAGLE that was written by Sharon Browning
+and her husband Brian (they are both professors now at UW.  Sharon was a grad student
+with me in Elizabeth Thompson's lab in the late 1990s, and is wicked smart).
+The program BEAGLE does fast and accurate phasing of haplotypes (and imputation).
+In one version it must have written the output in a format that is now called
+"beagle format" by the authors of ANGSD.  (Later versions of BEAGLE that I have used
+write output in VCF format.)
+
+Beagle format when you are working in ANGSD is a file in which each row starts with
+three columns:
+
+-   `marker`: a column that has the chromosome name and the position, separated by an
+    underscore.
+-   `allele1`: an integer giving the type of allele 1 (think of it as the reference allele).
+-   `allele2`: an integer giving the type of allele 2 (think of it as an alternate allele).
+
+Convention has me using 1 for A, 2 for C, 3 for G and 4 for T, for the allele codes.
+
+After that each individual gets three columns---each one of them headered by the 
+individual's ID---which contains three numbers representing the genotype likelihood
+(or a probability if you have calculated posterior probabilities) for each of the
+three genotypes `allele1/allele1`, `allele1/allele2`, and `allele2/allele2`.
+
+An example of the first few rows of a beagle file with 9 variants and two individuals
+appears here:
+```{txt}
+#| eval: false
+#| file: ./nmfs-bioinf/table_inputs/beagle.tsv
+```
+
+Though it is probably easier to view that on GitHub
+[here](https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/table_inputs/beagle.tsv)
+where you can see the separate columns and their headers, better.
+
+Most of the time you are dealing with beagle files in ANGSD you will want them to be gzipped.
+
+#### A note about the underscore
+
+It is a huge tragedy that the ANGSD developers use this format in which an underscore, `_`, 
+is used to separate the chromosome name from the position in the genomic coordinates.
+One would typically use a TAB, which would also allow the file to be indexed using
+`tabix`.  Since they use an underscore for that, underscores in your chromosome names
+will cause problems, so you have to remove underscores from your chromosome names
+or change them to something else.  In the example file above, I changed the
+underscores to dashes.  That works well.  
+
+
 
 ### Boneyard
 
