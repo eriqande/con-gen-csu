@@ -81,7 +81,7 @@ rule all:
 
 rule genome_faidx:
   input:
-    "data/genome/genome.fasta",
+    "data/genome/genome.fasta",x
   output:
     "data/genome/genome.fasta.fai",
   conda:
