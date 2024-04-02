@@ -550,7 +550,60 @@ Here’s why GATK’s decision to leave missing data as <code>0/0</code> is such
 </section>
 <section id="make-an-beagle-file-for-input-to-angsd-from-a-vcf-file" class="level2" data-number="15.7">
 <h2 data-number="15.7" class="anchored" data-anchor-id="make-an-beagle-file-for-input-to-angsd-from-a-vcf-file"><span class="header-section-number">15.7</span> Make an “beagle” file for input to ANGSD from a VCF file</h2>
-<p>We can use <code>bcftools query</code> and <code>awk</code> to get this done well.</p>
+<p>We can use <code>bcftools query</code> and <code>awk</code> to get this done well. The first step is to get the header line:</p>
+<pre class="{sh}"><code>#| eval: false
+bcftools query -l data/vcf/all-hard-filtered-miss-marked.bcf | awk '
+  BEGIN {printf("marker\tallele1\tallele2");} 
+  {printf("\t%s\t%s\t%s", $1, $1, $1);} 
+  END {printf("\n");}
+'</code></pre>
+<p>Then, after that, for the data, we can use <code>bcftools view</code> to restrict ourselves to biallelic SNPs (as required for ANGSD) and pipe the result to <code>bcftools query</code> to print the CHROM, POS, REF and ALT and the Phred scaled likelihoods. We pipe that to <code>less -S</code> to see what we get:</p>
+<pre class="{sh}"><code>#| eval: false
+ bcftools view  -m 2 -M 2 --types=snps data/vcf/all-hard-filtered-miss-marked.bcf | bcftools query -f '%CHROM:%POS\t%REF\t%ALT\t[%PL\t]\n' -  | less -S</code></pre>
+<p>Now we just need to pass that stream into an awk script that computes the raw genotype likelihoods from the Phred scaled ones and formats the chromosome and position appropriately. Here is an awk script that does that:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode awk code-with-copy"><code class="sourceCode awk"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is a simple script that takes lines that are have comma-separated</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Phred-scaled genotype liklelihoods starting in column three, like:</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CHROMPOS  REF ALT 0,12,34 0,3,16</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># (i.e., the CHROM and POS are smooshed into a single column.)</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and it turns each of those comma-containing columns into three columns</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co"># of genotype likelihoods scaled to sum to one.</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span> <span class="op">{</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    IFS<span class="op">=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    base2int[<span class="st">"A"</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    base2int[<span class="st">"C"</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    base2int[<span class="st">"G"</span>] <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>    base2int[<span class="st">"T"</span>] <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    chrompos<span class="op">=</span><span class="dt">$1</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gsub</span><span class="op">(</span><span class="ot">/</span><span class="ss">_</span><span class="ot">/</span><span class="op">,</span> <span class="st">"-"</span><span class="op">,</span> chrompos<span class="op">)</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gsub</span><span class="op">(</span><span class="ot">/</span><span class="ss">:</span><span class="ot">/</span><span class="op">,</span> <span class="st">"_"</span><span class="op">,</span> chrompos<span class="op">)</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">printf</span><span class="op">(</span><span class="st">"%s</span><span class="sc">\t</span><span class="st">%s</span><span class="sc">\t</span><span class="st">%s"</span><span class="op">,</span> chrompos<span class="op">,</span> base2int[<span class="dt">$2</span>]<span class="op">,</span> base2int[<span class="dt">$3</span>]<span class="op">);</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span><span class="op">(</span>i<span class="op">=</span><span class="dv">4</span><span class="op">;</span>i<span class="op">&lt;=</span><span class="bu">NF</span><span class="op">;</span>i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span><span class="op">(</span><span class="dt">$i</span> <span class="op">==</span> <span class="st">"."</span><span class="op">)</span> <span class="op">{</span>  <span class="co"># deal with old VCFs that use a single dot here</span></span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>            <span class="kw">printf</span><span class="op">(</span><span class="st">"</span><span class="sc">\t</span><span class="st">%.6f</span><span class="sc">\t</span><span class="st">%.6f</span><span class="sc">\t</span><span class="st">%.6f"</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">/</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">/</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">/</span><span class="fl">3.0</span><span class="op">);</span></span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>            n<span class="op">=</span><span class="fu">split</span><span class="op">(</span><span class="dt">$i</span><span class="op">,</span>a<span class="op">,</span><span class="ot">/</span><span class="ss">,</span><span class="ot">/</span><span class="op">);</span></span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span><span class="op">(</span>n<span class="op">!=</span><span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>                <span class="kw">print</span> <span class="st">"Not 3 GL values at "</span><span class="op">,</span> <span class="dt">$1</span>  <span class="op">&gt;</span> <span class="st">"/dev/stderr"</span><span class="op">;</span></span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>                <span class="cf">exit</span><span class="op">;</span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>            x<span class="op">=</span><span class="dv">10</span><span class="op">^(-</span>a[<span class="dv">1</span>]<span class="op">/</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>            y<span class="op">=</span><span class="dv">10</span><span class="op">^(-</span>a[<span class="dv">2</span>]<span class="op">/</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>            z<span class="op">=</span><span class="dv">10</span><span class="op">^(-</span>a[<span class="dv">3</span>]<span class="op">/</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>            sum<span class="op">=</span>x<span class="op">+</span>y<span class="op">+</span>z<span class="op">;</span></span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>            <span class="kw">printf</span><span class="op">(</span><span class="st">"</span><span class="sc">\t</span><span class="st">%.6f</span><span class="sc">\t</span><span class="st">%.6f</span><span class="sc">\t</span><span class="st">%.6f"</span><span class="op">,</span>x<span class="op">/</span>sum<span class="op">,</span> y<span class="op">/</span>sum<span class="op">,</span>z<span class="op">/</span>sum<span class="op">);</span></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">printf</span><span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So, if we wanted to put that all together we could make wrap it all up in a script…</p>
 
 
 </section>
