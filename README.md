@@ -906,3 +906,17 @@ There is nothing to turn in, but please read through these and play with them fo
 
   
 
+## Thursday, April 10, 2024.  Estimation of site-frequency spectra from lcWGS data
+
+### Read
+
+Before class, please read two papers.  They are pretty mathematical, so it is OK if you
+don't get it all easily.  You can skim the mathematical sections!
+
+1. [Nielsen et al. 2012, SNP Calling, Genotype Calling, and Sample Allele Frequency Estimation from New-Generation Sequencing Data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0037558)
+2. ]Rasmussen et al. 2022. Estimation of site frequency spectra from low-coverage sequencing data using stochastic EM reduces overfitting, runtime, and memory usage](https://academic.oup.com/genetics/article/222/4/iyac148/6730749)
+
+### In class:
+
+Eric will give a brief overview of the SFS and SFS estimation.  We will explore these steps in Eric's workflow for estimatng Fst
+from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
