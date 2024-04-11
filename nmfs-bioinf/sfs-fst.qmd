@@ -1,0 +1,89 @@
+---
+engine: knitr
+---
+
+# Estimating Site Frequency Spectra and a few applications thereof {#sfs-fst}
+
+
+## What is the SFS?
+
+-   Typically the fraction of sites in a sample of $n$ diploids that carry
+    $1, \ldots, 2n-1$ copies of the derived (as opposed to the ancestral)
+    allele.
+-   With whole genome sequencing data, we can also include the categories of
+    0 and $2n$ copies of the derived alleles.    
+
+
+## Why is it useful?
+
+-   A lot of population genetic theory has been done about what the SFS should
+    look like under different demographic scenarios and/or selection.
+-   Many population genetic summary statistics can be shown to be functions of
+    the SFS.  A worthy read about how nearly all the myriad simple tests for
+    non-neutrality (Tajima's $D$, Fay and Wu's $H$, etc.) can be written as
+    functions of the SFS is [Achaz 2009](https://academic.oup.com/genetics/article/183/1/249/6063201).
+-   Programs exist ($\partial a \partial i$, moments, etc.) to use SFS (and particularly
+    multi-dimensional---i.e. multi-population---SFS) to estimate demographic history
+    of species.
+-   Pairswise $F_\mathrm{ST}$ between populations can be computed as a function of the 2-D SFS.
+-   The SFS provides an exceptional amount of data reduction: from terabytes of sequencing
+    data to a handful of numbers.  Obviously this discards a lot of information, but
+    for some inferences, the SFS is sufficient or nearly so.
+
+
+## More on the SFS itself with simple examples
+
+-   Illustrate on the whiteboard with a simple data set assuming fully resolved genotypes.
+-   Discuss the $\theta/k$ result from the neutral coalescent.  
+-   Show how easy it is to estimate SFS with _complete_ and _certain_ genotype data.
+-   At any site, show that the calculation involves lining the
+    genotypes up horizontally, with the cumulative numbers of gene copies in each,
+    stacked vertically above them.
+
+
+## Uncertainty in the genotypes
+
+-   With low-coverage data we don't get to observe the genotypes with certainty.
+-   We don't even know ahead of time if there is a SNP there.
+-   So, the ANGSD approach is to first calculate the likelihood of each number of derived alleles,
+    from $0$ to $2n$, by considering all the possible underlying genotypes. Storing those
+    results, and then using those to do inference.  
+-   Let's show what that looks like at a single site on the whiteboard.
+
+## ANGSD doSaf
+
+-   One of the options to ANGSD is `-doSaf`.  This creates a "site allele frequency"
+    file, which is a binary file that holds the likelihoods for _each site_ of the
+    number of copies of the derived allele are at that site.
+-   Documentation for it is at: https://www.popgen.dk/angsd/index.php/SFS_Estimation
+-   There is also "onboard" documentation with the program itself.  So, let us get
+    ANGSD in a conda environment so we can call it.  If you don't already have ANGSD
+    in a conda env, do this:
+    ```{sh}
+    #| eval: false
+    # do this on a compute node or acompile
+    mamba create -n angsd bioconda::angsd
+    ```
+-   Once that is done, activate the angsd environment and call the program
+    with the `-doSaf` option and nothing else to get the onboard help:
+    ```{sh}
+    #| eval: false
+    # activate the environment
+    mamba create -n angsd bioconda::angsd
+    
+    # call the program with no other args
+    angsd -doSaf
+    ```
+
+
+
+## Running ANGSD doSaf on some test data
+
+-   We are going to run doSaf on some test data that is inside a snakemake
+    workflow I have for calculating Fst.  It can be found at:
+    https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
+    
+-   Let's get it _outside of your con_gen_csu_
+    directory, by forking it and then cloning it.  
+
+
