@@ -1,9 +1,20 @@
+
+if [ $# != 1 ]; then
+    echo "Error! Need to supply vcf, bcf, or vcf.gz file."
+    echo
+    echo "Syntax:"
+    echo "  vcf2beagle  File.bcf "
+    exit 1
+fi
+
+
 file=$1
 
-
-
-
-
+(
+    bcftools query -l  $file; 
+    bcftools view -m 2 -M 2 --types=snps  data/vcf/all-hard-filtered-miss-marked.bcf | \
+    bcftools query -f '%CHROM:%POS\t%REF\t%ALT[\t%PL]\n' -
+    ) | awk '
 
 # this is a simple script that takes lines that are have comma-separated
 # Phred-scaled genotype liklelihoods starting in column three, like:
@@ -21,9 +32,19 @@ BEGIN {
     base2int["C"] = 1
     base2int["G"] = 2
     base2int["T"] = 3
+    printf("marker\tallele1\tallele2");
 }
 
-{
+NF==1 {
+    printf("\t%s\t%s\t%s", $1, $1, $1);
+    next;
+}
+
+{   
+    if(header_done == 0) {
+        printf("\n");
+        header_done = 1;
+    }
     chrompos=$1
     gsub(/_/, "-", chrompos)
     gsub(/:/, "_", chrompos)
@@ -47,3 +68,4 @@ BEGIN {
     }
     printf("\n");
 }
+'
