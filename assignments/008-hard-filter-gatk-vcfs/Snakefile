@@ -76,7 +76,7 @@ def get_read_group(wildcards):
 # for the first rule in the Snakefile, so we define the first
 # rule to ask for results/vcf/all.vcf.gz
 rule all:
-  input: 
+  input:
     expand("results/hard_filtering/indels-filtered/{chromo}.vcf.gz", chromo=CHROMOS)
 
 
@@ -85,43 +85,42 @@ rule all:
 
 rule genome_faidx:
   input:
-    "data/genome/genome.fasta",
+    "data/genome/genome.fasta"
   output:
-    "data/genome/genome.fasta.fai",
+    "data/genome/genome.fasta.fai"
   conda:
     "envs/bwa2sam.yaml"
   log:
     "results/logs/genome_faidx.log",
   shell:
-    "samtools faidx {input} 2> {log} "
+    "samtools faidx {input} 2> {log}"
 
 
 rule genome_dict:
   input:
-    "data/genome/genome.fasta",
+    "data/genome/genome.fasta"
   output:
-    "data/genome/genome.dict",
+    "data/genome/genome.dict"
   conda:
     "envs/bwa2sam.yaml"
   log:
-    "results/logs/genome_dict.log",
+    "results/logs/genome_dict.log"
   shell:
-    "samtools dict {input} > {output} 2> {log} "
+    "samtools dict {input} > {output} 2> {log}"
 
 
 rule bwa_index:
   input:
     "data/genome/genome.fasta"
   output:
-    multiext("data/genome/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+    multiext("data/genome/genome.fasta", ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
   conda:
     "envs/bwa2sam.yaml"
   log:
     out="results/logs/bwa_index/bwa_index.log",
     err="results/logs/bwa_index/bwa_index.err"
   shell:
-    "bwa-mem2 index {input} > {log.out} 2> {log.err} "
-
+    "bwa-mem2 index {input} > {log.out} 2> {log.err}"
 
 
 
@@ -138,7 +137,7 @@ rule trim_reads:
     "envs/fastp.yaml"
   log:
     out="results/logs/trim_reads/{sample}.log",
-    err="results/logs/trim_reads/{sample}.err",
+    err="results/logs/trim_reads/{sample}.err"
   params:
     as1=config["params"]["fastp"]["adapter_sequence1"],
     as2=config["params"]["fastp"]["adapter_sequence2"],
@@ -149,8 +148,7 @@ rule trim_reads:
     "       -h {output.html} -j {output.json} "
     "  --adapter_sequence={params.as1}        "
     "  --adapter_sequence_r2={params.as2}     "
-    "  {params.parm} > {log.out} 2> {log.err}                         "
-    
+    "  {params.parm} > {log.out} 2> {log.err} "
 
 
 rule map_reads:
@@ -177,8 +175,6 @@ rule map_reads:
     " samtools sort - > {output}) 2> {log} "
 
 
-
-
 rule mark_duplicates:
   input:
     "results/bam/{sample}.bam"
@@ -191,7 +187,7 @@ rule mark_duplicates:
   log:
     "results/logs/mark_duplicates/{sample}.log"
   shell:
-    " gatk MarkDuplicates  "
+    " gatk MarkDuplicates "
     "  --CREATE_INDEX "
     "  -I {input} "
     "  -O {output.bam} "
@@ -209,7 +205,7 @@ rule make_gvcfs_by_chromo:
     fai="data/genome/genome.fasta.fai"
   output:
     gvcf="results/gvcf/{chromo}/{sample}.g.vcf.gz",
-    idx="results/gvcf/{chromo}/{sample}.g.vcf.gz.tbi",
+    idx="results/gvcf/{chromo}/{sample}.g.vcf.gz.tbi"
   conda:
     "envs/gatk.yaml"
   log:
@@ -222,8 +218,8 @@ rule make_gvcfs_by_chromo:
     " -R {input.ref} "
     " -I {input.bam} "
     " -O {output.gvcf} "
-    " -L {wildcards.chromo}    "           
-    " --native-pair-hmm-threads {params.hmt} " 
+    " -L {wildcards.chromo}"
+    " --native-pair-hmm-threads {params.hmt} "
     " -ERC GVCF > {log} 2> {log} "
 
 
@@ -255,10 +251,10 @@ rule vcf_from_gdb_by_chromo:
     gdb="results/genomics_db/{chromo}",
     ref="data/genome/genome.fasta",
     fai="data/genome/genome.fasta.fai",
-    idx="data/genome/genome.dict",
+    idx="data/genome/genome.dict"
   output:
     vcf="results/chromo_vcfs/{chromo}.vcf.gz",
-    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi"
   conda:
     "envs/gatk.yaml"
   log:
@@ -286,8 +282,29 @@ rule select_indels:
     "gatk SelectVariants "
     " -V {input.vcf} "
     " -select-type INDEL "
-    " -O {output} > {log} 2>&1 " 
+    " -O {output} > {log} 2>&1 "
 
+
+
+# filter the indels according to the recommendations at:
+# https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2
+
+rule hard_filter_indels:
+  input:
+    vcf="results/hard_filtering/indels/{chromo}.vcf.gz"
+  output:
+    vcf="results/hard_filtering/indels-filtered/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/hard_filter_indels/{chromo}.log"
+  params:
+    filters=config["params"]["gatk"]["VariantFiltration"]["indels"]
+  shell:
+  " gatk --java-options "-Xmx3g -Xms3g" VariantFiltration "
+   " -V {chromo}.vcf.gz \ "
+   " --filter-expression "ExcessHet > 54.69""
+   " -O {output} > {log} 2>&1 "
 
 
 # filter the indels according to the recommendations at:
@@ -310,10 +327,89 @@ rule hard_filter_indels:
     " -O {output} > {log} 2>&1 "
 
 
+#1)  select just the SNPs, similar to how we selected indels above
+
+rule select_snps:
+  input:
+    vcf="results/chromo_vcfs/{chromo}.vcf.gz",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi"
+  output:
+    "results/hard_filtering/snps/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/select_snps/{chromo}.log"
+  shell:
+    "gatk SelectVariants "
+    " -V {input.vcf} "
+    " -select-type SNP "
+    " -O {output} > {log} 2>&1 "
+
+
+
+#2)  filter the SNPs according to the recommendations at:
+# https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering#2
+
+rule hard_filter_snps:
+  input:
+    vcf="results/hard_filtering/snps/{chromo}.vcf.gz"
+  output:
+    vcf="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/hard_filter_snps/{chromo}.log"
+  params:
+    filters=config["params"]["gatk"]["VariantFiltration"]["snps"]
+  shell:
+    "gatk VariantFiltration "
+    " -V {input.vcf} "
+    " {params.filters}      "
+    " -O {output} > {log} 2>&1 "
+
+
+#3) merge variants using mergeVCFs 
+
+rule merge_filtered_snps_and_indels:
+  input:
+    snps="results/hard_filtering/snps-filtered/{chromo}.vcf.gz",
+    indels="results/hard_filtering/indels-filtered/{chromo}.vcf.gz"
+  output:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  benchmark:
+    "results/benchmarks/merge_filtered_snps_and_indels/{chromo}.bmk"
+  log:
+    "results/logs/merge_filtered_snps_and_indels/{chromo}.log"
+  shell:
+    "gatk MergeVcfs -I {input.snps} -I {input.indels} -O {output} > {log} 2>&1 "
+
+
+#4) mark missing values as ./., not 0/0
+
+rule mark_missing_in_vcf:
+  input:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  output:
+    "results/missing-corrected/{chromo}.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/logs/mark_missing_in_vcf/{chromo}.log"
+  shell:
+    " (bcftools +setGT {input} -- -t q -n . -i 'FMT/DP=0 | (FMT/PL[:0]=0 & FMT/PL[:1]=0 & FMT/PL[:2]=0)' | "
+    " bcftools +fill-tags - -- -t 'NMISS=N_MISSING' | "
+    " bcftools view -Oz - > {output}; "
+    " bcftools index -t {output}) 2> {log} "
+
+
+
+#5) concat again
 
 rule concat_vcfs:
   input:
-    vcfs=expand("results/chromo_vcfs/{c}.vcf.gz", c=CHROMOS)
+    vcfs=expand("results/missing-corrected/{c}.vcf.gz", c=CHROMOS)
   output:
     vcf="results/vcf/all.vcf.gz"
   conda:
@@ -323,3 +419,16 @@ rule concat_vcfs:
   shell:
     "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
 
+#6) run bcftools stats
+
+rule vcf_stats:
+  input:
+    "results/vcf/all.vcf.gz"
+  output:
+    "results/vcf-stats/all.vcf.stats"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/vcf_stats/all.log"
+  shell:
+    "bcftools stats {input} > {output} 1>{log} "
