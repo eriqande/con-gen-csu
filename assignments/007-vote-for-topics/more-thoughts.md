@@ -1,0 +1,2 @@
+I am really interested in GWAS becuase it's somehting that I would like to do as part of my own research. I'm also interested in epigenome-wide association studies, which I imagine are very similar.
+More generally, I want to better understand all of the decision-making that goes into filtering because it seem very complicated, and can have significant effects on final conclusions.

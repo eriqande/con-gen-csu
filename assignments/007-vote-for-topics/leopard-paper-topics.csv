@@ -1,18 +1,18 @@
 rank,topic
-0,Reference Quality filtering: Mappability
-0,Reference Quality filtering: Global Sequencing Depth filter
-0,Reference Quality filtering: Autosomal and sex-linked scaffold identification
-0,Reference Quality filtering: Excessive heterozygosity filter
-0,Sample quality filtering: Error rates estimation
-0,Sample quality filtering: Identification of related and duplicated samples
-0,PCA analyses
-0,NGSadmix
-0,Runs of homozygosity (ROH) analysis
-0,D-statistics
-0,Site frequency spectrum
-0,SFS-based analyses: FST estimation
-0,SFS-based analyses: Estimation of heterozygosity
-0,PSMC
-0,Identity-by-state (IBS)
-0,IBS-based analyses: Neighbor-joining (NJ) tree
-0,IBS-based analyses: Estimation of Effective Migration Surfaces (EEMS)
+2,Reference Quality filtering: Mappability
+2,Reference Quality filtering: Global Sequencing Depth filter
+2,Reference Quality filtering: Autosomal and sex-linked scaffold identification
+3,Reference Quality filtering: Excessive heterozygosity filter
+1,Sample quality filtering: Error rates estimation
+1,Sample quality filtering: Identification of related and duplicated samples
+1,PCA analyses
+6,NGSadmix
+5,Runs of homozygosity (ROH) analysis
+3,D-statistics
+4,Site frequency spectrum
+6,SFS-based analyses: FST estimation
+5,SFS-based analyses: Estimation of heterozygosity
+5,PSMC
+4,Identity-by-state (IBS)
+3,IBS-based analyses: Neighbor-joining (NJ) tree
+4,IBS-based analyses: Estimation of Effective Migration Surfaces (EEMS)
