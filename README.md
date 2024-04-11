@@ -919,4 +919,4 @@ don't get it all easily.  You can skim the mathematical sections!
 ### In class:
 
 Eric will give a brief overview of the SFS and SFS estimation.  We will explore these steps in Eric's workflow for estimatng Fst
-from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
+from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow.  See https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sfs-fst.html
