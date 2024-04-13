@@ -1,0 +1,2376 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                             count
+----------------------------  -------
+all                                 1
+bwa_index                           1
+genome_dict                         1
+genome_faidx                        1
+hard_filter_indels                  4
+import_genomics_db_by_chromo        4
+make_gvcfs_by_chromo               64
+map_reads                          16
+mark_duplicates                    16
+select_indels                       4
+trim_reads                         16
+vcf_from_gdb_by_chromo              4
+total                             132
+
+Select jobs to execute...
+Execute 4 jobs...
+
+[Fri Apr 12 17:29:34 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C10_S34_R1.fq.gz, data/fastqs/DPCh_plate1_C10_S34_R2.fq.gz
+    output: results/trimmed/T144989_R1.fastq.gz, results/trimmed/T144989_R2.fastq.gz, results/qc/fastp/T144989.html, results/qc/fastp/T144989.json
+    log: results/logs/trim_reads/T144989.log, results/logs/trim_reads/T144989.err
+    jobid: 23
+    reason: Forced execution
+    wildcards: sample=T144989
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_C10_S34_R1.fq.gz -I data/fastqs/DPCh_plate1_C10_S34_R2.fq.gz              -o results/trimmed/T144989_R1.fastq.gz -O results/trimmed/T144989_R2.fastq.gz            -h results/qc/fastp/T144989.html -j results/qc/fastp/T144989.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144989.log 2> results/logs/trim_reads/T144989.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+
+[Fri Apr 12 17:29:34 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F12_S72_R1.fq.gz, data/fastqs/DPCh_plate1_F12_S72_R2.fq.gz
+    output: results/trimmed/T145241_R1.fastq.gz, results/trimmed/T145241_R2.fastq.gz, results/qc/fastp/T145241.html, results/qc/fastp/T145241.json
+    log: results/logs/trim_reads/T145241.log, results/logs/trim_reads/T145241.err
+    jobid: 51
+    reason: Forced execution
+    wildcards: sample=T145241
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_F12_S72_R1.fq.gz -I data/fastqs/DPCh_plate1_F12_S72_R2.fq.gz              -o results/trimmed/T145241_R1.fastq.gz -O results/trimmed/T145241_R2.fastq.gz            -h results/qc/fastp/T145241.html -j results/qc/fastp/T145241.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145241.log 2> results/logs/trim_reads/T145241.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+
+[Fri Apr 12 17:29:35 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B12_S24_R1.fq.gz, data/fastqs/DPCh_plate1_B12_S24_R2.fq.gz
+    output: results/trimmed/T145193_R1.fastq.gz, results/trimmed/T145193_R2.fastq.gz, results/qc/fastp/T145193.html, results/qc/fastp/T145193.json
+    log: results/logs/trim_reads/T145193.log, results/logs/trim_reads/T145193.err
+    jobid: 19
+    reason: Forced execution
+    wildcards: sample=T145193
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_B12_S24_R1.fq.gz -I data/fastqs/DPCh_plate1_B12_S24_R2.fq.gz              -o results/trimmed/T145193_R1.fastq.gz -O results/trimmed/T145193_R2.fastq.gz            -h results/qc/fastp/T145193.html -j results/qc/fastp/T145193.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145193.log 2> results/logs/trim_reads/T145193.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+
+[Fri Apr 12 17:29:35 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C11_S35_R1.fq.gz, data/fastqs/DPCh_plate1_C11_S35_R2.fq.gz
+    output: results/trimmed/T145153_R1.fastq.gz, results/trimmed/T145153_R2.fastq.gz, results/qc/fastp/T145153.html, results/qc/fastp/T145153.json
+    log: results/logs/trim_reads/T145153.log, results/logs/trim_reads/T145153.err
+    jobid: 27
+    reason: Forced execution
+    wildcards: sample=T145153
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_C11_S35_R1.fq.gz -I data/fastqs/DPCh_plate1_C11_S35_R2.fq.gz              -o results/trimmed/T145153_R1.fastq.gz -O results/trimmed/T145153_R2.fastq.gz            -h results/qc/fastp/T145153.html -j results/qc/fastp/T145153.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145153.log 2> results/logs/trim_reads/T145153.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:41 2024]
+Finished job 27.
+1 of 132 steps (1%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:41 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F11_S71_R1.fq.gz, data/fastqs/DPCh_plate1_F11_S71_R2.fq.gz
+    output: results/trimmed/T145171_R1.fastq.gz, results/trimmed/T145171_R2.fastq.gz, results/qc/fastp/T145171.html, results/qc/fastp/T145171.json
+    log: results/logs/trim_reads/T145171.log, results/logs/trim_reads/T145171.err
+    jobid: 47
+    reason: Forced execution
+    wildcards: sample=T145171
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_F11_S71_R1.fq.gz -I data/fastqs/DPCh_plate1_F11_S71_R2.fq.gz              -o results/trimmed/T145171_R1.fastq.gz -O results/trimmed/T145171_R2.fastq.gz            -h results/qc/fastp/T145171.html -j results/qc/fastp/T145171.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145171.log 2> results/logs/trim_reads/T145171.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:41 2024]
+Finished job 19.
+2 of 132 steps (2%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:41 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G12_S84_R1.fq.gz, data/fastqs/DPCh_plate1_G12_S84_R2.fq.gz
+    output: results/trimmed/T145242_R1.fastq.gz, results/trimmed/T145242_R2.fastq.gz, results/qc/fastp/T145242.html, results/qc/fastp/T145242.json
+    log: results/logs/trim_reads/T145242.log, results/logs/trim_reads/T145242.err
+    jobid: 63
+    reason: Forced execution
+    wildcards: sample=T145242
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_G12_S84_R1.fq.gz -I data/fastqs/DPCh_plate1_G12_S84_R2.fq.gz              -o results/trimmed/T145242_R1.fastq.gz -O results/trimmed/T145242_R2.fastq.gz            -h results/qc/fastp/T145242.html -j results/qc/fastp/T145242.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145242.log 2> results/logs/trim_reads/T145242.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:42 2024]
+Finished job 51.
+3 of 132 steps (2%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:42 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz, data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz
+    output: results/trimmed/T144981_R1.fastq.gz, results/trimmed/T144981_R2.fastq.gz, results/qc/fastp/T144981.html, results/qc/fastp/T144981.json
+    log: results/logs/trim_reads/T144981.log, results/logs/trim_reads/T144981.err
+    jobid: 8
+    reason: Forced execution
+    wildcards: sample=T144981
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_B10_S22_R1.fq.gz -I data/fastqs/DPCh_plate1_B10_S22_R2.fq.gz              -o results/trimmed/T144981_R1.fastq.gz -O results/trimmed/T144981_R2.fastq.gz            -h results/qc/fastp/T144981.html -j results/qc/fastp/T144981.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144981.log 2> results/logs/trim_reads/T144981.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:42 2024]
+Finished job 23.
+4 of 132 steps (3%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:42 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_C12_S36_R1.fq.gz, data/fastqs/DPCh_plate1_C12_S36_R2.fq.gz
+    output: results/trimmed/T145200_R1.fastq.gz, results/trimmed/T145200_R2.fastq.gz, results/qc/fastp/T145200.html, results/qc/fastp/T145200.json
+    log: results/logs/trim_reads/T145200.log, results/logs/trim_reads/T145200.err
+    jobid: 31
+    reason: Forced execution
+    wildcards: sample=T145200
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_C12_S36_R1.fq.gz -I data/fastqs/DPCh_plate1_C12_S36_R2.fq.gz              -o results/trimmed/T145200_R1.fastq.gz -O results/trimmed/T145200_R2.fastq.gz            -h results/qc/fastp/T145200.html -j results/qc/fastp/T145200.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145200.log 2> results/logs/trim_reads/T145200.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:48 2024]
+Finished job 47.
+5 of 132 steps (4%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:48 2024]
+localrule genome_faidx:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.fasta.fai
+    log: results/logs/genome_faidx.log
+    jobid: 11
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+samtools faidx data/genome/genome.fasta 2> results/logs/genome_faidx.log
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:29:48 2024]
+Finished job 63.
+6 of 132 steps (5%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:48 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_B11_S23_R1.fq.gz, data/fastqs/DPCh_plate1_B11_S23_R2.fq.gz
+    output: results/trimmed/T145152_R1.fastq.gz, results/trimmed/T145152_R2.fastq.gz, results/qc/fastp/T145152.html, results/qc/fastp/T145152.json
+    log: results/logs/trim_reads/T145152.log, results/logs/trim_reads/T145152.err
+    jobid: 15
+    reason: Forced execution
+    wildcards: sample=T145152
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_B11_S23_R1.fq.gz -I data/fastqs/DPCh_plate1_B11_S23_R2.fq.gz              -o results/trimmed/T145152_R1.fastq.gz -O results/trimmed/T145152_R2.fastq.gz            -h results/qc/fastp/T145152.html -j results/qc/fastp/T145152.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145152.log 2> results/logs/trim_reads/T145152.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:49 2024]
+Finished job 31.
+7 of 132 steps (5%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G10_S82_R1.fq.gz, data/fastqs/DPCh_plate1_G10_S82_R2.fq.gz
+    output: results/trimmed/T144997_R1.fastq.gz, results/trimmed/T144997_R2.fastq.gz, results/qc/fastp/T144997.html, results/qc/fastp/T144997.json
+    log: results/logs/trim_reads/T144997.log, results/logs/trim_reads/T144997.err
+    jobid: 59
+    reason: Forced execution
+    wildcards: sample=T144997
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_G10_S82_R1.fq.gz -I data/fastqs/DPCh_plate1_G10_S82_R2.fq.gz              -o results/trimmed/T144997_R1.fastq.gz -O results/trimmed/T144997_R2.fastq.gz            -h results/qc/fastp/T144997.html -j results/qc/fastp/T144997.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144997.log 2> results/logs/trim_reads/T144997.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:49 2024]
+Finished job 11.
+8 of 132 steps (6%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_D09_S45_R1.fq.gz, data/fastqs/DPCh_plate1_D09_S45_R2.fq.gz
+    output: results/trimmed/T144967_R1.fastq.gz, results/trimmed/T144967_R2.fastq.gz, results/qc/fastp/T144967.html, results/qc/fastp/T144967.json
+    log: results/logs/trim_reads/T144967.log, results/logs/trim_reads/T144967.err
+    jobid: 35
+    reason: Forced execution
+    wildcards: sample=T144967
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_D09_S45_R1.fq.gz -I data/fastqs/DPCh_plate1_D09_S45_R2.fq.gz              -o results/trimmed/T144967_R1.fastq.gz -O results/trimmed/T144967_R2.fastq.gz            -h results/qc/fastp/T144967.html -j results/qc/fastp/T144967.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144967.log 2> results/logs/trim_reads/T144967.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:49 2024]
+Finished job 8.
+9 of 132 steps (7%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:49 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_H09_S93_R1.fq.gz, data/fastqs/DPCh_plate1_H09_S93_R2.fq.gz
+    output: results/trimmed/T144979_R1.fastq.gz, results/trimmed/T144979_R2.fastq.gz, results/qc/fastp/T144979.html, results/qc/fastp/T144979.json
+    log: results/logs/trim_reads/T144979.log, results/logs/trim_reads/T144979.err
+    jobid: 67
+    reason: Forced execution
+    wildcards: sample=T144979
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_H09_S93_R1.fq.gz -I data/fastqs/DPCh_plate1_H09_S93_R2.fq.gz              -o results/trimmed/T144979_R1.fastq.gz -O results/trimmed/T144979_R2.fastq.gz            -h results/qc/fastp/T144979.html -j results/qc/fastp/T144979.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144979.log 2> results/logs/trim_reads/T144979.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:53 2024]
+Finished job 15.
+10 of 132 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:53 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_G09_S81_R1.fq.gz, data/fastqs/DPCh_plate1_G09_S81_R2.fq.gz
+    output: results/trimmed/T144974_R1.fastq.gz, results/trimmed/T144974_R2.fastq.gz, results/qc/fastp/T144974.html, results/qc/fastp/T144974.json
+    log: results/logs/trim_reads/T144974.log, results/logs/trim_reads/T144974.err
+    jobid: 55
+    reason: Forced execution
+    wildcards: sample=T144974
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_G09_S81_R1.fq.gz -I data/fastqs/DPCh_plate1_G09_S81_R2.fq.gz              -o results/trimmed/T144974_R1.fastq.gz -O results/trimmed/T144974_R2.fastq.gz            -h results/qc/fastp/T144974.html -j results/qc/fastp/T144974.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144974.log 2> results/logs/trim_reads/T144974.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:55 2024]
+Finished job 67.
+11 of 132 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:55 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_D11_S47_R1.fq.gz, data/fastqs/DPCh_plate1_D11_S47_R2.fq.gz
+    output: results/trimmed/T145163_R1.fastq.gz, results/trimmed/T145163_R2.fastq.gz, results/qc/fastp/T145163.html, results/qc/fastp/T145163.json
+    log: results/logs/trim_reads/T145163.log, results/logs/trim_reads/T145163.err
+    jobid: 39
+    reason: Forced execution
+    wildcards: sample=T145163
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_D11_S47_R1.fq.gz -I data/fastqs/DPCh_plate1_D11_S47_R2.fq.gz              -o results/trimmed/T145163_R1.fastq.gz -O results/trimmed/T145163_R2.fastq.gz            -h results/qc/fastp/T145163.html -j results/qc/fastp/T145163.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145163.log 2> results/logs/trim_reads/T145163.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:56 2024]
+Finished job 35.
+12 of 132 steps (9%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:56 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_H10_S94_R1.fq.gz, data/fastqs/DPCh_plate1_H10_S94_R2.fq.gz
+    output: results/trimmed/T145003_R1.fastq.gz, results/trimmed/T145003_R2.fastq.gz, results/qc/fastp/T145003.html, results/qc/fastp/T145003.json
+    log: results/logs/trim_reads/T145003.log, results/logs/trim_reads/T145003.err
+    jobid: 71
+    reason: Forced execution
+    wildcards: sample=T145003
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_H10_S94_R1.fq.gz -I data/fastqs/DPCh_plate1_H10_S94_R2.fq.gz              -o results/trimmed/T145003_R1.fastq.gz -O results/trimmed/T145003_R2.fastq.gz            -h results/qc/fastp/T145003.html -j results/qc/fastp/T145003.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T145003.log 2> results/logs/trim_reads/T145003.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:29:58 2024]
+Finished job 59.
+13 of 132 steps (10%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:29:59 2024]
+localrule bwa_index:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    log: results/logs/bwa_index/bwa_index.log, results/logs/bwa_index/bwa_index.err
+    jobid: 9
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+bwa-mem2 index data/genome/genome.fasta > results/logs/bwa_index/bwa_index.log 2> results/logs/bwa_index/bwa_index.err
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:30:01 2024]
+Finished job 39.
+14 of 132 steps (11%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:30:02 2024]
+localrule genome_dict:
+    input: data/genome/genome.fasta
+    output: data/genome/genome.dict
+    log: results/logs/genome_dict.log
+    jobid: 10
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+samtools dict data/genome/genome.fasta > data/genome/genome.dict 2> results/logs/genome_dict.log
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:30:02 2024]
+Finished job 55.
+15 of 132 steps (11%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:30:02 2024]
+localrule trim_reads:
+    input: data/fastqs/DPCh_plate1_F10_S70_R1.fq.gz, data/fastqs/DPCh_plate1_F10_S70_R2.fq.gz
+    output: results/trimmed/T144996_R1.fastq.gz, results/trimmed/T144996_R2.fastq.gz, results/qc/fastp/T144996.html, results/qc/fastp/T144996.json
+    log: results/logs/trim_reads/T144996.log, results/logs/trim_reads/T144996.err
+    jobid: 43
+    reason: Forced execution
+    wildcards: sample=T144996
+    resources: tmpdir=/tmp
+
+ fastp -i data/fastqs/DPCh_plate1_F10_S70_R1.fq.gz -I data/fastqs/DPCh_plate1_F10_S70_R2.fq.gz              -o results/trimmed/T144996_R1.fastq.gz -O results/trimmed/T144996_R2.fastq.gz            -h results/qc/fastp/T144996.html -j results/qc/fastp/T144996.json   --adapter_sequence=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA          --adapter_sequence_r2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT       --detect_adapter_for_pe --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 > results/logs/trim_reads/T144996.log 2> results/logs/trim_reads/T144996.err 
+Activating conda environment: .snakemake/conda/426604231f6d19e7e384efe1cccf3c2d_
+[Fri Apr 12 17:30:02 2024]
+Finished job 10.
+16 of 132 steps (12%) done
+[Fri Apr 12 17:30:03 2024]
+Finished job 71.
+17 of 132 steps (13%) done
+[Fri Apr 12 17:30:05 2024]
+Finished job 43.
+18 of 132 steps (14%) done
+[Fri Apr 12 17:30:10 2024]
+Finished job 9.
+19 of 132 steps (14%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:30:10 2024]
+localrule map_reads:
+    input: results/trimmed/T144967_R1.fastq.gz, results/trimmed/T144967_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144967.bam
+    log: results/logs/map_reads/T144967.log
+    jobid: 34
+    reason: Forced execution
+    wildcards: sample=T144967
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144967_T144967_plate1_HTYYCBBXX_1_CTTACAAT+CAATCTAA\tSM:T144967\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.CTTACAAT+CAATCTAA' data/genome/genome.fasta results/trimmed/T144967_R1.fastq.gz results/trimmed/T144967_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144967.bam) 2> results/logs/map_reads/T144967.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+
+[Fri Apr 12 17:30:11 2024]
+localrule map_reads:
+    input: results/trimmed/T144981_R1.fastq.gz, results/trimmed/T144981_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144981.bam
+    log: results/logs/map_reads/T144981.log
+    jobid: 7
+    reason: Forced execution
+    wildcards: sample=T144981
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144981_T144981_plate1_HTYYCBBXX_1_TATAGTTG+CCCGTATA\tSM:T144981\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TATAGTTG+CCCGTATA' data/genome/genome.fasta results/trimmed/T144981_R1.fastq.gz results/trimmed/T144981_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144981.bam) 2> results/logs/map_reads/T144981.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:30:39 2024]
+Finished job 7.
+20 of 132 steps (15%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:30:39 2024]
+localrule map_reads:
+    input: results/trimmed/T145163_R1.fastq.gz, results/trimmed/T145163_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145163.bam
+    log: results/logs/map_reads/T145163.log
+    jobid: 38
+    reason: Forced execution
+    wildcards: sample=T145163
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145163_T145163_plate1_HTYYCBBXX_1_ACGCTACA+GTCAAGGC\tSM:T145163\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.ACGCTACA+GTCAAGGC' data/genome/genome.fasta results/trimmed/T145163_R1.fastq.gz results/trimmed/T145163_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145163.bam) 2> results/logs/map_reads/T145163.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:30:40 2024]
+Finished job 34.
+21 of 132 steps (16%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:30:40 2024]
+localrule map_reads:
+    input: results/trimmed/T145003_R1.fastq.gz, results/trimmed/T145003_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145003.bam
+    log: results/logs/map_reads/T145003.log
+    jobid: 70
+    reason: Forced execution
+    wildcards: sample=T145003
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145003_T145003_plate1_HTYYCBBXX_1_AGCACGGA+CCTCTAGG\tSM:T145003\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.AGCACGGA+CCTCTAGG' data/genome/genome.fasta results/trimmed/T145003_R1.fastq.gz results/trimmed/T145003_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145003.bam) 2> results/logs/map_reads/T145003.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:31:08 2024]
+Finished job 70.
+22 of 132 steps (17%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:31:08 2024]
+localrule mark_duplicates:
+    input: results/bam/T144967.bam
+    output: results/mkdup/T144967.bam, results/mkdup/T144967.bai, results/qc/mkdup_metrics/T144967.metrics
+    log: results/logs/mark_duplicates/T144967.log
+    jobid: 33
+    reason: Forced execution
+    wildcards: sample=T144967
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144967.bam   -O results/mkdup/T144967.bam   -M results/qc/mkdup_metrics/T144967.metrics > results/logs/mark_duplicates/T144967.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:31:08 2024]
+localrule mark_duplicates:
+    input: results/bam/T144981.bam
+    output: results/mkdup/T144981.bam, results/mkdup/T144981.bai, results/qc/mkdup_metrics/T144981.metrics
+    log: results/logs/mark_duplicates/T144981.log
+    jobid: 6
+    reason: Forced execution
+    wildcards: sample=T144981
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144981.bam   -O results/mkdup/T144981.bam   -M results/qc/mkdup_metrics/T144981.metrics > results/logs/mark_duplicates/T144981.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:31:09 2024]
+Finished job 38.
+23 of 132 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:31:10 2024]
+localrule map_reads:
+    input: results/trimmed/T144996_R1.fastq.gz, results/trimmed/T144996_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144996.bam
+    log: results/logs/map_reads/T144996.log
+    jobid: 42
+    reason: Forced execution
+    wildcards: sample=T144996
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144996_T144996_plate1_HTYYCBBXX_1_GACGCACG+TCGCCGTA\tSM:T144996\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.GACGCACG+TCGCCGTA' data/genome/genome.fasta results/trimmed/T144996_R1.fastq.gz results/trimmed/T144996_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144996.bam) 2> results/logs/map_reads/T144996.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:31:26 2024]
+Finished job 6.
+24 of 132 steps (18%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:31:26 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144981.bam, results/mkdup/T144981.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144981.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144981.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144981.log
+    jobid: 5
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144981
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144981.bam  -O results/gvcf/NC_037122.1f5t9/T144981.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144981.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144981.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:31:26 2024]
+Finished job 33.
+25 of 132 steps (19%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:31:26 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144967.bam, results/mkdup/T144967.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144967.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144967.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144967.log
+    jobid: 102
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144967
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144967.bam  -O results/gvcf/NC_037124.1f8t16/T144967.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144967.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144967.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:31:51 2024]
+Finished job 42.
+26 of 132 steps (20%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:31:51 2024]
+localrule mark_duplicates:
+    input: results/bam/T145003.bam
+    output: results/mkdup/T145003.bam, results/mkdup/T145003.bai, results/qc/mkdup_metrics/T145003.metrics
+    log: results/logs/mark_duplicates/T145003.log
+    jobid: 69
+    reason: Forced execution
+    wildcards: sample=T145003
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145003.bam   -O results/mkdup/T145003.bam   -M results/qc/mkdup_metrics/T145003.metrics > results/logs/mark_duplicates/T145003.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:31:51 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144967.bam, results/mkdup/T144967.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144967.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144967.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144967.log
+    jobid: 122
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144967
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144967.bam  -O results/gvcf/NC_037125.1f20t24/T144967.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144967.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144967.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:32:10 2024]
+Finished job 69.
+27 of 132 steps (20%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:32:10 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144981.bam, results/mkdup/T144981.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144981.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144981.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144981.log
+    jobid: 116
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144981
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144981.bam  -O results/gvcf/NC_037125.1f20t24/T144981.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144981.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144981.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:33:09 2024]
+Finished job 122.
+28 of 132 steps (21%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:33:09 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145003.bam, results/mkdup/T145003.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145003.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145003.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145003.log
+    jobid: 131
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145003
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145003.bam  -O results/gvcf/NC_037125.1f20t24/T145003.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145003.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145003.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:33:11 2024]
+Finished job 5.
+29 of 132 steps (22%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:33:11 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145003.bam, results/mkdup/T145003.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145003.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145003.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145003.log
+    jobid: 111
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145003
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145003.bam  -O results/gvcf/NC_037124.1f8t16/T145003.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145003.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145003.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:33:25 2024]
+Finished job 116.
+30 of 132 steps (23%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:33:26 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145003.bam, results/mkdup/T145003.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145003.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145003.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145003.log
+    jobid: 68
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145003
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145003.bam  -O results/gvcf/NC_037122.1f5t9/T145003.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145003.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145003.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:34:23 2024]
+Finished job 131.
+31 of 132 steps (23%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:34:23 2024]
+localrule mark_duplicates:
+    input: results/bam/T144996.bam
+    output: results/mkdup/T144996.bam, results/mkdup/T144996.bai, results/qc/mkdup_metrics/T144996.metrics
+    log: results/logs/mark_duplicates/T144996.log
+    jobid: 41
+    reason: Forced execution
+    wildcards: sample=T144996
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144996.bam   -O results/mkdup/T144996.bam   -M results/qc/mkdup_metrics/T144996.metrics > results/logs/mark_duplicates/T144996.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:34:34 2024]
+Finished job 41.
+32 of 132 steps (24%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:34:34 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144996.bam, results/mkdup/T144996.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144996.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144996.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144996.log
+    jobid: 124
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144996
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144996.bam  -O results/gvcf/NC_037125.1f20t24/T144996.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144996.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144996.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:34:43 2024]
+Finished job 102.
+33 of 132 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:34:43 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144981.bam, results/mkdup/T144981.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144981.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144981.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144981.log
+    jobid: 96
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144981
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144981.bam  -O results/gvcf/NC_037124.1f8t16/T144981.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144981.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144981.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:35:17 2024]
+Finished job 68.
+34 of 132 steps (26%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:35:17 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144996.bam, results/mkdup/T144996.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144996.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144996.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144996.log
+    jobid: 84
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144996
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144996.bam  -O results/gvcf/NC_037123.1f10t14/T144996.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144996.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144996.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:35:51 2024]
+Finished job 124.
+35 of 132 steps (27%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:35:51 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144996.bam, results/mkdup/T144996.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144996.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144996.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144996.log
+    jobid: 104
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144996
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144996.bam  -O results/gvcf/NC_037124.1f8t16/T144996.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144996.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144996.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:36:35 2024]
+Finished job 111.
+36 of 132 steps (27%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:36:35 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145003.bam, results/mkdup/T145003.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145003.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145003.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145003.log
+    jobid: 91
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145003
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145003.bam  -O results/gvcf/NC_037123.1f10t14/T145003.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145003.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145003.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:37:33 2024]
+Finished job 96.
+37 of 132 steps (28%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:37:33 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144967.bam, results/mkdup/T144967.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144967.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144967.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144967.log
+    jobid: 32
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144967
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144967.bam  -O results/gvcf/NC_037122.1f5t9/T144967.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144967.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144967.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:37:39 2024]
+Finished job 84.
+38 of 132 steps (29%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:37:39 2024]
+localrule mark_duplicates:
+    input: results/bam/T145163.bam
+    output: results/mkdup/T145163.bam, results/mkdup/T145163.bai, results/qc/mkdup_metrics/T145163.metrics
+    log: results/logs/mark_duplicates/T145163.log
+    jobid: 37
+    reason: Forced execution
+    wildcards: sample=T145163
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145163.bam   -O results/mkdup/T145163.bam   -M results/qc/mkdup_metrics/T145163.metrics > results/logs/mark_duplicates/T145163.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:37:57 2024]
+Finished job 37.
+39 of 132 steps (30%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:37:58 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145163.bam, results/mkdup/T145163.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145163.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145163.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145163.log
+    jobid: 123
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145163
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145163.bam  -O results/gvcf/NC_037125.1f20t24/T145163.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145163.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145163.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:38:44 2024]
+Finished job 91.
+40 of 132 steps (30%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:38:44 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145163.bam, results/mkdup/T145163.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145163.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145163.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145163.log
+    jobid: 36
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145163
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145163.bam  -O results/gvcf/NC_037122.1f5t9/T145163.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145163.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145163.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:38:44 2024]
+Finished job 104.
+41 of 132 steps (31%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:38:45 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144996.bam, results/mkdup/T144996.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144996.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144996.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144996.log
+    jobid: 40
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144996
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144996.bam  -O results/gvcf/NC_037122.1f5t9/T144996.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144996.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144996.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:39:12 2024]
+Finished job 32.
+42 of 132 steps (32%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:39:12 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144981.bam, results/mkdup/T144981.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144981.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144981.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144981.log
+    jobid: 76
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144981
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144981.bam  -O results/gvcf/NC_037123.1f10t14/T144981.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144981.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144981.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:39:18 2024]
+Finished job 123.
+43 of 132 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:39:18 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144967.bam, results/mkdup/T144967.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144967.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144967.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144967.log
+    jobid: 82
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144967
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144967.bam  -O results/gvcf/NC_037123.1f10t14/T144967.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144967.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144967.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:40:32 2024]
+Finished job 40.
+44 of 132 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:40:32 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145163.bam, results/mkdup/T145163.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145163.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145163.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145163.log
+    jobid: 83
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145163
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145163.bam  -O results/gvcf/NC_037123.1f10t14/T145163.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145163.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145163.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:40:34 2024]
+Finished job 36.
+45 of 132 steps (34%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:40:34 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145163.bam, results/mkdup/T145163.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145163.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145163.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145163.log
+    jobid: 103
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145163
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145163.bam  -O results/gvcf/NC_037124.1f8t16/T145163.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145163.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145163.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:41:21 2024]
+Finished job 76.
+46 of 132 steps (35%) done
+Select jobs to execute...
+[Fri Apr 12 17:41:40 2024]
+Finished job 82.
+47 of 132 steps (36%) done
+Execute 1 jobs...
+
+[Fri Apr 12 17:41:40 2024]
+localrule map_reads:
+    input: results/trimmed/T144989_R1.fastq.gz, results/trimmed/T144989_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144989.bam
+    log: results/logs/map_reads/T144989.log
+    jobid: 22
+    reason: Forced execution
+    wildcards: sample=T144989
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144989_T144989_plate1_HTYYCBBXX_1_TTGGTACA+GCGCTAAC\tSM:T144989\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TTGGTACA+GCGCTAAC' data/genome/genome.fasta results/trimmed/T144989_R1.fastq.gz results/trimmed/T144989_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144989.bam) 2> results/logs/map_reads/T144989.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:42:17 2024]
+Finished job 22.
+48 of 132 steps (36%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:42:17 2024]
+localrule map_reads:
+    input: results/trimmed/T145241_R1.fastq.gz, results/trimmed/T145241_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145241.bam
+    log: results/logs/map_reads/T145241.log
+    jobid: 50
+    reason: Forced execution
+    wildcards: sample=T145241
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145241_T145241_plate1_HTYYCBBXX_1_CGACGTTT+TCTATTCG\tSM:T145241\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.CGACGTTT+TCTATTCG' data/genome/genome.fasta results/trimmed/T145241_R1.fastq.gz results/trimmed/T145241_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145241.bam) 2> results/logs/map_reads/T145241.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:42:40 2024]
+Finished job 83.
+49 of 132 steps (37%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:42:40 2024]
+localrule mark_duplicates:
+    input: results/bam/T144989.bam
+    output: results/mkdup/T144989.bam, results/mkdup/T144989.bai, results/qc/mkdup_metrics/T144989.metrics
+    log: results/logs/mark_duplicates/T144989.log
+    jobid: 21
+    reason: Forced execution
+    wildcards: sample=T144989
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144989.bam   -O results/mkdup/T144989.bam   -M results/qc/mkdup_metrics/T144989.metrics > results/logs/mark_duplicates/T144989.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:42:52 2024]
+Finished job 21.
+50 of 132 steps (38%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:42:52 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144989.bam, results/mkdup/T144989.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144989.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144989.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144989.log
+    jobid: 99
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144989
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144989.bam  -O results/gvcf/NC_037124.1f8t16/T144989.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144989.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144989.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:42:54 2024]
+Finished job 50.
+51 of 132 steps (39%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:42:54 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144989.bam, results/mkdup/T144989.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144989.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144989.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144989.log
+    jobid: 20
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144989
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144989.bam  -O results/gvcf/NC_037122.1f5t9/T144989.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144989.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144989.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:42:54 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144989.bam, results/mkdup/T144989.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144989.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144989.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144989.log
+    jobid: 119
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144989
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144989.bam  -O results/gvcf/NC_037125.1f20t24/T144989.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144989.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144989.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:43:33 2024]
+Finished job 103.
+52 of 132 steps (39%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:43:33 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144989.bam, results/mkdup/T144989.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144989.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144989.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144989.log
+    jobid: 79
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144989
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144989.bam  -O results/gvcf/NC_037123.1f10t14/T144989.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144989.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144989.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:44:31 2024]
+Finished job 119.
+53 of 132 steps (40%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:44:31 2024]
+localrule mark_duplicates:
+    input: results/bam/T145241.bam
+    output: results/mkdup/T145241.bam, results/mkdup/T145241.bai, results/qc/mkdup_metrics/T145241.metrics
+    log: results/logs/mark_duplicates/T145241.log
+    jobid: 49
+    reason: Forced execution
+    wildcards: sample=T145241
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145241.bam   -O results/mkdup/T145241.bam   -M results/qc/mkdup_metrics/T145241.metrics > results/logs/mark_duplicates/T145241.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:44:44 2024]
+Finished job 49.
+54 of 132 steps (41%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:44:44 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145241.bam, results/mkdup/T145241.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145241.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145241.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145241.log
+    jobid: 86
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145241
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145241.bam  -O results/gvcf/NC_037123.1f10t14/T145241.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145241.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145241.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:45:04 2024]
+Finished job 20.
+55 of 132 steps (42%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:45:04 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145241.bam, results/mkdup/T145241.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145241.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145241.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145241.log
+    jobid: 48
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145241
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145241.bam  -O results/gvcf/NC_037122.1f5t9/T145241.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145241.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145241.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:46:32 2024]
+Finished job 99.
+56 of 132 steps (42%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:46:32 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145241.bam, results/mkdup/T145241.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145241.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145241.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145241.log
+    jobid: 106
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145241
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145241.bam  -O results/gvcf/NC_037124.1f8t16/T145241.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145241.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145241.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:46:33 2024]
+Finished job 79.
+57 of 132 steps (43%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:46:33 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145241.bam, results/mkdup/T145241.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145241.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145241.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145241.log
+    jobid: 126
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145241
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145241.bam  -O results/gvcf/NC_037125.1f20t24/T145241.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145241.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145241.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:46:35 2024]
+Finished job 48.
+58 of 132 steps (44%) done
+Select jobs to execute...
+[Fri Apr 12 17:47:11 2024]
+Finished job 86.
+59 of 132 steps (45%) done
+Execute 1 jobs...
+
+[Fri Apr 12 17:47:11 2024]
+localrule map_reads:
+    input: results/trimmed/T144979_R1.fastq.gz, results/trimmed/T144979_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144979.bam
+    log: results/logs/map_reads/T144979.log
+    jobid: 66
+    reason: Forced execution
+    wildcards: sample=T144979
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144979_T144979_plate1_HTYYCBBXX_1_GACGGGTC+AATGTAGC\tSM:T144979\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.GACGGGTC+AATGTAGC' data/genome/genome.fasta results/trimmed/T144979_R1.fastq.gz results/trimmed/T144979_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144979.bam) 2> results/logs/map_reads/T144979.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:47:39 2024]
+Finished job 126.
+60 of 132 steps (45%) done
+Select jobs to execute...
+[Fri Apr 12 17:47:40 2024]
+Finished job 66.
+61 of 132 steps (46%) done
+Execute 2 jobs...
+
+[Fri Apr 12 17:47:40 2024]
+localrule mark_duplicates:
+    input: results/bam/T144979.bam
+    output: results/mkdup/T144979.bam, results/mkdup/T144979.bai, results/qc/mkdup_metrics/T144979.metrics
+    log: results/logs/mark_duplicates/T144979.log
+    jobid: 65
+    reason: Forced execution
+    wildcards: sample=T144979
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144979.bam   -O results/mkdup/T144979.bam   -M results/qc/mkdup_metrics/T144979.metrics > results/logs/mark_duplicates/T144979.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:47:40 2024]
+localrule map_reads:
+    input: results/trimmed/T144974_R1.fastq.gz, results/trimmed/T144974_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144974.bam
+    log: results/logs/map_reads/T144974.log
+    jobid: 54
+    reason: Forced execution
+    wildcards: sample=T144974
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144974_T144974_plate1_HTYYCBBXX_1_GGTGCAGA+AAGCCCTC\tSM:T144974\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.GGTGCAGA+AAGCCCTC' data/genome/genome.fasta results/trimmed/T144974_R1.fastq.gz results/trimmed/T144974_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144974.bam) 2> results/logs/map_reads/T144974.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:47:50 2024]
+Finished job 65.
+62 of 132 steps (47%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:47:50 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144979.bam, results/mkdup/T144979.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144979.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144979.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144979.log
+    jobid: 110
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144979
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144979.bam  -O results/gvcf/NC_037124.1f8t16/T144979.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144979.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144979.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:48:47 2024]
+Finished job 54.
+63 of 132 steps (48%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:48:47 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144979.bam, results/mkdup/T144979.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144979.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144979.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144979.log
+    jobid: 130
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144979
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144979.bam  -O results/gvcf/NC_037125.1f20t24/T144979.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144979.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144979.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:48:47 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144979.bam, results/mkdup/T144979.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144979.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144979.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144979.log
+    jobid: 64
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144979
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144979.bam  -O results/gvcf/NC_037122.1f5t9/T144979.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144979.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144979.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:49:33 2024]
+Finished job 106.
+64 of 132 steps (48%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:49:33 2024]
+localrule mark_duplicates:
+    input: results/bam/T144974.bam
+    output: results/mkdup/T144974.bam, results/mkdup/T144974.bai, results/qc/mkdup_metrics/T144974.metrics
+    log: results/logs/mark_duplicates/T144974.log
+    jobid: 53
+    reason: Forced execution
+    wildcards: sample=T144974
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144974.bam   -O results/mkdup/T144974.bam   -M results/qc/mkdup_metrics/T144974.metrics > results/logs/mark_duplicates/T144974.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:49:49 2024]
+Finished job 53.
+65 of 132 steps (49%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:49:50 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144974.bam, results/mkdup/T144974.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144974.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144974.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144974.log
+    jobid: 87
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144974
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144974.bam  -O results/gvcf/NC_037123.1f10t14/T144974.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144974.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144974.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:49:52 2024]
+Finished job 130.
+66 of 132 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:49:52 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144974.bam, results/mkdup/T144974.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144974.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144974.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144974.log
+    jobid: 107
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144974
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144974.bam  -O results/gvcf/NC_037124.1f8t16/T144974.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144974.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144974.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:50:23 2024]
+Finished job 64.
+67 of 132 steps (51%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:50:23 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144974.bam, results/mkdup/T144974.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144974.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144974.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144974.log
+    jobid: 52
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144974
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144974.bam  -O results/gvcf/NC_037122.1f5t9/T144974.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144974.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144974.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:50:29 2024]
+Finished job 110.
+68 of 132 steps (52%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:50:29 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144974.bam, results/mkdup/T144974.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144974.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144974.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144974.log
+    jobid: 127
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144974
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144974.bam  -O results/gvcf/NC_037125.1f20t24/T144974.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144974.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144974.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:52:35 2024]
+Finished job 127.
+69 of 132 steps (52%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:52:35 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144979.bam, results/mkdup/T144979.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144979.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144979.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144979.log
+    jobid: 90
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144979
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144979.bam  -O results/gvcf/NC_037123.1f10t14/T144979.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144979.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144979.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:53:05 2024]
+Finished job 52.
+70 of 132 steps (53%) done
+Select jobs to execute...
+[Fri Apr 12 17:53:50 2024]
+Finished job 87.
+71 of 132 steps (54%) done
+Execute 1 jobs...
+
+[Fri Apr 12 17:53:50 2024]
+localrule map_reads:
+    input: results/trimmed/T145153_R1.fastq.gz, results/trimmed/T145153_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145153.bam
+    log: results/logs/map_reads/T145153.log
+    jobid: 26
+    reason: Forced execution
+    wildcards: sample=T145153
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145153_T145153_plate1_HTYYCBBXX_1_ATAAACCT+ATCAGTGT\tSM:T145153\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.ATAAACCT+ATCAGTGT' data/genome/genome.fasta results/trimmed/T145153_R1.fastq.gz results/trimmed/T145153_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145153.bam) 2> results/logs/map_reads/T145153.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:53:55 2024]
+Finished job 90.
+72 of 132 steps (55%) done
+Select jobs to execute...
+[Fri Apr 12 17:54:11 2024]
+Finished job 26.
+73 of 132 steps (55%) done
+Execute 2 jobs...
+
+[Fri Apr 12 17:54:11 2024]
+localrule mark_duplicates:
+    input: results/bam/T145153.bam
+    output: results/mkdup/T145153.bam, results/mkdup/T145153.bai, results/qc/mkdup_metrics/T145153.metrics
+    log: results/logs/mark_duplicates/T145153.log
+    jobid: 25
+    reason: Forced execution
+    wildcards: sample=T145153
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145153.bam   -O results/mkdup/T145153.bam   -M results/qc/mkdup_metrics/T145153.metrics > results/logs/mark_duplicates/T145153.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:54:11 2024]
+localrule map_reads:
+    input: results/trimmed/T145152_R1.fastq.gz, results/trimmed/T145152_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145152.bam
+    log: results/logs/map_reads/T145152.log
+    jobid: 14
+    reason: Forced execution
+    wildcards: sample=T145152
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145152_T145152_plate1_HTYYCBBXX_1_TCGGAGCT+TTTCGGTA\tSM:T145152\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TCGGAGCT+TTTCGGTA' data/genome/genome.fasta results/trimmed/T145152_R1.fastq.gz results/trimmed/T145152_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145152.bam) 2> results/logs/map_reads/T145152.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:54:20 2024]
+Finished job 25.
+74 of 132 steps (56%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:54:20 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145153.bam, results/mkdup/T145153.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145153.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145153.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145153.log
+    jobid: 24
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145153
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145153.bam  -O results/gvcf/NC_037122.1f5t9/T145153.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145153.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145153.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:54:48 2024]
+Finished job 14.
+75 of 132 steps (57%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:54:48 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145153.bam, results/mkdup/T145153.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145153.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145153.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145153.log
+    jobid: 80
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145153
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145153.bam  -O results/gvcf/NC_037123.1f10t14/T145153.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145153.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145153.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:54:48 2024]
+localrule mark_duplicates:
+    input: results/bam/T145152.bam
+    output: results/mkdup/T145152.bam, results/mkdup/T145152.bai, results/qc/mkdup_metrics/T145152.metrics
+    log: results/logs/mark_duplicates/T145152.log
+    jobid: 13
+    reason: Forced execution
+    wildcards: sample=T145152
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145152.bam   -O results/mkdup/T145152.bam   -M results/qc/mkdup_metrics/T145152.metrics > results/logs/mark_duplicates/T145152.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:55:00 2024]
+Finished job 107.
+76 of 132 steps (58%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:55:00 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145153.bam, results/mkdup/T145153.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145153.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145153.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145153.log
+    jobid: 100
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145153
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145153.bam  -O results/gvcf/NC_037124.1f8t16/T145153.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145153.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145153.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:55:02 2024]
+Finished job 13.
+77 of 132 steps (58%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:55:02 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145152.bam, results/mkdup/T145152.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145152.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145152.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145152.log
+    jobid: 117
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145152
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145152.bam  -O results/gvcf/NC_037125.1f20t24/T145152.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145152.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145152.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:55:41 2024]
+Finished job 24.
+78 of 132 steps (59%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:55:42 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145152.bam, results/mkdup/T145152.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145152.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145152.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145152.log
+    jobid: 97
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145152
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145152.bam  -O results/gvcf/NC_037124.1f8t16/T145152.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145152.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145152.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:56:28 2024]
+Finished job 117.
+79 of 132 steps (60%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:56:28 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145153.bam, results/mkdup/T145153.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145153.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145153.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145153.log
+    jobid: 120
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145153
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145153.bam  -O results/gvcf/NC_037125.1f20t24/T145153.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145153.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145153.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:57:09 2024]
+Finished job 80.
+80 of 132 steps (61%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:57:09 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145152.bam, results/mkdup/T145152.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145152.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145152.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145152.log
+    jobid: 12
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145152
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145152.bam  -O results/gvcf/NC_037122.1f5t9/T145152.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145152.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145152.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:57:29 2024]
+Finished job 120.
+81 of 132 steps (61%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:57:29 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145152.bam, results/mkdup/T145152.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145152.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145152.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145152.log
+    jobid: 77
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145152
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145152.bam  -O results/gvcf/NC_037123.1f10t14/T145152.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145152.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145152.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:57:51 2024]
+Finished job 100.
+82 of 132 steps (62%) done
+Select jobs to execute...
+[Fri Apr 12 17:58:27 2024]
+Finished job 12.
+83 of 132 steps (63%) done
+Execute 1 jobs...
+
+[Fri Apr 12 17:58:27 2024]
+localrule map_reads:
+    input: results/trimmed/T144997_R1.fastq.gz, results/trimmed/T144997_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T144997.bam
+    log: results/logs/map_reads/T144997.log
+    jobid: 58
+    reason: Forced execution
+    wildcards: sample=T144997
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T144997_T144997_plate1_HTYYCBBXX_1_TCGGTGCG+GGTCGTGC\tSM:T144997\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TCGGTGCG+GGTCGTGC' data/genome/genome.fasta results/trimmed/T144997_R1.fastq.gz results/trimmed/T144997_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T144997.bam) 2> results/logs/map_reads/T144997.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:58:28 2024]
+Finished job 97.
+84 of 132 steps (64%) done
+Select jobs to execute...
+[Fri Apr 12 17:59:03 2024]
+Finished job 77.
+85 of 132 steps (64%) done
+Execute 1 jobs...
+
+[Fri Apr 12 17:59:03 2024]
+localrule map_reads:
+    input: results/trimmed/T145242_R1.fastq.gz, results/trimmed/T145242_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145242.bam
+    log: results/logs/map_reads/T145242.log
+    jobid: 62
+    reason: Forced execution
+    wildcards: sample=T145242
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145242_T145242_plate1_HTYYCBBXX_1_AGATGAAA+GCGCCGGG\tSM:T145242\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.AGATGAAA+GCGCCGGG' data/genome/genome.fasta results/trimmed/T145242_R1.fastq.gz results/trimmed/T145242_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145242.bam) 2> results/logs/map_reads/T145242.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:59:18 2024]
+Finished job 58.
+86 of 132 steps (65%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:59:18 2024]
+localrule map_reads:
+    input: results/trimmed/T145193_R1.fastq.gz, results/trimmed/T145193_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145193.bam
+    log: results/logs/map_reads/T145193.log
+    jobid: 18
+    reason: Forced execution
+    wildcards: sample=T145193
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145193_T145193_plate1_HTYYCBBXX_1_TCATTATT+GCGCATCA\tSM:T145193\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TCATTATT+GCGCATCA' data/genome/genome.fasta results/trimmed/T145193_R1.fastq.gz results/trimmed/T145193_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145193.bam) 2> results/logs/map_reads/T145193.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:59:42 2024]
+Finished job 62.
+87 of 132 steps (66%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:59:42 2024]
+localrule map_reads:
+    input: results/trimmed/T145171_R1.fastq.gz, results/trimmed/T145171_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145171.bam
+    log: results/logs/map_reads/T145171.log
+    jobid: 46
+    reason: Forced execution
+    wildcards: sample=T145171
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145171_T145171_plate1_HTYYCBBXX_1_TCGAAATC+GATGAGAC\tSM:T145171\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TCGAAATC+GATGAGAC' data/genome/genome.fasta results/trimmed/T145171_R1.fastq.gz results/trimmed/T145171_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145171.bam) 2> results/logs/map_reads/T145171.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 17:59:44 2024]
+Finished job 18.
+88 of 132 steps (67%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 17:59:44 2024]
+localrule mark_duplicates:
+    input: results/bam/T145193.bam
+    output: results/mkdup/T145193.bam, results/mkdup/T145193.bai, results/qc/mkdup_metrics/T145193.metrics
+    log: results/logs/mark_duplicates/T145193.log
+    jobid: 17
+    reason: Forced execution
+    wildcards: sample=T145193
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145193.bam   -O results/mkdup/T145193.bam   -M results/qc/mkdup_metrics/T145193.metrics > results/logs/mark_duplicates/T145193.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 17:59:44 2024]
+localrule mark_duplicates:
+    input: results/bam/T144997.bam
+    output: results/mkdup/T144997.bam, results/mkdup/T144997.bai, results/qc/mkdup_metrics/T144997.metrics
+    log: results/logs/mark_duplicates/T144997.log
+    jobid: 57
+    reason: Forced execution
+    wildcards: sample=T144997
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T144997.bam   -O results/mkdup/T144997.bam   -M results/qc/mkdup_metrics/T144997.metrics > results/logs/mark_duplicates/T144997.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 17:59:56 2024]
+Finished job 17.
+89 of 132 steps (67%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 17:59:57 2024]
+localrule mark_duplicates:
+    input: results/bam/T145242.bam
+    output: results/mkdup/T145242.bam, results/mkdup/T145242.bai, results/qc/mkdup_metrics/T145242.metrics
+    log: results/logs/mark_duplicates/T145242.log
+    jobid: 61
+    reason: Forced execution
+    wildcards: sample=T145242
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145242.bam   -O results/mkdup/T145242.bam   -M results/qc/mkdup_metrics/T145242.metrics > results/logs/mark_duplicates/T145242.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:00:02 2024]
+Finished job 57.
+90 of 132 steps (68%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:00:02 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144997.bam, results/mkdup/T144997.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T144997.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144997.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144997.log
+    jobid: 128
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T144997
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144997.bam  -O results/gvcf/NC_037125.1f20t24/T144997.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144997.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T144997.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:00:14 2024]
+Finished job 61.
+91 of 132 steps (69%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:00:14 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145242.bam, results/mkdup/T145242.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145242.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145242.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145242.log
+    jobid: 109
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145242
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145242.bam  -O results/gvcf/NC_037124.1f8t16/T145242.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145242.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145242.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:00:29 2024]
+Finished job 46.
+92 of 132 steps (70%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Apr 12 18:00:29 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145242.bam, results/mkdup/T145242.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145242.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145242.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145242.log
+    jobid: 129
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145242
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145242.bam  -O results/gvcf/NC_037125.1f20t24/T145242.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145242.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145242.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 18:00:29 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144997.bam, results/mkdup/T144997.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T144997.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144997.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144997.log
+    jobid: 108
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T144997
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144997.bam  -O results/gvcf/NC_037124.1f8t16/T144997.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144997.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T144997.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:02:14 2024]
+Finished job 129.
+93 of 132 steps (70%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:02:14 2024]
+localrule mark_duplicates:
+    input: results/bam/T145171.bam
+    output: results/mkdup/T145171.bam, results/mkdup/T145171.bai, results/qc/mkdup_metrics/T145171.metrics
+    log: results/logs/mark_duplicates/T145171.log
+    jobid: 45
+    reason: Forced execution
+    wildcards: sample=T145171
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145171.bam   -O results/mkdup/T145171.bam   -M results/qc/mkdup_metrics/T145171.metrics > results/logs/mark_duplicates/T145171.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:02:22 2024]
+Finished job 128.
+94 of 132 steps (71%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:02:22 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144997.bam, results/mkdup/T144997.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T144997.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144997.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144997.log
+    jobid: 56
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T144997
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144997.bam  -O results/gvcf/NC_037122.1f5t9/T144997.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144997.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T144997.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:02:26 2024]
+Finished job 45.
+95 of 132 steps (72%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:02:26 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145193.bam, results/mkdup/T145193.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145193.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145193.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145193.log
+    jobid: 118
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145193
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145193.bam  -O results/gvcf/NC_037125.1f20t24/T145193.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145193.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145193.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:03:40 2024]
+Finished job 118.
+96 of 132 steps (73%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:03:40 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145171.bam, results/mkdup/T145171.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145171.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145171.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145171.log
+    jobid: 85
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145171
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145171.bam  -O results/gvcf/NC_037123.1f10t14/T145171.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145171.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145171.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:04:28 2024]
+Finished job 109.
+97 of 132 steps (73%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:04:29 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145171.bam, results/mkdup/T145171.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145171.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145171.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145171.log
+    jobid: 105
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145171
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145171.bam  -O results/gvcf/NC_037124.1f8t16/T145171.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145171.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145171.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:05:36 2024]
+Finished job 56.
+98 of 132 steps (74%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:05:36 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T144997.bam, results/mkdup/T144997.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T144997.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144997.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144997.log
+    jobid: 88
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T144997
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T144997.bam  -O results/gvcf/NC_037123.1f10t14/T144997.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144997.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T144997.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:06:02 2024]
+Finished job 85.
+99 of 132 steps (75%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:06:02 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145242.bam, results/mkdup/T145242.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145242.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145242.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145242.log
+    jobid: 89
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145242
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145242.bam  -O results/gvcf/NC_037123.1f10t14/T145242.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145242.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145242.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:06:48 2024]
+Finished job 108.
+100 of 132 steps (76%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:06:48 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145242.bam, results/mkdup/T145242.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145242.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145242.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145242.log
+    jobid: 60
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145242
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145242.bam  -O results/gvcf/NC_037122.1f5t9/T145242.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145242.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145242.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:07:18 2024]
+Finished job 105.
+101 of 132 steps (77%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:07:18 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145193.bam, results/mkdup/T145193.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145193.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145193.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145193.log
+    jobid: 98
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145193
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145193.bam  -O results/gvcf/NC_037124.1f8t16/T145193.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145193.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145193.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:08:45 2024]
+Finished job 60.
+102 of 132 steps (77%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:08:45 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145171.bam, results/mkdup/T145171.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145171.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145171.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145171.log
+    jobid: 44
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145171
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145171.bam  -O results/gvcf/NC_037122.1f5t9/T145171.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145171.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145171.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:09:34 2024]
+Finished job 89.
+103 of 132 steps (78%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:09:34 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145193.bam, results/mkdup/T145193.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145193.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145193.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145193.log
+    jobid: 16
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145193
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145193.bam  -O results/gvcf/NC_037122.1f5t9/T145193.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145193.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145193.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:09:52 2024]
+Finished job 98.
+104 of 132 steps (79%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:09:52 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145171.bam, results/mkdup/T145171.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145171.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145171.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145171.log
+    jobid: 125
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145171
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145171.bam  -O results/gvcf/NC_037125.1f20t24/T145171.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145171.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145171.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:10:18 2024]
+Finished job 44.
+105 of 132 steps (80%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:10:18 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145193.bam, results/mkdup/T145193.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145193.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145193.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145193.log
+    jobid: 78
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145193
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145193.bam  -O results/gvcf/NC_037123.1f10t14/T145193.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145193.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145193.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:10:34 2024]
+Finished job 88.
+106 of 132 steps (80%) done
+Select jobs to execute...
+[Fri Apr 12 18:11:01 2024]
+Finished job 16.
+107 of 132 steps (81%) done
+Execute 1 jobs...
+
+[Fri Apr 12 18:11:01 2024]
+localrule map_reads:
+    input: results/trimmed/T145200_R1.fastq.gz, results/trimmed/T145200_R2.fastq.gz, data/genome/genome.fasta, data/genome/genome.fasta.0123, data/genome/genome.fasta.amb, data/genome/genome.fasta.ann, data/genome/genome.fasta.bwt.2bit.64, data/genome/genome.fasta.pac
+    output: results/bam/T145200.bam
+    log: results/logs/map_reads/T145200.log
+    jobid: 30
+    reason: Forced execution
+    wildcards: sample=T145200
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=7480, mem_mib=7134, time=01:00:00
+
+ (bwa-mem2 mem -t 2 -R '@RG\tID:T145200_T145200_plate1_HTYYCBBXX_1_TTACGACG+CAACGCGG\tSM:T145200\tPL:ILLUMINA\tLB:plate1\tPU:HTYYCBBXX.1.TTACGACG+CAACGCGG' data/genome/genome.fasta results/trimmed/T145200_R1.fastq.gz results/trimmed/T145200_R2.fastq.gz |  samtools view -u |  samtools sort - > results/bam/T145200.bam) 2> results/logs/map_reads/T145200.log 
+Activating conda environment: .snakemake/conda/c466b6569ee9e77f3bf162869029cf6d_
+[Fri Apr 12 18:11:03 2024]
+Finished job 125.
+108 of 132 steps (82%) done
+[Fri Apr 12 18:11:24 2024]
+Finished job 30.
+109 of 132 steps (83%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:11:24 2024]
+localrule mark_duplicates:
+    input: results/bam/T145200.bam
+    output: results/mkdup/T145200.bam, results/mkdup/T145200.bai, results/qc/mkdup_metrics/T145200.metrics
+    log: results/logs/mark_duplicates/T145200.log
+    jobid: 29
+    reason: Forced execution
+    wildcards: sample=T145200
+    resources: tmpdir=/tmp
+
+ gatk MarkDuplicates   --CREATE_INDEX   -I results/bam/T145200.bam   -O results/mkdup/T145200.bam   -M results/qc/mkdup_metrics/T145200.metrics > results/logs/mark_duplicates/T145200.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:11:32 2024]
+Finished job 29.
+110 of 132 steps (83%) done
+Select jobs to execute...
+Execute 3 jobs...
+
+[Fri Apr 12 18:11:32 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145200.bam, results/mkdup/T145200.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037125.1f20t24/T145200.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145200.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145200.log
+    jobid: 121
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24, sample=T145200
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145200.bam  -O results/gvcf/NC_037125.1f20t24/T145200.g.vcf.gz  -L NC_037125.1f20t24 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145200.log 2> results/logs/make_gvcfs_by_chromo/NC_037125.1f20t24/T145200.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 18:11:32 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145200.bam, results/mkdup/T145200.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037123.1f10t14/T145200.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145200.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145200.log
+    jobid: 81
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14, sample=T145200
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145200.bam  -O results/gvcf/NC_037123.1f10t14/T145200.g.vcf.gz  -L NC_037123.1f10t14 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145200.log 2> results/logs/make_gvcfs_by_chromo/NC_037123.1f10t14/T145200.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+
+[Fri Apr 12 18:11:32 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145200.bam, results/mkdup/T145200.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037124.1f8t16/T145200.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145200.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145200.log
+    jobid: 101
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16, sample=T145200
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145200.bam  -O results/gvcf/NC_037124.1f8t16/T145200.g.vcf.gz  -L NC_037124.1f8t16 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145200.log 2> results/logs/make_gvcfs_by_chromo/NC_037124.1f8t16/T145200.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:12:14 2024]
+Finished job 78.
+111 of 132 steps (84%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:12:14 2024]
+localrule make_gvcfs_by_chromo:
+    input: results/mkdup/T145200.bam, results/mkdup/T145200.bai, data/genome/genome.fasta, data/genome/genome.dict, data/genome/genome.fasta.fai
+    output: results/gvcf/NC_037122.1f5t9/T145200.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145200.g.vcf.gz.tbi
+    log: results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145200.log
+    jobid: 28
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9, sample=T145200
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" HaplotypeCaller  -R data/genome/genome.fasta  -I results/mkdup/T145200.bam  -O results/gvcf/NC_037122.1f5t9/T145200.g.vcf.gz  -L NC_037122.1f5t9 --native-pair-hmm-threads 1  -ERC GVCF > results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145200.log 2> results/logs/make_gvcfs_by_chromo/NC_037122.1f5t9/T145200.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:12:51 2024]
+Finished job 121.
+112 of 132 steps (85%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:12:51 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037125.1f20t24/T144981.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145152.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145193.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144989.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145153.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145200.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144967.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145163.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144996.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145171.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145241.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144974.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144997.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145242.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T144979.g.vcf.gz, results/gvcf/NC_037125.1f20t24/T145003.g.vcf.gz
+    output: results/genomics_db/NC_037125.1f20t24
+    log: results/logs/import_genomics_db_by_chromo/NC_037125.1f20t24.log
+    jobid: 115
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=/tmp
+
+ VS=$(for i in results/gvcf/NC_037125.1f20t24/T144981.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145152.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145193.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144989.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145153.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145200.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144967.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145163.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144996.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145171.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145241.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144974.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144997.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145242.g.vcf.gz results/gvcf/NC_037125.1f20t24/T144979.g.vcf.gz results/gvcf/NC_037125.1f20t24/T145003.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037125.1f20t24   -L  NC_037125.1f20t24 2> results/logs/import_genomics_db_by_chromo/NC_037125.1f20t24.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:13:33 2024]
+Finished job 28.
+113 of 132 steps (86%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:13:33 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037122.1f5t9/T144981.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145152.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145193.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144989.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145153.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145200.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144967.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145163.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144996.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145171.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145241.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144974.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144997.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145242.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T144979.g.vcf.gz, results/gvcf/NC_037122.1f5t9/T145003.g.vcf.gz
+    output: results/genomics_db/NC_037122.1f5t9
+    log: results/logs/import_genomics_db_by_chromo/NC_037122.1f5t9.log
+    jobid: 4
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=/tmp
+
+ VS=$(for i in results/gvcf/NC_037122.1f5t9/T144981.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145152.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145193.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144989.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145153.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145200.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144967.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145163.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144996.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145171.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145241.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144974.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144997.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145242.g.vcf.gz results/gvcf/NC_037122.1f5t9/T144979.g.vcf.gz results/gvcf/NC_037122.1f5t9/T145003.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037122.1f5t9   -L  NC_037122.1f5t9 2> results/logs/import_genomics_db_by_chromo/NC_037122.1f5t9.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:13:34 2024]
+Finished job 81.
+114 of 132 steps (86%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:13:34 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037123.1f10t14/T144981.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145152.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145193.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144989.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145153.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145200.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144967.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145163.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144996.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145171.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145241.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144974.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144997.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145242.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T144979.g.vcf.gz, results/gvcf/NC_037123.1f10t14/T145003.g.vcf.gz
+    output: results/genomics_db/NC_037123.1f10t14
+    log: results/logs/import_genomics_db_by_chromo/NC_037123.1f10t14.log
+    jobid: 75
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=/tmp
+
+ VS=$(for i in results/gvcf/NC_037123.1f10t14/T144981.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145152.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145193.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144989.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145153.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145200.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144967.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145163.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144996.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145171.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145241.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144974.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144997.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145242.g.vcf.gz results/gvcf/NC_037123.1f10t14/T144979.g.vcf.gz results/gvcf/NC_037123.1f10t14/T145003.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037123.1f10t14   -L  NC_037123.1f10t14 2> results/logs/import_genomics_db_by_chromo/NC_037123.1f10t14.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:13:56 2024]
+Finished job 101.
+115 of 132 steps (87%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:13:56 2024]
+localrule import_genomics_db_by_chromo:
+    input: results/gvcf/NC_037124.1f8t16/T144981.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145152.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145193.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144989.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145153.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145200.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144967.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145163.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144996.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145171.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145241.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144974.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144997.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145242.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T144979.g.vcf.gz, results/gvcf/NC_037124.1f8t16/T145003.g.vcf.gz
+    output: results/genomics_db/NC_037124.1f8t16
+    log: results/logs/import_genomics_db_by_chromo/NC_037124.1f8t16.log
+    jobid: 95
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=/tmp
+
+ VS=$(for i in results/gvcf/NC_037124.1f8t16/T144981.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145152.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145193.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144989.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145153.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145200.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144967.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145163.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144996.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145171.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145241.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144974.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144997.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145242.g.vcf.gz results/gvcf/NC_037124.1f8t16/T144979.g.vcf.gz results/gvcf/NC_037124.1f8t16/T145003.g.vcf.gz; do echo -V $i; done);  gatk --java-options "-Xmx4g" GenomicsDBImport   $VS    --genomicsdb-workspace-path results/genomics_db/NC_037124.1f8t16   -L  NC_037124.1f8t16 2> results/logs/import_genomics_db_by_chromo/NC_037124.1f8t16.log 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:15:38 2024]
+Finished job 115.
+116 of 132 steps (88%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:15:38 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037125.1f20t24, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037125.1f20t24.vcf.gz, results/chromo_vcfs/NC_037125.1f20t24.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037125.1f20t24.txt
+    jobid: 114
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037125.1f20t24   -O results/chromo_vcfs/NC_037125.1f20t24.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037125.1f20t24.txt 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:17:37 2024]
+Finished job 4.
+117 of 132 steps (89%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:17:37 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037122.1f5t9, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz, results/chromo_vcfs/NC_037122.1f5t9.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037122.1f5t9.txt
+    jobid: 3
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037122.1f5t9   -O results/chromo_vcfs/NC_037122.1f5t9.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037122.1f5t9.txt 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:17:48 2024]
+Finished job 75.
+118 of 132 steps (89%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:17:48 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037123.1f10t14, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037123.1f10t14.vcf.gz, results/chromo_vcfs/NC_037123.1f10t14.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037123.1f10t14.txt
+    jobid: 74
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037123.1f10t14   -O results/chromo_vcfs/NC_037123.1f10t14.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037123.1f10t14.txt 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:17:55 2024]
+Finished job 114.
+119 of 132 steps (90%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:17:55 2024]
+localrule select_indels:
+    input: results/chromo_vcfs/NC_037125.1f20t24.vcf.gz, results/chromo_vcfs/NC_037125.1f20t24.vcf.gz.tbi
+    output: results/hard_filtering/indels/NC_037125.1f20t24.vcf.gz
+    log: results/logs/select_indels/NC_037125.1f20t24.log
+    jobid: 113
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=/tmp
+
+gatk SelectVariants  -V results/chromo_vcfs/NC_037125.1f20t24.vcf.gz  -select-type INDEL  -O results/hard_filtering/indels/NC_037125.1f20t24.vcf.gz > results/logs/select_indels/NC_037125.1f20t24.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:17:58 2024]
+Finished job 113.
+120 of 132 steps (91%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:17:58 2024]
+localrule hard_filter_indels:
+    input: results/hard_filtering/indels/NC_037125.1f20t24.vcf.gz
+    output: results/hard_filtering/indels-filtered/NC_037125.1f20t24.vcf.gz
+    log: results/logs/hard_filter_indels/NC_037125.1f20t24.log
+    jobid: 112
+    reason: Forced execution
+    wildcards: chromo=NC_037125.1f20t24
+    resources: tmpdir=/tmp
+
+gatk VariantFiltration  -V results/hard_filtering/indels/NC_037125.1f20t24.vcf.gz   -filter "QD < 2.0" --filter-name "QD2"   -filter "QUAL < 30.0" --filter-name "QUAL30"   -filter "FS > 200.0" --filter-name "FS200"   -filter "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20"        -O results/hard_filtering/indels-filtered/NC_037125.1f20t24.vcf.gz > results/logs/hard_filter_indels/NC_037125.1f20t24.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:18:01 2024]
+Finished job 112.
+121 of 132 steps (92%) done
+[Fri Apr 12 18:20:29 2024]
+Finished job 3.
+122 of 132 steps (92%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:20:29 2024]
+localrule select_indels:
+    input: results/chromo_vcfs/NC_037122.1f5t9.vcf.gz, results/chromo_vcfs/NC_037122.1f5t9.vcf.gz.tbi
+    output: results/hard_filtering/indels/NC_037122.1f5t9.vcf.gz
+    log: results/logs/select_indels/NC_037122.1f5t9.log
+    jobid: 2
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=/tmp
+
+gatk SelectVariants  -V results/chromo_vcfs/NC_037122.1f5t9.vcf.gz  -select-type INDEL  -O results/hard_filtering/indels/NC_037122.1f5t9.vcf.gz > results/logs/select_indels/NC_037122.1f5t9.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:20:33 2024]
+Finished job 2.
+123 of 132 steps (93%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:20:33 2024]
+localrule hard_filter_indels:
+    input: results/hard_filtering/indels/NC_037122.1f5t9.vcf.gz
+    output: results/hard_filtering/indels-filtered/NC_037122.1f5t9.vcf.gz
+    log: results/logs/hard_filter_indels/NC_037122.1f5t9.log
+    jobid: 1
+    reason: Forced execution
+    wildcards: chromo=NC_037122.1f5t9
+    resources: tmpdir=/tmp
+
+gatk VariantFiltration  -V results/hard_filtering/indels/NC_037122.1f5t9.vcf.gz   -filter "QD < 2.0" --filter-name "QD2"   -filter "QUAL < 30.0" --filter-name "QUAL30"   -filter "FS > 200.0" --filter-name "FS200"   -filter "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20"        -O results/hard_filtering/indels-filtered/NC_037122.1f5t9.vcf.gz > results/logs/hard_filter_indels/NC_037122.1f5t9.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:20:37 2024]
+Finished job 1.
+124 of 132 steps (94%) done
+[Fri Apr 12 18:20:42 2024]
+Finished job 74.
+125 of 132 steps (95%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:20:42 2024]
+localrule select_indels:
+    input: results/chromo_vcfs/NC_037123.1f10t14.vcf.gz, results/chromo_vcfs/NC_037123.1f10t14.vcf.gz.tbi
+    output: results/hard_filtering/indels/NC_037123.1f10t14.vcf.gz
+    log: results/logs/select_indels/NC_037123.1f10t14.log
+    jobid: 73
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=/tmp
+
+gatk SelectVariants  -V results/chromo_vcfs/NC_037123.1f10t14.vcf.gz  -select-type INDEL  -O results/hard_filtering/indels/NC_037123.1f10t14.vcf.gz > results/logs/select_indels/NC_037123.1f10t14.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:20:46 2024]
+Finished job 73.
+126 of 132 steps (95%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:20:46 2024]
+localrule hard_filter_indels:
+    input: results/hard_filtering/indels/NC_037123.1f10t14.vcf.gz
+    output: results/hard_filtering/indels-filtered/NC_037123.1f10t14.vcf.gz
+    log: results/logs/hard_filter_indels/NC_037123.1f10t14.log
+    jobid: 72
+    reason: Forced execution
+    wildcards: chromo=NC_037123.1f10t14
+    resources: tmpdir=/tmp
+
+gatk VariantFiltration  -V results/hard_filtering/indels/NC_037123.1f10t14.vcf.gz   -filter "QD < 2.0" --filter-name "QD2"   -filter "QUAL < 30.0" --filter-name "QUAL30"   -filter "FS > 200.0" --filter-name "FS200"   -filter "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20"        -O results/hard_filtering/indels-filtered/NC_037123.1f10t14.vcf.gz > results/logs/hard_filter_indels/NC_037123.1f10t14.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:20:49 2024]
+Finished job 72.
+127 of 132 steps (96%) done
+[Fri Apr 12 18:21:27 2024]
+Finished job 95.
+128 of 132 steps (97%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:21:27 2024]
+localrule vcf_from_gdb_by_chromo:
+    input: results/genomics_db/NC_037124.1f8t16, data/genome/genome.fasta, data/genome/genome.fasta.fai, data/genome/genome.dict
+    output: results/chromo_vcfs/NC_037124.1f8t16.vcf.gz, results/chromo_vcfs/NC_037124.1f8t16.vcf.gz.tbi
+    log: results/logs/vcf_from_gdb_by_chromo/NC_037124.1f8t16.txt
+    jobid: 94
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=/tmp
+
+ gatk --java-options "-Xmx4g" GenotypeGVCFs   -R data/genome/genome.fasta    -V gendb://results/genomics_db/NC_037124.1f8t16   -O results/chromo_vcfs/NC_037124.1f8t16.vcf.gz 2> results/logs/vcf_from_gdb_by_chromo/NC_037124.1f8t16.txt 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:25:35 2024]
+Finished job 94.
+129 of 132 steps (98%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:25:35 2024]
+localrule select_indels:
+    input: results/chromo_vcfs/NC_037124.1f8t16.vcf.gz, results/chromo_vcfs/NC_037124.1f8t16.vcf.gz.tbi
+    output: results/hard_filtering/indels/NC_037124.1f8t16.vcf.gz
+    log: results/logs/select_indels/NC_037124.1f8t16.log
+    jobid: 93
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=/tmp
+
+gatk SelectVariants  -V results/chromo_vcfs/NC_037124.1f8t16.vcf.gz  -select-type INDEL  -O results/hard_filtering/indels/NC_037124.1f8t16.vcf.gz > results/logs/select_indels/NC_037124.1f8t16.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:25:39 2024]
+Finished job 93.
+130 of 132 steps (98%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:25:39 2024]
+localrule hard_filter_indels:
+    input: results/hard_filtering/indels/NC_037124.1f8t16.vcf.gz
+    output: results/hard_filtering/indels-filtered/NC_037124.1f8t16.vcf.gz
+    log: results/logs/hard_filter_indels/NC_037124.1f8t16.log
+    jobid: 92
+    reason: Forced execution
+    wildcards: chromo=NC_037124.1f8t16
+    resources: tmpdir=/tmp
+
+gatk VariantFiltration  -V results/hard_filtering/indels/NC_037124.1f8t16.vcf.gz   -filter "QD < 2.0" --filter-name "QD2"   -filter "QUAL < 30.0" --filter-name "QUAL30"   -filter "FS > 200.0" --filter-name "FS200"   -filter "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20"        -O results/hard_filtering/indels-filtered/NC_037124.1f8t16.vcf.gz > results/logs/hard_filter_indels/NC_037124.1f8t16.log 2>&1 
+Activating conda environment: .snakemake/conda/0f6f133cee51c6927b91a86792510878_
+[Fri Apr 12 18:25:43 2024]
+Finished job 92.
+131 of 132 steps (99%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Apr 12 18:25:43 2024]
+localrule all:
+    input: results/hard_filtering/indels-filtered/NC_037122.1f5t9.vcf.gz, results/hard_filtering/indels-filtered/NC_037123.1f10t14.vcf.gz, results/hard_filtering/indels-filtered/NC_037124.1f8t16.vcf.gz, results/hard_filtering/indels-filtered/NC_037125.1f20t24.vcf.gz
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+[Fri Apr 12 18:25:43 2024]
+Finished job 0.
+132 of 132 steps (100%) done
+Complete log: .snakemake/log/2024-04-12T172931.789744.snakemake.log
