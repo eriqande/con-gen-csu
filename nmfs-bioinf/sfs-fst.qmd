@@ -258,6 +258,9 @@ The x-axis is number of "derived" alleles in the sample, and the fill
 color is likelihood.  The white bands are omitted bases (likely becuase
 there are no reads there? or some other feature of the genome there?).
 
+You can download a higher resolution version of that figure from
+[here](https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/figs/saf_file_raster.pdf).
+
 These SAF files form the basis for a lot of further inference,
 which we address next.
 
