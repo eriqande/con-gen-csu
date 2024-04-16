@@ -298,6 +298,7 @@ window.Quarto = {
   <li><a href="#the-config-for-our-trinity-river-chinook" id="toc-the-config-for-our-trinity-river-chinook" class="nav-link" data-scroll-target="#the-config-for-our-trinity-river-chinook"><span class="header-section-number">16.6.3</span> The config for our Trinity River Chinook</a></li>
   <li><a href="#a-simple-dry-run" id="toc-a-simple-dry-run" class="nav-link" data-scroll-target="#a-simple-dry-run"><span class="header-section-number">16.6.4</span> A Simple Dry run</a></li>
   <li><a href="#only-run-things-as-far-as-the-calc_saf-rule" id="toc-only-run-things-as-far-as-the-calc_saf-rule" class="nav-link" data-scroll-target="#only-run-things-as-far-as-the-calc_saf-rule"><span class="header-section-number">16.6.5</span> Only run things as far as the <code>calc_saf</code> rule</a></li>
+  <li><a href="#make-a-picture-of-part-of-that-file" id="toc-make-a-picture-of-part-of-that-file" class="nav-link" data-scroll-target="#make-a-picture-of-part-of-that-file"><span class="header-section-number">16.6.6</span> Make a picture of part of that file</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/sfs-fst.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -458,6 +459,55 @@ window.Quarto = {
 <p>That just runs 8 jobs making bamlists (short little jobs) and 8 jobs making SAF files—4 chromosomes in each of two groups.</p>
 <p>Let’s see about running all of those:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-p</span> <span class="at">--use-conda</span> <span class="at">--until</span> calc_saf <span class="at">--cores</span> 4 <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That does not take too long.</p>
+<p>Let’s check out the size of the resulting files:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">--du</span> <span class="at">-h</span> results/BY_CHROM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Whoa! Those are some pretty big files. For <code>NC_037122.1f5t9</code> for example, I get 56 M and 64 M for spring-run and fall-run respectively.</p>
+<p>Let’s do some thinking about that—<code>NC_037122.1f5t9</code> is 4 megabases and each group of fish has 8 diploids, so there are <span class="math inline">\(2 \times 8 + 1 = 17\)</span> possible sample allele frequencies at each base, and each frequency requires 4 bytes to store in memory. Thus we would expect an uncompressed size of this file in megabytes to be:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fl">4e6</span> <span class="sc">*</span> <span class="dv">17</span> <span class="sc">*</span> <span class="dv">4</span> <span class="sc">/</span> <span class="fl">1e6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 272</code></pre>
+</div>
+</div>
+<p>But it is only around 60 Mb, and that is because it is compressed, and the compressed size is about 22% of the uncompressed.</p>
+</section>
+<section id="make-a-picture-of-part-of-that-file" class="level3" data-number="16.6.6">
+<h3 data-number="16.6.6" class="anchored" data-anchor-id="make-a-picture-of-part-of-that-file"><span class="header-section-number">16.6.6</span> Make a picture of part of that file</h3>
+<p>In order to get a sense of what this file looks like, let’s extract a piece of it and then plot it.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can get the first 5000 sites from the saf file using the ANGSD tool</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># realSFS</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">realSFS</span> print results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx <span class="at">-r</span> NC_037122.1f5t9:1-5000 <span class="op">&gt;</span> fall-first-5k.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we have that file in the con-gen-csu repo, so we can have a look at it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the file</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>saf <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"extras/inputs/fall-first-5k.tsv"</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(saf) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"chrom"</span>, <span class="st">"pos"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">16</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get a version that is not on the log scale</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>exp_saf <span class="ot">&lt;-</span> saf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">16</span><span class="st">`</span>, <span class="at">.fns =</span> exp))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># try plotting the natural scale one</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>saf_long <span class="ot">&lt;-</span> exp_saf <span class="sc">%&gt;%</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(chrom, pos), <span class="at">names_to =</span> <span class="st">"num_derived"</span>, <span class="at">values_to =</span> <span class="st">"likelihood"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">num_derived =</span> <span class="fu">as.integer</span>(num_derived))</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(saf_long) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_derived, <span class="at">y =</span> pos, <span class="at">fill =</span> likelihood)) <span class="sc">+</span> </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="fu">as.integer</span>(pos <span class="sc">/</span> <span class="dv">500</span>), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sfs-fst_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Oh Wow! That is pretty cool! Each facet is 500 bases of the chromosome. The x-axis is number of “derived” alleles in the sample, and the fill color is likelihood. The white bands are omitted bases (likely becuase there are no reads there? or some other feature of the genome there?).</p>
+<p>These SAF files form the basis for a lot of further inference, which we address next.</p>
 
 
 </section>
