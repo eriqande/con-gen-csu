@@ -291,7 +291,15 @@ window.Quarto = {
   <li><a href="#more-on-the-sfs-itself-with-simple-examples" id="toc-more-on-the-sfs-itself-with-simple-examples" class="nav-link" data-scroll-target="#more-on-the-sfs-itself-with-simple-examples"><span class="header-section-number">16.3</span> More on the SFS itself with simple examples</a></li>
   <li><a href="#uncertainty-in-the-genotypes" id="toc-uncertainty-in-the-genotypes" class="nav-link" data-scroll-target="#uncertainty-in-the-genotypes"><span class="header-section-number">16.4</span> Uncertainty in the genotypes</a></li>
   <li><a href="#angsd-dosaf" id="toc-angsd-dosaf" class="nav-link" data-scroll-target="#angsd-dosaf"><span class="header-section-number">16.5</span> ANGSD doSaf</a></li>
-  <li><a href="#running-angsd-dosaf-on-some-test-data" id="toc-running-angsd-dosaf-on-some-test-data" class="nav-link" data-scroll-target="#running-angsd-dosaf-on-some-test-data"><span class="header-section-number">16.6</span> Running ANGSD doSaf on some test data</a></li>
+  <li><a href="#running-angsd-dosaf" id="toc-running-angsd-dosaf" class="nav-link" data-scroll-target="#running-angsd-dosaf"><span class="header-section-number">16.6</span> Running ANGSD doSaf</a>
+  <ul class="collapse">
+  <li><a href="#cloning-the-workflow" id="toc-cloning-the-workflow" class="nav-link" data-scroll-target="#cloning-the-workflow"><span class="header-section-number">16.6.1</span> Cloning the workflow</a></li>
+  <li><a href="#symlinking-the-results-in-our-con-gen-csu-results" id="toc-symlinking-the-results-in-our-con-gen-csu-results" class="nav-link" data-scroll-target="#symlinking-the-results-in-our-con-gen-csu-results"><span class="header-section-number">16.6.2</span> Symlinking the results in our con-gen-csu results</a></li>
+  <li><a href="#the-config-for-our-trinity-river-chinook" id="toc-the-config-for-our-trinity-river-chinook" class="nav-link" data-scroll-target="#the-config-for-our-trinity-river-chinook"><span class="header-section-number">16.6.3</span> The config for our Trinity River Chinook</a></li>
+  <li><a href="#a-simple-dry-run" id="toc-a-simple-dry-run" class="nav-link" data-scroll-target="#a-simple-dry-run"><span class="header-section-number">16.6.4</span> A Simple Dry run</a></li>
+  <li><a href="#only-run-things-as-far-as-the-calc_saf-rule" id="toc-only-run-things-as-far-as-the-calc_saf-rule" class="nav-link" data-scroll-target="#only-run-things-as-far-as-the-calc_saf-rule"><span class="header-section-number">16.6.5</span> Only run things as far as the <code>calc_saf</code> rule</a></li>
+  <li><a href="#make-a-picture-of-part-of-that-file" id="toc-make-a-picture-of-part-of-that-file" class="nav-link" data-scroll-target="#make-a-picture-of-part-of-that-file"><span class="header-section-number">16.6.6</span> Make a picture of part of that file</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/sfs-fst.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -374,14 +382,135 @@ window.Quarto = {
 </div></li>
 </ul>
 </section>
-<section id="running-angsd-dosaf-on-some-test-data" class="level2" data-number="16.6">
-<h2 data-number="16.6" class="anchored" data-anchor-id="running-angsd-dosaf-on-some-test-data"><span class="header-section-number">16.6</span> Running ANGSD doSaf on some test data</h2>
+<section id="running-angsd-dosaf" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="running-angsd-dosaf"><span class="header-section-number">16.6</span> Running ANGSD doSaf</h2>
+<p>We are going to run doSaf on our course data (the 16 Chinook salmon from the Trinity River).</p>
+<p>As always, before we start doing anything you will want to sync the main branch of your fork of the <code>con-gen-csu</code> repo and then pull changes down to the main branch of the local clone on your cluster.</p>
+<p>We are going to run <code>angsd -doSaf</code> within a <a href="https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow">Snakemake workflow that I have on GitHub</a>. The purpose of the workflow is to compute pairwise <span class="math inline">\(F_\mathrm{ST}\)</span> between different groups of samples, and doing so requires the <code>-doSaf</code> calculation from ANGSD.</p>
+<section id="cloning-the-workflow" class="level3" data-number="16.6.1">
+<h3 data-number="16.6.1" class="anchored" data-anchor-id="cloning-the-workflow"><span class="header-section-number">16.6.1</span> Cloning the workflow</h3>
+<p>So, the first thing that you will need to do is clone the Snakemake workflow. You can fork it (if you like) and then clone your own flow, OR you could just clone the repo as is. Make sure that you DO NOT clone it into your <code>con-gen-csu</code> directory. Rather, it would be better to clone it into your <code>projects</code> or <code>scratch</code> directory.</p>
+<p>Cloning <code>eriqande/mega-lcwgs-pw-fst-snakeflow</code> directly, as opposed to forking it and cloning your fork, would look like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first cd into your projects and scratch directories</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:eriqande/mega-lcwgs-pw-fst-snakeflow.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="symlinking-the-results-in-our-con-gen-csu-results" class="level3" data-number="16.6.2">
+<h3 data-number="16.6.2" class="anchored" data-anchor-id="symlinking-the-results-in-our-con-gen-csu-results"><span class="header-section-number">16.6.2</span> Symlinking the results in our con-gen-csu results</h3>
+<p>For calculating Fst we will use the BAMs that were created when you ran exercise 008. To make this relatively easier to describe (basically so that the same paths will work for all of us regardless of where everyone’s BAM files are) we will use symbolic links, making a symbolic link to your <code>con-gen-csu</code> directory in your home directory, named <code>CGC</code>.</p>
+<p>To do this,</p>
+<ol type="1">
+<li><p>navigate inside of your <code>con-gen-csu</code> directory,</p></li>
+<li><p>do <code>pwd</code>.<br>
+</p></li>
+<li><p>Copy the resulting absolute path</p></li>
+<li><p><code>cd</code> to your <code>mega-lcwgs-pw-fst-snakeflow</code> directory</p></li>
+<li><p>Then, in that <code>mega-lcwgs-pw-fst-snakeflow</code> directory, do:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> absolute-path-to-con-gen-csu  CGC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>but replace <code>absolute-path-to-con-gen-csu</code> with the actual path to your <code>con-gen-csu</code> directory.</p></li>
+</ol>
+<p>For example, when I do this on alpine it looks like:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here I get the absolute path to con-gen-csu and I copy it</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">%</span> pwd</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/eriq@colostate.edu/projects/con-gen-csu</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># then I change directories to the mega-lcwgs-pw-fst-snakeflow directory</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">%</span> cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># then I paste the con-gen-csu path in to do:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /home/eriq@colostate.edu/projects/con-gen-csu CGC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-config-for-our-trinity-river-chinook" class="level3" data-number="16.6.3">
+<h3 data-number="16.6.3" class="anchored" data-anchor-id="the-config-for-our-trinity-river-chinook"><span class="header-section-number">16.6.3</span> The config for our Trinity River Chinook</h3>
+<p>We have a config file that will let you use your bams through the <code>CGC</code> alias you just made. The config files to allow the <code>mega-lcwgs-pw-fst-snakeflow</code> to use the bams from the Trinity River Chinook salmon are in the directory <code>extras/lcwgs-pw-fst-config</code> in the <code>con-gen-csu</code> repo, which means that from within the <code>mega-lcwgs-pw-fst-snakeflow</code> directory, you can access it via the relative path <code>CGC/extras/lcwgs-pw-fst-config</code>. The config files within that directory, with links to them on GitHub, are:</p>
 <ul>
-<li><p>We are going to run doSaf on some test data that is inside a snakemake workflow I have for calculating Fst. It can be found at: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow</p></li>
-<li><p>Let’s get it <em>outside of your con_gen_csu</em> directory, by forking it and then cloning it.</p></li>
+<li><a href="https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/config.yaml"><code>config.yaml</code></a>: the main config file for Snakemake to use.</li>
+<li><a href="https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/bams.tsv"><code>bams.tsv</code></a>: paths to the BAM files for the 16 Chinook salmon, and group designations (spring or fall)</li>
+<li><a href="https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/chroms.tsv"><code>chroms.tsv</code></a>: summary information about the chromosomes.</li>
+<li><a href="https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/pwcomps.tsv"><code>pwcomps.tsv</code></a>: description of groups to make pairwise <span class="math inline">\(F_\mathrm{ST}\)</span> comparisons of.</li>
 </ul>
+</section>
+<section id="a-simple-dry-run" class="level3" data-number="16.6.4">
+<h3 data-number="16.6.4" class="anchored" data-anchor-id="a-simple-dry-run"><span class="header-section-number">16.6.4</span> A Simple Dry run</h3>
+<p>We can do a simple dry run to see which jobs will be run if we were to do all the steps for calculating <span class="math inline">\(F_\mathrm{ST}\)</span>, including <span class="math inline">\(F_\mathrm{ST}\)</span> values in sliding windows.</p>
+<p>Do the following after getting onto a compute node with four cores, by, for example, doing <code>acompile -n 4</code> or <code>srun -p atesting -c 4 --pty /bin/bash</code></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Type this in the mega-lcwgs-pw-fst-snakeflow directory</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" data-filename="Type this in the mega-lcwgs-pw-fst-snakeflow directory"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate snakemake-8.5.3</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-np</span>  <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Phew! That spits out a lot of different jobs. Let’s quickly have a look at what that is doing by looking at the rulegraph:</p>
+<p><img src="./figs/lcwgs-pw-rulegraph.svg" class="img-fluid"></p>
+<p>Aha! Most of the jobs are happening after the <code>calc_saf</code> rule, which is what we are focused on.</p>
+</section>
+<section id="only-run-things-as-far-as-the-calc_saf-rule" class="level3" data-number="16.6.5">
+<h3 data-number="16.6.5" class="anchored" data-anchor-id="only-run-things-as-far-as-the-calc_saf-rule"><span class="header-section-number">16.6.5</span> Only run things as far as the <code>calc_saf</code> rule</h3>
+<p>This is a good time to talk about a useful option to Snakemake. If you want to only run a workflow up to a certain point, you can provide the <code>--until</code> option, giving it a rule name. So, try:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Type this in</strong></pre>
+</div>
+<div class="sourceCode" id="cb7" data-filename="Type this in"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-np</span> <span class="at">--until</span> calc_saf  <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>That just runs 8 jobs making bamlists (short little jobs) and 8 jobs making SAF files—4 chromosomes in each of two groups.</p>
+<p>Let’s see about running all of those:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-p</span> <span class="at">--use-conda</span> <span class="at">--until</span> calc_saf <span class="at">--cores</span> 4 <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That does not take too long.</p>
+<p>Let’s check out the size of the resulting files:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">--du</span> <span class="at">-h</span> results/BY_CHROM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Whoa! Those are some pretty big files. For <code>NC_037122.1f5t9</code> for example, I get 56 M and 64 M for spring-run and fall-run respectively.</p>
+<p>Let’s do some thinking about that—<code>NC_037122.1f5t9</code> is 4 megabases and each group of fish has 8 diploids, so there are <span class="math inline">\(2 \times 8 + 1 = 17\)</span> possible sample allele frequencies at each base, and each frequency requires 4 bytes to store in memory. Thus we would expect an uncompressed size of this file in megabytes to be:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fl">4e6</span> <span class="sc">*</span> <span class="dv">17</span> <span class="sc">*</span> <span class="dv">4</span> <span class="sc">/</span> <span class="fl">1e6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 272</code></pre>
+</div>
+</div>
+<p>But it is only around 60 Mb, and that is because it is compressed, and the compressed size is about 22% of the uncompressed.</p>
+</section>
+<section id="make-a-picture-of-part-of-that-file" class="level3" data-number="16.6.6">
+<h3 data-number="16.6.6" class="anchored" data-anchor-id="make-a-picture-of-part-of-that-file"><span class="header-section-number">16.6.6</span> Make a picture of part of that file</h3>
+<p>In order to get a sense of what this file looks like, let’s extract a piece of it and then plot it.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can get the first 5000 sites from the saf file using the ANGSD tool</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># realSFS</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">realSFS</span> print results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx <span class="at">-r</span> NC_037122.1f5t9:1-5000 <span class="op">&gt;</span> fall-first-5k.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we have that file in the con-gen-csu repo, so we can have a look at it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the file</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>saf <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"extras/inputs/fall-first-5k.tsv"</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(saf) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"chrom"</span>, <span class="st">"pos"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">16</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get a version that is not on the log scale</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>exp_saf <span class="ot">&lt;-</span> saf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">16</span><span class="st">`</span>, <span class="at">.fns =</span> exp))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># try plotting the natural scale one</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>saf_long <span class="ot">&lt;-</span> exp_saf <span class="sc">%&gt;%</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(chrom, pos), <span class="at">names_to =</span> <span class="st">"num_derived"</span>, <span class="at">values_to =</span> <span class="st">"likelihood"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">num_derived =</span> <span class="fu">as.integer</span>(num_derived))</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(saf_long) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_derived, <span class="at">y =</span> pos, <span class="at">fill =</span> likelihood)) <span class="sc">+</span> </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="fu">as.integer</span>(pos <span class="sc">/</span> <span class="dv">500</span>), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sfs-fst_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Oh Wow! That is pretty cool! Each facet is 500 bases of the chromosome. The x-axis is number of “derived” alleles in the sample, and the fill color is likelihood. The white bands are omitted bases (likely becuase there are no reads there? or some other feature of the genome there?).</p>
+<p>These SAF files form the basis for a lot of further inference, which we address next.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

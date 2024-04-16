@@ -77,13 +77,187 @@ engine: knitr
 
 
 
-## Running ANGSD doSaf on some test data
+## Running ANGSD doSaf
 
--   We are going to run doSaf on some test data that is inside a snakemake
-    workflow I have for calculating Fst.  It can be found at:
-    https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
-    
--   Let's get it _outside of your con_gen_csu_
-    directory, by forking it and then cloning it.  
+We are going to run doSaf on our course data (the 16 Chinook salmon
+from the Trinity River).  
 
+As always, before we start doing anything you will want to sync the main branch of your
+fork of the `con-gen-csu` repo and then pull changes down to the main branch of the 
+local clone on your cluster.
+
+We are going to run `angsd -doSaf` within a
+[Snakemake workflow that I have on GitHub](https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow).
+The purpose of the workflow is to compute pairwise $F_\mathrm{ST}$ between
+different groups of samples, and doing so requires the `-doSaf` calculation from
+ANGSD.  
+
+### Cloning the workflow
+
+So, the first thing that you will need to do is clone the
+Snakemake workflow.  You can fork it (if you like) and then clone your
+own flow, OR you could just clone the repo as is.  Make sure that you
+DO NOT clone it into your `con-gen-csu` directory. Rather, it would
+be better to clone it into your `projects` or `scratch` directory.
+
+Cloning `eriqande/mega-lcwgs-pw-fst-snakeflow` directly, as opposed to
+forking it and cloning your fork, would look like this:
+```sh
+# first cd into your projects and scratch directories
+git clone git@github.com:eriqande/mega-lcwgs-pw-fst-snakeflow.git
+```
+
+### Symlinking the results in our con-gen-csu results
+
+For calculating Fst we will use the BAMs that were created when you
+ran exercise 008.  To make this relatively easier to describe (basically
+so that the same paths will work for all of us regardless of where
+everyone's BAM files are) we will use symbolic links, making a
+symbolic link to your `con-gen-csu` directory in your home directory,
+named `CGC`.
+
+To do this, 
+
+1.  navigate inside of your `con-gen-csu` directory,
+2.  do `pwd`.  
+3.  Copy the resulting absolute path
+4.  `cd` to your `mega-lcwgs-pw-fst-snakeflow` directory
+5.  Then, in that `mega-lcwgs-pw-fst-snakeflow` directory, do:
+    ```{sh}
+    #| eval: false
+    ln -s absolute-path-to-con-gen-csu  CGC
+    ```
+    but replace `absolute-path-to-con-gen-csu` with the actual path to
+    your `con-gen-csu` directory.
+
+
+For example, when I do this on alpine it looks like:
+```sh
+# here I get the absolute path to con-gen-csu and I copy it
+% pwd
+/home/eriq@colostate.edu/projects/con-gen-csu
+
+# then I change directories to the mega-lcwgs-pw-fst-snakeflow directory
+% cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/
+ 
+# then I paste the con-gen-csu path in to do:
+ln -s /home/eriq@colostate.edu/projects/con-gen-csu CGC
+```
+
+### The config for our Trinity River Chinook
+
+We have a config file that will let you use your bams through
+the `CGC` alias you just made.  The config files to allow
+the `mega-lcwgs-pw-fst-snakeflow` to use the bams from the Trinity
+River Chinook salmon are in the directory `extras/lcwgs-pw-fst-config`
+in the `con-gen-csu` repo, which means that from within the
+`mega-lcwgs-pw-fst-snakeflow` directory, you can access it via the
+relative path `CGC/extras/lcwgs-pw-fst-config`.  The config files within
+that directory, with links to them on GitHub, are:
+
+- [`config.yaml`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/config.yaml): the main config file for Snakemake to use.
+- [`bams.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/bams.tsv): paths to the BAM files for the 16 Chinook salmon, and group designations (spring or fall)
+- [`chroms.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/chroms.tsv): summary information about the chromosomes.
+- [`pwcomps.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/pwcomps.tsv): description of groups to make pairwise $F_\mathrm{ST}$ comparisons of.
+
+### A Simple Dry run
+
+We can do a simple dry run to see which jobs will be run if we were to do all the
+steps for calculating $F_\mathrm{ST}$, including $F_\mathrm{ST}$ values in sliding windows.
+
+Do the following after getting onto a compute node with four cores, by, for example,
+doing `acompile -n 4` or `srun -p atesting -c 4 --pty /bin/bash` 
+```{.sh filename="Type this in the mega-lcwgs-pw-fst-snakeflow directory" }
+conda activate snakemake-8.5.3
+
+snakemake -np  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+Phew!  That spits out a lot of different jobs.  Let's quickly have a look
+at what that is doing by looking at the rulegraph:
+
+![](./figs/lcwgs-pw-rulegraph.svg)
+
+Aha!  Most of the jobs are happening after the `calc_saf` rule, which is what
+we are focused on.  
+
+### Only run things as far as the `calc_saf` rule
+
+This is a good time to talk about a useful option to Snakemake.  If you want
+to only run a workflow up to a certain point, you can provide the `--until` 
+option, giving it a rule name. So, try:
+```{.sh filename="Type this in"}
+snakemake -np --until calc_saf  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+That just runs 8 jobs making bamlists (short little jobs) and 8 jobs making
+SAF files---4 chromosomes in each of two groups.
+
+Let's see about running all of those:
+```{.sh}
+snakemake -p --use-conda --until calc_saf --cores 4 --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+That does not take too long.
+
+Let's check out the size of the resulting files:
+```{.sh}
+tree --du -h results/BY_CHROM
+```
+Whoa! Those are some pretty big files.  For `NC_037122.1f5t9` for example, I get
+56 M and 64 M for spring-run and fall-run respectively.  
+
+Let's do some thinking about that---`NC_037122.1f5t9` is 4 megabases and each
+group of fish has 8 diploids, so there are $2 \times 8 + 1 = 17$ possible sample
+allele frequencies at each base, and each frequency requires 4 bytes to store
+in memory.  Thus we would expect an uncompressed size of this file in megabytes to be:
+```{r}
+4e6 * 17 * 4 / 1e6
+```
+
+But it is only around 60 Mb, and that is because it is compressed, and the
+compressed size is about 22% of the uncompressed.  
+
+### Make a picture of part of that file
+
+In order to get a sense of what this file looks like, let's extract a piece
+of it and then plot it.
+```sh
+# we can get the first 5000 sites from the saf file using the ANGSD tool
+# realSFS
+realSFS print results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx -r NC_037122.1f5t9:1-5000 > fall-first-5k.tsv
+```
+
+Now, we have that file in the con-gen-csu repo, so we can have a look at it.
+```{r}
+#| message: false
+#| fig-width: 12
+#| fig-height: 20
+library(tidyverse)
+
+# read in the file
+saf <- read_tsv("extras/inputs/fall-first-5k.tsv", col_names = FALSE)
+names(saf) <- c("chrom", "pos", 0:16)
+
+# get a version that is not on the log scale
+exp_saf <- saf %>% mutate(across(.cols = `0`:`16`, .fns = exp))
+
+# try plotting the natural scale one
+saf_long <- exp_saf %>%
+  pivot_longer(cols = -c(chrom, pos), names_to = "num_derived", values_to = "likelihood") %>%
+  mutate(num_derived = as.integer(num_derived))
+
+ggplot(saf_long) +
+  geom_tile(aes(x = num_derived, y = pos, fill = likelihood)) + 
+  facet_wrap(~ as.integer(pos / 500), scales = "free") +
+  scale_fill_viridis_c()
+```
+
+Oh Wow! That is pretty cool!  Each facet is 500 bases of the chromosome.
+The x-axis is number of "derived" alleles in the sample, and the fill
+color is likelihood.  The white bands are omitted bases (likely becuase
+there are no reads there? or some other feature of the genome there?).
+
+These SAF files form the basis for a lot of further inference,
+which we address next.
 
