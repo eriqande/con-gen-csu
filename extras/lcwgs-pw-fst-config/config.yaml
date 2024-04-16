@@ -1,0 +1,22 @@
+bams: "CGC/extras/lcwgs-pw-fst-config/bams.tsv"
+pwcomps: "CGC/extras/lcwgs-pw-fst-config/pwcomps.tsv"
+genome: "CGC/data/genome/genome.fasta"
+chroms: "CGC/extras/lcwgs-pw-fst-config/chroms.tsv"
+
+modes: ["BY_CHROM"]
+
+
+
+# Note, to disable sliding windows, I think you might just be able to
+# define both fst_window_size and fst_window_step below to be
+# empty lists: []
+
+
+params:
+  angsd_bam_filters: " -minMapQ 20  -minQ 33 -baq 1 "
+  calc_saf: " -dosaf 1 -gl 1 "
+  realSFS: " -fold 1 "
+  winsfs: " "
+  fst_window_size: [50000, 30000, 40000]
+  fst_window_step: [10000, 5000,  20000]
+  

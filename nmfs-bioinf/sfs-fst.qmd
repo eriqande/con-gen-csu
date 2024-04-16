@@ -77,13 +77,82 @@ engine: knitr
 
 
 
-## Running ANGSD doSaf on some test data
+## Running ANGSD doSaf
 
--   We are going to run doSaf on some test data that is inside a snakemake
-    workflow I have for calculating Fst.  It can be found at:
-    https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
-    
--   Let's get it _outside of your con_gen_csu_
-    directory, by forking it and then cloning it.  
+We are going to run doSaf on our course data (the 16 Chinook salmon
+from the Trinity River).  
+
+As always, before we start doing anything you will want to sync the main branch of your
+fork of the `con-gen-csu` repo and then pull changes down to the main branch of the 
+local clone on your cluster.
+
+We are going to run `angsd -doSaf` within a
+[Snakemake workflow that I have on GitHub](https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow).
+The purpose of the workflow is to compute pairwise $F_\mathrm{ST}$ between
+different groups of samples, and doing so requires the `-doSaf` calculation from
+ANGSD.  
+
+### Cloning the workflow
+
+So, the first thing that you will need to do is clone the
+Snakemake workflow.  You can fork it (if you like) and then clone your
+own flow, OR you could just clone the repo as is.  Make sure that you
+DO NOT clone it into your `con-gen-csu` directory. Rather, it would
+be better to clone it into your `projects` or `scratch` directory.
+
+Cloning `eriqande/mega-lcwgs-pw-fst-snakeflow` directly, as opposed to
+forking it and cloning your fork, would look like this:
+```sh
+# first cd into your projects and scratch directories
+git clone git@github.com:eriqande/mega-lcwgs-pw-fst-snakeflow.git
+```
+
+### Symlinking the results in our con-gen-csu results
+
+For calculating Fst we will use the BAMs that were created when you
+ran exercise 008.  To make this relatively easier to describe (basically
+so that the same paths will work for all of us regardless of where
+everyone's BAM files are) we will use symbolic links, making a
+symbolic link to your `con-gen-csu` directory in your home directory,
+named `CGC`.
+
+To do this, 
+
+1.  navigate inside of your `con-gen-csu` directory,
+2.  do `pwd`.  
+3.  Copy the resulting absolute path
+4.  `cd` to your `mega-lcwgs-pw-fst-snakeflow` directory
+5.  Then, in that `mega-lcwgs-pw-fst-snakeflow` directory, do:
+    ```{sh}
+    #| eval: false
+    ln -s absolute-path-to-con-gen-csu  CGC
+    ```
+    but replace `absolute-path-to-con-gen-csu` with the actual path to
+    your `con-gen-csu` directory.
 
 
+For example, when I do this on alpine it looks like:
+```sh
+# here I get the absolute path to con-gen-csu and I copy it
+% pwd
+/home/eriq@colostate.edu/projects/con-gen-csu
+
+# then I change directories:
+ cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/
+ 
+# then I paste the con-gen-csu path in to do:
+ln -s /home/eriq@colostate.edu/projects/con-gen-csu CGC
+```
+
+### The config for our Trinity River Chinook
+
+We have a config file that will let you use your bams through
+the `CGC` alias you just made.  The config files to allow
+the `mega-lcwgs-pw-fst-snakeflow` to use the bams from the Trinity
+River Chinook salmon are in the directory `extras/lcwgs-pw-fst-config`
+in the `con-gen-csu` repo, which means that from within the
+`mega-lcwgs-pw-fst-snakeflow` directory, you can access it via the
+relative path `CGC/extras/lcwgs-pw-fst-config`.  The config files within
+that directory, with links to them on GitHub, are:
+
+- The `config.yaml`
