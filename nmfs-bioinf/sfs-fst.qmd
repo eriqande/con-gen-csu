@@ -137,8 +137,8 @@ For example, when I do this on alpine it looks like:
 % pwd
 /home/eriq@colostate.edu/projects/con-gen-csu
 
-# then I change directories:
- cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/
+# then I change directories to the mega-lcwgs-pw-fst-snakeflow directory
+% cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/
  
 # then I paste the con-gen-csu path in to do:
 ln -s /home/eriq@colostate.edu/projects/con-gen-csu CGC
@@ -155,4 +155,45 @@ in the `con-gen-csu` repo, which means that from within the
 relative path `CGC/extras/lcwgs-pw-fst-config`.  The config files within
 that directory, with links to them on GitHub, are:
 
-- The `config.yaml`
+- [`config.yaml`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/config.yaml): the main config file for Snakemake to use.
+- [`bams.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/bams.tsv): paths to the BAM files for the 16 Chinook salmon, and group designations (spring or fall)
+- [`chroms.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/chroms.tsv): summary information about the chromosomes.
+- [`pwcomps.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/pwcomps.tsv): description of groups to make pairwise $F_\mathrm{ST}$ comparisons of.
+
+### A Simple Dry run
+
+We can do a simple dry run to see which jobs will be run if we were to do all the
+steps for calculating $F_\mathrm{ST}$, including $F_\mathrm{ST}$ values in sliding windows.
+
+Do the following after getting onto a compute node with four cores, by, for example,
+doing `acompile -n 4` or `srun -p atesting -c 4 --pty /bin/bash` 
+```{.sh filename="Type this in the mega-lcwgs-pw-fst-snakeflow directory" }
+conda activate snakemake-8.5.3
+
+snakemake -np  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+Phew!  That spits out a lot of different jobs.  Let's quickly have a look
+at what that is doing by looking at the rulegraph:
+
+![](./figs/lcwgs-pw-rulegraph.svg)
+
+Aha!  Most of the jobs are happening after the `calc_saf` rule, which is what
+we are focused on.  
+
+### Only run things as far as the `calc_saf` rule
+
+This is a good time to talk about a useful option to Snakemake.  If you want
+to only run a workflow up to a certain point, you can provide the `--until` 
+option, giving it a rule name. So, try:
+```{.sh filename="Type this in"}
+snakemake -np --until calc_saf  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+That just runs 8 jobs making bamlists (short little jobs) and 8 jobs making
+SAF files---4 chromosomes in each of two groups.
+
+Let's see about running all of those:
+```{.sh}
+snakemake -p --use-conda --until calc_saf --cores 4 --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
