@@ -95,6 +95,8 @@ Shanelle:
 Rosenbaum, Sam:
     - Updating ADFG's wgs pipeline to use Snakemake. 
     - You will want to leave multiqc in there, because it is awesome.
-    - GWAS between male and female samples.  Exciting! 
+    - GWAS between male and female samples.  Exciting!
+
+     
 
 
