@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>con-gen-csu - 15&nbsp; Basic Handling of VCF files</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../nmfs-bioinf/sfs-fst.html" rel="next">
+<link href="../nmfs-bioinf/variant-calling.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/handling-vcf-files.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Basic Handling of VCF files</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../nmfs-bioinf/quarto-static/fisheries_header_logo_jul2019.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">con-gen-csu</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/eriqande/con-gen-csu" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/open-on-demand-alpine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">OpenOnDemand on Alpine</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/quick-unix-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quick Unix Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/shell-prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Shell Programming</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/awk-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">A Brief <code>awk</code> Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/scripts-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bash scripts and functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Sedna and SLURM intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sbatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Submitting jobs with <code>sbatch</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/slurm-arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Slurm Job Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sequence-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sequence alignment and handling BAM files</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/bioinf-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/snakemake-embellishments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Important Snakemake Embellishments</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/handling-vcf-files.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Basic Handling of VCF files</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sfs-fst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Estimating Site Frequency Spectra and a few applications thereof</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#installing-bcftools" id="toc-installing-bcftools" class="nav-link active" data-scroll-target="#installing-bcftools"><span class="header-section-number">15.1</span> Installing bcftools</a></li>
+  <li><a href="#bcftools-basic-interface" id="toc-bcftools-basic-interface" class="nav-link" data-scroll-target="#bcftools-basic-interface"><span class="header-section-number">15.2</span> bcftools basic interface</a></li>
+  <li><a href="#index-my-vcf-file" id="toc-index-my-vcf-file" class="nav-link" data-scroll-target="#index-my-vcf-file"><span class="header-section-number">15.3</span> Index my VCF file!</a></li>
+  <li><a href="#tell-me-about-my-vcf-file" id="toc-tell-me-about-my-vcf-file" class="nav-link" data-scroll-target="#tell-me-about-my-vcf-file"><span class="header-section-number">15.4</span> Tell me about my VCF file!</a>
+  <ul class="collapse">
+  <li><a href="#rename-the-samplesindividuals-in-the-file" id="toc-rename-the-samplesindividuals-in-the-file" class="nav-link" data-scroll-target="#rename-the-samplesindividuals-in-the-file"><span class="header-section-number">15.4.1</span> Rename the samples/individuals in the file</a></li>
+  <li><a href="#printextract-fragmentsparts-of-my-vcf-file" id="toc-printextract-fragmentsparts-of-my-vcf-file" class="nav-link" data-scroll-target="#printextract-fragmentsparts-of-my-vcf-file"><span class="header-section-number">15.4.2</span> Print/Extract fragments/parts of my VCF file</a></li>
+  </ul></li>
+  <li><a href="#combine-vcf-files-in-various-ways" id="toc-combine-vcf-files-in-various-ways" class="nav-link" data-scroll-target="#combine-vcf-files-in-various-ways"><span class="header-section-number">15.5</span> Combine VCF files in various ways</a></li>
+  <li><a href="#filter-out-variants-for-a-variety-of-reasons" id="toc-filter-out-variants-for-a-variety-of-reasons" class="nav-link" data-scroll-target="#filter-out-variants-for-a-variety-of-reasons"><span class="header-section-number">15.6</span> Filter out variants for a variety of reasons</a></li>
+  <li><a href="#make-a-beagle-file-for-input-to-angsd-from-a-vcf-file" id="toc-make-a-beagle-file-for-input-to-angsd-from-a-vcf-file" class="nav-link" data-scroll-target="#make-a-beagle-file-for-input-to-angsd-from-a-vcf-file"><span class="header-section-number">15.7</span> Make a “beagle” file for input to ANGSD from a VCF file</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/handling-vcf-files.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="handle-vcf" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Basic Handling of VCF files</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+As always, sync your fork and pull down any changes before trying to run through this
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<p>As we saw in the section on bioinformatic formats, VCF files can be large and unwieldy. The format specification is also such that fields might have different numbers of subfields, depending, for example, on the number of alleles found at a variant. Both of these features make it hard to directly read a VCF file into, say, R, or some other program that may wish to treat it purely as tabular data.</p>
+<p>This is not to say that you couldn’t just read a VCF file into R directly as a TAB delimited text file, and then start splitting fields up on it. However, there are specialized tools for doing operations on VCF files, and becoming familiar with them can relieve a lot of the pain of dealing with VCF files.</p>
+<p>To have an example VCF file to play with, the course repository contains a <code>vcf.gz</code> file at <code>data/vcf/all.vcf.gz</code>. This turns out to be the unfiltered VCF file you get after running our course example data through a standard GATK pipeline. The course repository also includes the file <code>data/vcf/all-hard-filtered-miss-marked.bcf</code> which was obtained by running standard hard-filtering <code>data/vcf/all.vcf.gz</code> and also properly marking individuals with no reads (or a flat genotype likelihood) as missing. This second file is in BCF format, which is a compressed binary format. We have both formats here so that you get comfortable with the fact that you can handle all three formats, <code>vcf</code>, <code>vcf.gz</code>, and <code>bcf</code> in the same way using <code>bcftools</code>. Note that when people say “VCF file” they could be referring to a file in any of those three formats.</p>
+<p>We have also indexed each of those files using <code>bcftools</code> like this, for example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index data/vcf/all-hard-filtered-miss-marked.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Indexing creates a file with the same name but with a <code>.csi</code> extension, which stands for “coordinate-sorted index.” An index is required if you want to make fast access to variants in particular regions of the genome, and it is also sometimes required for other operations with <code>bcftools</code>.</p>
+<p>There are two main, well-known programs for handling VCF files: <code>vcftools</code> and <code>bcftools</code>. Both of these grew out of the 1000 Genomes effort starting around the late 2000s. It seems that <code>vcftools</code> may have been developed first, but, currently, <code>bcftools</code> is being more actively developed, with new versions and new features being added to it regularly. <code>vcftools</code> provides some very specific commands for particular analyses or operations, some of which are not available from <code>bcftools</code>. On the other hand, <code>bcftools</code> provides a more general interface for operations on VCF files. By this interface, a great number of the operations done in <code>vcftools</code> are available, but a little extra knowledge is required to implement them. That said, the range of possible operations seems much larger in <code>bcftools</code> than in <code>vcftools</code>.</p>
+<p>Further, <code>bcftools</code> behaves like a typical Unix utility, allowing data to be streamed to stdout, and data can be streamed <em>into</em> <code>bcftools</code> (by using the <code>-</code> as the input file name) from stdin. This lets you pipe output into it the way you can with most Unix tools. This makes it far more versatile than <code>vcftools</code>.</p>
+<section id="installing-bcftools" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="installing-bcftools"><span class="header-section-number">15.1</span> Installing bcftools</h2>
+<p>Both SEDNA and Alpine have bcftools in a module, and you can use that, if you like:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># on SEDNA</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bio/bcftools</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># on Alpine (from a compute node or acompile)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bcftools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alternatively you can use <code>mamba</code> to create a conda environment called <code>bcftools</code> that has it:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> create <span class="at">-n</span> bcftools <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda bcftools</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bcftools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(Note the use of <code>-c conda-forge</code> in the above. This is present because some of the dependencies for <code>bcftools</code> are not found on the bioconda channel. Rather they are on the conda-forge channel. If you conda/mamba environment is not set up to search conda-forge by default, then the <code>-c conda-forge</code> is required to get all the dependencies.)</p>
+</section>
+<section id="bcftools-basic-interface" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="bcftools-basic-interface"><span class="header-section-number">15.2</span> bcftools basic interface</h2>
+<p>Like <code>samtools</code> (which is maintained by the same group of people), <code>bcftools</code> possesses a number of different <em>subcommands</em>. So, the syntax is always like:</p>
+<ul>
+<li><code>bcftools</code> <em>subcommand</em> options file(s)</li>
+</ul>
+<p>Also like <code>samtools</code>, <code>bcftools</code> will take input from <em>stdin</em> rather than from a file—you just pass it <code>-</code> instead of a file name.</p>
+<p>The full documentation/manual for <code>bcftools</code> is maintained at: <a href="http://samtools.github.io/bcftools/bcftools.html">http://samtools.github.io/bcftools/bcftools.html</a>. It is well worth reading through this whole documentation, though it can be quite terse and intimidating. A friendlier “tutorial” introduction to the software can be found at <a href="https://samtools.github.io/bcftools/howtos/index.html">https://samtools.github.io/bcftools/howtos/index.html</a>.</p>
+<p>Here we are going to get our feet with with a few operations.</p>
+<p>First, we will look at the “onboard” documentation. By just entering <code>bcftools</code> you get a list of all the subcommands that are available:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you want the onboard documentation for any of the particular subcommands, you can just give a naked <code>bctools subcommand</code> command, like:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or, for a more daunting set of documentation:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> roh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="index-my-vcf-file" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="index-my-vcf-file"><span class="header-section-number">15.3</span> Index my VCF file!</h2>
+<p>The first thing we are going to do is index our VCF files. We create the default index, a <em>coordinate sorted index</em> which has the <code>.csi</code> extension. If your VCF file is not in coordinate-sorted order, you might have to sort it before you do this. However, our example files are already sorted. In fact, they are already indexed, so we don’t have to do the following:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index data/vcf/all.vcf.gz</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index data/vcf/all-hard-filtered-miss-marked.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The version of <code>bcftools</code> I am using notes that the index is already there so it doesn’t re-index it.</p>
+<p>The index allows for rapid access to different parts of the files that correspond to specific locations in the genome.</p>
+</section>
+<section id="tell-me-about-my-vcf-file" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="tell-me-about-my-vcf-file"><span class="header-section-number">15.4</span> Tell me about my VCF file!</h2>
+<p>VCF files are a little daunting. Especially when they are gzipped (or are BCF files!) they can seem particularly opaque—learning anything about them in the traditional manner of uncompressing them and then searching for lines within them or counting up the number of records can be time consuming. Here are some <code>bcftools</code> solutions to a few different questions you might have.</p>
+<p><strong>Who is in this file?</strong> You can always try to find the last header line in a VCF file using grep or awk and parse the individuals out yourself, but it turns out to be faster and safer to use the <code>query</code> subcommand from <code>bcftools</code> with the <code>-l</code> option. Do it here:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-l</span> data/vcf/all.vcf.gz</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># And, of course, you can do the same with the BCF file</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-l</span> data/vcf/all-hard-filtered-miss-marked.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then read about it on the manual page. Find the part that describes it.</p>
+<p><strong>How many variants are in this file?</strong> This question can be answered quickly with <code>bcftools stats</code>, which also returns to you a plethora of information about the variants.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats  data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The top part of the output tells you how many SNPs and indels (and other types of variants) there are. Then it tells you about Ts/Tv ratios, then it essentially gives histogram summaries for allele frequencies, variant quality scores (QUAL), insertion-deletion sizes, substitution types, read depths, etc.</p>
+<p>We can do the same for the bcf file:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats data/vcf/all-hard-filtered-miss-marked.bcf  <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Where are these variants?</strong> There are several ways to answer this question. One might be simply to print the CHROM and the POS for each row in the VCF file:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This uses <code>bcftools query</code> telling it to print the CHROM and POS for each variant.</p>
+<p>If you want to see where it starts and where it finishes you can do:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">head</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">tail</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we wanted to quickly see how many variants were on each of the chromosomes/scaffolds, sorted by number of variants, we could do:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{n[$1]++} END {for(i in n) print i, n[i]}'</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nbr</span> <span class="at">-k</span> 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The subcommand <code>query</code> has as its main purpose simply extracting fields of information from a VCF file and spitting them out in a new, user-specified, typically tabular format. It is super useful.</p>
+<p><strong>Give me a glimpse of the file</strong> You can use <code>bcftools view</code> for a number of things, but at its simplest, you can merely look at the file in VCF format. (In this manner, it behaves much like <code>samtools view</code> for VCF files).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show the whole file from the top</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># show just the header with -h.  Here we look at just the last 10 lines of the header</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-h</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">tail</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># show the variants themselves (no header) with -H</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Just like you can with <code>samtools view</code> you can convert formats with <code>bcftools view</code>. Pipe a VCF into it and then use the <code>-O</code> (Big-O, not a zero) option:</p>
+<ul>
+<li><code>-O z</code>: bgzipped VCF (vcf.gz)</li>
+<li><code>-O v</code>: uncompressed VCF (the default)</li>
+<li><code>-O u</code>: uncompressed BCF</li>
+<li><code>-O b</code>: compressed BCF</li>
+</ul>
+<section id="rename-the-samplesindividuals-in-the-file" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="rename-the-samplesindividuals-in-the-file"><span class="header-section-number">15.4.1</span> Rename the samples/individuals in the file</h3>
+<p>We saw above that the names of the samples in the file are like <code>DPCh_plate1_B10_S22</code>. The names in the VCF file are set by the <code>SM</code> field of the read groups in the BAM files from which variants are called. Let’s imagine that we really want the names of those individuals to be different. If we wanted different names for those samples, we don’t have to go all the way back to the beginning and remap everything and call variants. We simply rename the samples in the VCF file. For this we can use <code>bcftools reheader</code>. First, look at the documentation for that, both on the web, and with:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> reheader</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Aha! we see that the web-based documentation is a little more complete, and it tells us what format to use for a sample-renaming file for the <code>-s</code> option. Copy the following contents (using <code>nano</code>, for example) into a file called <code>sample-renames.txt</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_F11_S71 T145171</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_B12_S24 T145193</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_F12_S72 T145241</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_G12_S84 T145242</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_B11_S23 T145152</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_C11_S35 T145153</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_C12_S36 T145200</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_D11_S47 T145163</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_F10_S70 T144996</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_D09_S45 T144967</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_H10_S94 T145003</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_G10_S82 T144997</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_H09_S93 T144979</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_C10_S34 T144989</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_B10_S22 T144981</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>DPCh_plate1_G09_S81 T144974</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That file shows the NMFS_DNA_ID (like <code>T144979</code>) that we would like to use for sample names, rather than the names currently in the VCF file, like <code>DPCh_plate1_H09_S93</code>.</p>
+<p>We can make a renamed <code>bcf</code> file with:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> reheader <span class="at">-s</span> sample-renames.txt data/vcf/all-hard-filtered-miss-marked.bcf  <span class="op">&gt;</span> renamed.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and a renamed <code>vcf.gz</code> file with:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> reheader <span class="at">-s</span> sample-renames.txt data/vcf/all.vcf.gz  <span class="op">&gt;</span> renamed.vcf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this case, the type of output file (bcf or vcf.gz) is the same as the type of the input file.</p>
+<p><strong>Exercise</strong> Use <code>bcftools view</code> and <code>tail</code> to see that the names have really been changed. Then use <code>bcftools query</code> to do the same.</p>
+</section>
+<section id="printextract-fragmentsparts-of-my-vcf-file" class="level3" data-number="15.4.2">
+<h3 data-number="15.4.2" class="anchored" data-anchor-id="printextract-fragmentsparts-of-my-vcf-file"><span class="header-section-number">15.4.2</span> Print/Extract fragments/parts of my VCF file</h3>
+<p>There are lots of ways to extract desired bits of information from a VCF file into a more manageable format.</p>
+<p><strong>Extract keyed values from the INFO field</strong></p>
+<p>When we did this:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>we saw that there is a lot of information in the INFO field. What if we wanted to extract that? It looks like it could be hard to parse because the fields are in semi-colon-separated key-value pairs.</p>
+<p>This is another job for <code>bcftools query</code>. You pass a <em>format string</em> to the <code>-f</code> option that tells the program which fields you want to extract and how you want to format it. In general, the values are preceded by a <code>%</code> and subfields of the INFO column can be named described like <code>%INFO/SUBFIELD</code>. You can ask for TABs between fields with <code>\t</code> and for line endings with <code>\n</code>. In general you need to wrap all of these format specifications in single quotes so that the shell does not get confused by them.</p>
+<p>Check out some examples:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract CHROM POS and BaseQRankSum, separated by TABs</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t%INFO/BaseQRankSum\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">less</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract CHROM POS and total read depth DP</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t%INFO/DP\n'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can even extract information from each of the genotype columns. If you want to print CHROM and POS and then all of the PHRED-scaled genotype likelihoods for all the samples, separated by TABs, you can do:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t[%PL\t]\n'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that FORMAT values (i.e., those in the genotype columns) must be wrapped in <code>[ ]</code> to get all the values to be printed out.</p>
+<p><strong>EXERCISE:</strong> Extract the CHROM, POS, Maximum Likelihood-estimated Allele Frequency (MLEAF in the INFO column) for each variant, along with the allele depths (AD) of each individual, all TAB separated, from the file <code>all.vcf.gz</code>.</p>
+<p><strong>View data from specified regions</strong></p>
+<p>What if we want to look at variants only in two 5 Kb regions, like <code>NC_037122.1f5t9:1-5000</code> and <code>NC_037123.1f10t14:1000000-1005000</code>? Pass those, separated by commas, to the <code>-r</code> option (which is an option that applies to many of the subcommands):</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> <span class="at">-r</span> NC_037122.1f5t9:1-5000,NC_037123.1f10t14:1000000-1005000 data/vcf/all.vcf.gz <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also specify those regions in a file with the <code>-R</code> option.</p>
+<p>This typically requires that an index be available for the VCF file, which allows direct and efficient access to different parts of the genome in the file.</p>
+<p><strong>View data from specified individuals</strong></p>
+<p>You can give the sample names (comma separated) to the <code>-s</code> option:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-s</span> DPCh_plate1_C11_S35,DPCh_plate1_C12_S36,DPCh_plate1_D09_S45 data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or, if you wanted to view all <em>but</em> those two individuals, precede them with a <code>^</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-s</span> ^DPCh_plate1_C11_S35,DPCh_plate1_C12_S36,DPCh_plate1_D09_S45 data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also supply a text file with sample names (one-per-line) to the capital letter <code>-S</code> option.</p>
+<p>You can combine options, like <code>-r</code> and <code>-s</code>, as well.</p>
+</section>
+</section>
+<section id="combine-vcf-files-in-various-ways" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="combine-vcf-files-in-various-ways"><span class="header-section-number">15.5</span> Combine VCF files in various ways</h2>
+<p><strong>Catenate VCF files</strong></p>
+<p>If you have VCF files called from the same reference genome filled with the same samples, it is easy to catenate them together with <code>bcftools concat</code>:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make two files from different regions</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-O</span> z <span class="at">-r</span> NC_037122.1f5t9:1-5000 data/vcf/all.vcf.gz  <span class="op">&gt;</span> A.vcf.gz</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-O</span> z <span class="at">-r</span> NC_037123.1f10t14:1000000-1005000 data/vcf/all.vcf.gz  <span class="op">&gt;</span> B.vcf.gz</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># how many variants in each of those?</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats A.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats B.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># catenate the back together</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> concat <span class="at">-Oz</span>  A.vcf.gz B.vcf.gz <span class="op">&gt;</span> CAT.vcf.gz</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># how many variants in that?</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats CAT.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that when using the <code>-O</code> (capital “o”) option to specify the output type: <code>v</code> = VCF, <code>b</code> = BCF, <code>u</code> = uncompressed BCF, <code>z</code> = bgzipped VCF, you don’t need a space after the <code>-O</code>.</p>
+<p><strong>Merge VCF files</strong></p>
+<p>If you have files with different samples in them you can easily combine them:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make file with first three samples</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Oz</span> <span class="dt">\</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-s</span> DPCh_plate1_B10_S22,DPCh_plate1_B11_S23,DPCh_plate1_B12_S24 <span class="dt">\</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  data/vcf/all.vcf.gz <span class="op">&gt;</span> first3.vcf.gz</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># make another with the last three samples</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Oz</span> <span class="dt">\</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">-s</span> DPCh_plate1_G12_S84,DPCh_plate1_H09_S93,DPCh_plate1_H10_S94 <span class="dt">\</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  data/vcf/all-hard-filtered-miss-marked.bcf <span class="op">&gt;</span> last3.vcf.gz</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># merging requires that the files be indexed</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index first3.vcf.gz</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> index last3.vcf.gz</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co"># merge those into a file with 6 samples</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> merge <span class="at">-Oz</span> first3.vcf.gz last3.vcf.gz <span class="op">&gt;</span> 6-samples.vcf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="filter-out-variants-for-a-variety-of-reasons" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="filter-out-variants-for-a-variety-of-reasons"><span class="header-section-number">15.6</span> Filter out variants for a variety of reasons</h2>
+<p>There are a lot of ways to filter out variants. <code>bcftools</code> leaves things very general here, and so just about anything is possible. Some simple ones appear below. Remember, we are piping the result to <code>bcftools stats</code> just so that we can see the result. If you really wanted to make a filtered file, you would typically just redirect it to a file.</p>
+<p><strong>Only the sites that pass filters</strong></p>
+<p>When we did the hard-filtering with GATK, we ended up with (mostly) the same variants in the file, but there were entries in the <code>FILTER</code> column: <code>PASS</code> if the variants passed filters and a descriptive term for the filters that were <strong>not</strong> passed if they didn’t pass at least one of the filters. This is in keeping with the general GATK philosophy of not discarding any data, but merely marking data for inclusion (i.e.&nbsp;<code>PASS</code>), or not, in downstream analyses. However, if you were to use <code>data/vcf/all-hard-filtered-miss-marked.bcf</code> directly in an analysis, you might, if you didn’t remove the sites that did not pass filter, inadvertently end up using them.</p>
+<p>So, how do we make a file that doesn’t have the variants that did not pass filter? We can use <code>bcftools view</code> with the <code>-i</code> option (which stands for “include”)</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-i</span> <span class="st">'FILTER="PASS"'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="op">&gt;</span> passed.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And, you can also exclude the ones that pass, to look just at those that didn’t pass:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-e</span> <span class="st">'FILTER="PASS"'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="op">&gt;</span> exclude_passed.bcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Have a look at those with <code>bcftools view -H exclude_passed.bcf | less -S</code> and see why they didn’t pass filters.</p>
+<p><strong>Just the biallelic SNPs please</strong></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hey Folks, we are adding <code>| bcftools stats - | awk '/^SN/'</code> to many of the following commands.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>However, that is just so we can quickly see what effect different filtering options have in terms of numbers of variants. If you really want to have a filtered file for further use, just redirect the output into a file (and, you would also probably want to change <code>-Ou</code> to <code>-Oz</code> or <code>-Ob</code>).</p>
+</div>
+</div>
+<p>Get things with no more than 2 alleles and no fewer than two alleles, and of a type = SNP:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do it and summarize the result to look at it, all in one line:</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Ou</span> <span class="at">-m</span> 2 <span class="at">-M</span> 2 <span class="at">--types</span><span class="op">=</span>snps data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> stats <span class="at">-</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Just the biallelic indels please</strong></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do it and see the result all in one line:</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Ou</span> <span class="at">-m</span> 2 <span class="at">-M</span> 2 <span class="at">--types</span><span class="op">=</span>indels data/vcf/all.vcf.gz <span class="kw">|</span> <span class="ex">bcftools</span> stats <span class="at">-</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note the use of <code>-Ou</code> in order to pipe uncompressed BCF output directly into <code>bcftools stats</code> using the <code>-</code> for a filename.</p>
+<p><strong>Fraction of missing sites less than X</strong></p>
+<p>If you want to make sure that 60% of your individuals have at least one read at the genotype, you can do this:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-i</span> <span class="st">'F_MISSING &lt; 0.40'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> stats <span class="at">-</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Play with setting the <code>F_MISSING</code> to different values and see how that affects the number of variants retained.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Here’s why GATK’s decision to leave missing data as <code>0/0</code> is such a disaster:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>F_MISSING</code> variable is something that <code>bcftools</code> calculates “on the fly” by counting up the number of individuals with missing genotypes that are denoted by <code>./.</code>. Since GATK doesn’t reliably mark missing data as such (but probably will in a newer version…), if you use the vcf file in which missing data has not been marked as <code>./.</code>, then not much happens when you change the filters on <code>F_MISSING</code>. Try it, by changing 0.40 to different values to see that hardly anything changes:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-i</span> <span class="st">'F_MISSING &lt; 0.40'</span> data/vcf/all.vcf.gz <span class="kw">|</span> <span class="ex">bcftools</span> stats <span class="at">-</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^SN/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p><strong>Exclude based on various features of the data</strong></p>
+<p>Here we circle back around to say that <code>-i</code> and <code>-e</code> are not just for filtering on the FILTER column.</p>
+<p>You can use the <code>-e</code> option to <code>bcftools view</code> or <code>bcftools filter</code> to <em>exclude</em> sites that meet certain criteria. (You can use <code>-i</code> to <em>include</em> those sites and no others).</p>
+<p>The syntax for use with <code>-i</code> and <code>-e</code> is very powerful, but somewhat complex. It is described (in a terrifyingly terse and dense fashion) in the <a href="https://samtools.github.io/bcftools/bcftools.html#expressions">FILTERING EXPRESSIONS</a> section of the bcftools manual.</p>
+<p>A somewhat more approachable description of the filtering options in bcftools can be found in the bcftools <a href="https://samtools.github.io/bcftools/howtos/filtering.html">filtering tutorial</a>.</p>
+<p>We look at a few examples here.</p>
+<p>To only keep things with a maximum-likelihood-estimated allele frequency between 0.4 and 0.6:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-i</span> <span class="st">'INFO/MLEAF &gt;= 0.4 &amp;&amp; INFO/MLEAF &lt;= 0.6'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%INFO/MLEAF\n'</span> <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note we are piping the result to <code>bcftools query</code> in order to see what the actual MLEAFs are after filtering. For the most part, this has worked, except for cases in which there are more than two allele freqencies. If we wanted to filter those out, we could filter to only biallelic sites, or, for the sake of illustration, we could retain only those sites at which the MLEAF value for the <em>first</em> alternate allele is between 0.4 and 0.6:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-i</span> <span class="st">'INFO/MLEAF[0] &gt;= 0.4 &amp;&amp; INFO/MLEAF[0] &lt;= 0.6'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%INFO/MLEAF\n'</span> <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cool!</p>
+<p>How about excluding those sites in which any individual had a DP less than 5. We can test each of the DP columns in the FORMAT columns. We name these <code>FMT/DP</code> when we are doing filtering. Note that each test (from each sample) is combined with an OR by default, so:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> <span class="at">-e</span> <span class="st">'FMT/DP &lt; 5'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To make it easier to see what the DPs are there, let’s print them:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-e</span> <span class="st">'FMT/DP &lt; 5'</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t[%DP\t]\n'</span> <span class="kw">|</span> <span class="fu">less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This has just scratched the surface of the things that can be done with bcftools, but I hope it has encouraged you to read through the <a href="https://samtools.github.io/bcftools/bcftools.html">manual</a>, including the section on <a href="https://samtools.github.io/bcftools/bcftools.html#expressions">filtering expressions</a>, as well as the <a href="https://samtools.github.io/bcftools/howtos/filtering.html">filtering tutorial</a>.</p>
+</section>
+<section id="make-a-beagle-file-for-input-to-angsd-from-a-vcf-file" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="make-a-beagle-file-for-input-to-angsd-from-a-vcf-file"><span class="header-section-number">15.7</span> Make a “beagle” file for input to ANGSD from a VCF file</h2>
+<p>We can use <code>bcftools query</code> and <code>awk</code> to get this done well. The first step is to get the header line:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-l</span> data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="st">  BEGIN {printf("marker\tallele1\tallele2");} </span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="st">  {printf("\t%s\t%s\t%s", $1, $1, $1);} </span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="st">  END {printf("\n");}</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, after that, for the data, we can use <code>bcftools view</code> to restrict ourselves to biallelic SNPs (as required for ANGSD) and pipe the result to <code>bcftools query</code> to print the CHROM, POS, REF and ALT and the Phred scaled likelihoods. We pipe that to <code>less -S</code> to see what we get:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">bcftools</span> view  <span class="at">-m</span> 2 <span class="at">-M</span> 2 <span class="at">--types</span><span class="op">=</span>snps data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM:%POS\t%REF\t%ALT\t[%PL\t]\n'</span> <span class="at">-</span>  <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we could just pass that stream into an awk script that computes the raw genotype likelihoods from the Phred scaled ones and formats the chromosome and position appropriately. I had an awk script to do that, but we can actually just put it that awk script into a shell script that also runs the steps of printing the header ande filtering the VCF file.</p>
+<p>Such a script is included in this repository, in <code>scripts/vcf2beagle.sh</code>. It looks like this:</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Listing of scripts/vcf2beagle.sh</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">!=</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error! Need to supply vcf, bcf, or vcf.gz file."</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Syntax:"</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"  vcf2beagle  File.bcf "</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="va">file</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">bcftools</span> query <span class="at">-l</span>  <span class="va">$file</span><span class="kw">;</span> </span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">bcftools</span> view <span class="at">-m</span> 2 <span class="at">-M</span> 2 <span class="at">--types</span><span class="op">=</span>snps  data/vcf/all-hard-filtered-miss-marked.bcf <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM:%POS\t%REF\t%ALT[\t%PL]\n'</span> <span class="at">-</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">)</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="st"># this is a simple script that takes lines that are have comma-separated</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="st"># Phred-scaled genotype liklelihoods starting in column three, like:</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="st">#</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="st"># CHROMPOS  REF ALT 0,12,34 0,3,16</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="st">#</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="st"># (i.e., the CHROM and POS are smooshed into a single column.)</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="st">#</span></span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a><span class="st"># and it turns each of those comma-containing columns into three columns</span></span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a><span class="st"># of genotype likelihoods scaled to sum to one.</span></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a><span class="st">BEGIN {</span></span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a><span class="st">    IFS="\t"</span></span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a><span class="st">    base2int["A"] = 0</span></span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a><span class="st">    base2int["C"] = 1</span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a><span class="st">    base2int["G"] = 2</span></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a><span class="st">    base2int["T"] = 3</span></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a><span class="st">    printf("marker\tallele1\tallele2");</span></span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a><span class="st">NF==1 {</span></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a><span class="st">    printf("\t%s\t%s\t%s", $1, $1, $1);</span></span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a><span class="st">    next;</span></span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a><span class="st">{   </span></span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a><span class="st">    if(header_done == 0) {</span></span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a><span class="st">        printf("\n");</span></span>
+<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a><span class="st">        header_done = 1;</span></span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a><span class="st">    chrompos=$1</span></span>
+<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a><span class="st">    gsub(/_/, "-", chrompos)</span></span>
+<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a><span class="st">    gsub(/:/, "_", chrompos)</span></span>
+<span id="cb39-51"><a href="#cb39-51" aria-hidden="true" tabindex="-1"></a><span class="st">    printf("%s\t%s\t%s", chrompos, base2int[$2], base2int[$3]);</span></span>
+<span id="cb39-52"><a href="#cb39-52" aria-hidden="true" tabindex="-1"></a><span class="st">    for(i=4;i&lt;=NF;i++) {</span></span>
+<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="st">        if($i == ".") {  # deal with old VCFs that use a single dot here</span></span>
+<span id="cb39-54"><a href="#cb39-54" aria-hidden="true" tabindex="-1"></a><span class="st">            printf("\t%.6f\t%.6f\t%.6f", 1.0/3.0, 1.0/3.0, 1.0/3.0);</span></span>
+<span id="cb39-55"><a href="#cb39-55" aria-hidden="true" tabindex="-1"></a><span class="st">        }</span></span>
+<span id="cb39-56"><a href="#cb39-56" aria-hidden="true" tabindex="-1"></a><span class="st">        else {</span></span>
+<span id="cb39-57"><a href="#cb39-57" aria-hidden="true" tabindex="-1"></a><span class="st">            n=split($i,a,/,/);</span></span>
+<span id="cb39-58"><a href="#cb39-58" aria-hidden="true" tabindex="-1"></a><span class="st">            if(n!=3) {</span></span>
+<span id="cb39-59"><a href="#cb39-59" aria-hidden="true" tabindex="-1"></a><span class="st">                print "Not 3 GL values at ", $1  &gt; "/dev/stderr";</span></span>
+<span id="cb39-60"><a href="#cb39-60" aria-hidden="true" tabindex="-1"></a><span class="st">                exit;</span></span>
+<span id="cb39-61"><a href="#cb39-61" aria-hidden="true" tabindex="-1"></a><span class="st">            }</span></span>
+<span id="cb39-62"><a href="#cb39-62" aria-hidden="true" tabindex="-1"></a><span class="st">            x=10^(-a[1]/10);</span></span>
+<span id="cb39-63"><a href="#cb39-63" aria-hidden="true" tabindex="-1"></a><span class="st">            y=10^(-a[2]/10);</span></span>
+<span id="cb39-64"><a href="#cb39-64" aria-hidden="true" tabindex="-1"></a><span class="st">            z=10^(-a[3]/10);</span></span>
+<span id="cb39-65"><a href="#cb39-65" aria-hidden="true" tabindex="-1"></a><span class="st">            sum=x+y+z;</span></span>
+<span id="cb39-66"><a href="#cb39-66" aria-hidden="true" tabindex="-1"></a><span class="st">            printf("\t%.6f\t%.6f\t%.6f",x/sum, y/sum,z/sum);</span></span>
+<span id="cb39-67"><a href="#cb39-67" aria-hidden="true" tabindex="-1"></a><span class="st">        }</span></span>
+<span id="cb39-68"><a href="#cb39-68" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb39-69"><a href="#cb39-69" aria-hidden="true" tabindex="-1"></a><span class="st">    printf("\n");</span></span>
+<span id="cb39-70"><a href="#cb39-70" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb39-71"><a href="#cb39-71" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../nmfs-bioinf/variant-calling.html" class="pagination-link" aria-label="Variant calling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../nmfs-bioinf/sfs-fst.html" class="pagination-link" aria-label="Estimating Site Frequency Spectra and a few applications thereof">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Estimating Site Frequency Spectra and a few applications thereof</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/handling-vcf-files.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

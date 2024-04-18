@@ -265,6 +265,18 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Variant calling</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/handling-vcf-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Basic Handling of VCF files</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nmfs-bioinf/sfs-fst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Estimating Site Frequency Spectra and a few applications thereof</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -302,7 +314,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#vcf-format-the-body" id="toc-vcf-format-the-body" class="nav-link" data-scroll-target="#vcf-format-the-body"><span class="header-section-number">10.5.1</span> VCF Format – The Body</a></li>
   <li><a href="#vcf-format-the-header" id="toc-vcf-format-the-header" class="nav-link" data-scroll-target="#vcf-format-the-header"><span class="header-section-number">10.5.2</span> VCF Format – The Header</a></li>
-  <li><a href="#boneyard" id="toc-boneyard" class="nav-link" data-scroll-target="#boneyard"><span class="header-section-number">10.5.3</span> Boneyard</a></li>
+  <li><a href="#beagle-format-for-genotype-likelihoods" id="toc-beagle-format-for-genotype-likelihoods" class="nav-link" data-scroll-target="#beagle-format-for-genotype-likelihoods"><span class="header-section-number">10.5.3</span> “beagle” format for genotype likelihoods</a></li>
+  <li><a href="#boneyard" id="toc-boneyard" class="nav-link" data-scroll-target="#boneyard"><span class="header-section-number">10.5.4</span> Boneyard</a></li>
   </ul></li>
   <li><a href="#segments" id="toc-segments" class="nav-link" data-scroll-target="#segments"><span class="header-section-number">10.6</span> Segments</a></li>
   <li><a href="#conversionextractions-between-different-formats" id="toc-conversionextractions-between-different-formats" class="nav-link" data-scroll-target="#conversionextractions-between-different-formats"><span class="header-section-number">10.7</span> Conversion/Extractions between different formats</a></li>
@@ -412,19 +425,15 @@ p = \frac{1}{10^{Q/10}}
 <p>All this is fine and well, but when we look at the quality score line above we see something like <code>7JJJF-&lt;JAFJJ&lt;F&lt;AJAJJF</code>. What gives? Well, from a file storage and parsing perspective, it makes sense to only use a single character to store the quality score for every base. So, that is what has been done: each of those single characters represents a quality score—a number between 0 and 40, inclusive.</p>
 <p>The values that have been used are the <em>decimal representations of ASCII text characters</em> minus 33.<br>
 The decimal representation or each character can be found in <a href="#fig-ascii" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>.</p>
-<div class="cell">
-<div class="cell-output-display">
 <div id="fig-ascii" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ascii-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./nmfs-bioinf/figs/ascii-crop.png" class="img-fluid figure-img">
+<img src="./figs/ascii-crop.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ascii-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;10.1: This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom. Table produced from TeX code written and developed by Victor Eijkhout available at <a href="https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex">https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex</a>
 </figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>The decimal representation is in the upper left of each character’s rectangle.</p>
 <p>Find the characters corresponding to base quality scores of 0, 10, 20, 30, and 40. Remember that the base quality score is the character’s decimal representation <em>minus 33</em>.</p>
@@ -461,14 +470,11 @@ GACCTATAGGTTACCATGCTTCCTCTCTACAGGGCCTATAGGTTACCATGCTTCCTCTCTACAGGACCTGTAGGTTACCA
 <p>denotes the 1 Kb chunk of DNA starting from position 1000001 and proceeding to (and including!) position 1001000. Such nomenclature is often referred to as the <em>genomic coordinates</em> of a segment.</p>
 <p>In most applications we will encounter, the first position in a chromosome is labeled 1. This is called a <em>base 1 coordinate system</em>. In some genomic applications, a <em>base 0 coordinate system</em> is employed; however, for the most part such a system is only employed internally in the guts of code of software that we will use, while the user interface of the software consistently uses a base 1 coordinate system.</p>
 <p>Sometimes you will have to convert between base 0 and base1 coordinate systems. Thinking about how to do this is easy if you keep a simple picture in your head—I like to think of it as, the base-1 coordinate system counts “beads” that are the actual base pairs, while the base-0 system counts “fences” that separate the beads. In the following picture, the fences and their corresponding numbers are red, while the beads and their corresponding numbers are black.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./nmfs-bioinf/figs/base-0-and-1-cropped.svg" class="img-fluid figure-img"></p>
+<p><img src="./figs/base-0-and-1-cropped.svg" class="img-fluid figure-img"></p>
+<figcaption>Base-0 vs Base-1 coordinate systems in terms of fences and beads</figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>From this picture, it is pretty clear that if you have a base-1 range from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> (with <span class="math inline">\(x \leq y\)</span>), then you could refer to that by the base-0 range from <span class="math inline">\(x-1\)</span> to <span class="math inline">\(y\)</span> (those are the “fences” that contain the beads). Likewise, if you have a base-0 range from <span class="math inline">\(v\)</span> to <span class="math inline">\(w\)</span> (with <span class="math inline">\(v&lt;w\)</span>), then the corresponding base-1 range would be from <span class="math inline">\(v+1\)</span> to <span class="math inline">\(w\)</span>, as those are the beads that are contained by the fences at <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>.</p>
 </section>
@@ -1134,8 +1140,39 @@ NC_037124.1 4007584 .   GCC G,CCC   3246.17 .   .   GT:AD:DP:GQ:PL  ./.:.:.:.:. 
 <h3 data-number="10.5.2" class="anchored" data-anchor-id="vcf-format-the-header"><span class="header-section-number">10.5.2</span> VCF Format – The Header</h3>
 <p>Let’s just get in there and take a look at it.</p>
 </section>
-<section id="boneyard" class="level3" data-number="10.5.3">
-<h3 data-number="10.5.3" class="anchored" data-anchor-id="boneyard"><span class="header-section-number">10.5.3</span> Boneyard</h3>
+<section id="beagle-format-for-genotype-likelihoods" class="level3" data-number="10.5.3">
+<h3 data-number="10.5.3" class="anchored" data-anchor-id="beagle-format-for-genotype-likelihoods"><span class="header-section-number">10.5.3</span> “beagle” format for genotype likelihoods</h3>
+<p>There is an outstanding program called BEAGLE that was written by Sharon Browning and her husband Brian (they are both professors now at UW. Sharon was a grad student with me in Elizabeth Thompson’s lab in the late 1990s, and is wicked smart). The program BEAGLE does fast and accurate phasing of haplotypes (and imputation). In one version it must have written the output in a format that is now called “beagle format” by the authors of ANGSD. (Later versions of BEAGLE that I have used write output in VCF format.)</p>
+<p>Beagle format when you are working in ANGSD is a file in which each row starts with three columns:</p>
+<ul>
+<li><code>marker</code>: a column that has the chromosome name and the position, separated by an underscore.</li>
+<li><code>allele1</code>: an integer giving the type of allele 1 (think of it as the reference allele).</li>
+<li><code>allele2</code>: an integer giving the type of allele 2 (think of it as an alternate allele).</li>
+</ul>
+<p>Convention has me using 1 for A, 2 for C, 3 for G and 4 for T, for the allele codes.</p>
+<p>After that each individual gets three columns—each one of them headered by the individual’s ID—which contains three numbers representing the genotype likelihood (or a probability if you have calculated posterior probabilities) for each of the three genotypes <code>allele1/allele1</code>, <code>allele1/allele2</code>, and <code>allele2/allele2</code>.</p>
+<p>An example of the first few rows of a beagle file with 9 variants and two individuals appears here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>marker  allele1 allele2 T199967 T199967 T199967 T199968 T199968 T199968</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>NC-056429.1_428293  1   0   0.940649    0.059351    0.000000    0.665437    0.333508    0.001055</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>NC-056429.1_2307798 3   2   0.000000    0.059351    0.940649    0.333333    0.333333    0.333333</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>NC-056429.1_3839088 2   0   0.940649    0.059351    0.000000    0.799200    0.200750    0.000050</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>NC-056429.1_4446182 0   3   0.000398    0.999602    0.000000    0.992119    0.007881    0.000000</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>NC-056429.1_4723483 1   2   0.000199    0.999788    0.000013    0.000000    0.200760    0.799240</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>NC-056429.1_5379686 2   0   0.000000    0.059351    0.940649    0.940649    0.059351    0.000000</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>NC-056429.1_5995381 0   2   0.500000    0.500000    0.000000    0.000000    0.111816    0.888184</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>NC-056429.1_7930369 0   2   0.333333    0.333333    0.333333    0.333333    0.333333    0.333333</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>NC-056429.1_8618911 3   1   0.000000    0.030653    0.969347    0.000000    1.000000    0.000000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Though it is probably easier to view that on GitHub <a href="https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/table_inputs/beagle.tsv">here</a> where you can see the separate columns and their headers, better.</p>
+<p>Most of the time you are dealing with beagle files in ANGSD you will want them to be gzipped.</p>
+<section id="a-note-about-the-underscore" class="level4" data-number="10.5.3.1">
+<h4 data-number="10.5.3.1" class="anchored" data-anchor-id="a-note-about-the-underscore"><span class="header-section-number">10.5.3.1</span> A note about the underscore</h4>
+<p>It is a huge tragedy that the ANGSD developers use this format in which an underscore, <code>_</code>, is used to separate the chromosome name from the position in the genomic coordinates. One would typically use a TAB, which would also allow the file to be indexed using <code>tabix</code>. Since they use an underscore for that, underscores in your chromosome names will cause problems, so you have to remove underscores from your chromosome names or change them to something else. In the example file above, I changed the underscores to dashes. That works well.</p>
+</section>
+</section>
+<section id="boneyard" class="level3" data-number="10.5.4">
+<h3 data-number="10.5.4" class="anchored" data-anchor-id="boneyard"><span class="header-section-number">10.5.4</span> Boneyard</h3>
 <p>VCF. I’ve mostly used vcftools until now, but I’ve gotta admit that the interface is awful with all the –recode BS. Also, it is viciously slow. So, let’s just skip it all together and learn how to use bcftools. One nice thing about bcftools is that it works a whole lot like samtools, syntactically.</p>
 <p>Note that for a lot of the commands you need to have an indexed vcf.gz.</p>
 </section>

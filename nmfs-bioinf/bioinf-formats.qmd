@@ -190,13 +190,10 @@ single characters represents a quality score---a number between 0 and 40, inclus
 
 The values that have been used are the _decimal representations of ASCII text characters_ minus 33.  
 The decimal representation or each character can be found in @fig-ascii.
-```{r}
-#| echo: false
-#| message: false
-#| label: fig-ascii
-#| fig-cap: 'This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom.  Table produced from TeX code written and developed by Victor Eijkhout available at [https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex](https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex)'
-knitr::include_graphics("./nmfs-bioinf/figs/ascii-crop.png", auto_pdf = TRUE)
-```
+
+![This lovely ASCII table shows the binary, hexadecimal, octal and decimal representations of ASCII characters (in the corners of each square; see the legend rectangle at bottom.  Table produced from TeX code written and developed by Victor Eijkhout available at [https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex](https://ctan.math.illinois.edu/info/ascii-chart/ascii.tex)](./figs/ascii-crop.png){#fig-ascii}
+
+
 The decimal representation is in the upper left of each character's rectangle.  
 
 Find the characters corresponding to base quality scores of 0, 10, 20, 30, and 40.  Remember that the
@@ -309,9 +306,9 @@ the base-1 coordinate system counts "beads" that are the actual base pairs,
 while the base-0 system counts "fences" that separate the beads.  In the following picture,
 the fences and their corresponding numbers are red, while the beads and their corresponding
 numbers are black.
-```{r, echo=FALSE}
-knitr::include_graphics("./nmfs-bioinf/figs/base-0-and-1-cropped.svg")
-```
+
+![Base-0 vs Base-1 coordinate systems in terms of fences and beads](./figs/base-0-and-1-cropped.svg)
+
 From this picture, it is pretty clear that if you have a base-1
 range from $x$ to $y$ (with $x \leq y$), then you could refer to that
 by the base-0 range from $x-1$ to $y$ (those are the "fences" that contain the
@@ -1382,6 +1379,55 @@ can be somewhat more error prone.
 ### VCF Format -- The Header
 
 Let's just get in there and take a look at it.
+
+
+### "beagle" format for genotype likelihoods
+
+There is an outstanding program called BEAGLE that was written by Sharon Browning
+and her husband Brian (they are both professors now at UW.  Sharon was a grad student
+with me in Elizabeth Thompson's lab in the late 1990s, and is wicked smart).
+The program BEAGLE does fast and accurate phasing of haplotypes (and imputation).
+In one version it must have written the output in a format that is now called
+"beagle format" by the authors of ANGSD.  (Later versions of BEAGLE that I have used
+write output in VCF format.)
+
+Beagle format when you are working in ANGSD is a file in which each row starts with
+three columns:
+
+-   `marker`: a column that has the chromosome name and the position, separated by an
+    underscore.
+-   `allele1`: an integer giving the type of allele 1 (think of it as the reference allele).
+-   `allele2`: an integer giving the type of allele 2 (think of it as an alternate allele).
+
+Convention has me using 1 for A, 2 for C, 3 for G and 4 for T, for the allele codes.
+
+After that each individual gets three columns---each one of them headered by the 
+individual's ID---which contains three numbers representing the genotype likelihood
+(or a probability if you have calculated posterior probabilities) for each of the
+three genotypes `allele1/allele1`, `allele1/allele2`, and `allele2/allele2`.
+
+An example of the first few rows of a beagle file with 9 variants and two individuals
+appears here:
+```{txt}
+#| eval: false
+#| file: ./nmfs-bioinf/table_inputs/beagle.tsv
+```
+
+Though it is probably easier to view that on GitHub
+[here](https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/table_inputs/beagle.tsv)
+where you can see the separate columns and their headers, better.
+
+Most of the time you are dealing with beagle files in ANGSD you will want them to be gzipped.
+
+#### A note about the underscore
+
+It is a huge tragedy that the ANGSD developers use this format in which an underscore, `_`, 
+is used to separate the chromosome name from the position in the genomic coordinates.
+One would typically use a TAB, which would also allow the file to be indexed using
+`tabix`.  Since they use an underscore for that, underscores in your chromosome names
+will cause problems, so you have to remove underscores from your chromosome names
+or change them to something else.  In the example file above, I changed the
+underscores to dashes.  That works well.  
 
 
 

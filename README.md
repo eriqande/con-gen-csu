@@ -858,7 +858,7 @@ There is nothing to turn in, but please read through these and play with them fo
     + The votes are summarized in [syllabus-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/syllabus-ranks.csv)
       and [leopard-ranks.csv](https://github.com/eriqande/con-gen-csu/blob/main/instructor/leopard-ranks.csv)
 - Learning about VCF files and the format:
-    + Reading through  [this](https://eriqande.github.io/eca-bioinf-handbook/bioinformatic-file-formats.html#variants)
+    + Reading through  [this](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#variants)
     + Playing around with and looking at:  `data/vcf/all.vcf.gz`  (i.e., `bcftools view data/vcf/all.vcf.gz | less -S`
 - Working on hard filtering of our example data.
 
@@ -871,15 +871,19 @@ There is nothing to turn in, but please read through these and play with them fo
 ## Tuesday, March 26. 2024  Handling VCF Files, etc.
 
 ### Read
-  - Read [this](https://eriqande.github.io/eca-bioinf-handbook/handle-vcf.html) from the handbook. I am going to port that to quarto, so some things
-    will change over the weekend.
+  - Read [the chapter on bcftools](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/handling-vcf-files.html). You can also
+    run through the examples if you would like.  We will be going over this and discussing it in class.
 
 
 
 ## Thursday, March 28, 2024.  This class will be remote for CSU students and in person for NMFS folks!
 
 - I am traveling to Santa Cruz.  Hopefully I can reserve the fishbowl.  Colorado (and Montana), use the google video links at the top of this README.
-- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT**
+- **TURN IN A BRIEF SKETCH OF YOUR CLASS PROJECT** This doesn't have to be more than a couple of paragraphs, but you can also go
+  into more detail if you want.  Turn it in by emailing me at `eriq@rams.colostate.edu`.
+- In class:
+    + [The chapter on bcftools](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/handling-vcf-files.html)
+    + [Section on vcf to beagle conversion](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/bioinf-formats.html#beagle-format-for-genotype-likelihoods) 
 
 ## Tuesday  April 2, 2024
 
@@ -902,3 +906,17 @@ There is nothing to turn in, but please read through these and play with them fo
 
   
 
+## Thursday, April 10, 2024.  Estimation of site-frequency spectra from lcWGS data
+
+### Read
+
+Before class, please read two papers.  They are pretty mathematical, so it is OK if you
+don't get it all easily.  You can skim the mathematical sections!
+
+1. [Nielsen et al. 2012, SNP Calling, Genotype Calling, and Sample Allele Frequency Estimation from New-Generation Sequencing Data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0037558)
+2. ]Rasmussen et al. 2022. Estimation of site frequency spectra from low-coverage sequencing data using stochastic EM reduces overfitting, runtime, and memory usage](https://academic.oup.com/genetics/article/222/4/iyac148/6730749)
+
+### In class:
+
+Eric will give a brief overview of the SFS and SFS estimation.  We will explore these steps in Eric's workflow for estimatng Fst
+from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow.  See https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sfs-fst.html
