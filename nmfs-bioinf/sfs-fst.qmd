@@ -264,3 +264,235 @@ You can download a higher resolution version of that figure from
 These SAF files form the basis for a lot of further inference,
 which we address next.
 
+
+
+
+## Installing winsfs
+
+`winsfs` (which, by the way, stands for "Windowed Site Frequency Spectrum") is
+written in the Rust language.  It is not available on conda, but it is relatively
+easy to build.  The default instructions to build it are available at
+[https://github.com/malthesr/winsfs?tab=readme-ov-file#installation](https://github.com/malthesr/winsfs?tab=readme-ov-file#installation).  If you are not on ALPINE, use those directions.
+
+If you are on ALPINE, however, you want the build chain
+and other stuff to go in your projects directory, not your home directory (which
+has very little space in it.)
+
+So, if you are on ALPINE you want to follow these steps:  first, from a fresh
+shell and in your home directory, define the environment variables CARGO_HOME
+and RUSTUP_HOME to be the absolute path to
+your projects directory. (Otherwise, the rust build chain will eat up all
+the space in your scrawny home directories).
+```{.sh}
+# do this on acompile
+acompile
+export CARGO_HOME=/projects/eriq@colostate.edu
+export RUSTUP_HOME=/projects/eriq@colostate.edu
+```
+Then we want to put the build chain there, so we do:
+```{.sh}
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+That should tell you that it will install everything into your
+projects directory.  Hit ENTER to agree to continue installing.
+(It looks like you should choose 1, but you actually want to just
+hit ENTER...)
+
+That take a minute or two, but should finish, eventually.
+
+Now, we need to set up the environment
+```{.sh}
+source $CARGO_HOME/env
+
+# and then just to be on the safe side, you should do:
+source ~/.bashrc
+```
+
+That should be it for getting the build chain, so now you should be able to
+get winsfs:
+```{.sh}
+cargo install winsfs-cli
+```
+
+When that is done, do `which winsfs` to confirm where it was built and placed.
+
+Then, do `winsfs --help` to get the help info.
+
+
+## Back to lcwgs-pw-fst
+
+If you go back to the shell where you were working on the mega-lcwgs-pw-fst-snakeflow
+workflow, you will want to `source ~/.bashrc` to get the path to winsfs, and then
+you will want to get back onto atesting for working further on this.
+```{.sh}
+srun -p atesting -c 4  --pty /bin/bash
+
+# after you get into that, check to make sure winsfs is available
+winsfs
+```
+
+
+## Calculating some 1-D SFSs
+
+
+Both `realSFS` from angsd and `winsfs` operate similarly for this, but give somewhat
+different results.  If you pass either of them an `saf.idx` file, they will
+do the optimization to return a maximum likelihood estimate of the SFS from all the
+sites in the file.
+
+### Let's do it by hand
+
+```{.sh}
+# activate your angsd env
+conda activate angsd
+
+# learn about realSFS options
+realSFS
+
+# run realSFS on one of the SAF files we made previously
+realSFS -cores 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx
+```
+
+That takes a bit of time, so we can talk about what it is doing.  Note that
+most of the stuff being written to the screen is going to stderr.  The part that
+goes to stdout is just the line:
+```
+3737572.635705 1561.211911 927.350151 465.278375 438.794388 56.110069 390.037928 89.693553 308.188647 21.118673 0.011756 254.166472 79.952746 1.729683 85.879451 134.411897 296.428594
+```
+
+Now, for comparison, let's do that same thing with `winsfs`:
+```{.sh}
+winsfs -t 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx
+```
+
+That happens so fast that you don't even have time to talk about it!
+
+The output is:
+```
+#SHAPE=<17>
+3737470.683161 1625.494654 932.293365 540.814038 412.352881 142.438646 287.406187 128.243713 226.198641 65.924898 65.140087 153.462124 110.387933 45.092476 49.428736 148.862580 278.775880
+```
+Which is pretty much the same, except it has the added feature of telling us how many
+values are in the SFS.  
+
+And, reactivate your snakemake environment
+```{.sh}
+conda activate snakemake-8.5.3
+```
+
+### Let's calculate all the 1-D SFS using the snakemake workflow
+
+You will need to get the latest update of the mega-lcwgs-pw-fst-snakeflow workflow by syncing
+your fork (if you have forked it) and then pulling into main.
+
+I have set up two new rules to calculate 1-D SFS in the workflow---not becuase
+they are needed for calculating Fst, but just for our own edification.
+
+You can run the workflow and get those outputs using:
+```{.sh}
+# check with a dry run:
+snakemake -np --use-conda  --cores 8 dest_edify_1d --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+
+# if that looks good, do it with:
+snakemake -p --use-conda  --cores 8 dest_edify_1d --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+
+I have copied the results to the course repo so that we can plot them all:
+```{r}
+#| fig-height: 10
+#| fig-width: 10
+files <- dir(
+  path = c(
+    "extras/lcwgs-pw-fst-results/one_d_realSFS",
+    "extras/lcwgs-pw-fst-results/one_d_winsfs"
+  ),
+  full.names = TRUE
+)
+names(files) <- files
+
+big_tibble <- lapply(
+  files, 
+  function(x) {
+    lines <- read_lines(x)
+    counts = as.numeric(str_split(lines[length(lines)], pattern = " +")[[1]])
+    counts <- counts[!is.na(counts)]
+    tibble(
+      num_derived = 0:16,
+      count = counts
+    )
+  }) %>%
+  bind_rows(.id = "file") %>%
+  extract(
+    file,
+    into = c("method", "chrom", "ecotype"),
+    regex = "^.*one_d_([a-zA-Z]+)/(.+)---(.+)\\.ml"
+  )
+
+# remove the 0 category, cuz it be huge, then plot
+big_tibble %>%
+  filter(num_derived > 0) %>%
+  ggplot(aes(x = num_derived, y = count, fill = ecotype)) +
+  geom_col() + 
+  facet_grid(chrom ~ ecotype + method)
+  
+```
+
+We see that the results from `winsfs` are less choppy.  This is what the authors of
+the Rasmussen et al. paper meant when they said that the `winsfs` approach is less
+prone to overfitting.
+
+Remember that these are unfolded SFSes where we used the reference genome as the
+"ancestral" genome.
+
+
+## Running the rest of the Fst workflow
+
+We can let this thing rip with:
+```{.sh}
+# check it with a dry run
+snakemake -np --use-conda --cores 8 --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+
+# Let 'er rip
+snakemake -p --cores 8 --use-conda --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+
+While this is running we can look over the steps of the workflow.  Basically, they
+are:
+
+1.  Calculate the MLE of the 2-D SFS for each pair of populations (just Fall and Spring here). This
+    is done in `rule calc_2dsfs_winsfs`.
+2.  Fold the resulting 2-D sfs to reflect that we don't know the ancestral state. Done in
+    `rule fold_winsfs`
+3.  Use that MLE of the 2-D SFS as a prior to calculate the posterior number of derived
+    alleles in each population _at each base pair_ and from that, calculate a summary
+    value related to Fst for each base pair. (Done using realSFS in `rule calc_fst_binaries_winsfs`)
+4.  From those summaries at each site, extract a single Fst value for each chromosome.
+    (Done in `rule extract_fst_values_winsfs`)
+5.  From those summaries at each site, calculate Fst in a sliding window for each
+    chromosome. (Done in `rule sliding_window_fst_winsfs`)
+6.  Summarize all that output into just a couple of files, (Done in `rule summarise_average_fst_values` and
+    `rule summarise_sliding_window_fst_values`)
+
+
+
+### Plotting the Sliding Windows
+
+```{r}
+#| warnings: false
+windows <- read_table(
+  "extras/lcwgs-pw-fst-results/summarized/sliding_window_fst/Fall--x--Spring--size-30000--step-5000.tsv",
+  col_names = FALSE,
+  skip = 2) %>%
+  filter(!str_detect(X1, "region")) %>%
+  rename(
+    chrom = X2,
+    window_mid = X3,
+    Fst = X5
+  )
+
+ggplot(windows, aes(x = window_mid, y = Fst)) +
+  geom_point(size = 0.2) +
+  facet_wrap(~ chrom)
+```

@@ -300,6 +300,17 @@ window.Quarto = {
   <li><a href="#only-run-things-as-far-as-the-calc_saf-rule" id="toc-only-run-things-as-far-as-the-calc_saf-rule" class="nav-link" data-scroll-target="#only-run-things-as-far-as-the-calc_saf-rule"><span class="header-section-number">16.6.5</span> Only run things as far as the <code>calc_saf</code> rule</a></li>
   <li><a href="#make-a-picture-of-part-of-that-file" id="toc-make-a-picture-of-part-of-that-file" class="nav-link" data-scroll-target="#make-a-picture-of-part-of-that-file"><span class="header-section-number">16.6.6</span> Make a picture of part of that file</a></li>
   </ul></li>
+  <li><a href="#installing-winsfs" id="toc-installing-winsfs" class="nav-link" data-scroll-target="#installing-winsfs"><span class="header-section-number">16.7</span> Installing winsfs</a></li>
+  <li><a href="#back-to-lcwgs-pw-fst" id="toc-back-to-lcwgs-pw-fst" class="nav-link" data-scroll-target="#back-to-lcwgs-pw-fst"><span class="header-section-number">16.8</span> Back to lcwgs-pw-fst</a></li>
+  <li><a href="#calculating-some-1-d-sfss" id="toc-calculating-some-1-d-sfss" class="nav-link" data-scroll-target="#calculating-some-1-d-sfss"><span class="header-section-number">16.9</span> Calculating some 1-D SFSs</a>
+  <ul class="collapse">
+  <li><a href="#lets-do-it-by-hand" id="toc-lets-do-it-by-hand" class="nav-link" data-scroll-target="#lets-do-it-by-hand"><span class="header-section-number">16.9.1</span> Let’s do it by hand</a></li>
+  <li><a href="#lets-calculate-all-the-1-d-sfs-using-the-snakemake-workflow" id="toc-lets-calculate-all-the-1-d-sfs-using-the-snakemake-workflow" class="nav-link" data-scroll-target="#lets-calculate-all-the-1-d-sfs-using-the-snakemake-workflow"><span class="header-section-number">16.9.2</span> Let’s calculate all the 1-D SFS using the snakemake workflow</a></li>
+  </ul></li>
+  <li><a href="#running-the-rest-of-the-fst-workflow" id="toc-running-the-rest-of-the-fst-workflow" class="nav-link" data-scroll-target="#running-the-rest-of-the-fst-workflow"><span class="header-section-number">16.10</span> Running the rest of the Fst workflow</a>
+  <ul class="collapse">
+  <li><a href="#plotting-the-sliding-windows" id="toc-plotting-the-sliding-windows" class="nav-link" data-scroll-target="#plotting-the-sliding-windows"><span class="header-section-number">16.10.1</span> Plotting the Sliding Windows</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/sfs-fst.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -509,6 +520,173 @@ window.Quarto = {
 <p>Oh Wow! That is pretty cool! Each facet is 500 bases of the chromosome. The x-axis is number of “derived” alleles in the sample, and the fill color is likelihood. The white bands are omitted bases (likely becuase there are no reads there? or some other feature of the genome there?).</p>
 <p>You can download a higher resolution version of that figure from <a href="https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/figs/saf_file_raster.pdf">here</a>.</p>
 <p>These SAF files form the basis for a lot of further inference, which we address next.</p>
+</section>
+</section>
+<section id="installing-winsfs" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="installing-winsfs"><span class="header-section-number">16.7</span> Installing winsfs</h2>
+<p><code>winsfs</code> (which, by the way, stands for “Windowed Site Frequency Spectrum”) is written in the Rust language. It is not available on conda, but it is relatively easy to build. The default instructions to build it are available at <a href="https://github.com/malthesr/winsfs?tab=readme-ov-file#installation">https://github.com/malthesr/winsfs?tab=readme-ov-file#installation</a>. If you are not on ALPINE, use those directions.</p>
+<p>If you are on ALPINE, however, you want the build chain and other stuff to go in your projects directory, not your home directory (which has very little space in it.)</p>
+<p>So, if you are on ALPINE you want to follow these steps: first, from a fresh shell and in your home directory, define the environment variables CARGO_HOME and RUSTUP_HOME to be the absolute path to your projects directory. (Otherwise, the rust build chain will eat up all the space in your scrawny home directories).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do this on acompile</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">acompile</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CARGO_HOME</span><span class="op">=</span>/projects/eriq@colostate.edu</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RUSTUP_HOME</span><span class="op">=</span>/projects/eriq@colostate.edu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then we want to put the build chain there, so we do:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--proto</span> <span class="st">'=https'</span> <span class="at">--tlsv1.2</span> <span class="at">-sSf</span> https://sh.rustup.rs <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That should tell you that it will install everything into your projects directory. Hit ENTER to agree to continue installing. (It looks like you should choose 1, but you actually want to just hit ENTER…)</p>
+<p>That take a minute or two, but should finish, eventually.</p>
+<p>Now, we need to set up the environment</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$CARGO_HOME</span>/env</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and then just to be on the safe side, you should do:</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That should be it for getting the build chain, so now you should be able to get winsfs:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> install winsfs-cli</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When that is done, do <code>which winsfs</code> to confirm where it was built and placed.</p>
+<p>Then, do <code>winsfs --help</code> to get the help info.</p>
+</section>
+<section id="back-to-lcwgs-pw-fst" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="back-to-lcwgs-pw-fst"><span class="header-section-number">16.8</span> Back to lcwgs-pw-fst</h2>
+<p>If you go back to the shell where you were working on the mega-lcwgs-pw-fst-snakeflow workflow, you will want to <code>source ~/.bashrc</code> to get the path to winsfs, and then you will want to get back onto atesting for working further on this.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-p</span> atesting <span class="at">-c</span> 4  <span class="at">--pty</span> /bin/bash</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># after you get into that, check to make sure winsfs is available</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="ex">winsfs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="calculating-some-1-d-sfss" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="calculating-some-1-d-sfss"><span class="header-section-number">16.9</span> Calculating some 1-D SFSs</h2>
+<p>Both <code>realSFS</code> from angsd and <code>winsfs</code> operate similarly for this, but give somewhat different results. If you pass either of them an <code>saf.idx</code> file, they will do the optimization to return a maximum likelihood estimate of the SFS from all the sites in the file.</p>
+<section id="lets-do-it-by-hand" class="level3" data-number="16.9.1">
+<h3 data-number="16.9.1" class="anchored" data-anchor-id="lets-do-it-by-hand"><span class="header-section-number">16.9.1</span> Let’s do it by hand</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># activate your angsd env</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate angsd</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># learn about realSFS options</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">realSFS</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># run realSFS on one of the SAF files we made previously</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ex">realSFS</span> <span class="at">-cores</span> 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That takes a bit of time, so we can talk about what it is doing. Note that most of the stuff being written to the screen is going to stderr. The part that goes to stdout is just the line:</p>
+<pre><code>3737572.635705 1561.211911 927.350151 465.278375 438.794388 56.110069 390.037928 89.693553 308.188647 21.118673 0.011756 254.166472 79.952746 1.729683 85.879451 134.411897 296.428594</code></pre>
+<p>Now, for comparison, let’s do that same thing with <code>winsfs</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">winsfs</span> <span class="at">-t</span> 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That happens so fast that you don’t even have time to talk about it!</p>
+<p>The output is:</p>
+<pre><code>#SHAPE=&lt;17&gt;
+3737470.683161 1625.494654 932.293365 540.814038 412.352881 142.438646 287.406187 128.243713 226.198641 65.924898 65.140087 153.462124 110.387933 45.092476 49.428736 148.862580 278.775880</code></pre>
+<p>Which is pretty much the same, except it has the added feature of telling us how many values are in the SFS.</p>
+<p>And, reactivate your snakemake environment</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate snakemake-8.5.3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="lets-calculate-all-the-1-d-sfs-using-the-snakemake-workflow" class="level3" data-number="16.9.2">
+<h3 data-number="16.9.2" class="anchored" data-anchor-id="lets-calculate-all-the-1-d-sfs-using-the-snakemake-workflow"><span class="header-section-number">16.9.2</span> Let’s calculate all the 1-D SFS using the snakemake workflow</h3>
+<p>You will need to get the latest update of the mega-lcwgs-pw-fst-snakeflow workflow by syncing your fork (if you have forked it) and then pulling into main.</p>
+<p>I have set up two new rules to calculate 1-D SFS in the workflow—not becuase they are needed for calculating Fst, but just for our own edification.</p>
+<p>You can run the workflow and get those outputs using:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check with a dry run:</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-np</span> <span class="at">--use-conda</span>  <span class="at">--cores</span> 8 dest_edify_1d <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># if that looks good, do it with:</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-p</span> <span class="at">--use-conda</span>  <span class="at">--cores</span> 8 dest_edify_1d <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I have copied the results to the course repo so that we can plot them all:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">dir</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">c</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extras/lcwgs-pw-fst-results/one_d_realSFS"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extras/lcwgs-pw-fst-results/one_d_winsfs"</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(files) <span class="ot">&lt;-</span> files</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>big_tibble <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  files, </span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x) {</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    lines <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(x)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    counts <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">str_split</span>(lines[<span class="fu">length</span>(lines)], <span class="at">pattern =</span> <span class="st">" +"</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    counts <span class="ot">&lt;-</span> counts[<span class="sc">!</span><span class="fu">is.na</span>(counts)]</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">num_derived =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">16</span>,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">count =</span> counts</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"file"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    file,</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"method"</span>, <span class="st">"chrom"</span>, <span class="st">"ecotype"</span>),</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">regex =</span> <span class="st">"^.*one_d_([a-zA-Z]+)/(.+)---(.+)</span><span class="sc">\\</span><span class="st">.ml"</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the 0 category, cuz it be huge, then plot</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>big_tibble <span class="sc">%&gt;%</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(num_derived <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_derived, <span class="at">y =</span> count, <span class="at">fill =</span> ecotype)) <span class="sc">+</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> </span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(chrom <span class="sc">~</span> ecotype <span class="sc">+</span> method)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sfs-fst_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that the results from <code>winsfs</code> are less choppy. This is what the authors of the Rasmussen et al.&nbsp;paper meant when they said that the <code>winsfs</code> approach is less prone to overfitting.</p>
+<p>Remember that these are unfolded SFSes where we used the reference genome as the “ancestral” genome.</p>
+</section>
+</section>
+<section id="running-the-rest-of-the-fst-workflow" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="running-the-rest-of-the-fst-workflow"><span class="header-section-number">16.10</span> Running the rest of the Fst workflow</h2>
+<p>We can let this thing rip with:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check it with a dry run</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-np</span> <span class="at">--use-conda</span> <span class="at">--cores</span> 8 <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let 'er rip</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-p</span> <span class="at">--cores</span> 8 <span class="at">--use-conda</span> <span class="at">--configfile</span> CGC/extras/lcwgs-pw-fst-config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>While this is running we can look over the steps of the workflow. Basically, they are:</p>
+<ol type="1">
+<li>Calculate the MLE of the 2-D SFS for each pair of populations (just Fall and Spring here). This is done in <code>rule calc_2dsfs_winsfs</code>.</li>
+<li>Fold the resulting 2-D sfs to reflect that we don’t know the ancestral state. Done in <code>rule fold_winsfs</code></li>
+<li>Use that MLE of the 2-D SFS as a prior to calculate the posterior number of derived alleles in each population <em>at each base pair</em> and from that, calculate a summary value related to Fst for each base pair. (Done using realSFS in <code>rule calc_fst_binaries_winsfs</code>)</li>
+<li>From those summaries at each site, extract a single Fst value for each chromosome. (Done in <code>rule extract_fst_values_winsfs</code>)</li>
+<li>From those summaries at each site, calculate Fst in a sliding window for each chromosome. (Done in <code>rule sliding_window_fst_winsfs</code>)</li>
+<li>Summarize all that output into just a couple of files, (Done in <code>rule summarise_average_fst_values</code> and <code>rule summarise_sliding_window_fst_values</code>)</li>
+</ol>
+<section id="plotting-the-sliding-windows" class="level3" data-number="16.10.1">
+<h3 data-number="16.10.1" class="anchored" data-anchor-id="plotting-the-sliding-windows"><span class="header-section-number">16.10.1</span> Plotting the Sliding Windows</h3>
+<div class="cell" data-warnings="false">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>windows <span class="ot">&lt;-</span> <span class="fu">read_table</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"extras/lcwgs-pw-fst-results/summarized/sliding_window_fst/Fall--x--Spring--size-30000--step-5000.tsv"</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">skip =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(X1, <span class="st">"region"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">chrom =</span> X2,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_mid =</span> X3,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Fst =</span> X5</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+── Column specification ────────────────────────────────────────────────────────
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_double(),
+  X4 = col_double(),
+  X5 = col_double()
+)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(windows, <span class="fu">aes</span>(<span class="at">x =</span> window_mid, <span class="at">y =</span> Fst)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> chrom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sfs-fst_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
