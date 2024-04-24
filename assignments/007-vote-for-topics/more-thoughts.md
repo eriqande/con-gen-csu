@@ -1,0 +1,2 @@
+I found that I am most interested in PCA analysis and FST analyses because I've seen it a lot and want to understand how to run it and maybe in the process also try to understand a little more  about mechanics behind it. 
+I haven't read as many papers that estimates heterozygosity using an SFS but I like the topic of heterozygosity and gene diversity so, this is a topic I would like to understand more about. 
