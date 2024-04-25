@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>con-gen-csu - 11&nbsp; Snakemake Narrative and Topics</title>
+<title>con-gen-csu - 17&nbsp; Exploring and Using the mega-post-bcf-exploratory-snakeflows</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../nmfs-bioinf/snakemake-relevant-python.html" rel="next">
-<link href="../nmfs-bioinf/bioinf-formats.html" rel="prev">
+<link href="../nmfs-bioinf/sfs-fst.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/snake.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nmfs-bioinf/mega-post.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring and Using the <code>mega-post-bcf-exploratory-snakeflows</code></span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -180,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link active">
+  <a href="../nmfs-bioinf/snake.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></a>
   </div>
 </li>
@@ -216,7 +249,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nmfs-bioinf/mega-post.html" class="sidebar-item-text sidebar-link">
+  <a href="../nmfs-bioinf/mega-post.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring and Using the <code>mega-post-bcf-exploratory-snakeflows</code></span></span></a>
   </div>
 </li>
@@ -230,20 +263,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#input-functions" id="toc-input-functions" class="nav-link active" data-scroll-target="#input-functions"><span class="header-section-number">11.1</span> Input Functions</a>
+  <li><a href="#setup-steps" id="toc-setup-steps" class="nav-link active" data-scroll-target="#setup-steps"><span class="header-section-number">17.1</span> Setup Steps</a>
   <ul class="collapse">
-  <li><a href="#input-functions-returning-dicts" id="toc-input-functions-returning-dicts" class="nav-link" data-scroll-target="#input-functions-returning-dicts"><span class="header-section-number">11.1.1</span> Input functions returning dicts</a></li>
+  <li><a href="#sync-your-fork-of-con-gen-csu-and-pull-changes-to-main" id="toc-sync-your-fork-of-con-gen-csu-and-pull-changes-to-main" class="nav-link" data-scroll-target="#sync-your-fork-of-con-gen-csu-and-pull-changes-to-main"><span class="header-section-number">17.1.1</span> Sync your fork of con-gen-csu and pull changes to main</a></li>
+  <li><a href="#fork-and-clone-mega-post-bcf-exploratory-snakeflows" id="toc-fork-and-clone-mega-post-bcf-exploratory-snakeflows" class="nav-link" data-scroll-target="#fork-and-clone-mega-post-bcf-exploratory-snakeflows"><span class="header-section-number">17.1.2</span> Fork and clone <code>mega-post-bcf-exploratory-snakeflows</code></a></li>
+  <li><a href="#get-on-a-compute-node-or-acompile" id="toc-get-on-a-compute-node-or-acompile" class="nav-link" data-scroll-target="#get-on-a-compute-node-or-acompile"><span class="header-section-number">17.1.3</span> Get on a compute node or acompile</a></li>
+  <li><a href="#make-a-symlink-to-the-configs-and-data-that-are-in-con-gen-csu" id="toc-make-a-symlink-to-the-configs-and-data-that-are-in-con-gen-csu" class="nav-link" data-scroll-target="#make-a-symlink-to-the-configs-and-data-that-are-in-con-gen-csu"><span class="header-section-number">17.1.4</span> Make a symlink to the configs and data that are in con-gen-csu</a></li>
+  <li><a href="#start-r-and-make-sure-that-the-tidyverse-is-installed" id="toc-start-r-and-make-sure-that-the-tidyverse-is-installed" class="nav-link" data-scroll-target="#start-r-and-make-sure-that-the-tidyverse-is-installed"><span class="header-section-number">17.1.5</span> Start R and make sure that the tidyverse is installed</a></li>
   </ul></li>
-  <li><a href="#using-pandas" id="toc-using-pandas" class="nav-link" data-scroll-target="#using-pandas"><span class="header-section-number">11.2</span> Using Pandas</a></li>
+  <li><a href="#dry-run-and-install-conda-envs-in-mega-post" id="toc-dry-run-and-install-conda-envs-in-mega-post" class="nav-link" data-scroll-target="#dry-run-and-install-conda-envs-in-mega-post"><span class="header-section-number">17.2</span> Dry-run and install conda envs in mega-post</a></li>
+  <li><a href="#running-it-for-real" id="toc-running-it-for-real" class="nav-link" data-scroll-target="#running-it-for-real"><span class="header-section-number">17.3</span> Running it for real</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snake.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/mega-post.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="snake" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Snakemake Narrative and Topics</span></span></h1>
+<h1 class="title"><span id="mega-post" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring and Using the <code>mega-post-bcf-exploratory-snakeflows</code></span></span></h1>
 </div>
 
 
@@ -260,31 +298,93 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>In the preceding sections we have covered a few approaches for using RStudio projects and RMarkdown to create reproducible research repositories with visually pleasing HTML outputs that can help readers quickly see what was required to generate different figures/tables/outputs. Such an approach is well suited to projects that are undertaken primarily on one’s own desktop or laptop computer, and which don’t take an inordinately long time to run. Unfortunately, that does not describe most <em>bioinformatic</em> analyses handling whole-genome sequencing or RAD sequencing data for conservation genetics. Most of those analyses will be run on a university computer cluster, and trying to manage all of that within an RMarkdown-based framework is at best rather difficult, and at worst it can become a shrieking horror.</p>
-<p>For managing these sorts of bioinformatic workflows there is a Python-based framework called <a href="https://snakemake.readthedocs.io/en/stable/">Snakemake</a> that is well-supported, flexible, and incredibly powerful. Understanding how Snakemake works and becoming familiar with its many features involves a non-trivial learning curve; however, for anyone spending a sizable chunk of their graduate career managing bioinformatic analyses, or for anyone that is a lab bioinformatician running bioinformatic workflows across many species (for example), the benefits of learning Snakemake will continue to pay dividends for years to come.</p>
-<p>Someone who has mastered all the topics in Part I of this handbook (Unix programming, working on remote computers, etc.) certainly will have the skills to write what I will call <em>input-oriented</em>, <em>forward-marching</em> workflows. I call these “forward-marching” because they start from a set of input files (for example files of sequences from a sequencer), and then the workflow is defined as a series of sequential steps, one after the other. They are “input-oriented” in the sense that such a workflow starts with a series of inputs, but the workflow itself doesn’t really know what it is trying to produce from those inputs until it has run all the way through and actually turned those inputs into outputs. For example, all the input files might get trimmed or cleaned, then they would all get mapped to a genome, and then those mapped sequences would be used to call variants, so as to find SNPs in the data, etc. If you were writing this in an input-oriented, forward-marching fashion, then, to deal with the fact that you had multiple files of DNA sequences (for example, one for each individual bird or fish that had been sampled), you might write Unix <code>for</code> loops to cycle over all the input files as in Section&nbsp;@ref(unix-for-loops), or, you could define a SLURM job array to start a separate job instance for each input file, as in Section&nbsp;@ref(slurm-job-arrays). In each case, you would have to do some extra programming to deal with the different input files, and if one of the steps of your workflow failed on just one, or a few, of the files, you might spend a large amount of time tracking those failures down and than manually re-running that small number of jobs.</p>
-<p>By contrast, Snakemake takes a different approach to managing workflows. We will call it an <em>output-oriented</em>, <em>backward-looking</em> approach. We call it that because workflows in Snakemake are defined first and foremost in terms of the <em>output files</em> that are desired, along with instructions on how to create those output files from necessary input files and bioinformatic programs. They are <em>backward-looking</em> in the sense that, once you have developed a Snakemake workflow, you get results by telling Snakemake which output files you want to create, and then it “looks backwards” through the workflow to determine which input files are needed to create the requested outputs. Sometimes it has to look backwards through several steps before it identifies all the necessary input files. Once it has found those necessary inputs, it then runs forward through the steps to create the output files. In this phase, the workflow looks like it is “forward-marching”, in the sense that outputs are being created from inputs. But, in order to get to that “forward-running” phase, Snakemake had to look backward to figure out what inputs to use.</p>
-<p>The above constitutes some subtle points, that might not be clear upon first reading, but we will try to summarize it in a few pithy phrases:</p>
-<ul>
-<li>A workflow defined as a typical Unix shell script can be thought of as a process that runs forward. You give it a lot of input files and it just cranks through a bunch of steps until the output files are made.</li>
-<li>A workflow defined with Snakemake works differently. First you define the workflow in terms of a series of “rules.” Then, when you request any given set of output files, Snakemake will look backwards through the rules of the workflow and figure out exactly which steps must be performed, on which input files, in order to create the requested output files. Once it has determined that, it runs just those necessary steps.</li>
-</ul>
-<p>There are many advantages to this output-oriented, backward-looking approach:</p>
-<ol type="1">
-<li>If your workflow has many steps, and some of them have already been run, then Snakemake automatically recognizes that, and will not re-run steps in the workflow that have already been completed. In an input-oriented system (like a traditional Unix script), you would have to spend the time to figure out which steps had already been run, and then run your script only from that point forward. Doing so can be a hassle and can also be prone to errors.</li>
-<li>A workflow defined by Snakemake, being explicit about the inputs needed for each step, naturally defines “work units” that can be run independently of one another. Accordingly, Snakemake, itself, can break a huge bioinformatic workflow into a number of small jobs that can be run in parallel, saving you, the user, from having to write scripts to launch a series of SLURM job arrays.</li>
-<li>The fact that Snakemake automatically keeps track of which inputs already exist—and which might still need to be generated—provides huge benefits when some of your jobs fail. Anyone who has used a cluster has stories about jobs that inexplicably fail. Without a workflow management system like Snakemake, you can spend almost as much of your own time managing these failed jobs as it took to launch all the jobs in the first place.</li>
-</ol>
-<p>In addition to these obvious advantages of the output-oriented approach, Snakemake also includes a number of features that make it easy to use your workflow on a variety of different platforms. It is tightly integrated with conda (Section&nbsp;@ref(miniconda)), letting the user define conda environments for each step in the workflow. This means that if you move your whole workflow to a new cluster, you don’t have to spend any time coordinating the installation of the programs you need—if you set things up properly with Snakemake and conda, that will happen automatically. If you distribute your workflows to other people to use, this is particularly helpful, since you will spend far less time assisting them in setting up their computer environment to run your workflow. Snakemake can also be customized to work in your own cluster environment. Finally, there are interfaces to allow your Snakemake workflows to run seamlessly in the cloud.</p>
-<p>Full documentation for Snakemake can be found at <a href="https://snakemake.readthedocs.io/en/stable/">https://snakemake.readthedocs.io/en/stable/</a>. This documentation is comprehensive, but can feel a little daunting at first. On the other hand, the developers of Snakemake also provide an excellent and accessible tutorial at <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html</a>.</p>
-<section id="input-functions" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="input-functions"><span class="header-section-number">11.1</span> Input Functions</h2>
-<section id="input-functions-returning-dicts" class="level3" data-number="11.1.1">
-<h3 data-number="11.1.1" class="anchored" data-anchor-id="input-functions-returning-dicts"><span class="header-section-number">11.1.1</span> Input functions returning dicts</h3>
+<p><code>mega-post-bcf-exploratory-snakeflows</code> is a snakemake workflow that Eric dreamed up to help with doing multiple analyses from a VCF file. We are going to be familiarizing ourselves with it here.</p>
+<section id="setup-steps" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="setup-steps"><span class="header-section-number">17.1</span> Setup Steps</h2>
+<section id="sync-your-fork-of-con-gen-csu-and-pull-changes-to-main" class="level3" data-number="17.1.1">
+<h3 data-number="17.1.1" class="anchored" data-anchor-id="sync-your-fork-of-con-gen-csu-and-pull-changes-to-main"><span class="header-section-number">17.1.1</span> Sync your fork of con-gen-csu and pull changes to main</h3>
+<p>You know the drill. Sync your fork from the GitHub website and then pull any changes to main on your local clone on the cluster.</p>
+</section>
+<section id="fork-and-clone-mega-post-bcf-exploratory-snakeflows" class="level3" data-number="17.1.2">
+<h3 data-number="17.1.2" class="anchored" data-anchor-id="fork-and-clone-mega-post-bcf-exploratory-snakeflows"><span class="header-section-number">17.1.2</span> Fork and clone <code>mega-post-bcf-exploratory-snakeflows</code></h3>
+<p>Go to the <a href="https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows/tree/main">mega-post-bcf-exploratory-snakeflows page on GitHub</a>. Fork it, and then clone your fork of it to Alpine (or your cluster of choice).</p>
+<p>You might need to <code>gitup</code>.</p>
+</section>
+<section id="get-on-a-compute-node-or-acompile" class="level3" data-number="17.1.3">
+<h3 data-number="17.1.3" class="anchored" data-anchor-id="get-on-a-compute-node-or-acompile"><span class="header-section-number">17.1.3</span> Get on a compute node or acompile</h3>
+<p>Choose whatever works for you. I am going to go for 4 cores for two hours on acompile, on Alpine.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">acompile</span> <span class="at">-n</span> 4 <span class="at">-t</span> 120</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are on SEDNA, do something like this to get 5 cores</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-c</span> 5 <span class="at">-t</span> 2:00:00 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="make-a-symlink-to-the-configs-and-data-that-are-in-con-gen-csu" class="level3" data-number="17.1.4">
+<h3 data-number="17.1.4" class="anchored" data-anchor-id="make-a-symlink-to-the-configs-and-data-that-are-in-con-gen-csu"><span class="header-section-number">17.1.4</span> Make a symlink to the configs and data that are in con-gen-csu</h3>
+<p>From the top level of the <code>mega-post-bcf-exploratory-snakeflows</code> directory, create a symlink like this, replacing the <code>my-path-to-con-gen-csu</code> as appropriate.</p>
+<pre><code>ln -s /home/my-path-to-con-gen-csu/extras/mega-post-config-and-data MPCD</code></pre>
+<p>For example, for me that looks like:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check that I am in the mega-post... directory</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returns: /home/eriq@colostate.edu/projects/mega-post-bcf-exploratory-snakeflows</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># make the symlink:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span>  /projects/eriq@colostate.edu/con-gen-csu/extras/mega-post-config-and-data MPCD</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="start-r-and-make-sure-that-the-tidyverse-is-installed" class="level3" data-number="17.1.5">
+<h3 data-number="17.1.5" class="anchored" data-anchor-id="start-r-and-make-sure-that-the-tidyverse-is-installed"><span class="header-section-number">17.1.5</span> Start R and make sure that the tidyverse is installed</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is what it is on Alpine.  It is R/4.0.3 on SEDNA</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.2.2  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># check to see if the tidyverse is there:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">tidyverse</span><span class="kw">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># if that loads the library, you are all good.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># if not, you should get it with</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">install.packages</span><span class="er">(</span><span class="st">"tidyverse"</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This might take a while. If so, let it run and just open up another shell and proceed (you can do dry-runs and install from mamba on the login node!)</p>
 </section>
 </section>
-<section id="using-pandas" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="using-pandas"><span class="header-section-number">11.2</span> Using Pandas</h2>
+<section id="dry-run-and-install-conda-envs-in-mega-post" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="dry-run-and-install-conda-envs-in-mega-post"><span class="header-section-number">17.2</span> Dry-run and install conda envs in mega-post</h2>
+<p>Make sure you are in your <code>mega-post-bcf-exploratory-snakeflows</code> directory. Activate your snakemake environment, like:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate snakemake-8.5.3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, do a dry-run using the config and data that we symlinked from con-gen-csu:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-np</span> <span class="at">--configfile</span> MPCD/config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The result should look like this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Job</span> stats:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">job</span>                           count</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">--------------------------</span>  <span class="at">-------</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">all</span>                               1</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">angsd_chromosome_names</span>            1</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">angsd_do_asso_gather</span>              2</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">angsd_do_asso_scatter</span>             4</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">angsd_do_asso_ybin_scatter</span>        4</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">attach_PCs_to_dotsamples</span>          1</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf2beagle_gl_gather</span>              2</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf2beagle_gl_scatter</span>             8</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf_samps_and_filt_gather</span>         1</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf_samps_and_filt_scatter</span>        4</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf_thin_gather</span>                   1</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">bcf_thin_scatter</span>                  4</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">do_asso_manhattan_plot</span>            2</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">install_ngsadmix</span>                  1</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">install_pcangsd</span>                   1</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="ex">pcangsd_beagle_post_slice</span>         1</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="ex">pcangsd_no_gposts</span>                 1</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="ex">pcangsd_with_gposts</span>               1</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="ex">run_ngsadmix</span>                      4</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span>                            44</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we are going to run this again but will only start installing the conda environments.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">--use-conda</span> <span class="at">--conda-create-envs-only</span>  <span class="at">--configfile</span> MPCD/config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, while this is running (pretty slow on Alpine!) we can talk more generically about the workflow.</p>
+<p>We can read about it in its <a href="https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows/blob/main/README.md">README</a>.</p>
+</section>
+<section id="running-it-for-real" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="running-it-for-real"><span class="header-section-number">17.3</span> Running it for real</h2>
+<p>Try:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-p</span> <span class="at">--cores</span> 4 <span class="at">--use-envmodules</span> <span class="at">--use-conda</span>  <span class="at">--latency-wait</span> 20 <span class="at">--keep-going</span>  <span class="at">--configfile</span> MPCD/config/config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -679,14 +779,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../nmfs-bioinf/bioinf-formats.html" class="pagination-link" aria-label="Bioinformatic file formats">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bioinformatic file formats</span></span>
+      <a href="../nmfs-bioinf/sfs-fst.html" class="pagination-link" aria-label="Estimating Site Frequency Spectra and a few applications thereof">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Estimating Site Frequency Spectra and a few applications thereof</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../nmfs-bioinf/snakemake-relevant-python.html" class="pagination-link" aria-label="Snakemake-relevant Python for R Users">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Snakemake-relevant Python for R Users</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -694,4 +791,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/snake.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/eriqande/con-gen-csu/edit/main/nmfs-bioinf/mega-post.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/eriqande/con-gen-csu/issues/new/choose" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

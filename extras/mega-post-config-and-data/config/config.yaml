@@ -128,8 +128,11 @@ targets:
     - ["hyper_thin", "all_fish", "dummy"]
   beagle_gl:        # just get a beagle file of genotype likelihoods
     - ["hyper_thin", "all_fish", "dummy"]
+  beagle_regions:
+    - ["standard", "all_fish", "greb1l_2mb"]
   pcangsd_plain:    # do a simple PCAngsd PCA, and get the output .cov file
     - ["hyper_thin", "all_fish", "no_frills"]
+    - ["standard", "all_fish", "no_frills"]
   do_asso_ybin:
     - ["standard", "all_fish", "dummy"]
   do_asso:
