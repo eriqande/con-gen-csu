@@ -496,3 +496,51 @@ ggplot(windows, aes(x = window_mid, y = Fst)) +
   geom_point(size = 0.2) +
   facet_wrap(~ chrom)
 ```
+
+
+
+
+
+
+```{r}
+#| fig-height: 10
+#| fig-width: 10
+files <- dir(
+  path = c(
+    "extras/lcwgs-pw-fst-results/NC_037122.1f5t9/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037123.1f10t14/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037124.1f8t16/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037125.1f20t24/winsfs"
+  ),
+  full.names = TRUE
+)
+names(files) <- files
+
+big_tibble <- lapply(
+  files, 
+  function(x) {
+    lines <- read_lines(x)
+    counts = as.numeric(str_split(lines[length(lines)], pattern = " +")[[1]])
+    counts <- counts[!is.na(counts)]
+    tibble(
+      num_derived_Fall = rep(0:16, 17),
+      num_derived_Spring = rep(0:16, each = 17),
+      count = counts
+    )
+  }) %>%
+  bind_rows(.id = "file") %>%
+  extract(
+    file,
+    into = c("chrom"),
+    regex = "^.*(NC_[^/]+)/.+$"
+  )
+
+# remove the 0 category, cuz it be huge, then plot
+big_tibble %>%
+  filter(num_derived_Fall > 0 & num_derived_Spring > 0) %>%
+  ggplot(aes(x = num_derived_Fall, y = num_derived_Spring, fill = count)) +
+  geom_tile() + 
+  facet_wrap(~ chrom) +
+  scale_fill_viridis_c(trans="log10")
+  
+```

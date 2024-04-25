@@ -1,0 +1,17 @@
+vcf_name	ID_Berk	NMFS_DNA_ID	BOX_ID	BOX_POSITION	Population	Concentration (ng/ul)	run_type
+DPCh_plate1_F11_S71	CH_Plate1_11F	T145171	T1516	3E	Trinity River Hatchery Fall	85.8	Fall
+DPCh_plate1_B12_S24	CH_Plate1_12B	T145193	T1516	6C	Trinity River Hatchery Fall	76	Fall
+DPCh_plate1_F12_S72	CH_Plate1_12F	T145241	T1516	12C	Trinity River Hatchery Fall	74.6	Fall
+DPCh_plate1_G12_S84	CH_Plate1_12G	T145242	T1516	12D	Trinity River Hatchery Fall	69.4	Fall
+DPCh_plate1_B11_S23	CH_Plate1_11B	T145152	T1516	1B	Trinity River Hatchery Fall	69.2	Fall
+DPCh_plate1_C11_S35	CH_Plate1_11C	T145153	T1516	1C	Trinity River Hatchery Fall	62.6	Fall
+DPCh_plate1_C12_S36	CH_Plate1_12C	T145200	T1516	7B	Trinity River Hatchery Fall	58.8	Fall
+DPCh_plate1_D11_S47	CH_Plate1_11D	T145163	T1516	2E	Trinity River Hatchery Fall	56.2	Fall
+DPCh_plate1_F10_S70	CH_Plate1_10F	T144996	T1514	5F	Trinity River Hatchery Spring	81.4	Spring
+DPCh_plate1_D09_S45	CH_Plate1_9D	T144967	T1514	2A	Trinity River Hatchery Spring	80.4	Spring
+DPCh_plate1_H10_S94	CH_Plate1_10H	T145003	T1514	6E	Trinity River Hatchery Spring	79.8	Spring
+DPCh_plate1_G10_S82	CH_Plate1_10G	T144997	T1514	5G	Trinity River Hatchery Spring	76.2	Spring
+DPCh_plate1_H09_S93	CH_Plate1_9H	T144979	T1514	3E	Trinity River Hatchery Spring	64.8	Spring
+DPCh_plate1_C10_S34	CH_Plate1_10C	T144989	T1514	4G	Trinity River Hatchery Spring	64.2	Spring
+DPCh_plate1_B10_S22	CH_Plate1_10B	T144981	T1514	3G	Trinity River Hatchery Spring	58.8	Spring
+DPCh_plate1_G09_S81	CH_Plate1_9G	T144974	T1514	2H	Trinity River Hatchery Spring	55.2	Spring

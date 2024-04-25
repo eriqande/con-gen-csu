@@ -1,0 +1,144 @@
+## This is the config file that determnines what analyses will
+## be run on which sample subset from which parent BCF.
+
+# This file is intended to be run in mega-post-bcf directory
+# in which there is a sym link to the directory
+# con-gen-csu/extras/mega-post-config-and-data that is
+# named MPCD
+
+#### MODULES SECTION
+
+# This is what you would use on Alpine
+Rmodule: "R/4.2.2"
+
+# This is what you would use on SEDNA
+# Rmodule: "R/4.0.3"
+
+#### DEFINITIONS SECTIONS #####
+
+# every BCF file used here must correspond to the same
+# reference genome and thus to the same scaffold groups file.
+# These are identified here:
+fai_path: MPCD/resources/genome.fasta.fai
+scaff_group_path: MPCD/config/scaffold_groups.tsv
+
+
+
+# this is the short name and the path to the BCF file that will be used
+# the key here (testy) corresponds to wildcard {bcf_id}.  The sample subsets
+# should, of course, correspond to a particular
+# bcf file, so they go here.  If there are meta data files for association
+# studies using the GLM in ANGSD, these go here as the dotsample.
+# 
+bcf:
+  chinook_16:
+    path: "MPCD/data/chinook-16-all-filtered.vcf.gz"
+    sample_subsets:
+      all_fish:
+        path: MPCD/sample_subsets/all-fish.txt   
+        ybin: MPCD/sample_subsets/all-fish-fall0-spring1.ybin
+        dotsample: MPCD/sample_subsets/dot-samples-all-fish.tsv
+
+
+
+
+
+# same thing here, we can define different sets of bcftools filters
+# that we might want to use, and we give them nicknames. The 
+# nicknames/keys here correspond to wildcard 
+bcftools_opts:
+  snps05: -v snps -m 2 -M 2 -i 'FILTER="PASS" && MAF >= 0.05'
+
+
+#### SETTING SECTIONS #####
+
+# these tell us which versions of things that must be downloaded
+# from GitHub we would like to get
+
+pcangsd:
+  url: https://github.com/eriqande/pcangsd.git
+  version: 705ca4c19630ed9c2dd254b0bfd528b8ee25d5c0
+ngsAdmix:
+  url: https://github.com/aalbrechtsen/NGSadmix.git
+  version: a5cde0502ac1e1cfce994bc9fd72ef1813c262b6
+
+
+
+
+#### PARAMETERS SECTION
+# Here we can give some short names for different sets of parameters
+# that we will use later for particular ultimate targets
+
+# these are all the standard parameters in the file paths.  The maf
+# is for programs like ANGSD or PCAngsd or ngsAdmix that allow for
+# MAF filtering within the program.  Will have no effect in programs
+# that do not do MAF filtering, but might still be in their ouput paths...
+main_params:
+  hyper_thin:
+    bcf: chinook_16
+    filt: snps05
+    thin_spec: "100_1"
+    maf: 0.05
+  standard:
+    bcf: chinook_16
+    filt: snps05
+    thin_spec: "0_0"
+    maf: 0.05
+
+
+# Here we provide different sets of parameters for particular
+# analyses.
+params:
+  beagle_regions:
+    regions:
+      greb1l_2mb: "NC_037124.1f8t16:3000000-5000000"
+  pcangsd_plain:
+    dummy: 
+  do_asso_ybin:
+    dummy:
+  do_asso:
+    runtime_4PCs:
+      angsd_opts: " -doMaf 4 -doAsso 4 "
+      whichPhe: " run "
+      whichCov: " PC-1,PC-2,PC-3,PC-4 "
+  ngsadmix:
+      two_for_two:
+        reps: 2
+        kvals: [1, 2]
+
+
+
+#### TARGETS SECTION
+
+# here we have a shorthand for describing target outputs.
+# Each output is defined by a triple: [A, B, C] that lives under
+# a heading which says which kind of analysis is desired.
+# where 
+#   - A is a nickname from main_params
+#   - B is a nickname for a subsample that is appropriate to the BCF in A
+#   - C is a nickname for the parameters defined in params for the particular analysis
+#
+# The idea here is that each of these triples can be used to define a file name
+# or possibly multiple filenames.
+
+
+
+targets:
+  filtervcf:        # just get a filtered VCF
+    - ["hyper_thin", "all_fish", "dummy"]
+  beagle_gl:        # just get a beagle file of genotype likelihoods
+    - ["hyper_thin", "all_fish", "dummy"]
+  beagle_regions:
+    - ["standard", "all_fish", "greb1l_2mb"]
+  pcangsd_plain:    # do a simple PCAngsd PCA, and get the output .cov file
+    - ["hyper_thin", "all_fish", "no_frills"]
+    - ["standard", "all_fish", "no_frills"]
+  do_asso_ybin:
+    - ["standard", "all_fish", "dummy"]
+  do_asso:
+    - ["standard", "all_fish", "runtime_4PCs"]
+  ngsadmix:
+    - ["standard", "all_fish", "two_for_two"]
+
+
+
