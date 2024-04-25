@@ -1,0 +1,144 @@
+---
+engine: knitr
+---
+
+# Exploring and Using the `mega-post-bcf-exploratory-snakeflows` {#mega-post}
+
+
+`mega-post-bcf-exploratory-snakeflows` is a snakemake workflow that Eric dreamed
+up to help with doing multiple analyses from a VCF file.  We are going to
+be familiarizing ourselves with it here.
+
+
+## Setup Steps
+
+### Sync your fork of con-gen-csu and pull changes to main
+
+You know the drill.  Sync your fork from the GitHub website and then
+pull any changes to main on your local clone on the cluster.
+
+
+### Fork and clone `mega-post-bcf-exploratory-snakeflows`
+
+Go to the [mega-post-bcf-exploratory-snakeflows page on GitHub](https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows/tree/main).  Fork it, and then clone your fork of it to Alpine (or your cluster of choice).
+
+You might need to `gitup`.
+
+
+
+### Get on a compute node or acompile
+
+Choose whatever works for you. I am going to go for 4 cores for two hours on acompile,
+on Alpine.
+```sh
+acompile -n 4 -t 120
+```
+
+If you are on SEDNA, do something like this to get 5 cores
+```sh
+srun -c 5 -t 2:00:00 --pty /bin/bash
+```
+
+### Make a symlink to the configs and data that are in con-gen-csu
+
+From the top level of the `mega-post-bcf-exploratory-snakeflows` directory,
+create a symlink like this, replacing the `my-path-to-con-gen-csu` as appropriate.
+```
+ln -s /home/my-path-to-con-gen-csu/extras/mega-post-config-and-data MPCD
+```
+
+For example, for me that looks like:
+```sh
+# check that I am in the mega-post... directory
+pwd
+
+# returns: /home/eriq@colostate.edu/projects/mega-post-bcf-exploratory-snakeflows
+
+
+# make the symlink:
+ln -s  /projects/eriq@colostate.edu/con-gen-csu/extras/mega-post-config-and-data MPCD
+```
+
+
+
+### Start R and make sure that the tidyverse is installed
+
+```sh
+# this is what it is on Alpine.  It is R/4.0.3 on SEDNA
+module load R/4.2.2  
+R
+
+# check to see if the tidyverse is there:
+library(tidyverse)
+
+# if that loads the library, you are all good.
+# if not, you should get it with
+install.packages("tidyverse")
+```
+
+This might take a while.  If so, let it run and just open up another shell and proceed
+(you can do dry-runs and install from mamba on the login node!)
+
+
+## Dry-run and install conda envs in mega-post
+
+Make sure you are in your `mega-post-bcf-exploratory-snakeflows` directory.
+Activate your snakemake environment, like:
+```sh
+conda activate snakemake-8.5.3
+```
+
+Then, do a dry-run using the config and data that we symlinked from con-gen-csu:
+```sh
+snakemake -np --configfile MPCD/config/config.yaml
+```
+
+The result should look like this:
+```sh
+Job stats:
+job                           count
+--------------------------  -------
+all                               1
+angsd_chromosome_names            1
+angsd_do_asso_gather              2
+angsd_do_asso_scatter             4
+angsd_do_asso_ybin_scatter        4
+attach_PCs_to_dotsamples          1
+bcf2beagle_gl_gather              2
+bcf2beagle_gl_scatter             8
+bcf_samps_and_filt_gather         1
+bcf_samps_and_filt_scatter        4
+bcf_thin_gather                   1
+bcf_thin_scatter                  4
+do_asso_manhattan_plot            2
+install_ngsadmix                  1
+install_pcangsd                   1
+pcangsd_beagle_post_slice         1
+pcangsd_no_gposts                 1
+pcangsd_with_gposts               1
+run_ngsadmix                      4
+total                            44
+
+```
+
+Now, we are going to run this again but will only start installing the
+conda environments.  
+
+```sh
+snakemake --use-conda --conda-create-envs-only  --configfile MPCD/config/config.yaml
+```
+
+Now, while this is running (pretty slow on Alpine!) we can talk more generically about
+the workflow.
+
+We can read about it in its [README](https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows/blob/main/README.md).  
+
+
+
+## Running it for real
+
+Try:
+
+```sh
+snakemake -p --cores 4 --use-envmodules --use-conda  --latency-wait 20 --keep-going  --configfile MPCD/config/config.yaml
+```
