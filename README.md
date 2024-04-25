@@ -928,6 +928,8 @@ We will look at [https://github.com/eriqande/mega-post-bcf-exploratory-snakeflow
 
 ## Thursday, April 25, 2024
 
-Homework: Make a Repo for your project and share it with me.  No huge data sets, but commit and push a README and a Skeleton.
+Homework: Make a Repo for your project and share it with me.  No huge data sets, but commit and push a README and a Skeleton.  Then share it with Eric.
+That means making me a collaborator if it is a private repo.  Otherwise just send me a link to it, (if it is public).
 
 
+In class: following along with: [https://eriqande.github.io/con-gen-csu/nmfs-bioinf/mega-post.html](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/mega-post.html)
