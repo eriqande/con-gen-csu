@@ -77,7 +77,7 @@ def get_read_group(wildcards):
 # rule to ask for results/vcf/all.vcf.gz
 rule all:
   input: 
-    expand("results/hard_filtering/indels-filtered/{chromo}.vcf.gz", chromo=CHROMOS)
+    expand("results/vcf-stats/all.vcf.stats")
 
 
 
@@ -309,17 +309,90 @@ rule hard_filter_indels:
     " {params.filters}      "
     " -O {output} > {log} 2>&1 "
 
+rule select_snps:
+  input:
+    vcf="results/chromo_vcfs/{chromo}.vcf.gz",
+    idx="results/chromo_vcfs/{chromo}.vcf.gz.tbi"
+  output:
+    "results/hard_filtering/snps/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    "results/logs/select_snps/{chromo}.log"
+  shell:
+    "gatk SelectVariants "
+    " -V {input.vcf} "
+    " -select-type SNP "
+    " -O {output} > {log} 2>&1 " 
 
+rule hard_filter_snps:
+  input:
+    vcf="results/hard_filtering/snps/{chromo}.vcf.gz"
+  output:
+    vcf="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  conda:
+    "config.yaml"
+  log:
+    "results/logs/snps-filtered/{chromo}.log"
+  params:
+    filters=config["params"]["gatk"]["VariantFiltration"]["snps"]
+  shell:
+    "gatk VariantFiltration "
+    " -V {input.vcf} "
+    " {params.filters}      "
+    " -O {output} > {log} 2>&1 "
+    
+rule merge_indel_snps:
+  input:
+    indels="results/hard_filtering/indels-filtered/{chromo}.vcf.gz",
+    snps="results/hard_filtering/snps-filtered/{chromo}.vcf.gz"
+  output:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  conda:
+    "envs/gatk.yaml"
+  log:
+    stdout= "results/logs/merge_indel_snps/{chromo}.stdout",
+    stderr= "results/logs/merge_indel_snps/{chromo}.stderr"
+  benchmark:
+    "results/benchmark/merged/{chromo}.txt"
+  shell: 
+    "gatk MergeVcfs -I {input.indels} -I {input.snps} -O {output} > {log.stdout} 2> {log.stderr}"
+    
+rule missing_corrected:
+  input:
+    "results/hard_filtering/merged/{chromo}.vcf.gz"
+  output:
+    "results/missing-corrected/{chromo}.vcf.gz"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    "results/missing-corrected/{chromo}.log"
+  shell:
+    "(bcftools +setGT {input} -- -t q -n '.' -i 'FMT/DP=0' | "
+    "bcftools +fill-tags - | "
+    "bcftools view -Oz > {output}; "
+    "bcftools index {output}) 2> {log}"
 
 rule concat_vcfs:
   input:
-    vcfs=expand("results/chromo_vcfs/{c}.vcf.gz", c=CHROMOS)
+    vcfs=expand("results/missing-corrected/{chromo}.vcf.gz", chromo=CHROMOS)
   output:
-    vcf="results/vcf/all.vcf.gz"
+    "results/vcf/all.vcf.gz"
   conda:
     "envs/bcftools.yaml"
   log:
     "results/concat_vcfs/all.log"
   shell:
-    "bcftools concat -n {input.vcfs} > {output.vcf} 2> {log} "
+    "bcftools concat -n {input.vcfs} -Oz > {output} 2> {log}"
 
+rule vcf_stats:
+  input:
+    "results/vcf/all.vcf.gz"
+  output:
+    "results/vcf-stats/all.vcf.stats"
+  conda:
+    "envs/bcftools.yaml"
+  log:
+    stdout="results/vcf_stats.stdout"
+  shell:
+    "bcftools stats -v {input} > {output} 2> {log} "
