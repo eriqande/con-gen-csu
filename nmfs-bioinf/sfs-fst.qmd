@@ -1,0 +1,546 @@
+---
+engine: knitr
+---
+
+# Estimating Site Frequency Spectra and a few applications thereof {#sfs-fst}
+
+
+## What is the SFS?
+
+-   Typically the fraction of sites in a sample of $n$ diploids that carry
+    $1, \ldots, 2n-1$ copies of the derived (as opposed to the ancestral)
+    allele.
+-   With whole genome sequencing data, we can also include the categories of
+    0 and $2n$ copies of the derived alleles.    
+
+
+## Why is it useful?
+
+-   A lot of population genetic theory has been done about what the SFS should
+    look like under different demographic scenarios and/or selection.
+-   Many population genetic summary statistics can be shown to be functions of
+    the SFS.  A worthy read about how nearly all the myriad simple tests for
+    non-neutrality (Tajima's $D$, Fay and Wu's $H$, etc.) can be written as
+    functions of the SFS is [Achaz 2009](https://academic.oup.com/genetics/article/183/1/249/6063201).
+-   Programs exist ($\partial a \partial i$, moments, etc.) to use SFS (and particularly
+    multi-dimensional---i.e. multi-population---SFS) to estimate demographic history
+    of species.
+-   Pairswise $F_\mathrm{ST}$ between populations can be computed as a function of the 2-D SFS.
+-   The SFS provides an exceptional amount of data reduction: from terabytes of sequencing
+    data to a handful of numbers.  Obviously this discards a lot of information, but
+    for some inferences, the SFS is sufficient or nearly so.
+
+
+## More on the SFS itself with simple examples
+
+-   Illustrate on the whiteboard with a simple data set assuming fully resolved genotypes.
+-   Discuss the $\theta/k$ result from the neutral coalescent.  
+-   Show how easy it is to estimate SFS with _complete_ and _certain_ genotype data.
+-   At any site, show that the calculation involves lining the
+    genotypes up horizontally, with the cumulative numbers of gene copies in each,
+    stacked vertically above them.
+
+
+## Uncertainty in the genotypes
+
+-   With low-coverage data we don't get to observe the genotypes with certainty.
+-   We don't even know ahead of time if there is a SNP there.
+-   So, the ANGSD approach is to first calculate the likelihood of each number of derived alleles,
+    from $0$ to $2n$, by considering all the possible underlying genotypes. Storing those
+    results, and then using those to do inference.  
+-   Let's show what that looks like at a single site on the whiteboard.
+
+## ANGSD doSaf
+
+-   One of the options to ANGSD is `-doSaf`.  This creates a "site allele frequency"
+    file, which is a binary file that holds the likelihoods for _each site_ of the
+    number of copies of the derived allele are at that site.
+-   Documentation for it is at: https://www.popgen.dk/angsd/index.php/SFS_Estimation
+-   There is also "onboard" documentation with the program itself.  So, let us get
+    ANGSD in a conda environment so we can call it.  If you don't already have ANGSD
+    in a conda env, do this:
+    ```{sh}
+    #| eval: false
+    # do this on a compute node or acompile
+    mamba create -n angsd bioconda::angsd
+    ```
+-   Once that is done, activate the angsd environment and call the program
+    with the `-doSaf` option and nothing else to get the onboard help:
+    ```{sh}
+    #| eval: false
+    # activate the environment
+    mamba create -n angsd bioconda::angsd
+    
+    # call the program with no other args
+    angsd -doSaf
+    ```
+
+
+
+## Running ANGSD doSaf
+
+We are going to run doSaf on our course data (the 16 Chinook salmon
+from the Trinity River).  
+
+As always, before we start doing anything you will want to sync the main branch of your
+fork of the `con-gen-csu` repo and then pull changes down to the main branch of the 
+local clone on your cluster.
+
+We are going to run `angsd -doSaf` within a
+[Snakemake workflow that I have on GitHub](https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow).
+The purpose of the workflow is to compute pairwise $F_\mathrm{ST}$ between
+different groups of samples, and doing so requires the `-doSaf` calculation from
+ANGSD.  
+
+### Cloning the workflow
+
+So, the first thing that you will need to do is clone the
+Snakemake workflow.  You can fork it (if you like) and then clone your
+own flow, OR you could just clone the repo as is.  Make sure that you
+DO NOT clone it into your `con-gen-csu` directory. Rather, it would
+be better to clone it into your `projects` or `scratch` directory.
+
+Cloning `eriqande/mega-lcwgs-pw-fst-snakeflow` directly, as opposed to
+forking it and cloning your fork, would look like this:
+```sh
+# first cd into your projects and scratch directories
+git clone git@github.com:eriqande/mega-lcwgs-pw-fst-snakeflow.git
+```
+
+### Symlinking the results in our con-gen-csu results
+
+For calculating Fst we will use the BAMs that were created when you
+ran exercise 008.  To make this relatively easier to describe (basically
+so that the same paths will work for all of us regardless of where
+everyone's BAM files are) we will use symbolic links, making a
+symbolic link to your `con-gen-csu` directory in your home directory,
+named `CGC`.
+
+To do this, 
+
+1.  navigate inside of your `con-gen-csu` directory,
+2.  do `pwd`.  
+3.  Copy the resulting absolute path
+4.  `cd` to your `mega-lcwgs-pw-fst-snakeflow` directory
+5.  Then, in that `mega-lcwgs-pw-fst-snakeflow` directory, do:
+    ```{sh}
+    #| eval: false
+    ln -s absolute-path-to-con-gen-csu  CGC
+    ```
+    but replace `absolute-path-to-con-gen-csu` with the actual path to
+    your `con-gen-csu` directory.
+
+
+For example, when I do this on alpine it looks like:
+```sh
+# here I get the absolute path to con-gen-csu and I copy it
+% pwd
+/home/eriq@colostate.edu/projects/con-gen-csu
+
+# then I change directories to the mega-lcwgs-pw-fst-snakeflow directory
+% cd /home/eriq@colostate.edu/projects/mega-lcwgs-pw-fst-snakeflow/
+ 
+# then I paste the con-gen-csu path in to do:
+ln -s /home/eriq@colostate.edu/projects/con-gen-csu CGC
+```
+
+### The config for our Trinity River Chinook
+
+We have a config file that will let you use your bams through
+the `CGC` alias you just made.  The config files to allow
+the `mega-lcwgs-pw-fst-snakeflow` to use the bams from the Trinity
+River Chinook salmon are in the directory `extras/lcwgs-pw-fst-config`
+in the `con-gen-csu` repo, which means that from within the
+`mega-lcwgs-pw-fst-snakeflow` directory, you can access it via the
+relative path `CGC/extras/lcwgs-pw-fst-config`.  The config files within
+that directory, with links to them on GitHub, are:
+
+- [`config.yaml`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/config.yaml): the main config file for Snakemake to use.
+- [`bams.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/bams.tsv): paths to the BAM files for the 16 Chinook salmon, and group designations (spring or fall)
+- [`chroms.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/chroms.tsv): summary information about the chromosomes.
+- [`pwcomps.tsv`](https://github.com/eriqande/con-gen-csu/blob/main/extras/lcwgs-pw-fst-config/pwcomps.tsv): description of groups to make pairwise $F_\mathrm{ST}$ comparisons of.
+
+### A Simple Dry run
+
+We can do a simple dry run to see which jobs will be run if we were to do all the
+steps for calculating $F_\mathrm{ST}$, including $F_\mathrm{ST}$ values in sliding windows.
+
+Do the following after getting onto a compute node with four cores, by, for example,
+doing `acompile -n 4` or `srun -p atesting -c 4 --pty /bin/bash` 
+```{.sh filename="Type this in the mega-lcwgs-pw-fst-snakeflow directory" }
+conda activate snakemake-8.5.3
+
+snakemake -np  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+Phew!  That spits out a lot of different jobs.  Let's quickly have a look
+at what that is doing by looking at the rulegraph:
+
+![](./figs/lcwgs-pw-rulegraph.svg)
+
+Aha!  Most of the jobs are happening after the `calc_saf` rule, which is what
+we are focused on.  
+
+### Only run things as far as the `calc_saf` rule
+
+This is a good time to talk about a useful option to Snakemake.  If you want
+to only run a workflow up to a certain point, you can provide the `--until` 
+option, giving it a rule name. So, try:
+```{.sh filename="Type this in"}
+snakemake -np --until calc_saf  --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+That just runs 8 jobs making bamlists (short little jobs) and 8 jobs making
+SAF files---4 chromosomes in each of two groups.
+
+Let's see about running all of those:
+```{.sh}
+snakemake -p --use-conda --until calc_saf --cores 4 --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+That does not take too long.
+
+Let's check out the size of the resulting files:
+```{.sh}
+tree --du -h results/BY_CHROM
+```
+Whoa! Those are some pretty big files.  For `NC_037122.1f5t9` for example, I get
+56 M and 64 M for spring-run and fall-run respectively.  
+
+Let's do some thinking about that---`NC_037122.1f5t9` is 4 megabases and each
+group of fish has 8 diploids, so there are $2 \times 8 + 1 = 17$ possible sample
+allele frequencies at each base, and each frequency requires 4 bytes to store
+in memory.  Thus we would expect an uncompressed size of this file in megabytes to be:
+```{r}
+4e6 * 17 * 4 / 1e6
+```
+
+But it is only around 60 Mb, and that is because it is compressed, and the
+compressed size is about 22% of the uncompressed.  
+
+### Make a picture of part of that file
+
+In order to get a sense of what this file looks like, let's extract a piece
+of it and then plot it.
+```sh
+# we can get the first 5000 sites from the saf file using the ANGSD tool
+# realSFS
+realSFS print results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx -r NC_037122.1f5t9:1-5000 > fall-first-5k.tsv
+```
+
+Now, we have that file in the con-gen-csu repo, so we can have a look at it.
+```{r}
+#| message: false
+#| fig-width: 12
+#| fig-height: 20
+library(tidyverse)
+
+# read in the file
+saf <- read_tsv("extras/inputs/fall-first-5k.tsv", col_names = FALSE)
+names(saf) <- c("chrom", "pos", 0:16)
+
+# get a version that is not on the log scale
+exp_saf <- saf %>% mutate(across(.cols = `0`:`16`, .fns = exp))
+
+# try plotting the natural scale one
+saf_long <- exp_saf %>%
+  pivot_longer(cols = -c(chrom, pos), names_to = "num_derived", values_to = "likelihood") %>%
+  mutate(num_derived = as.integer(num_derived))
+
+ggplot(saf_long) +
+  geom_tile(aes(x = num_derived, y = pos, fill = likelihood)) + 
+  facet_wrap(~ as.integer(pos / 500), scales = "free") +
+  scale_fill_viridis_c()
+```
+
+Oh Wow! That is pretty cool!  Each facet is 500 bases of the chromosome.
+The x-axis is number of "derived" alleles in the sample, and the fill
+color is likelihood.  The white bands are omitted bases (likely becuase
+there are no reads there? or some other feature of the genome there?).
+
+You can download a higher resolution version of that figure from
+[here](https://github.com/eriqande/con-gen-csu/blob/main/nmfs-bioinf/figs/saf_file_raster.pdf).
+
+These SAF files form the basis for a lot of further inference,
+which we address next.
+
+
+
+
+## Installing winsfs
+
+`winsfs` (which, by the way, stands for "Windowed Site Frequency Spectrum") is
+written in the Rust language.  It is not available on conda, but it is relatively
+easy to build.  The default instructions to build it are available at
+[https://github.com/malthesr/winsfs?tab=readme-ov-file#installation](https://github.com/malthesr/winsfs?tab=readme-ov-file#installation).  If you are not on ALPINE, use those directions.
+
+If you are on ALPINE, however, you want the build chain
+and other stuff to go in your projects directory, not your home directory (which
+has very little space in it.)
+
+So, if you are on ALPINE you want to follow these steps:  first, from a fresh
+shell and in your home directory, define the environment variables CARGO_HOME
+and RUSTUP_HOME to be the absolute path to
+your projects directory. (Otherwise, the rust build chain will eat up all
+the space in your scrawny home directories).
+```{.sh}
+# do this on acompile
+acompile
+export CARGO_HOME=/projects/eriq@colostate.edu
+export RUSTUP_HOME=/projects/eriq@colostate.edu
+```
+Then we want to put the build chain there, so we do:
+```{.sh}
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+That should tell you that it will install everything into your
+projects directory.  Hit ENTER to agree to continue installing.
+(It looks like you should choose 1, but you actually want to just
+hit ENTER...)
+
+That take a minute or two, but should finish, eventually.
+
+Now, we need to set up the environment
+```{.sh}
+source $CARGO_HOME/env
+
+# and then just to be on the safe side, you should do:
+source ~/.bashrc
+```
+
+That should be it for getting the build chain, so now you should be able to
+get winsfs:
+```{.sh}
+cargo install winsfs-cli
+```
+
+When that is done, do `which winsfs` to confirm where it was built and placed.
+
+Then, do `winsfs --help` to get the help info.
+
+
+## Back to lcwgs-pw-fst
+
+If you go back to the shell where you were working on the mega-lcwgs-pw-fst-snakeflow
+workflow, you will want to `source ~/.bashrc` to get the path to winsfs, and then
+you will want to get back onto atesting for working further on this.
+```{.sh}
+srun -p atesting -c 4  --pty /bin/bash
+
+# after you get into that, check to make sure winsfs is available
+winsfs
+```
+
+
+## Calculating some 1-D SFSs
+
+
+Both `realSFS` from angsd and `winsfs` operate similarly for this, but give somewhat
+different results.  If you pass either of them an `saf.idx` file, they will
+do the optimization to return a maximum likelihood estimate of the SFS from all the
+sites in the file.
+
+### Let's do it by hand
+
+```{.sh}
+# activate your angsd env
+conda activate angsd
+
+# learn about realSFS options
+realSFS
+
+# run realSFS on one of the SAF files we made previously
+realSFS -cores 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx
+```
+
+That takes a bit of time, so we can talk about what it is doing.  Note that
+most of the stuff being written to the screen is going to stderr.  The part that
+goes to stdout is just the line:
+```
+3737572.635705 1561.211911 927.350151 465.278375 438.794388 56.110069 390.037928 89.693553 308.188647 21.118673 0.011756 254.166472 79.952746 1.729683 85.879451 134.411897 296.428594
+```
+
+Now, for comparison, let's do that same thing with `winsfs`:
+```{.sh}
+winsfs -t 4  results/BY_CHROM/NC_037122.1f5t9/saf/Fall.saf.idx
+```
+
+That happens so fast that you don't even have time to talk about it!
+
+The output is:
+```
+#SHAPE=<17>
+3737470.683161 1625.494654 932.293365 540.814038 412.352881 142.438646 287.406187 128.243713 226.198641 65.924898 65.140087 153.462124 110.387933 45.092476 49.428736 148.862580 278.775880
+```
+Which is pretty much the same, except it has the added feature of telling us how many
+values are in the SFS.  
+
+And, reactivate your snakemake environment
+```{.sh}
+conda activate snakemake-8.5.3
+```
+
+### Let's calculate all the 1-D SFS using the snakemake workflow
+
+You will need to get the latest update of the mega-lcwgs-pw-fst-snakeflow workflow by syncing
+your fork (if you have forked it) and then pulling into main.
+
+I have set up two new rules to calculate 1-D SFS in the workflow---not becuase
+they are needed for calculating Fst, but just for our own edification.
+
+You can run the workflow and get those outputs using:
+```{.sh}
+# check with a dry run:
+snakemake -np --use-conda  --cores 8 dest_edify_1d --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+
+# if that looks good, do it with:
+snakemake -p --use-conda  --cores 8 dest_edify_1d --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+
+I have copied the results to the course repo so that we can plot them all:
+```{r}
+#| fig-height: 10
+#| fig-width: 10
+files <- dir(
+  path = c(
+    "extras/lcwgs-pw-fst-results/one_d_realSFS",
+    "extras/lcwgs-pw-fst-results/one_d_winsfs"
+  ),
+  full.names = TRUE
+)
+names(files) <- files
+
+big_tibble <- lapply(
+  files, 
+  function(x) {
+    lines <- read_lines(x)
+    counts = as.numeric(str_split(lines[length(lines)], pattern = " +")[[1]])
+    counts <- counts[!is.na(counts)]
+    tibble(
+      num_derived = 0:16,
+      count = counts
+    )
+  }) %>%
+  bind_rows(.id = "file") %>%
+  extract(
+    file,
+    into = c("method", "chrom", "ecotype"),
+    regex = "^.*one_d_([a-zA-Z]+)/(.+)---(.+)\\.ml"
+  )
+
+# remove the 0 category, cuz it be huge, then plot
+big_tibble %>%
+  filter(num_derived > 0) %>%
+  ggplot(aes(x = num_derived, y = count, fill = ecotype)) +
+  geom_col() + 
+  facet_grid(chrom ~ ecotype + method)
+  
+```
+
+We see that the results from `winsfs` are less choppy.  This is what the authors of
+the Rasmussen et al. paper meant when they said that the `winsfs` approach is less
+prone to overfitting.
+
+Remember that these are unfolded SFSes where we used the reference genome as the
+"ancestral" genome.
+
+
+## Running the rest of the Fst workflow
+
+We can let this thing rip with:
+```{.sh}
+# check it with a dry run
+snakemake -np --use-conda --cores 8 --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+
+# Let 'er rip
+snakemake -p --cores 8 --use-conda --configfile CGC/extras/lcwgs-pw-fst-config/config.yaml
+```
+
+
+While this is running we can look over the steps of the workflow.  Basically, they
+are:
+
+1.  Calculate the MLE of the 2-D SFS for each pair of populations (just Fall and Spring here). This
+    is done in `rule calc_2dsfs_winsfs`.
+2.  Fold the resulting 2-D sfs to reflect that we don't know the ancestral state. Done in
+    `rule fold_winsfs`
+3.  Use that MLE of the 2-D SFS as a prior to calculate the posterior number of derived
+    alleles in each population _at each base pair_ and from that, calculate a summary
+    value related to Fst for each base pair. (Done using realSFS in `rule calc_fst_binaries_winsfs`)
+4.  From those summaries at each site, extract a single Fst value for each chromosome.
+    (Done in `rule extract_fst_values_winsfs`)
+5.  From those summaries at each site, calculate Fst in a sliding window for each
+    chromosome. (Done in `rule sliding_window_fst_winsfs`)
+6.  Summarize all that output into just a couple of files, (Done in `rule summarise_average_fst_values` and
+    `rule summarise_sliding_window_fst_values`)
+
+
+
+### Plotting the Sliding Windows
+
+```{r}
+#| warnings: false
+windows <- read_table(
+  "extras/lcwgs-pw-fst-results/summarized/sliding_window_fst/Fall--x--Spring--size-30000--step-5000.tsv",
+  col_names = FALSE,
+  skip = 2) %>%
+  filter(!str_detect(X1, "region")) %>%
+  rename(
+    chrom = X2,
+    window_mid = X3,
+    Fst = X5
+  )
+
+ggplot(windows, aes(x = window_mid, y = Fst)) +
+  geom_point(size = 0.2) +
+  facet_wrap(~ chrom)
+```
+
+
+
+
+
+
+```{r}
+#| fig-height: 10
+#| fig-width: 10
+files <- dir(
+  path = c(
+    "extras/lcwgs-pw-fst-results/NC_037122.1f5t9/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037123.1f10t14/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037124.1f8t16/winsfs",
+    "extras/lcwgs-pw-fst-results/NC_037125.1f20t24/winsfs"
+  ),
+  full.names = TRUE
+)
+names(files) <- files
+
+big_tibble <- lapply(
+  files, 
+  function(x) {
+    lines <- read_lines(x)
+    counts = as.numeric(str_split(lines[length(lines)], pattern = " +")[[1]])
+    counts <- counts[!is.na(counts)]
+    tibble(
+      num_derived_Fall = rep(0:16, 17),
+      num_derived_Spring = rep(0:16, each = 17),
+      count = counts
+    )
+  }) %>%
+  bind_rows(.id = "file") %>%
+  extract(
+    file,
+    into = c("chrom"),
+    regex = "^.*(NC_[^/]+)/.+$"
+  )
+
+# remove the 0 category, cuz it be huge, then plot
+big_tibble %>%
+  filter(num_derived_Fall > 0 & num_derived_Spring > 0) %>%
+  ggplot(aes(x = num_derived_Fall, y = num_derived_Spring, fill = count)) +
+  geom_tile() + 
+  facet_wrap(~ chrom) +
+  scale_fill_viridis_c(trans="log10")
+  
+```

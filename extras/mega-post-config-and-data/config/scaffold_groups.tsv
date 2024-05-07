@@ -1,0 +1,5 @@
+id	chrom	start	stop	angsd_chrom	mh_label
+scaff_group_001	NC_037122.1f5t9	1	4000001	NC-037122.1f5t9	26
+scaff_group_002	NC_037123.1f10t14	1	4000001	NC-037123.1f10t14	27
+scaff_group_003	NC_037124.1f8t16	1	8000001	NC-037124.1f8t16	28
+scaff_group_004	NC_037125.1f20t24	1	4000001	NC-037125.1f20t24	29

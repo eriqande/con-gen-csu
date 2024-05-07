@@ -919,4 +919,17 @@ don't get it all easily.  You can skim the mathematical sections!
 ### In class:
 
 Eric will give a brief overview of the SFS and SFS estimation.  We will explore these steps in Eric's workflow for estimatng Fst
-from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow
+from lcWGS data: https://github.com/eriqande/mega-lcwgs-pw-fst-snakeflow.  See https://eriqande.github.io/con-gen-csu/nmfs-bioinf/sfs-fst.html
+
+
+## Tuesday April 23, 2024
+
+We will look at [https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows](https://github.com/eriqande/mega-post-bcf-exploratory-snakeflows)
+
+## Thursday, April 25, 2024
+
+Homework: Make a Repo for your project and share it with me.  No huge data sets, but commit and push a README and a Skeleton.  Then share it with Eric.
+That means making me a collaborator if it is a private repo.  Otherwise just send me a link to it, (if it is public).
+
+
+In class: following along with: [https://eriqande.github.io/con-gen-csu/nmfs-bioinf/mega-post.html](https://eriqande.github.io/con-gen-csu/nmfs-bioinf/mega-post.html)
